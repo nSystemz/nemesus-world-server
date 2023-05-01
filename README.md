@@ -18,6 +18,8 @@ Forum: https://forum.nemesus.de
 
 Discord: https://discord.nemesus.de
 
+SaltyChat: https://github.com/v10networkscom/saltychat-ragemp
+
 Nemesus World ist ein RageMP/GTA5 Roleplay Gamemode und beinhaltet sehr viele Features, nur um mal einige zu nennen:
 
     Ein Fimensystem mit der Möglichkeit verschiedenen Lizenzen zu besitzen wie z.B: Speditionslizenz, Mechatronikerlizenz etc.

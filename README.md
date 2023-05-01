@@ -43,7 +43,7 @@ ForumConnect: https://nemesus.de/downloads/nemesusworld/forumConnect.txt
 
 PostChangelog: https://nemesus.de/downloads/nemesusworld/postChangelog.txt
 
-Beachtet bitte die ToDos im Code und die Installationsanleitung auf Youtube: Coming soon
+Beachtet bitte die ToDos im Code und die Installationsanleitung auf Youtube: https://youtu.be/vBB-E4IgV2Q 
 
 Ihr wollt uns unterstützen? https://ko-fi.com/nemesustv
 

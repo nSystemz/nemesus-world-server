@@ -4,4 +4,5 @@
   <log_console>false</log_console>
   <log_chat>false</log_chat>
   <resource src="NemesusWorld"/>
+  <resource src="SaltyChat"/>
 </config>

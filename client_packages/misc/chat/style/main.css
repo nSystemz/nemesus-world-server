@@ -1,0 +1,62 @@
+* {
+    font-family: Ubuntu,sans-serif;
+    font-weight: 700;
+    font-size: 1.25vh;
+    background-color: transparent;
+    user-select: none;
+}
+.chatBox {
+    margin: 17.45em 0 0 0.5em;
+    width: 37em;
+}
+.messageList {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: 19.3em;
+    direction: rtl;
+}
+.messageList div {
+    margin-left: 0.25em;
+    direction: ltr;
+}
+.messageList::-webkit-scrollbar {
+    width: 0.2em;
+    height: 0.2em;
+}
+.messageList::-webkit-scrollbar-track {
+    border-radius: 1em;
+    background: transparent;
+}
+.messageList::-webkit-scrollbar-thumb{
+    border-radius: 1em;
+    background: rgba(0,0,0,0.75);
+}
+.message {
+    color: white;
+    padding-left: 0.3em;
+    line-height: 1.5em;
+}
+.inputBar {
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    width: 27.5em;
+    outline: none;
+    border: none;
+    height: 2em;
+    padding: 0 0.3em 0 0.3em;
+    margin-top: 0.3em;
+}
+.inputBar::placeholder {
+    color: rgba(255, 255, 255, 0.5);;
+}
+.charCount {
+    color: white;
+    margin-left: 1em;
+}
+.hide {
+    visibility: hidden;
+}
+.stroke {
+    text-shadow: 0 0 0.1em black, 0 0 0.1em black, 0 0 0.1em black, 0 0 0.1em black;
+}

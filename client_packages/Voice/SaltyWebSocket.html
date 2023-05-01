@@ -1,0 +1,111 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Salty Chat WebSocket</title>
+    
+	<script	src="http://code.jquery.com/jquery-3.3.1.min.js"
+	integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+    crossorigin="anonymous"></script>
+</head>
+<body style="font-family:Arial; font-size:26px; color:white; outline:thin; outline-color:black; text-shadow: 1px 1px 1px black">
+	<div id="demo">
+	</div>
+	
+	<script>
+        let pluginAddress = "127.0.0.1:38088";
+		let isConnected = false;
+        let serverUniqueIdentifierFilter = null;
+
+        // Packet Stats
+        let packetsSent = 0;
+        let packetsReceived = 0;
+        let lastCommand = "";
+
+        function connect(address){
+            if (typeof address === "string"){
+                pluginAddress = address
+
+                console.log("new address: " + address);
+            }
+
+            console.log("connecting...");
+
+            try{
+                window.webSocket = new window.WebSocket(`ws://${pluginAddress}/`);
+            }
+            catch{
+                // do nothing
+            }
+
+            webSocket.onmessage = function (evt) {
+                let object = JSON.parse(evt.data);
+
+                if (typeof serverUniqueIdentifierFilter === "string")
+                {
+                    if (object.ServerUniqueIdentifier === serverUniqueIdentifierFilter)
+                        mp.trigger("SaltyChat_OnMessage", evt.data);
+                    else if (typeof object.ServerUniqueIdentifier === "undefined")
+                        mp.trigger("SaltyChat_OnError", evt.data);
+                }
+                else
+                {
+                    if (typeof object.ServerUniqueIdentifier === "string")
+                        mp.trigger("SaltyChat_OnMessage", evt.data);
+                    else
+                        mp.trigger("SaltyChat_OnError", evt.data);
+                }
+
+                packetsReceived++;
+                updateHtml();
+            };
+
+            webSocket.onopen = function () {
+                isConnected = true;
+
+		mp.trigger("Client:DisableSaltyError");
+                mp.trigger("SaltyChat_OnConnected");
+            };
+
+            webSocket.onclose = function () {
+                isConnected = false;
+
+                mp.trigger("SaltyChat_OnDisconnected");
+		mp.trigger("Client:EnableSaltyError");
+            }
+        }
+
+        function setWebSocketAddress(address)
+        {
+            if (typeof address === "string")
+                pluginAddress = address;
+        }
+
+        function setServerUniqueIdentifierFilter(serverUniqueIdentifier)
+        {
+            if (typeof serverUniqueIdentifier === "string")
+                serverUniqueIdentifierFilter = serverUniqueIdentifier;
+        }
+		
+		function runCommand(command)
+        {
+            if (!isConnected || typeof command !== "string")
+                return;
+            
+            webSocket.send(command);
+
+            packetsSent++;
+            lastCommand = command;
+            updateHtml();
+		}
+
+        function updateHtml()
+        {
+            $("#demo").html(`Last Command: ${lastCommand}</br>Packets Sent: ${packetsSent}</br>Packets Received ${packetsReceived}`);
+        }
+
+        document.addEventListener("DOMContentLoaded", function(){
+            updateHtml();
+        });
+	</script>
+</body>
+</html>

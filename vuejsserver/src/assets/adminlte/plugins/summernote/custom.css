@@ -1,0 +1,21 @@
+.note-editor.note-frame .note-editing-area .note-editable {
+    background-color: transparent;
+}
+
+.note-toolbar .note-btn, html.dark .note-toolbar .note-btn:focus, html.dark .note-toolbar .note-btn:active {
+    background-color: #2e353e !important;
+    color: #9097a0 !important;
+    border-color: #2e353e !important;
+}
+
+.show > .btn-light.dropdown-toggle {
+    background-color: #242830;
+}
+
+.note-toolbar .dropdown-menu .dropdown-item {
+    color: #9097a0;
+}
+
+.note-toolbar .btn {
+    color: #9097a0;
+}

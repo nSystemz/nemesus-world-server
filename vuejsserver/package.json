@@ -1,0 +1,53 @@
+{
+  "name": "nemesusworldui",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build --dest ../client_packages/web",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "core-js": "^3.6.5",
+    "jquery": "^3.6.0",
+    "sass-loader": "^12.3.0",
+    "select2": "^4.1.0-rc.0",
+    "sweetalert2": "^11.2.2",
+    "vue": "^2.6.11",
+    "vue-color": "^2.8.1",
+    "vue-color-gradient-picker": "^0.1.2",
+    "vue-ellipse-progress": "^1.3.0",
+    "vue-progress": "^0.2.1",
+    "vue-range-component": "Anoesj/vue-range-slider#master",
+    "vue-scrollto": "^2.20.0",
+    "vue-toastification": "^1.7.14",
+    "xhr2": "^0.2.1"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^6.2.2",
+    "vue-template-compiler": "^2.6.11"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
+}

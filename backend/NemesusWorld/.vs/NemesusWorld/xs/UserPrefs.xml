@@ -1,0 +1,91 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <Debugger.DebugSourceFolders />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/timschnee/Documents/nemesus-world-server/backend/NemesusWorld/NemesusWorld.csproj" relfile="NemesusWorld.csproj" line="19" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workbench ActiveDocument="Events.cs">
+    <Files>
+      <File FileName="Database/Cars.cs" Line="29" Column="31" IsPinned="True" />
+      <File FileName="Models/PaydayList.cs" Line="14" Column="16" IsPinned="True" />
+      <File FileName="Controllers/DrugController.cs" Line="20" Column="18" IsPinned="True" />
+      <File FileName="Controllers/BankController.cs" Line="1105" Column="41" />
+      <File FileName="Commands.cs" Line="1697" Column="16" />
+      <File FileName="Events.cs" Line="47" Column="27" />
+      <File FileName="NemesusWorld.csproj" Line="10" Column="20" />
+      <File FileName="Utils/Helper.cs" Line="6656" Column="30" />
+      <File FileName="Controllers/TuningController.cs" Line="83" Column="36" />
+      <File FileName="Controllers/DealerShipController.cs" Line="499" Column="140" />
+      <File FileName="Controllers/DoorsController.cs" Line="14" Column="65" />
+      <File FileName="Controllers/FireController.cs" Line="82" Column="96" />
+      <File FileName="Controllers/GroupsController.cs" Line="1466" Column="61" />
+      <File FileName="Utils/Menu.cs" Line="770" Column="49" />
+      <File FileName="Controllers/ItemsController.cs" Line="2650" Column="68" />
+      <File FileName="Discord/Commands.cs" Line="14" Column="25" />
+      <File FileName="Discord/DiscordBot.cs" Line="59" Column="10" />
+      <File FileName="Database/Account.cs" Line="32" Column="20" />
+      <File FileName="Controllers/TicketController.cs" Line="210" Column="1" />
+      <File FileName="Models/Doors.cs" Line="7" Column="1" />
+      <File FileName="Controllers/FactionController.cs" Line="439" Column="60" />
+      <File FileName="Database/Business.cs" Line="987" Column="30" />
+      <File FileName="Controllers/SmartphoneController.cs" Line="375" Column="145" />
+      <File FileName="Controllers/CharacterController.cs" Line="159" Column="60" />
+      <File FileName="Database/VehicleData.cs" Line="60" Column="13" />
+      <File FileName="Models/ATMSpots.cs" Line="10" Column="1" />
+      <File FileName="Models/FactionSalary.cs" Line="27" Column="16" />
+      <File FileName="Models/BusinessLoad.cs" Line="55" Column="30" />
+      <File FileName="Models/HouseModel.cs" Line="56" Column="30" />
+      <File FileName="Database/AdminSettings.cs" Line="34" Column="24" />
+      <File FileName="Models/Payday.cs" Line="7" Column="1" />
+      <File FileName="Models/Outfits.cs" Line="7" Column="1" />
+      <File FileName="Database/Character.cs" Line="134" Column="26" />
+      <File FileName="Models/FactionBudgets.cs" Line="14" Column="10" />
+      <File FileName="Controllers/HuntingController.cs" Line="46" Column="187" />
+      <File FileName="Utils/Settings.cs" Line="23" Column="39" />
+      <File FileName="Database/Furniture.cs" Line="212" Column="1" />
+      <File FileName="Properties/launchSettings.json" Line="9" Column="2" />
+      <File FileName="Models/Smartphone.cs" Line="33" Column="13" />
+      <File FileName="Models/Bank.cs" Line="7" Column="1" />
+      <File FileName="Models/Animations.cs" Line="28" Column="28" />
+      <File FileName="Controllers/GangController.cs" Line="940" Column="84" />
+      <File FileName="Models/GroupsRangs.cs" Line="1" Column="1" />
+      <File FileName="Models/Garbage.cs" Line="1" Column="1" />
+      <File FileName="Models/GangzoneProps.cs" Line="14" Column="25" />
+      <File FileName="Models/GangZones.cs" Line="35" Column="19" />
+      <File FileName="Database/House.cs" Line="1719" Column="1" />
+      <File FileName="Controllers/WeaponController.cs" Line="430" Column="34" />
+      <File FileName="Models/ShopItems.cs" Line="24" Column="28" />
+      <File FileName="Controllers/AntiCheatController.cs" Line="22" Column="57" />
+      <File FileName="Controllers/MDCController.cs" Line="1442" Column="134" />
+      <File FileName="Models/Documents.cs" Line="11" Column="36" />
+      <File FileName="Models/DoorsColshapes.cs" Line="1" Column="1" />
+      <File FileName="Models/CenterMenu.cs" Line="12" Column="28" />
+      <File FileName="Models/DrugsPlants.cs" Line="39" Column="36" />
+      <File FileName="../../../../../../usr/local/share/dotnet/sdk/6.0.400/Sdks/Microsoft.NET.Sdk/targets/Microsoft.PackageDependencyResolution.targets" Line="255" Column="21" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="NemesusWorld" expanded="True">
+            <Node name="NemesusWorld" expanded="True">
+              <Node name="Controllers" expanded="True" />
+              <Node name="Database" expanded="True" />
+              <Node name="Discord" expanded="True" />
+              <Node name="Models" expanded="True" />
+              <Node name="Properties" expanded="True" />
+              <Node name="Utils" expanded="True" />
+              <Node name="Events.cs" selected="True" />
+            </Node>
+          </Node>
+        </State>
+      </Pad>
+      <Pad Id="MonoDevelop.Debugger.WatchPad">
+        <State />
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MultiItemStartupConfigurations />
+</Properties>

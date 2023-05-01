@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Nemesus-World Screenshots</title>
+</head>
+<body style="background-color: transparent;z-index: 9999">
+    <img id="imageid">
+    <script>
+        function toDataUrl(url, callback) {
+            var xhr = new XMLHttpRequest();
+            xhr.onload = function () {
+                var reader = new FileReader();
+                reader.onloadend = function () {
+                    let base64 = reader.result.split(",")[1];
+                    callback(base64);
+                };
+                reader.readAsDataURL(xhr.response);
+            };
+
+            xhr.open("GET", url);
+            xhr.responseType = "blob";
+            xhr.send();
+        }
+        function UploadToImgur(url) {
+            toDataUrl(url, (dataURL) => {
+                let apiUrl = "https://api.imgur.com/3/image";
+                let apiKey = "c6bd5372aec70a0";
+                let myHeaders = new Headers();
+                myHeaders.append("Authorization", `Client-ID ${apiKey}`);
+                let formData = new FormData();
+                formData.append("image", dataURL);
+                let requestOptions = {
+                    method: "POST",
+                    headers: myHeaders,
+                    body: formData,
+                    redirect: "follow",
+                };
+                fetch(apiUrl, requestOptions)
+                    .then((response) => response.json())
+                    .then((result) => {
+                        mp.trigger("Client:UploadScreenshot", result.data.link);
+                    })
+                    .catch((error) => console.log("screenshot: ", error));
+            });
+        }
+        mp.events.add("recieveImage", (imgURL) => {
+            UploadToImgur(imgURL);
+        });
+    </script>
+</body>
+</html>

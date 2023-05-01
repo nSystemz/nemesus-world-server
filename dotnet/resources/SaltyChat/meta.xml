@@ -1,0 +1,15 @@
+﻿<meta>
+  <info name="Salty Chat" author="gaming.v10networks.com" type="script" />
+  <script src="SaltyShared.dll"/>
+  <script src="SaltyServer.dll"/>
+
+  <settings>
+    <setting name="ServerUniqueIdentifier" value="nU04e1YRlRuGVApHkiAHh4rlrys=" default="" description="Unique identifier of your TeamSpeak server" /> <!-- Required -->
+    <setting name="RequiredUpdateBranch" value="Stable" default="" description="Update branch the plugin must use (Stable, Testing)" /> <!-- Optional -->
+    <setting name="MinimumPluginVersion" value="2.3.6" default="" description="Lowest plugin version that is requiered on the server (e.g. 0.2)" /> <!-- Optional -->
+    <setting name="SoundPack" value="Sounds deactivated" default="default" description="Sound Pack that will be used by the plugin" /> <!-- Required -->
+    <setting name="IngameChannel" value="2" default="" description="ID of the TeamSpeak channel the client should get moved into" /> <!-- Required -->
+    <setting name="IngameChannelPassword" value="ingame" default="" description="Password of the TeamSpeak channel" /> <!-- Optional -->
+    <setting name="SwissChannelIds" value="660" default="" description="Channel IDs of swiss channels" /> <!-- Optional -->
+  </settings>
+</meta>

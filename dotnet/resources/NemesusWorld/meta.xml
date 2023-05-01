@@ -1,0 +1,5 @@
+<meta>
+    <info name="NemesusWorld" description="NemesusTV Tutorial Script" />
+
+    <script src="NemesusWorld.dll" />
+</meta>

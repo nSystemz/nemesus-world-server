@@ -1,0 +1,42 @@
+E:/Spiele/Grand Theft Auto V/RageMP/server-files/dotnet/resources/NemesusWorld.deps.json
+E:/Spiele/Grand Theft Auto V/RageMP/server-files/dotnet/resources/NemesusWorld.dll
+E:/Spiele/Grand Theft Auto V/RageMP/server-files/dotnet/resources/NemesusWorld.pdb
+E:/Spiele/Grand Theft Auto V/RageMP/server-files2/dotnet/resources/NemesusWorld.deps.json
+E:/Spiele/Grand Theft Auto V/RageMP/server-files2/dotnet/resources/NemesusWorld.dll
+E:/Spiele/Grand Theft Auto V/RageMP/server-files2/dotnet/resources/NemesusWorld.pdb
+E:/Spiele/Grand Theft Auto V/RageMP/server-files2/dotnet/resources/NemesusWorld/NemesusWorld.deps.json
+E:/Spiele/Grand Theft Auto V/RageMP/server-files2/dotnet/resources/NemesusWorld/NemesusWorld.dll
+E:/Spiele/Grand Theft Auto V/RageMP/server-files2/dotnet/resources/NemesusWorld/NemesusWorld.pdb
+E:/Spiele/Grand Theft Auto V/RageMP/server-files2/backend/NemesusWorld/obj/Debug/NemesusWorld.AssemblyInfoInputs.cache
+E:/Spiele/Grand Theft Auto V/RageMP/server-files2/backend/NemesusWorld/obj/Debug/NemesusWorld.AssemblyInfo.cs
+E:/Spiele/Grand Theft Auto V/RageMP/server-files2/backend/NemesusWorld/obj/Debug/NemesusWorld.csproj.CoreCompileInputs.cache
+E:/Spiele/Grand Theft Auto V/RageMP/server-files2/backend/NemesusWorld/obj/Debug/NemesusWorld.csproj.CopyComplete
+E:/Spiele/Grand Theft Auto V/RageMP/server-files2/backend/NemesusWorld/obj/Debug/NemesusWorld.dll
+E:/Spiele/Grand Theft Auto V/RageMP/server-files2/backend/NemesusWorld/obj/Debug/NemesusWorld.pdb
+E:/Spiele/Grand Theft Auto V/RageMP/server-files2/backend/NemesusWorld/obj/Debug/NemesusWorld.csproj.AssemblyReference.cache
+E:/Spiele/Grand Theft Auto V/RageMP/server-files2/backend/NemesusWorld/obj/Debug/NemesusWorld.GeneratedMSBuildEditorConfig.editorconfig
+C:\RAGEMP\server-files\dotnet\runtime\NemesusWorld.deps.json
+C:\RAGEMP\server-files\dotnet\runtime\NemesusWorld.dll
+C:\RAGEMP\server-files\dotnet\runtime\NemesusWorld.pdb
+E:\GTA 5 Development\Nemesus-World\backend\NemesusWorld\obj\Debug\NemesusWorld.AssemblyInfoInputs.cache
+E:\GTA 5 Development\Nemesus-World\backend\NemesusWorld\obj\Debug\NemesusWorld.AssemblyInfo.cs
+E:\GTA 5 Development\Nemesus-World\backend\NemesusWorld\obj\Debug\NemesusWorld.csproj.CoreCompileInputs.cache
+E:\GTA 5 Development\Nemesus-World\backend\NemesusWorld\obj\Debug\NemesusWorld.csproj.CopyComplete
+E:\GTA 5 Development\Nemesus-World\backend\NemesusWorld\obj\Debug\NemesusWorld.dll
+E:\GTA 5 Development\Nemesus-World\backend\NemesusWorld\obj\Debug\NemesusWorld.pdb
+E:\GTA 5 Development\Nemesus-World\dotnet\runtime\NemesusWorld.deps.json
+E:\GTA 5 Development\Nemesus-World\dotnet\runtime\NemesusWorld.dll
+E:\GTA 5 Development\Nemesus-World\dotnet\runtime\NemesusWorld.pdb
+E:\GTA 5 Development\Nemesus-World\dotnet\resources\NemesusWorld.deps.json
+E:\GTA 5 Development\Nemesus-World\dotnet\resources\NemesusWorld.dll
+E:\GTA 5 Development\Nemesus-World\dotnet\resources\NemesusWorld.pdb
+E:\GTA 5 Development\Nemesus-World\backend\NemesusWorld\obj\Debug\NemesusWorld.csproj.AssemblyReference.cache
+J:\Tutorials\nemesus-world-server\dotnet\resources\NemesusWorld\NemesusWorld.dll
+J:\Tutorials\nemesus-world-server\dotnet\resources\NemesusWorld\NemesusWorld.deps.json
+J:\Tutorials\nemesus-world-server\dotnet\resources\NemesusWorld\NemesusWorld.pdb
+J:\Tutorials\nemesus-world-server\backend\NemesusWorld\obj\Debug\NemesusWorld.AssemblyInfoInputs.cache
+J:\Tutorials\nemesus-world-server\backend\NemesusWorld\obj\Debug\NemesusWorld.AssemblyInfo.cs
+J:\Tutorials\nemesus-world-server\backend\NemesusWorld\obj\Debug\NemesusWorld.csproj.CoreCompileInputs.cache
+J:\Tutorials\nemesus-world-server\backend\NemesusWorld\obj\Debug\NemesusWorld.csproj.CopyComplete
+J:\Tutorials\nemesus-world-server\backend\NemesusWorld\obj\Debug\NemesusWorld.dll
+J:\Tutorials\nemesus-world-server\backend\NemesusWorld\obj\Debug\NemesusWorld.pdb

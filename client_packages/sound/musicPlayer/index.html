@@ -1,0 +1,61 @@
+<html>
+
+<head>
+
+</head>
+
+<body>
+</body>
+
+<script src="package://sound/musicPlayer/sound.min.js"></script>
+<script>
+    const urlExp = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
+    let activeAudios = {};
+
+    soundManager.setup({
+        url: './swf/',
+    });
+
+    function playAudio(id, url, volume = 1) {
+        if (url.match(urlExp) || url.startsWith('package://')) {
+            activeAudios[id] = soundManager.createSound({
+                id: id.toString(),
+                url: url,
+                autoLoad: true,
+                autoPlay: false,
+                onfinish: function () {
+                    return mp.trigger('audioFinish', this.id);
+                },
+                onerror: function (errCode, desc) {
+                    return mp.trigger('audioError', this.id, JSON.stringify({
+                        code: errCode,
+                        error: desc
+                    }));
+                },
+                volume: volume * 100
+            });
+            soundManager.play(id);
+        }
+    }
+
+    function stopAudio(id) {
+        if (activeAudios[id]) {
+            activeAudios[id].stop();
+            activeAudios[id] = null;
+        }
+    }
+
+    function setVolume(id, volume) {
+        if (activeAudios[id] && volume >= 0 && volume <= 1) {
+            volume *= 100;
+            soundManager.setVolume(id, volume)
+            activeAudios[id].volume = volume;
+        }
+    }
+
+    function setPaused(id, paused = true) {
+        if (activeAudios[id]) paused === 'true' ? soundManager.pause(id) : soundManager.resume(id);
+    }
+</script>
+
+</html>

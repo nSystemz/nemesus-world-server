@@ -1,5 +1,7 @@
 Nemesus World Gamemode v1.0 (Erstellt durch https://nemesus.de!)
 
+Weitere Credits gehen an Hrred für die Erstellung von vielen Maps und sonstigen Aktivitäten sowie an YunaLable.
+
 (Euch gefällt der Gamemode? Dann lasst doch gerne ein Stern hier auf Github da ;))
 
 Bei diesem Gamemode handelt es sich um einen Gamemode für die Multiplayer Modifikation GTA 5/RageMP, Credits sind im Gamemode vermerkt oder bei der jeweiligen Funktion/MLO etc.
@@ -39,7 +41,13 @@ Nemesus World ist ein RageMP/GTA5 Roleplay Gamemode und beinhaltet sehr viele Fe
     Einzigartiges Drogensystem
     und vieles mehr ...
 
-game_resources (MLOs etc...) Download: https://bit.ly/3oVf9b0
+game_resources (MLOs etc...) Download: https://bit.ly/3NBT23L
+
+Fehlende MLOs (Diese könnt Ihr euch bei dem jeweiligen Ersteller kaufen/downloaden):
+MD: ShmannWorks - Eclipse Medical Tower
+Stadthalle: ShmannWorks - Department of Justice
+MPD: Breze - Mission Row Police Department
+VPD: gameboyeg - Vinewood Police Department
 
 ForumConnect: https://nemesus.de/downloads/nemesusworld/forumConnect.txt
 

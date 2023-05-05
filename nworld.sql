@@ -923,6 +923,17 @@ CREATE TABLE `factionbudgets` (
   `budget` int(7) NOT NULL DEFAULT 100000
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Daten für Tabelle `factionbudgets`
+--
+
+INSERT INTO `factionbudgets` (`id`, `faction`, `budget`) VALUES
+(1, 1, 100000),
+(2, 2, 100000),
+(3, 3, 100000),
+(4, 4, 100000),
+(5, 5, 100000);
+
 -- --------------------------------------------------------
 
 --
@@ -938,6 +949,17 @@ CREATE TABLE `factions` (
   `bankvalue` int(11) NOT NULL DEFAULT 0,
   `members` int(5) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Daten für Tabelle `factions`
+--
+
+INSERT INTO `factions` (`id`, `name`, `tag`, `leader`, `created`, `bankvalue`, `members`) VALUES
+(1, 'San Andreas Police Department', 'SAPD', -1, 1633690373, 0, 0),
+(2, 'San Andreas Rescue Center', 'SARC', -1, 1633690373, 0, 0),
+(3, 'San Andreas Abschleppdienst', 'SAA', -1, 1633690373, 0, 0),
+(4, 'San Andreas Regierung', 'SAR', -1, 1633690373, 0, 0),
+(5, 'San Andreas Nachrichtendienst', 'SAN', -1, 1633690373, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -962,6 +984,18 @@ CREATE TABLE `factionsalary` (
   `rang12` int(5) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+
+--
+-- Daten für Tabelle `factionsalary`
+--
+
+INSERT INTO `factionsalary` (`id`, `factionid`, `rang1`, `rang2`, `rang3`, `rang4`, `rang5`, `rang6`, `rang7`, `rang8`, `rang9`, `rang10`, `rang11`, `rang12`) VALUES
+(1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+
 -- --------------------------------------------------------
 
 --
@@ -984,6 +1018,17 @@ CREATE TABLE `factionsrangs` (
   `rang11` varchar(50) NOT NULL DEFAULT 'n/A',
   `rang12` varchar(50) NOT NULL DEFAULT 'n/A'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Daten für Tabelle `factionsrangs`
+--
+
+INSERT INTO `factionsrangs` (`id`, `factionid`, `rang1`, `rang2`, `rang3`, `rang4`, `rang5`, `rang6`, `rang7`, `rang8`, `rang9`, `rang10`, `rang11`, `rang12`) VALUES
+(1, 1, 'n/A', 'n/A', 'n/A', 'n/A', 'n/A', 'n/A', 'n/A', 'n/A', 'n/A', 'n/A', 'n/A', 'n/A'),
+(2, 2, 'n/A', 'n/A', 'n/A', 'n/A', 'n/A', 'n/A', 'n/A', 'n/A', 'n/A', 'n/A', 'n/A', 'n/A'),
+(3, 3, 'n/A', 'n/A', 'n/A', 'n/A', 'n/A', 'n/A', 'n/A', 'n/A', 'n/A', 'n/A', 'n/A', 'n/A'),
+(4, 4, 'n/A', 'n/A', 'n/A', 'n/A', 'n/A', 'n/A', 'n/A', 'n/A', 'n/A', 'n/A', 'n/A', 'n/A'),
+(5, 5, 'n/A', 'n/A', 'n/A', 'n/A', 'n/A', 'n/A', 'n/A', 'n/A', 'n/A', 'n/A', 'n/A', 'n/A');
 
 -- --------------------------------------------------------
 

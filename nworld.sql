@@ -3490,7 +3490,7 @@ CREATE TABLE `smartphones` (
   `id` int(11) NOT NULL,
   `phonenumber` varchar(10) NOT NULL DEFAULT 'n/A',
   `phoneprops` longtext NOT NULL,
-  `contacts` longtext NOT NULL,
+  `contacts` longtext NOT NULL DEFAULT '[]',
   `akku` int(2) NOT NULL DEFAULT 48,
   `prepaid` int(4) NOT NULL DEFAULT 55,
   `owner` varchar(35) NOT NULL DEFAULT 'n/A'

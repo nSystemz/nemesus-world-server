@@ -14049,6 +14049,7 @@ namespace NemesusWorld.Utils
                                 {
                                     player.Vehicle.ResetSharedData("Vehicle:Text3D");
                                 }
+                                player.TriggerEvent("Client:HideMenus");
                             }
                             else
                             {
@@ -14132,6 +14133,7 @@ namespace NemesusWorld.Utils
                                 {
                                     player.Vehicle.ResetSharedData("Vehicle:Text3D");
                                 }
+                                player.TriggerEvent("Client:HideMenus");
                             }
                             else
                             {
@@ -14210,6 +14212,7 @@ namespace NemesusWorld.Utils
                                 {
                                     player.Vehicle.ResetSharedData("Vehicle:Text3D");
                                 }
+                                player.TriggerEvent("Client:HideMenus");
                             }
                             else
                             {

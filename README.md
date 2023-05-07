@@ -48,6 +48,7 @@ Fehlende MLOs (Diese könnt Ihr euch bei dem jeweiligen Ersteller kaufen/downloa
 - Stadthalle: ShmannWorks - Department of Justice
 - MPD: Breze - Mission Row Police Department
 - VPD: gameboyeg - Vinewood Police Department
+- Benefactor: Breze - Benefactor Cardealer
 
 ForumConnect: https://nemesus.de/downloads/nemesusworld/forumConnect.txt
 

@@ -1003,7 +1003,7 @@ namespace NemesusWorld
                 NAPI.Task.Run(() =>
                 {
                     Environment.Exit(0);
-                }, delayTime: 750);
+                }, delayTime: 6700);
             }
             catch (Exception e)
             {

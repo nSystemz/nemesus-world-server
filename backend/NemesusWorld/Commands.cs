@@ -6399,12 +6399,12 @@ namespace NemesusWorld
                 Helper.SendAdminMessage2($"{account.name} hat den Server neugestartet, Neustart in ca. 5 Sekunden ...", 1, true);
                 NAPI.Task.Run(() =>
                 {
-                    Helper.SendAdminMessage3($"Server wird neugestartet ...");
+                    Helper.SendAdminMessage3($"Server wird in ca. 10 Sekunden neugestartet ...");
                 }, delayTime: 500);
                 NAPI.Task.Run(() =>
                 {
                     Events.OnResourceStop();
-                }, delayTime: 3500);
+                }, delayTime: 2300);
             }
             catch (Exception e)
             {

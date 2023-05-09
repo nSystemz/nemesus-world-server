@@ -41,19 +41,23 @@ Nemesus World ist ein RageMP/GTA5 Roleplay Gamemode und beinhaltet sehr viele Fe
     Einzigartiges Drogensystem
     und vieles mehr ...
 
-game_resources (MLOs etc...) Download: https://bit.ly/3NBT23L
+game_resources (MLOs etc...) Download: https://bit.ly/41eURqy
 
 Fehlende MLOs (Diese könnt Ihr euch bei dem jeweiligen Ersteller kaufen/downloaden):
 - MD: ShmannWorks - Eclipse Medical Tower
 - Stadthalle: ShmannWorks - Department of Justice
 - MPD: Breze - Mission Row Police Department
 - VPD: gameboyeg - Vinewood Police Department
+- Benefactor: Breze - Benefactor Cardealer
+- ACLS: Ajaxon - Burton LSC
 
 ForumConnect: https://nemesus.de/downloads/nemesusworld/forumConnect.txt
 
 PostChangelog: https://nemesus.de/downloads/nemesusworld/postChangelog.txt
 
-Beachtet bitte die ToDos im Code und die Installationsanleitung auf Youtube: https://youtu.be/vBB-E4IgV2Q 
+Beachtet bitte die ToDos im Code und die Installationsanleitung auf Youtube: 
+- https://youtu.be/vBB-E4IgV2Q (Windows)
+- https://youtu.be/ggKe51qOM4w (Linux Debian)
 
 Ihr wollt uns unterstützen? https://ko-fi.com/nemesustv
 

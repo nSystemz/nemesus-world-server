@@ -58,6 +58,7 @@ PostChangelog: https://nemesus.de/downloads/nemesusworld/postChangelog.txt
 Beachtet bitte die ToDos im Code und die Installationsanleitung auf Youtube: 
 - https://youtu.be/vBB-E4IgV2Q (Windows)
 - https://youtu.be/ggKe51qOM4w (Linux Debian)
+- https://youtu.be/0j1qmqTB8qA (ZAP-Hosting)
 
 Ihr wollt uns unterstützen? https://ko-fi.com/nemesustv
 

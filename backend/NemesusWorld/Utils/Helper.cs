@@ -6535,7 +6535,7 @@ namespace NemesusWorld.Utils
                         //Tuningteile
                         foreach (House house in House.houseList)
                         {
-                            if (house == null || house.interior == 0) continue;
+                            if (house == null) continue;
                             if (player.Position.DistanceTo(house.position) <= 3.75f && player.Dimension == 0 && house.housegroup != -1)
                             {
                                 if (house.stockprice > 0)

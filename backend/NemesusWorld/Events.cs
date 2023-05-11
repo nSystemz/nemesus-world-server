@@ -992,16 +992,16 @@ namespace NemesusWorld
                         Helper.spikeStripList.Remove(spikestrips);
                     }
                 }
-                //Close database connection
-                if (General.DatabaseConnectionCheck == true)
-                {
-                    Helper.ConsoleLog("success", "[MYSQL]: Verbindung wurde beendet!");
-                    General.Connection.Close();
-                    General.DatabaseConnectionCheck = false;
-                }
                 Helper.ConsoleLog("success", "[Server]: Server wird beendet!");
                 NAPI.Task.Run(() =>
                 {
+                    //Close database connection
+                    if (General.DatabaseConnectionCheck == true)
+                    {
+                        Helper.ConsoleLog("success", "[MYSQL]: Verbindung wurde beendet!");
+                        General.Connection.Close();
+                        General.DatabaseConnectionCheck = false;
+                    }
                     Environment.Exit(0);
                 }, delayTime: 6700);
             }
@@ -1019,6 +1019,8 @@ namespace NemesusWorld
                 {
                     NAPI.Task.Run(() =>
                     {
+                        if (General.Connection.State != ConnectionState.Open) return;
+
                         PetaPoco.Database db = new PetaPoco.Database(General.Connection);
 
                         //Save accounts/characters

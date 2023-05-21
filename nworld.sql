@@ -452,6 +452,13 @@ CREATE TABLE `bank` (
   `banktype` int(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Daten für Tabelle `animations`
+--
+
+INSERT INTO `bank` (`id`, `banknumber`, `bankvalue`, `pincode`, `ownercharid`, `groupid`, `banktype`) VALUES
+(1, 'SA3701-100000', 100000, '4301', -1, 0, 0);
+
 -- --------------------------------------------------------
 
 --

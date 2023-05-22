@@ -188,7 +188,14 @@ namespace NemesusWorld
                             Helper.ConsoleLog("info", "#   # #  #       #    #  #            #  #    #       #");
                             Helper.ConsoleLog("info", "#    ##  #       #    #  #       #    #  #    #  #    #");
                             Helper.ConsoleLog("info", "#     #  ######  #    #  ######   ####    ####    ####");
-                            Helper.ConsoleLog("info", "[SERVER]: Nemesus World Gamemode erstellt von Nemesus.de erfolgreich geladen!");
+                            if (Helper.adminSettings.voicerp == 1)
+                            {
+                                Helper.ConsoleLog("info", "[SERVER]: Nemesus World Gamemode erstellt von Nemesus.de erfolgreich geladen - (Voice-RP)!");
+                            }
+                            else
+                            {
+                                Helper.ConsoleLog("info", "[SERVER]: Nemesus World Gamemode erstellt von Nemesus.de erfolgreich geladen - (Text-RP)!");
+                            }
                             //Discord Bot
                             //DiscordBot.RunBotAsync();
                         }
@@ -3343,7 +3350,9 @@ namespace NemesusWorld
                 //Schreien
                 if (message.StartsWith("!"))
                 {
-                    Helper.SendRadiusMessage("!{#FF0000}" + player.Name + " sagt (schreit): !{#FFFFFF}" + message, 22, player);
+                    if (message.Length <= 1) return;
+                    Helper.SendRadiusMessage("!{#FFFFFF}* " + player.Name + " sagt (schreit): " + message.Remove(0, 1), 22, player);
+                    return;
                 }
                 //Adminchat
                 if (message.StartsWith("@"))
@@ -3377,10 +3386,26 @@ namespace NemesusWorld
                 }
                 if (Helper.adminSettings.voicerp == 0)
                 {
+                    //Handychat
+                    if(tempData.inCall == true)
+                    {
+                        Player handyPlayer = SmartphoneController.GetPlayerFromSmartPhone(player.GetData<string>("Player:InCall"));
+                        if(handyPlayer != null)
+                        {
+                            Helper.SendChatMessage(handyPlayer, "!{#EE82EE}* " + character.name + " sagt (Handy): " + message);
+                            player.TriggerEvent("Client:SpeakAnim");
+                        }
+                        else
+                        {
+                            player.SendChatMessage("!{#FF0000}TÜT - TÜT - TÜT");
+                        }
+                        return;
+                    }
                     //Normaler Chat
                     if(tempData.adminduty == true)
                     {
                         Helper.SendRadiusMessage("!{#FF0000}* " + message + " (( " + account.name + " ))", 13, player);
+                        player.TriggerEvent("Client:SpeakAnim");
                     }
                     else
                     {

@@ -73,7 +73,7 @@
                 <div class="iconnw icon3 text-center">
                     <i class="fas fa-map-marker-alt" style="color:#3F6791;text-shadow: 0 0 2px #000;"><span class="ml-2 text-center" style="font-family: 'Exo', sans-serif;color:white">{{ ort }}</span></i>
                 </div>
-                <div style="margin-left: 0.22vw;margin-top: 1.131vh">
+                <div style="margin-left: 0.22vw;margin-top: 1.131vh" v-if="voicerp == 1">
                     <i v-if="talkstate == 0" class="fas fa-microphone bordericon" style="color:white;text-shadow: 0 0 2px #000;font-size:0.7vw"></i>
                     <i v-if="talkstate == 1" class="fas fa-microphone bordericon" style="color:#3F6791;text-shadow: 0 0 2px #000;font-size:0.7vw"></i>
                     <i v-if="talkstate == 2 || talkstate == -1 || talkstate == -2" class="fas fa-microphone bordericon" style="color:red;text-shadow: 0 0 2px #000;font-size:0.7vw"></i>
@@ -96,7 +96,7 @@
             <i class="textstyle" style="color:#3F6791;text-shadow: 0 0 2px #000"><span class="ml-2 text-center" style="font-family: 'Exo', sans-serif;color:white"><i style="font-size: 0.9vw; margin-left: 1.2vw;margin-top: 0.15vw;text-shadow: 0 0 2px #000;color:#3F6791" class="fa-solid fa-solid fa-mobile-screen float-left"></i><span style="margin-left: 1.1vw;font-size:0.75vw">[F5]</span></span></i>
             <i class="textstyle" style="color:#3F6791;text-shadow: 0 0 2px #000"><span class="ml-2 text-center" style="font-family: 'Exo', sans-serif;color:white"><i style="font-size: 0.9vw; margin-left: 1.2vw;margin-top: 0.15vw;text-shadow: 0 0 2px #000;color:#3F6791" class="fa-solid fa-solid fa-hand-dots float-left"></i><span style="margin-left: 1.05vw;font-size:0.75vw">[X]</span></span></i>
             <i class="textstyle" style="color:#3F6791;text-shadow: 0 0 2px #000"><span class="ml-2 text-center" style="font-family: 'Exo', sans-serif;color:white"><i style="font-size: 0.9vw; margin-left: 1.2vw;margin-top: 0.15vw;text-shadow: 0 0 2px #000;color:#3F6791" class="fa-solid fa-solid fa-user-pen float-left"></i><span style="margin-left: 0.9vw;font-size:0.75vw">[I]</span></span></i>
-            <i class="textstyle" style="color:#3F6791;text-shadow: 0 0 2px #000"><span class="ml-2 text-center" style="font-family: 'Exo', sans-serif;color:white"><i style="font-size: 0.9vw; margin-left: 1.2vw;margin-top: 0.15vw;text-shadow: 0 0 2px #000;color:#3F6791" class="fa-solid fa-solid fa-microphone-lines float-left"></i><span style="margin-left: 1.32vw;font-size:0.75vw">[^]</span></span></i>
+            <i v-if="voicerp == 1" class="textstyle" style="color:#3F6791;text-shadow: 0 0 2px #000"><span class="ml-2 text-center" style="font-family: 'Exo', sans-serif;color:white"><i style="font-size: 0.9vw; margin-left: 1.2vw;margin-top: 0.15vw;text-shadow: 0 0 2px #000;color:#3F6791" class="fa-solid fa-solid fa-microphone-lines float-left"></i><span style="margin-left: 1.32vw;font-size:0.75vw">[^]</span></span></i>
             <i class="textstyle" style="color:#3F6791;text-shadow: 0 0 2px #000"><span class="ml-2 text-center" style="font-family: 'Exo', sans-serif;color:white"><i style="font-size: 0.9vw; margin-left: 1.2vw;margin-top: 0.16vw;text-shadow: 0 0 2px #000;color:#3F6791" class="fa-solid fa-solid fa-fingerprint float-left"></i><span style="margin-left: 1.02vw;font-size:0.75vw">[F]</span></span></i>
             <i class="textstyle" style="color:#3F6791;text-shadow: 0 0 2px #000"><span class="ml-2 text-center" style="font-family: 'Exo', sans-serif;color:white"><i style="font-size: 0.9vw; margin-left: 1.525vw;margin-top: 0.16vw;text-shadow: 0 0 2px #000;color:#3F6791" class="fa-solid fa-solid fa-arrow-pointer float-left"></i><span style="margin-left: 0.64vw;font-size:0.75vw">[F10]</span></span></i>
         </div>
@@ -114,6 +114,7 @@ export default {
     name: 'Speedometer',
     data: function () {
         return {
+            voicerp: 1,
             crosshairshow: false,
             crosshair: 0,
             speedometershow: false,
@@ -164,6 +165,9 @@ export default {
     methods: {
         getImgUrl(pic) {
             return require('../assets/images/inventory/' + pic + '.png')
+        },
+        setvoicerp: function (voicerp) {
+            this.voicerp = voicerp;
         },
         updateWeaponList: function (weapons, actualWeapon, actualAmmo) {
             this.weapons = JSON.parse(weapons);

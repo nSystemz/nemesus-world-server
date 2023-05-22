@@ -2011,6 +2011,8 @@ export default {
       infoboxtextheader2: '',
       infoboxtextheader3: '',
       infoboxtestmodus: -1,
+      //VoiceRP
+      voicerp: 1,
       //Sound
       startSound: null,
       //Tutorial
@@ -2212,6 +2214,9 @@ export default {
       {
         return require('../assets/images/inventory/fragezeichen.png')
       }
+    },
+    setvoicerp: function (voicerp) {
+      this.voicerp = voicerp;
     },
     selectOutfitW(obj)
     {

@@ -7963,12 +7963,42 @@ namespace NemesusWorld
                 Helper.SendNotificationWithoutButton(player, "Der Text-RP Modus muss zuerst aktiviert werden!", "error", "top-end");
                 return;
             }
-            if (nachricht.Length < 3)
+            if (nachricht.Length <= 1)
             {
                 Helper.SendNotificationWithoutButton(player, "Ungültige Nachricht!", "error", "top-end");
                 return;
             }
-            Helper.SendRadiusMessage("!{#42b6f5}" + player.Name + "sagt (leise): " + nachricht, 3, player);
+            Helper.SendRadiusMessage("!{#FFFFFF}* " + player.Name + " sagt (leise): " + nachricht, 3, player);
+            return;
+        }
+
+        [Command("radio", "Befehl: /radio [Nachricht]", GreedyArg = true, Alias = "r")]
+        public void CMD_radio(Player player, string nachricht)
+        {
+            TempData tempData = Helper.GetCharacterTempData(player);
+            if (!Account.IsPlayerLoggedIn(player) || tempData == null) return;
+            if (Helper.adminSettings.voicerp == 1)
+            {
+                Helper.SendNotificationWithoutButton(player, "Der Text-RP Modus muss zuerst aktiviert werden!", "error", "top-end");
+                return;
+            }
+            if(tempData.radio == "-1" || tempData.radio.Length <= 0)
+            {
+                Helper.SendNotificationWithoutButton(player, "Du musst zuerst dein Funkgerät anschalten und eine Frequenz auswählen!", "error", "top-end");
+                return;
+            }
+            if (nachricht.Length <= 1)
+            {
+                Helper.SendNotificationWithoutButton(player, "Ungültige Nachricht!", "error", "top-end");
+                return;
+            }
+            Helper.SendRadioMessage("!{#6fbbd3}[Funk-(FREQ-" + tempData.radio + ")] " + player.Name + ": " + nachricht, tempData.radio);
+            Helper.SendRadiusMessage("!{#EE82EE}* " + player.Name + " [Funk]: " + nachricht, 8, player);
+            if (!player.IsInVehicle)
+            {
+                Helper.PlayShortAnimation(player, "random@arrests", "generic_radio_enter", 2500);
+            }
+            return;
         }
     }
 }

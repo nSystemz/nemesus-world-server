@@ -583,6 +583,7 @@ let handsUp = false;
 let showCrosshair = false;
 let oldCrosshair = 0;
 let prices = [];
+let voicerp = 1;
 let groupprices = [];
 let oldCheck = 0;
 let maxWeapons = 0;
@@ -617,6 +618,7 @@ let crystalmeth = false;
 let secondTimer = 0;
 let showwardrobe = false;
 let updateTimeout = null;
+let speakTimeout = null;
 let setteleport = false;
 
 //Natives
@@ -1085,7 +1087,7 @@ mp.events.add('render', (nametags) => {
 });
 
 //Prices
-mp.events.add("Client:SyncThings", (pricesCsv, animationhotkeys, chair, gprices, level, name = 'n/A') => {
+mp.events.add("Client:SyncThings", (pricesCsv, animationhotkeys, chair, gprices, level, name = 'n/A', voicerp) => {
     prices = pricesCsv.split(',');
     crosshair = chair;
     groupprices = gprices;
@@ -1097,6 +1099,10 @@ mp.events.add("Client:SyncThings", (pricesCsv, animationhotkeys, chair, gprices,
         }
     }
     level = level;
+    voicerp = voicerp;
+    hudWindow.execute(`gui.menu.setvoicerp('${voicerp}');`);
+    hudWindow.execute(`gui.hud.setvoicerp('${voicerp}');`);
+    hudWindow.execute(`gui.speedometer.setvoicerp('${voicerp}');`);
     mp.discord.update('Nemesus-World.de (Nemesus.de)', 'Spielt als ' + name);
 })
 
@@ -5078,6 +5084,17 @@ mp.keys.bind(0x20, true, function () {
         }
         pressedSpace = (Date.now() / 1000) + (2);
     }
+});
+
+//SpeakAnim
+mp.events.add("Client:SpeakAnim", () => {
+    mp.players.local.playFacialAnim("mic_chatter", "mp_facial"); 
+    if (speakTimeout != null) {
+        clearTimeout(speakTimeout);
+    }
+    speakTimeout = setTimeout(function () {
+        mp.players.local.playFacialAnim("mood_normal_1", "facials@gen_male@variations@normal"); 
+    }, 2500);
 });
 
 //ShowTab

@@ -1277,6 +1277,11 @@ namespace NemesusWorld.Utils
                     SendNotificationWithoutButton(player, "Auf diese Frequenz kann nicht zugegriffen werden!", "error", "top-left", 3500);
                     return;
                 }
+                if (freqNumeric >= 951 && freqNumeric <= 960 && character.faction <= 0 || character.faction > 3)
+                {
+                    SendNotificationWithoutButton(player, "Auf diese Frequenz kann nicht zugegriffen werden!", "error", "top-left", 3500);
+                    return;
+                }
                 if (freq == tempData.radio)
                 {
                     SendNotificationWithoutButton(player, "Du funkst schon auf dieser Frequenz!", "error", "top-left", 3500);
@@ -2604,6 +2609,18 @@ namespace NemesusWorld.Utils
             foreach (Player p in NAPI.Pools.GetAllPlayers())
             {
                 if (Account.IsPlayerLoggedIn(p) && IsInRangeOfPoint(p.Position, player.Position, radius))
+                {
+                    SendChatMessage(p, message);
+                }
+            }
+        }
+
+        public static void SendRadioMessage(string message, string freq)
+        {
+            foreach (Player p in NAPI.Pools.GetAllPlayers())
+            {
+                TempData tempData = Helper.GetCharacterTempData(p);
+                if (Account.IsPlayerLoggedIn(p) && tempData.radio == freq)
                 {
                     SendChatMessage(p, message);
                 }
@@ -17405,7 +17422,7 @@ namespace NemesusWorld.Utils
                 if (sprunk != null && character != null && account != null)
                 {
                     string prices = $"{Convert.ToInt32(30 * sprunk.multiplier)},";
-                    player.TriggerEvent("Client:SyncThings", prices, character.animations, account.crosshair, adminSettings.groupsettings, account.level, character.name);
+                    player.TriggerEvent("Client:SyncThings", prices, character.animations, account.crosshair, adminSettings.groupsettings, account.level, character.name, Helper.adminSettings.voicerp);
                 }
             }
             catch (Exception e)

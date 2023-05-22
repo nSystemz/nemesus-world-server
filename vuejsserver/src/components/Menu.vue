@@ -3163,9 +3163,13 @@
                                                                     <td>F2</td>
                                                                     <td>Fraktionsinfos einsehen</td>
                                                                 </tr>
-                                                                <tr>
+                                                                <tr v-if="voicerp == 1">
                                                                     <td>N (GTA 5 Push to Talk Taste)</td>
                                                                     <td>Funk (gedrückt halten)</td>
+                                                                </tr>
+                                                                <tr v-if="voicerp == 0">
+                                                                    <td>/radio</td>
+                                                                    <td>Funk</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>M</td>
@@ -3252,6 +3256,9 @@
                                                                     <td>Verfügbare Funkkanäle: 900mHz-925mHz</td>
                                                                 </tr>
                                                                 <tr>
+                                                                    <td>Verfügbare Funkkanäle (Staatsfunk): 951mHz-960mHz</td>
+                                                                </tr>
+                                                                <tr>
                                                                     <td>Rechnungen wie z.B TÜV, Reparaturen können durch die Firma via
                                                                         nPayment an den Staat ausgestellt werden!</td>
                                                                 </tr>
@@ -3288,9 +3295,13 @@
                                                                     <td>F2</td>
                                                                     <td>Fraktionsinfos einsehen</td>
                                                                 </tr>
-                                                                <tr>
+                                                                <tr v-if="voicerp == 1">
                                                                     <td>N (GTA 5 Push to Talk Taste)</td>
                                                                     <td>Funk (gedrückt halten)</td>
+                                                                </tr>
+                                                                <tr v-if="voicerp == 0">
+                                                                    <td>/radio</td>
+                                                                    <td>Funk</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>M</td>
@@ -3343,6 +3354,9 @@
                                                                     <td>Verfügbare Funkkanäle: 926mHz-941mHz</td>
                                                                 </tr>
                                                                 <tr>
+                                                                    <td>Verfügbare Funkkanäle (Staatsfunk): 951mHz-960mHz</td>
+                                                                </tr>
+                                                                <tr>
                                                                     <td>Rechnungen wie z.B TÜV, Reparaturen können durch die Firma via
                                                                         nPayment an den Staat ausgestellt werden!</td>
                                                                 </tr>
@@ -3386,9 +3400,13 @@
                                                                     <td>F2</td>
                                                                     <td>Fraktionsinfos einsehen</td>
                                                                 </tr>
-                                                                <tr>
+                                                                <tr v-if="voicerp == 1">
                                                                     <td>N (GTA 5 Push to Talk Taste)</td>
                                                                     <td>Funk (gedrückt halten)</td>
+                                                                </tr>
+                                                                <tr v-if="voicerp == 0">
+                                                                    <td>/radio</td>
+                                                                    <td>Funk</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>M</td>
@@ -3453,6 +3471,9 @@
                                                                     <td>Verfügbare Funkkanäle: 942mHz-945mHz</td>
                                                                 </tr>
                                                                 <tr>
+                                                                    <td>Verfügbare Funkkanäle (Staatsfunk): 951mHz-960mHz</td>
+                                                                </tr>
+                                                                <tr>
                                                                     <td>Im Flatbed können Fahrzeuge mit der Taste [Q] gezogen werden,
                                                                         die Rampe kann mit der Taste [Shift] bedient werden!</td>
                                                                 </tr>
@@ -3493,9 +3514,13 @@
                                                                     <td>F2</td>
                                                                     <td>Fraktionsinfos einsehen</td>
                                                                 </tr>
-                                                                <tr>
+                                                                <tr v-if="voicerp == 1">
                                                                     <td>N (GTA 5 Push to Talk Taste)</td>
                                                                     <td>Funk (gedrückt halten)</td>
+                                                                </tr>
+                                                                <tr v-if="voicerp == 0">
+                                                                    <td>/radio</td>
+                                                                    <td>Funk</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Q</td>
@@ -3525,6 +3550,9 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Verfügbare Funkkanäle: 946mHz-950mHz</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>Verfügbare Funkkanäle (Staatsfunk): 951mHz-960mHz</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>Die allgemeine Verwaltung (z.B Steuerverwaltung) befindet sich
@@ -3757,11 +3785,11 @@
                                                                     <td>P</td>
                                                                     <td>Gegenstände aufheben</td>
                                                                 </tr>
-                                                                <tr>
+                                                                <tr v-if="voicerp == 1">
                                                                     <td>^</td>
                                                                     <td>Voice-Range ändern</td>
                                                                 </tr>
-                                                                <tr>
+                                                                <tr v-if="voicerp == 1">
                                                                     <td>N (GTA 5 Push to Talk Taste)</td>
                                                                     <td>Funk (gedrückt halten)</td>
                                                                 </tr>
@@ -3897,9 +3925,25 @@
                                                                 <td>/position & /rotation</td>
                                                                 <td>Möbelposition/rotation anpassen</td>
                                                             </tr>
-                                                            <tr>
-                                                                <td>Text-Roleplay Befehle</td>
-                                                                <td>/me - /do - /sq - ! Text - [T] Text</td>
+                                                            <tr v-if="voicerp == 0">
+                                                                <td>/me - /do</td>
+                                                                <td>Roleplay Befehle</td>
+                                                            </tr>
+                                                            <tr v-if="voicerp == 0">
+                                                                <td>[T] Text</td>
+                                                                <td>Roleplay (normaler) Chat</td>
+                                                            </tr>
+                                                            <tr v-if="voicerp == 0">
+                                                                <td>/sq</td>
+                                                                <td>Leise reden</td>
+                                                            </tr>
+                                                            <tr v-if="voicerp == 0">
+                                                                <td>! Text</td>
+                                                                <td>Schreien</td>
+                                                            </tr>
+                                                            <tr v-if="voicerp == 0">
+                                                                <td>/radio</td>
+                                                                <td>Funk</td>
                                                             </tr>
                                                         </tbody>
                                                     </table>
@@ -4923,6 +4967,8 @@ export default {
                 "GETTING AND SETTING VENDING CODE ...",
                 "EXIT ..."
             ],
+            //Voicerp
+            voicerp: 1,
             //Shop
             showshop: false,
             coins: 0,
@@ -5089,6 +5135,9 @@ export default {
         }
     },
     methods: {
+        setvoicerp: function (voicerp) {
+            this.voicerp = voicerp;
+        },
         startHack: function (secs) {
             let count = 1;
             this.terminalarray = ['?', '?', '?', '?', '?', '?'];

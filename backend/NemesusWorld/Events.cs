@@ -921,12 +921,13 @@ namespace NemesusWorld
                             vehicle.ResetData("Vehicle:Jacked");
                             vehicle.GetData<GTANetworkAPI.Object>("Vehicle:JackedObject").Delete();
                             vehicle.ResetData("Vehicle:JackedObject");
+
+                            string[] vehicleArray = new string[7];
+                            vehicleArray = vehicle.GetSharedData<string>("Vehicle:Sync").Split(",");
+                            vehicle.SetSharedData("Vehicle:Sync", $"0,0,{vehicleArray[2]},{vehicleArray[3]},{vehicleArray[4]},0,{vehicleArray[6]}");
+                            Helper.SetVehicleEngine(vehicle, false);
                         }
-                        string[] vehicleArray = new string[7];
-                        vehicleArray = vehicle.GetSharedData<string>("Vehicle:Sync").Split(",");
-                        vehicle.SetSharedData("Vehicle:Sync", $"0,0,{vehicleArray[2]},{vehicleArray[3]},{vehicleArray[4]},0,{vehicleArray[6]}");
-                        Helper.SetVehicleEngine(vehicle, false);
-                    }, delayTime: 115);
+                    }, delayTime: 50);
                 }
                 //Delete global item handler
                 foreach (ItemsGlobal globalitem in ItemsController.itemListGlobal)
@@ -3335,9 +3336,15 @@ namespace NemesusWorld
             {
                 Account account = Helper.GetAccountData(player);
                 Character character = Helper.GetCharacterData(player);
+                TempData tempData = Helper.GetCharacterTempData(player);
                 if (account == null || character == null) return;
                 //Prison
                 if (account.prison > 0) return;
+                //Schreien
+                if (message.StartsWith("!"))
+                {
+                    Helper.SendRadiusMessage("!{#FF0000}" + player.Name + " sagt (schreit): !{#FFFFFF}" + message, 22, player);
+                }
                 //Adminchat
                 if (message.StartsWith("@"))
                 {
@@ -3367,6 +3374,19 @@ namespace NemesusWorld
                         Helper.SendPremiumMessage(message, account.premium, player);
                         return;
                     }
+                }
+                if (Helper.adminSettings.voicerp == 0)
+                {
+                    //Normaler Chat
+                    if(tempData.adminduty == true)
+                    {
+                        Helper.SendRadiusMessage("!{#FF0000}* " + message + " (( " + account.name + " ))", 13, player);
+                    }
+                    else
+                    {
+                        Helper.SendRadiusMessage("!{#FFFFFF}* "+character.name+ " sagt: "+ message, 13, player);
+                    }
+                    return;
                 }
             }
             catch (Exception e)

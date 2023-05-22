@@ -342,7 +342,7 @@ namespace NemesusWorld.Database
                 account.faq = String.Join(",", account.faqarray);
 
                 MySqlCommand command = General.Connection.CreateCommand();
-                command.CommandText = "UPDATE users SET adminlevel=@adminlevel,identifier=@identifier,shootingrange=@shootingrange,faq=@faq,givepremium=@givepremium,epboost=@epboost,rpquizfinish=@rpquizfinish,online=@online,prison=@prison WHERE id=@id";
+                command.CommandText = "UPDATE users SET adminlevel=@adminlevel,identifier=@identifier,shootingrange=@shootingrange,faq=@faq,givepremium=@givepremium,epboost=@epboost,rpquizfinish=@rpquizfinish,online=@online,prison=@prison,forumaccount=@forumaccount,crosshair=@crosshair WHERE id=@id";
 
                 command.Parameters.AddWithValue("@adminlevel", account.adminlevel);
                 command.Parameters.AddWithValue("@identifier", player.SocialClubId);
@@ -353,6 +353,8 @@ namespace NemesusWorld.Database
                 command.Parameters.AddWithValue("@rpquizfinish", account.rpquizfinish);
                 command.Parameters.AddWithValue("@online", account.online);
                 command.Parameters.AddWithValue("@prison", account.prison);
+                command.Parameters.AddWithValue("@forum", account.forumaccount);
+                command.Parameters.AddWithValue("@crosshair", account.crosshair);
                 command.Parameters.AddWithValue("@id", account.id);
 
                 command.ExecuteNonQuery();

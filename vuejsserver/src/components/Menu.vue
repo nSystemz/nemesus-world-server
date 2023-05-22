@@ -3897,6 +3897,10 @@
                                                                 <td>/position & /rotation</td>
                                                                 <td>Möbelposition/rotation anpassen</td>
                                                             </tr>
+                                                            <tr>
+                                                                <td>Text-Roleplay Befehle</td>
+                                                                <td>/me - /do - /sq - ! Text - [T] Text</td>
+                                                            </tr>
                                                         </tbody>
                                                     </table>
                                                 </div>

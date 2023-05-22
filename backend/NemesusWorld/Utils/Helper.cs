@@ -9648,13 +9648,13 @@ namespace NemesusWorld.Utils
                     }
                 }
                 //Business
-                Business bizz = Business.GetClosestBusiness(player, 1.55f);
+                Business bizz = Business.GetClosestBusiness(player, 5.75f);
                 if (bizz != null)
                 {
                     Doors door = DoorsController.GetClosestDoor(player, 1.55f);
                     if (door != null)
                     {
-                        if (door.props.Length > 3 && door.props == "bizz-" + bizz.id && (ItemsController.CheckItemWithProp(player, "Businessschlüssel: " + bizz.id) || tempData.adminduty == true))
+                        if (door.props.Length > 3 && door.props == "bizz-" + bizz.id && (Business.HasPlayerBusinessKey(player, bizz.id) || tempData.adminduty == true))
                         {
                             if (door.toogle == false)
                             {
@@ -9678,13 +9678,13 @@ namespace NemesusWorld.Utils
                     }
                 }
                 //Haustüren
-                House house2 = House.GetClosestHouse(player, 1.55f);
+                House house2 = House.GetClosestHouse(player, 5.75f);
                 if (house2 != null)
                 {
                     Doors door = DoorsController.GetClosestDoor(player, 1.55f);
                     if (door != null)
                     {
-                        if (door.props.Length > 3 && door.props == "house-" + house2.id && (ItemsController.CheckItemWithProp(player, "Hausschlüssel: " + house2.id) || tempData.adminduty == true))
+                        if (door.props.Length > 3 && door.props == "house-" + house2.id && (House.HasPlayerHouseKey(player, house2.id) || tempData.adminduty == true))
                         {
                             if (door.toogle == false)
                             {

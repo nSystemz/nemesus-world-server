@@ -7911,5 +7911,64 @@ namespace NemesusWorld
                 Helper.ConsoleLog("error", $"[cmd_report]: " + e.ToString());
             }
         }
+
+        //Text RP Befehle
+        [Command("me", "Befehl: /me [Nachricht]", GreedyArg = true)]
+        public void CMD_me(Player player, string nachricht)
+        {
+            try
+            {
+                if (!Account.IsPlayerLoggedIn(player)) return;
+                if(Helper.adminSettings.voicerp == 1)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Der Text-RP Modus muss zuerst aktiviert werden!", "error", "top-end");
+                    return;
+                }
+                if (nachricht.Length < 3)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Ungültige Nachricht!", "error", "top-end");
+                    return;
+                }
+                Helper.SendRadiusMessage("!{#EE82EE}* " + player.Name + " " + nachricht, 8, player);
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[CMD_me]: " + e.ToString());
+            }
+        }
+
+        [Command("do", "Befehl: /do [Nachricht]", GreedyArg = true)]
+        public void CMD_do(Player player, string nachricht)
+        {
+            if (!Account.IsPlayerLoggedIn(player)) return;
+            if (Helper.adminSettings.voicerp == 1)
+            {
+                Helper.SendNotificationWithoutButton(player, "Der Text-RP Modus muss zuerst aktiviert werden!", "error", "top-end");
+                return;
+            }
+            if (nachricht.Length < 3)
+            {
+                Helper.SendNotificationWithoutButton(player, "Ungültige Nachricht!", "error", "top-end");
+                return;
+            }
+            Helper.SendRadiusMessage("!{#42b6f5}* " + nachricht + " (( " + player.Name + " ))", 8, player);
+        }
+
+        [Command("speakquit", "Befehl: /speakquit [Nachricht]", GreedyArg = true, Alias = "sq")]
+        public void CMD_speakquit(Player player, string nachricht)
+        {
+            if (!Account.IsPlayerLoggedIn(player)) return;
+            if (Helper.adminSettings.voicerp == 1)
+            {
+                Helper.SendNotificationWithoutButton(player, "Der Text-RP Modus muss zuerst aktiviert werden!", "error", "top-end");
+                return;
+            }
+            if (nachricht.Length < 3)
+            {
+                Helper.SendNotificationWithoutButton(player, "Ungültige Nachricht!", "error", "top-end");
+                return;
+            }
+            Helper.SendRadiusMessage("!{#42b6f5}" + player.Name + "sagt (leise): " + nachricht, 3, player);
+        }
     }
 }

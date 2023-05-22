@@ -59,6 +59,7 @@ Beachtet bitte die ToDos im Code und die Installationsanleitung auf Youtube:
 - https://youtu.be/vBB-E4IgV2Q (Windows)
 - https://youtu.be/ggKe51qOM4w (Linux Debian)
 - https://youtu.be/0j1qmqTB8qA (ZAP-Hosting)
+- https://youtu.be/vZP-QDRra64 (Text-RP)
 
 Ihr wollt uns unterstützen? https://ko-fi.com/nemesustv
 

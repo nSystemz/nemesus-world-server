@@ -797,6 +797,10 @@ namespace NemesusWorld.Controllers
                             player.TriggerEvent("SaltyChat_EstablishedCall", target.Id);
                             target.TriggerEvent("SaltyChat_EstablishedCall", player.Id);
                             Helper.PlayPhoneAnim(player);
+                            if(Helper.adminSettings.voicerp == 0)
+                            {
+                                target.SendChatMessage("~w~Dein Gesprächspartner hat das Telefonat angenommen!");
+                            }
                         }
                     }
                 }
@@ -835,6 +839,10 @@ namespace NemesusWorld.Controllers
                                 tempData2.inCall = false;
                                 tempData2.inCall2 = false;
                                 Helper.PlayPhoneAnim(target);
+                            }
+                            if (Helper.adminSettings.voicerp == 0)
+                            {
+                                target.SendChatMessage("~r~Dein Gesprächspartner hat das Telefonat abgelehnt!");
                             }
                         }
                     }

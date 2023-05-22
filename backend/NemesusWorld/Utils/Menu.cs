@@ -698,7 +698,7 @@ namespace NemesusWorld.Utils
                     List<LoadCharactersModel> loadedCharactersList = new List<LoadCharactersModel>();
 
                     MySqlCommand command = General.Connection.CreateCommand();
-                    command.CommandText = "SELECT id,name,cash,bank,job,faction,screen,closed FROM characters WHERE items LIKE '%Miethausnummer: " + house.id + "%' LIMIT 15";
+                    command.CommandText = "SELECT id,name,cash,bank,job,faction,screen,closed,defaultbank FROM characters WHERE items LIKE '%Miethausnummer: " + house.id + "%' LIMIT 15";
 
                     using (MySqlDataReader reader = command.ExecuteReader())
                     {

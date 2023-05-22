@@ -3392,6 +3392,7 @@ namespace NemesusWorld
                         Player handyPlayer = SmartphoneController.GetPlayerFromSmartPhone(player.GetData<string>("Player:InCall"));
                         if(handyPlayer != null)
                         {
+                            Helper.SendChatMessage(player, "!{#EE82EE}* " + character.name + " sagt (Handy): " + message);
                             Helper.SendChatMessage(handyPlayer, "!{#EE82EE}* " + character.name + " sagt (Handy): " + message);
                             player.TriggerEvent("Client:SpeakAnim");
                         }

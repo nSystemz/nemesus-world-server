@@ -3409,7 +3409,8 @@ namespace NemesusWorld
                     }
                     else
                     {
-                        Helper.SendRadiusMessage("!{#FFFFFF}* "+character.name+ " sagt: "+ message, 13, player);
+                        Helper.SendRadiusMessage("!{#FFFFFF}* " + character.name+ " sagt: "+ message, 13, player);
+                        player.TriggerEvent("Client:SpeakAnim");
                     }
                     return;
                 }

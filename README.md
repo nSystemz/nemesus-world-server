@@ -4,6 +4,8 @@ Weitere Credits gehen an Hrred für die Erstellung von vielen Maps und sonstigen
 
 (Euch gefällt der Gamemode? Dann lasst doch gerne ein Stern hier auf Github da ;))
 
+Info Vorab: Dieser Gamemode kann als Voice-RP oder Text-RP Gamemode verwendet werden.
+
 Bei diesem Gamemode handelt es sich um einen Gamemode für die Multiplayer Modifikation GTA 5/RageMP, Credits sind im Gamemode vermerkt oder bei der jeweiligen Funktion/MLO etc.
 
 Info: Der Gamemode läuft auf Linux und Windows, auf Windows habe ich aber bessere Erfahrungen gemacht. Der Gamemode war mal für einen relativ schnellen "Release" geplant, an einigen Stellen unsauber geschrieben und natürlich nicht zu 100% fertig. Hier und da kann es zu Bugs kommen, diese könnt Ihr gerne hier oder bei mir im Discord melden.

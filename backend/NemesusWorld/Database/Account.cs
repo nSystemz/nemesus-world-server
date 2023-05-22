@@ -353,7 +353,7 @@ namespace NemesusWorld.Database
                 command.Parameters.AddWithValue("@rpquizfinish", account.rpquizfinish);
                 command.Parameters.AddWithValue("@online", account.online);
                 command.Parameters.AddWithValue("@prison", account.prison);
-                command.Parameters.AddWithValue("@forum", account.forumaccount);
+                command.Parameters.AddWithValue("@forumaccount", account.forumaccount);
                 command.Parameters.AddWithValue("@crosshair", account.crosshair);
                 command.Parameters.AddWithValue("@id", account.id);
 

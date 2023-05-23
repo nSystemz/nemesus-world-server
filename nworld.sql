@@ -80,15 +80,16 @@ CREATE TABLE `adminsettings` (
   `adcount` int(5) NOT NULL DEFAULT 0,
   `adprice` int(5) NOT NULL DEFAULT 1500,
   `admoney` int(11) NOT NULL DEFAULT 0,
-  `dailyguesslimit` int(6) NOT NULL DEFAULT 0
+  `dailyguesslimit` int(6) NOT NULL DEFAULT 0,
+  `nametag` int(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Daten für Tabelle `adminsettings`
 --
 
-INSERT INTO `adminsettings` (`id`, `adminpassword`, `server_created`, `punishments`, `voicerp`, `govvalue`, `changelogcd`, `towedcash`, `lsteuer`, `gsteuer`, `ksteuer`, `groupsettings`, `adcount`, `adprice`, `admoney`, `dailyguesslimit`) VALUES
-(1, '$2y$10$6n4eP023KIEGINK1j6XE5Op3EDlh.t0BLMm4fXjEyh5CIbA6ra4t6', 1683446400, 0, 1, 100000, 1683446400, 250, 1, 1, 1, '1,1,250,250,30,30,12,250,950,25000,5000,3500,65000,65000', 0, 1500, 1500, 10000);
+INSERT INTO `adminsettings` (`id`, `adminpassword`, `server_created`, `punishments`, `voicerp`, `govvalue`, `changelogcd`, `towedcash`, `lsteuer`, `gsteuer`, `ksteuer`, `groupsettings`, `adcount`, `adprice`, `admoney`, `dailyguesslimit`, `nametag`) VALUES
+(1, '$2y$10$6n4eP023KIEGINK1j6XE5Op3EDlh.t0BLMm4fXjEyh5CIbA6ra4t6', 1683446400, 0, 1, 100000, 1683446400, 250, 1, 1, 1, '1,1,250,250,30,30,12,250,950,25000,5000,3500,65000,65000', 0, 1500, 1500, 10000, 0);
 
 -- --------------------------------------------------------
 
@@ -704,15 +705,16 @@ CREATE TABLE `characters` (
   `robcooldown` int(11) NOT NULL DEFAULT 0,
   `adcount` int(5) NOT NULL DEFAULT 0,
   `guessvalue` int(5) NOT NULL DEFAULT 0,
-  `jobless` int(1) NOT NULL DEFAULT 0
+  `jobless` int(1) NOT NULL DEFAULT 0,
+  `friends` varchar(500) NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Daten für Tabelle `characters`
 --
 
-INSERT INTO `characters` (`id`, `userid`, `name`, `json`, `cash`, `birth`, `bank`, `size`, `eyecolor`, `job`, `minijob`, `lastonline`, `licenses`, `education`, `origin`, `skills`, `appearance`, `gender`, `faction`, `rang`, `faction_dutytime`, `faction_since`, `last_spawn`, `ucp_privat`, `ck`, `mygroup`, `closed`, `tutorialstep`, `health`, `armor`, `thirst`, `hunger`, `screen`, `lastpos`, `items`, `inhouse`, `defaultbank`, `online`, `truckerskill`, `nextpayday`, `payday_points`, `sellprods`, `abusemoney`, `lastsmartphone`, `thiefskill`, `fishingskill`, `busskill`, `farmingskill`, `animations`, `walkingstyle`, `clothing`, `factionduty`, `sapoints`, `swat`, `arrested`, `cell`, `dutyjson`, `death`, `disease`, `craftingskill`, `robcooldown`, `adcount`, `guessvalue`, `jobless`) VALUES
-(1, 1, 'Test Char', '{\"birth\":\"22.10.1991\",\"origin\":\"Los Santos\",\"hair\":[1,16,0],\"beard\":[255,0],\"blendData\":[12,0,0,0,0,0],\"faceFeatures\":[0.9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"clothing\":[15,15,14,34,15,0,255,255,0,255,255,255,0,0,0],\"clothingColor\":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"headOverlays\":[23,14,255,-1,255,-1,-1,-1,255,-1,-1,-1],\"headOverlaysColors\":[0,0,0,0,0,0,0,0,0,0,0,0],\"eyeColor\":0,\"gender\":true}', 1104983, '12.12.1980', 0, '01m - 20cm', 'Blau', 1, 0, 1682942061, '0|0|1|0|0|0|0', 'Test', 'Los Santos', 'High School Abschluss', 'Test', 1, 0, 0, 0, 1682115269, 'Los-Santos', 1, 1634304377, 19, 0, 4, 100, 7, 0, 0, 'https://i.imgur.com/RdI0oWK.jpg', '-541,6512|-210,75754|37,649796|-153,134|0', '[]', -1, 'SA3701-459250', 1, 225, 0, 20, 144, 0, '0189771044', 32, 47, 36, 150, '[\"n/A\",\"n/A\",\"n/A\",\"n/A\",\"n/A\",\"n/A\",\"n/A\",\"n/A\",\"n/A\"]', 'move_m@multiplayer', '1,1,1,1,1,1,1,1', 1, 2, 0, 0, 0, '{\"clothing\":[452,0,121,0,179,0,56,149,0,0,0,0,155,0,0,0],\"clothingColor\":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}', 0, 2, 27, 1672071991, 0, 375, 0);
+INSERT INTO `characters` (`id`, `userid`, `name`, `json`, `cash`, `birth`, `bank`, `size`, `eyecolor`, `job`, `minijob`, `lastonline`, `licenses`, `education`, `origin`, `skills`, `appearance`, `gender`, `faction`, `rang`, `faction_dutytime`, `faction_since`, `last_spawn`, `ucp_privat`, `ck`, `mygroup`, `closed`, `tutorialstep`, `health`, `armor`, `thirst`, `hunger`, `screen`, `lastpos`, `items`, `inhouse`, `defaultbank`, `online`, `truckerskill`, `nextpayday`, `payday_points`, `sellprods`, `abusemoney`, `lastsmartphone`, `thiefskill`, `fishingskill`, `busskill`, `farmingskill`, `animations`, `walkingstyle`, `clothing`, `factionduty`, `sapoints`, `swat`, `arrested`, `cell`, `dutyjson`, `death`, `disease`, `craftingskill`, `robcooldown`, `adcount`, `guessvalue`, `jobless`, `friends`) VALUES
+(1, 1, 'Test Char', '{\"birth\":\"22.10.1991\",\"origin\":\"Los Santos\",\"hair\":[1,16,0],\"beard\":[255,0],\"blendData\":[12,0,0,0,0,0],\"faceFeatures\":[0.9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"clothing\":[15,15,14,34,15,0,255,255,0,255,255,255,0,0,0],\"clothingColor\":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"headOverlays\":[23,14,255,-1,255,-1,-1,-1,255,-1,-1,-1],\"headOverlaysColors\":[0,0,0,0,0,0,0,0,0,0,0,0],\"eyeColor\":0,\"gender\":true}', 1104983, '12.12.1980', 0, '01m - 20cm', 'Blau', 1, 0, 1682942061, '0|0|1|0|0|0|0', 'Test', 'Los Santos', 'High School Abschluss', 'Test', 1, 0, 0, 0, 1682115269, 'Los-Santos', 1, 1634304377, 19, 0, 4, 100, 7, 0, 0, 'https://i.imgur.com/RdI0oWK.jpg', '-541,6512|-210,75754|37,649796|-153,134|0', '[]', -1, 'SA3701-459250', 1, 225, 0, 20, 144, 0, '0189771044', 32, 47, 36, 150, '[\"n/A\",\"n/A\",\"n/A\",\"n/A\",\"n/A\",\"n/A\",\"n/A\",\"n/A\",\"n/A\"]', 'move_m@multiplayer', '1,1,1,1,1,1,1,1', 1, 2, 0, 0, 0, '{\"clothing\":[452,0,121,0,179,0,56,149,0,0,0,0,155,0,0,0],\"clothingColor\":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}', 0, 2, 27, 1672071991, 0, 375, 0, '');
 
 -- --------------------------------------------------------
 

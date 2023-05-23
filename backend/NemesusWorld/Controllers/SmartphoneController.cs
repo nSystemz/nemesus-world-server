@@ -463,7 +463,7 @@ namespace NemesusWorld.Controllers
             try
             {
                 Character character = Helper.GetCharacterData(player);
-                if (character == null) return;
+                if (character == null || !player.IsInVehicle) return;
                 player.Vehicle.SetSharedData("Vehicle:Kilometre", Math.Round(kilometre, 2));
                 int newPrice = (int)((Math.Round(kilometre, 2) - player.GetData<float>("Player:Taxakilometer")) * player.GetData<int>("Player:Fare"))*3;
                 if (player.HasData("Player:Taxameter"))
@@ -799,7 +799,7 @@ namespace NemesusWorld.Controllers
                             Helper.PlayPhoneAnim(player);
                             if(Helper.adminSettings.voicerp == 0)
                             {
-                                target.SendChatMessage("~w~Dein Gesprächspartner hat das Telefonat angenommen!");
+                                Helper.SendNotificationWithoutButton(target, "~w~Dein Gesprächspartner hat das Telefonat angenommen!");
                             }
                         }
                     }
@@ -842,7 +842,7 @@ namespace NemesusWorld.Controllers
                             }
                             if (Helper.adminSettings.voicerp == 0)
                             {
-                                target.SendChatMessage("~r~Dein Gesprächspartner hat das Telefonat abgelehnt!");
+                                Helper.SendNotificationWithoutButton(target, "~w~Dein Gesprächspartner hat das Telefonat abgelehnt!", "error");
                             }
                         }
                     }

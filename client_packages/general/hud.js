@@ -9428,7 +9428,7 @@ function antiCheatCheck() {
     //Munitions Anticheat
     if (inventory && wait == false && !startRange) {
         for (i = 0; i < inventory.length; i++) {
-            if (inventory[i].type == 5 && !inventory[i].description.toLowerCase().includes("schutzweste") && inventory[i].props.split(',')[1] == 1) {
+            if (inventory[i].type == 5 && !inventory[i].description.toLowerCase().includes("schutzweste") && !inventory[i].description.toLowerCase().includes("feuerlöscher") && inventory[i].props.split(',')[1] == 1) {
                 ammo = localPlayer.getWeaponAmmo(mp.game.joaat(getWeaponByHash(inventory[i].description)));
                 if (ammo > parseInt(inventory[i].props.split(',')[0])) {
                     callAntiCheat("Munitions Cheat", "n/A", true);

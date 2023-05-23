@@ -14058,14 +14058,17 @@ namespace NemesusWorld.Utils
                                 tempData.jobVehicle = Cars.createNewCar("bus", spawnBus[index], spawnBusRot[index], 41, 41, "LS-S-155" + player.Id, "Canny Bus", true, true, false);
                                 tempData.jobVehicle.Dimension = 0;
                                 player.SetIntoVehicle(tempData.jobVehicle, (int)VehicleSeat.Driver);
-                                if (Helper.IsABusDriver(player) == 2)
+                                NAPI.Task.Run(() =>
                                 {
-                                    player.Vehicle.SetSharedData("Vehicle:Text3D", "~w~Canny Bus Group - Dienstfahrt");
-                                }
-                                else
-                                {
-                                    player.Vehicle.ResetSharedData("Vehicle:Text3D");
-                                }
+                                    if (Helper.IsABusDriver(player) == 2)
+                                    {
+                                        player.Vehicle.SetSharedData("Vehicle:Text3D", "~w~Canny Bus Group - Dienstfahrt");
+                                    }
+                                    else
+                                    {
+                                        player.Vehicle.ResetSharedData("Vehicle:Text3D");
+                                    }
+                                }, delayTime: 215);
                                 player.TriggerEvent("Client:HideMenus");
                             }
                             else
@@ -14142,14 +14145,17 @@ namespace NemesusWorld.Utils
                                 tempData.jobVehicle = Cars.createNewCar("coach", spawnBus[index], spawnBusRot[index], 41, 41, "LS-S-155" + player.Id, "Canny Bus", true, true, false);
                                 tempData.jobVehicle.Dimension = 0;
                                 player.SetIntoVehicle(tempData.jobVehicle, (int)VehicleSeat.Driver);
-                                if (Helper.IsABusDriver(player) == 2)
+                                NAPI.Task.Run(() =>
                                 {
-                                    player.Vehicle.SetSharedData("Vehicle:Text3D", "~w~Canny Bus Group - Dienstfahrt");
-                                }
-                                else
-                                {
-                                    player.Vehicle.ResetSharedData("Vehicle:Text3D");
-                                }
+                                    if (Helper.IsABusDriver(player) == 2)
+                                    {
+                                        player.Vehicle.SetSharedData("Vehicle:Text3D", "~w~Canny Bus Group - Dienstfahrt");
+                                    }
+                                    else
+                                    {
+                                        player.Vehicle.ResetSharedData("Vehicle:Text3D");
+                                    }
+                                }, delayTime: 215);
                                 player.TriggerEvent("Client:HideMenus");
                             }
                             else
@@ -14221,14 +14227,17 @@ namespace NemesusWorld.Utils
                                 tempData.jobVehicle = Cars.createNewCar("rentalbus", spawnBus[index], spawnBusRot[index], 41, 41, "LS-S-155" + player.Id, "Canny Bus", true, true, false);
                                 tempData.jobVehicle.Dimension = 0;
                                 player.SetIntoVehicle(tempData.jobVehicle, (int)VehicleSeat.Driver);
-                                if (Helper.IsABusDriver(player) == 2)
+                                NAPI.Task.Run(() =>
                                 {
-                                    player.Vehicle.SetSharedData("Vehicle:Text3D", "~w~Canny Bus Group - Dienstfahrt");
-                                }
-                                else
-                                {
-                                    player.Vehicle.ResetSharedData("Vehicle:Text3D");
-                                }
+                                    if (Helper.IsABusDriver(player) == 2)
+                                    {
+                                        player.Vehicle.SetSharedData("Vehicle:Text3D", "~w~Canny Bus Group - Dienstfahrt");
+                                    }
+                                    else
+                                    {
+                                        player.Vehicle.ResetSharedData("Vehicle:Text3D");
+                                    }
+                                }, delayTime: 215);
                                 player.TriggerEvent("Client:HideMenus");
                             }
                             else

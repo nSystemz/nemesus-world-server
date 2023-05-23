@@ -3398,7 +3398,7 @@ namespace NemesusWorld
                         }
                         else
                         {
-                            player.SendChatMessage("!{#FF0000}TÜT - TÜT - TÜT");
+                            Helper.SendChatMessage(player, "!{#FF0000}TÜT - TÜT - TÜT");
                         }
                         return;
                     }

@@ -7921,7 +7921,7 @@ namespace NemesusWorld
                 if (!Account.IsPlayerLoggedIn(player)) return;
                 Character character = Helper.GetCharacterData(player);
                 Player tempPlayer = Helper.GetPlayerByCharacterName(name);
-                if (tempPlayer == null && tempPlayer != player)
+                if ((tempPlayer == null && tempPlayer != player) || character.name == name)
                 {
                     Helper.SendNotificationWithoutButton(player, "Ungültiger Spieler!", "error", "top-left", 2500);
                     return;
@@ -7983,7 +7983,6 @@ namespace NemesusWorld
                     return;
                 }
                 Helper.SendRadiusMessage("!{#EE82EE}* " + player.Name + " " + nachricht, 8, player);
-                Account.GetAdminRangName(player);
             }
             catch (Exception e)
             {

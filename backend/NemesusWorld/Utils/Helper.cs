@@ -12962,7 +12962,7 @@ namespace NemesusWorld.Utils
                             {
                                 tempData.itemlist.Add(newitem);
                             }
-                            CharacterController.SetMoney(player, Convert.ToInt32(text2));
+                            CharacterController.SetMoney(player, -Convert.ToInt32(text2));
                             SendNotificationWithoutButton(player, $"Billy: Du hast dir erfolgreich eine Kleine-Schaufel für {text2}$ erworben, du kannst hier in der Nähe mit der Taste [F4] nach Schätzen suchen!", "success", "top-end", 6500);
                             player.TriggerEvent("Client:PressedEscape");
                             player.TriggerEvent("Client:HideStadthalle");

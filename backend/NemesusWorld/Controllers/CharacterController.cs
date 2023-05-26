@@ -412,6 +412,8 @@ namespace NemesusWorld.Controllers
 
                     Helper.SyncThings(player);
 
+                    player.TriggerEvent("Client:UpdateFriends", character.friends);
+
                     if (character.tutorialstep < 3)
                     {
                         tempData.itemlist = ItemsController.ConvertPlayerItemsToList(player);

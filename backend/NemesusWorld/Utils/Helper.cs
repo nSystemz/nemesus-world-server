@@ -13014,7 +13014,7 @@ namespace NemesusWorld.Utils
                             {
                                 tempData.itemlist.Add(newitem);
                             }
-                            CharacterController.SetMoney(player, Convert.ToInt32(text2));
+                            CharacterController.SetMoney(player, -Convert.ToInt32(text2));
                             SendNotificationWithoutButton(player, $"Du hast dir erfolgreich eine Angel für {text2}$ erworben!", "success", "top-end", 2500);
                         }
                         else if (text1 == "15x Köder kaufen")
@@ -13034,7 +13034,7 @@ namespace NemesusWorld.Utils
                             {
                                 tempData.itemlist.Add(newitem);
                             }
-                            CharacterController.SetMoney(player, Convert.ToInt32(text2));
+                            CharacterController.SetMoney(player, -Convert.ToInt32(text2));
                             SendNotificationWithoutButton(player, $"Du hast dir erfolgreich 15x Köder für {text2}$ erworben!", "success", "top-end", 2500);
                         }
                         else if (text1 == "Abbrechen")
@@ -13062,7 +13062,7 @@ namespace NemesusWorld.Utils
                             {
                                 player.TriggerEvent("Client:PressedEscape");
                                 player.TriggerEvent("Client:PlaySoundSuccessNormal");
-                                CharacterController.SetMoney(player, Convert.ToInt32(text2));
+                                CharacterController.SetMoney(player, -Convert.ToInt32(text2));
                                 SendNotificationWithoutButton(player, $"Du hast dir ein Boot für {text2}$ gemietet!", "success", "top-end", 3500);
                                 Random rand2 = new Random();
                                 tempData.rentVehicle = Cars.createNewCar("dinghy", new Vector3(-2195.1804, -478.90747, 0.5353528), -172.48631f, rand2.Next(0, 159), rand2.Next(0, 159), "LS-S-100" + player.Id, "Bootsverleih", true, true, false);
@@ -14057,18 +14057,18 @@ namespace NemesusWorld.Utils
                                 SendNotificationWithoutButton(player, "Hier das Fahrzeug, bring mir das aber wieder im Ganzen zurück!", "success", "top-end", 2500);
                                 tempData.jobVehicle = Cars.createNewCar("bus", spawnBus[index], spawnBusRot[index], 41, 41, "LS-S-155" + player.Id, "Canny Bus", true, true, false);
                                 tempData.jobVehicle.Dimension = 0;
-                                player.SetIntoVehicle(tempData.jobVehicle, (int)VehicleSeat.Driver);
                                 NAPI.Task.Run(() =>
                                 {
                                     if (Helper.IsABusDriver(player) == 2)
                                     {
-                                        player.Vehicle.SetSharedData("Vehicle:Text3D", "~w~Canny Bus Group - Dienstfahrt");
+                                        tempData.jobVehicle.SetSharedData("Vehicle:Text3D", "~w~Canny Bus Group - Dienstfahrt");
                                     }
                                     else
                                     {
-                                        player.Vehicle.ResetSharedData("Vehicle:Text3D");
+                                        tempData.jobVehicle.ResetSharedData("Vehicle:Text3D");
                                     }
-                                }, delayTime: 215);
+                                    player.SetIntoVehicle(tempData.jobVehicle, (int)VehicleSeat.Driver);
+                                }, delayTime: 95);
                                 player.TriggerEvent("Client:HideMenus");
                             }
                             else
@@ -14144,18 +14144,18 @@ namespace NemesusWorld.Utils
                                 SendNotificationWithoutButton(player, "Hier das Fahrzeug, bring mir das aber wieder im Ganzen zurück!", "success", "top-end", 2500);
                                 tempData.jobVehicle = Cars.createNewCar("coach", spawnBus[index], spawnBusRot[index], 41, 41, "LS-S-155" + player.Id, "Canny Bus", true, true, false);
                                 tempData.jobVehicle.Dimension = 0;
-                                player.SetIntoVehicle(tempData.jobVehicle, (int)VehicleSeat.Driver);
                                 NAPI.Task.Run(() =>
                                 {
                                     if (Helper.IsABusDriver(player) == 2)
                                     {
-                                        player.Vehicle.SetSharedData("Vehicle:Text3D", "~w~Canny Bus Group - Dienstfahrt");
+                                        tempData.jobVehicle.SetSharedData("Vehicle:Text3D", "~w~Canny Bus Group - Dienstfahrt");
                                     }
                                     else
                                     {
-                                        player.Vehicle.ResetSharedData("Vehicle:Text3D");
+                                        tempData.jobVehicle.ResetSharedData("Vehicle:Text3D");
                                     }
-                                }, delayTime: 215);
+                                    player.SetIntoVehicle(tempData.jobVehicle, (int)VehicleSeat.Driver);
+                                }, delayTime: 95);
                                 player.TriggerEvent("Client:HideMenus");
                             }
                             else
@@ -14231,13 +14231,14 @@ namespace NemesusWorld.Utils
                                 {
                                     if (Helper.IsABusDriver(player) == 2)
                                     {
-                                        player.Vehicle.SetSharedData("Vehicle:Text3D", "~w~Canny Bus Group - Dienstfahrt");
+                                        tempData.jobVehicle.SetSharedData("Vehicle:Text3D", "~w~Canny Bus Group - Dienstfahrt");
                                     }
                                     else
                                     {
-                                        player.Vehicle.ResetSharedData("Vehicle:Text3D");
+                                        tempData.jobVehicle.ResetSharedData("Vehicle:Text3D");
                                     }
-                                }, delayTime: 215);
+                                    player.SetIntoVehicle(tempData.jobVehicle, (int)VehicleSeat.Driver);
+                                }, delayTime: 95);
                                 player.TriggerEvent("Client:HideMenus");
                             }
                             else
@@ -17431,7 +17432,7 @@ namespace NemesusWorld.Utils
                 if (sprunk != null && character != null && account != null)
                 {
                     string prices = $"{Convert.ToInt32(30 * sprunk.multiplier)},";
-                    player.TriggerEvent("Client:SyncThings", prices, character.animations, account.crosshair, adminSettings.groupsettings, account.level, character.name, Helper.adminSettings.voicerp);
+                    player.TriggerEvent("Client:SyncThings", prices, character.animations, account.crosshair, adminSettings.groupsettings, account.level, character.name, Helper.adminSettings.voicerp, Helper.adminSettings.nametag);
                 }
             }
             catch (Exception e)

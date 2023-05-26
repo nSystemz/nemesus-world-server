@@ -230,7 +230,7 @@
                 <div class="card card-primary card-outline">
                   <div class="card-header" style="font-family: 'Exo', sans-serif; font-size: 1.05vw">
                     <span>Funkgerät</span>
-                    <button @click="setRadioFreq('LS')" type="button"
+                    <button v-if="voicerp == 1" @click="setRadioFreq('LS')" type="button"
                         class="btn btn-primary float-right">Lautsprecher an/aus</button>
                   </div>
                   <div class="card-body" style="max-height:25vh; width: 25vw; overflow-x: auto">

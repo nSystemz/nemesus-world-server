@@ -7913,6 +7913,59 @@ namespace NemesusWorld
         }
 
         //Text RP Befehle
+        [Command("addfriend", "Befehl: /addfriend [Name]", GreedyArg = true)]
+        public void cmd_addfriend(Player player, string name)
+        {
+            try
+            {
+                if (!Account.IsPlayerLoggedIn(player)) return;
+                Character character = Helper.GetCharacterData(player);
+                Player tempPlayer = Helper.GetPlayerByCharacterName(name);
+                if (tempPlayer == null && tempPlayer != player)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Ungültiger Spieler!", "error", "top-left", 2500);
+                    return;
+                }
+                if (character.friends.Contains(tempPlayer.Name))
+                {
+                    Helper.SendNotificationWithoutButton(player, "Dieser Spieler steht schon auf deiner Freundesliste!", "error", "top-left", 2500);
+                    return;
+                }
+                character.friends = character.friends + tempPlayer.Name + ",";
+                player.TriggerEvent("Client:UpdateFriends", character.friends);
+                Helper.SendNotificationWithoutButton(player, $"{tempPlayer.Name} zur Freundesliste hinzugefügt!", "success", "top-left", 2500);
+            }
+            catch (Exception e)
+            {
+                Helper.SendNotificationWithoutButton(player, "Ungültiger Spieler!", "error", "top-left", 2500);
+                Helper.ConsoleLog("error", $"[cmd_addfriend]: " + e.ToString());
+            }
+        }
+
+        [Command("deletefriend", "Befehl: /deletefriend [Name]", GreedyArg = true)]
+        public void cmd_deletefriend(Player player, string name)
+        {
+            try
+            {
+                if (!Account.IsPlayerLoggedIn(player)) return;
+                Character character = Helper.GetCharacterData(player);
+                Player tempPlayer = Helper.GetPlayerByCharacterName(name);
+                if (!character.friends.Contains(tempPlayer.Name))
+                {
+                    Helper.SendNotificationWithoutButton(player, "Dieser Spieler steht nicht auf deiner Freundesliste!", "error", "top-left", 2500);
+                    return;
+                }
+                character.friends = character.friends.Replace(tempPlayer.Name + ",", "");
+                player.TriggerEvent("Client:UpdateFriends", character.friends);
+                Helper.SendNotificationWithoutButton(player, $"{tempPlayer.Name} von der Freundesliste entfernt!", "success", "top-left", 2500);
+            }
+            catch (Exception e)
+            {
+                Helper.SendNotificationWithoutButton(player, "Ungültiger Spieler!", "error", "top-left", 2500);
+                Helper.ConsoleLog("error", $"[cmd_deletefriend]: " + e.ToString());
+            }
+        }
+
         [Command("me", "Befehl: /me [Nachricht]", GreedyArg = true)]
         public void CMD_me(Player player, string nachricht)
         {
@@ -7930,6 +7983,7 @@ namespace NemesusWorld
                     return;
                 }
                 Helper.SendRadiusMessage("!{#EE82EE}* " + player.Name + " " + nachricht, 8, player);
+                Account.GetAdminRangName(player);
             }
             catch (Exception e)
             {

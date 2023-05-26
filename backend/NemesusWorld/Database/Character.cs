@@ -74,6 +74,7 @@ namespace NemesusWorld.Database
         public int adcount { get; set; }
         public int guessvalue { get; set; }
         public int jobless { get; set; }
+        public string friends { get; set; }
 
         public Character()
         {
@@ -142,6 +143,7 @@ namespace NemesusWorld.Database
             adcount = 0;
             guessvalue = 0;
             jobless = 0;
+            friends = "";
         }
     }
 }

@@ -3737,10 +3737,6 @@
                                                                     <td>Animationsliste anzeigen</td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td>F9</td>
-                                                                    <td>Nametags kurz anzeigen lassen</td>
-                                                                </tr>
-                                                                <tr>
                                                                     <td>F10</td>
                                                                     <td>Cursor anzeigen/ausblenden</td>
                                                                 </tr>
@@ -3924,6 +3920,10 @@
                                                             <tr>
                                                                 <td>/position & /rotation</td>
                                                                 <td>Möbelposition/rotation anpassen</td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>/addfriend & /deletefriend</td>
+                                                                <td>Freund hinzufügen/löschen</td>
                                                             </tr>
                                                             <tr v-if="voicerp == 0">
                                                                 <td>/me - /do</td>

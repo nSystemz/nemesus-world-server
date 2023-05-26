@@ -149,7 +149,8 @@ let showDealer = false;
 let dealerShipBizz = -1;
 let oldVehicleShipColor = 0;
 //Nametags
-let showNameTags = false;
+let nameTagList = null;
+let nametag = 0;
 let maxDistance = 25 * 4;
 const color = [255, 255, 255, 255];
 //Nitro
@@ -1022,7 +1023,14 @@ mp.events.add('render', (nametags) => {
 
     //Nametags
     if (!localPlayer.name.includes("Spieler-")) {
-        UpdateNameTags(nametags);
+        if(nametag == 0)
+        {
+            UpdateNameTags1(nametags);
+        }
+        else
+        {
+            UpdateNameTags2(nametags);
+        }
     }
 
     //Cuffed
@@ -1087,7 +1095,7 @@ mp.events.add('render', (nametags) => {
 });
 
 //Prices
-mp.events.add("Client:SyncThings", (pricesCsv, animationhotkeys, chair, gprices, level, name = 'n/A', voicerp) => {
+mp.events.add("Client:SyncThings", (pricesCsv, animationhotkeys, chair, gprices, level, name = 'n/A', voicerp, nametag) => {
     prices = pricesCsv.split(',');
     crosshair = chair;
     groupprices = gprices;
@@ -1100,6 +1108,7 @@ mp.events.add("Client:SyncThings", (pricesCsv, animationhotkeys, chair, gprices,
     }
     level = level;
     voicerp = voicerp;
+    nametag = nametag;
     hudWindow.execute(`gui.menu.setvoicerp('${voicerp}');`);
     hudWindow.execute(`gui.hud.setvoicerp('${voicerp}');`);
     hudWindow.execute(`gui.speedometer.setvoicerp('${voicerp}');`);
@@ -1141,6 +1150,11 @@ mp.events.add("Client:ToggleFilmCamera", (player, onoff) => {
             enableDisableRadar(true);
         }
     }
+})
+
+//Nametags
+mp.events.add("Client:UpdateFriends", (names) => {
+    nameTagList = names;
 })
 
 //Speedometer
@@ -3931,14 +3945,6 @@ mp.keys.bind(0x78, true, function () {
         let spawned = localPlayer.getVariable('Player:Spawned');
         if (showSaltyError == true || triggerAntiCheat == true || localPlayer.isTypingInTextChat || !spawned || nokeys == true || death == true || arrested == true || cuffed == true || showMenu == true || showInventory == true || showWheel == true || showFurniture == true || InteriorSwitch == true || prisonCount > 0 || showCenterMenu == true || showBank == true || showCarSetting == true || showCityhall == true || showSped == true || showFuel == true || showAmmu == true || showShop == true || startRange == true || showShop2 == true || startRange == true || showDealer == true || showTab == true || handsUp == true || barberMenu == true || tattooShop == true || afk == true || ping == true || hack == true) return;
         if (hudWindow != null) {
-            let adminduty = localPlayer.getVariable('Player:AdminLogin');
-            if (showNameTags == false && adminduty == 0) {
-                showNameTags = true;
-                hudWindow.execute(`gui.hud.sendNotificationWithoutButton('Nametags [IDs] werden absofort für 15 Sekunden angezeigt!','info','top-left',2500);`);
-                setTimeout(function () {
-                    showNameTags = false;
-                }, 15500);
-            }
             pressedF9 = (Date.now() / 1000) + (1);
         }
     }
@@ -5637,9 +5643,6 @@ function playerQuitHandler(player, exitType, reason) {
 
         //Handsup
         handsUp = false;
-
-        //Nametags
-        showNameTags = false;
 
         //Spectate
         mp.events.call('Client:StopSpectate', 1);
@@ -8095,7 +8098,7 @@ function CheckForATM() {
     return atATM;
 }
 
-function UpdateNameTags(nametags) {
+function UpdateNameTags1(nametags) {
     try {
         //Nametags
         const graphics = mp.game.graphics;
@@ -8154,23 +8157,12 @@ function UpdateNameTags(nametags) {
                                 });
                             }
                         } else {
-                            if (showNameTags) {
-                                if (afk == 0) {
-                                    graphics.drawText(' [' + player.remoteId + ']', [x, y], {
-                                        font: 4,
-                                        color: color,
-                                        scale: [0.45, 0.45],
-                                        outline: true
-                                    });
-                                } else {
-                                    graphics.drawText(' [' + player.remoteId + '] - AFK', [x, y], {
-                                        font: 4,
-                                        color: color,
-                                        scale: [0.45, 0.45],
-                                        outline: true
-                                    });
-                                }
-                            }
+                            graphics.drawText(' [' + player.remoteId + '] - AFK', [x, y], {
+                                font: 4,
+                                color: color,
+                                scale: [0.45, 0.45],
+                                outline: true
+                            });
                         }
                     }
                 } else {
@@ -8228,6 +8220,92 @@ function UpdateNameTags(nametags) {
             }
         })
     } catch {}
+}
+
+function UpdateNameTags2(nametags) {
+    try {
+        //Nametags
+        const graphics = mp.game.graphics;
+        const screenRes = graphics.getScreenResolution(0, 0);
+        let admindutynt = 0;
+        if (localPlayer.hasVariable('Player:AdminLogin')) {
+            admindutynt = parseInt(localPlayer.getVariable('Player:AdminLogin'));
+        }
+
+        nametags.forEach(nametag => {
+            let [player, x, y, distance] = nametag;
+
+            let adminSettings = player.getVariable('Player:Adminsettings');
+
+            if (distance <= maxDistance && adminSettings.split(',')[1] == '0') {
+                let scale = (distance / maxDistance);
+                if (scale < 0.6) scale = 0.6;
+
+                y -= scale * (0.005 * (screenRes.y / 1080));
+
+                //Nametag
+                let nname = 'Unbekannt';
+                if (admindutynt == 1 || (nameTagList.length > 3 && nameTagList.includes(player.name)) || nametag == 2) {
+                    nname = player.name;
+                }
+
+                if (admindutynt == 0) {
+                    let admindutytemp = 0;
+                    if (player.hasVariable('Player:AdminLogin')) {
+                        admindutytemp = parseInt(player.getVariable('Player:AdminLogin'));
+                    }
+                    let realname = player.getVariable('Player:Name');
+                    let adminlevel = parseInt(player.getVariable('Player:Adminlevel'));
+
+                    if (admindutytemp == 0) {
+                        graphics.drawText(nname + ' [' + player.remoteId + ']\n', [x, y], {
+                            font: 4,
+                            color: color,
+                            scale: [0.45, 0.45],
+                            outline: true
+                        });
+                    } else {
+                        graphics.drawText(realname + ' [' + player.remoteId + ']\n~r~' + GetAdminRang(adminlevel) + '\n', [x, y], {
+                            font: 4,
+                            color: color,
+                            scale: [0.45, 0.45],
+                            outline: true
+                        });
+                    }
+                } else {
+                    let admindutytemp = 0;
+                    if (player.hasVariable('Player:AdminLogin')) {
+                        admindutytemp = parseInt(player.getVariable('Player:AdminLogin'));
+                    }
+                    var healthplayer = player.getHealth();
+                    var armourplayer = player.getArmour();
+                    let realname = player.getVariable('Player:Name');
+                    let adminlevel = parseInt(player.getVariable('Player:Adminlevel'));
+                    if (!adminlevel) {
+                        adminlevel = 0;
+                    }
+
+                    if (admindutytemp == 0) {
+                        graphics.drawText(player.name + ' [' + player.remoteId + ']\nLeben: ' + healthplayer + '%, Rüstung: ' + armourplayer + '%\n', [x, y], {
+                            font: 4,
+                            color: color,
+                            scale: [0.45, 0.45],
+                            outline: true
+                        });
+                    } else {
+                        graphics.drawText(realname + ' [' + player.remoteId + ']\n~r~' + GetAdminRang(adminlevel) + '\n', [x, y], {
+                            font: 4,
+                            color: color,
+                            scale: [0.45, 0.45],
+                            outline: true
+                        });
+                    }
+                }
+            }
+        })
+    } catch (e) {
+        mp.console.logInfo(JSON.stringify(e), true, true);
+    }
 }
 
 const createObject = (model, pos, rot, dim) => {

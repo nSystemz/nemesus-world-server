@@ -1409,6 +1409,7 @@ namespace NemesusWorld.Controllers
                                     evidence = true;
                                 }
                             }
+                            Cars getCar = null;
                             bool trunk1Items = false;
                             bool trunk2Items = false;
                             Vehicle vehicle = null;
@@ -1439,6 +1440,14 @@ namespace NemesusWorld.Controllers
                                         {
                                             trunk2Items = true;
                                         }
+                                    }
+                                }
+                                foreach (Cars car in Cars.carList)
+                                {
+                                    if (car.vehicleHandle != null && car.vehicleHandle == vehicle && car.vehicleData != null)
+                                    {
+                                        getCar = car;
+                                        break;
                                     }
                                 }
                             }
@@ -1665,6 +1674,10 @@ namespace NemesusWorld.Controllers
                                     {
                                         character.lastsmartphone = "n/A";
                                     }
+                                    if (tempData.inventoysetting.Contains("trunk") && getCar != null)
+                                    {
+                                        DealerShipController.SaveOneVehicleData(getCar);
+                                    }
                                     if (getItem.amount <= 0)
                                     {
                                         tempData2.itemlist.Remove(getItem);
@@ -1845,6 +1858,10 @@ namespace NemesusWorld.Controllers
                                     if (item.description == "Smartphone" && item.props == character.lastsmartphone)
                                     {
                                         character.lastsmartphone = "n/A";
+                                    }
+                                    if(tempData.inventoysetting.Contains("trunk") && getCar != null)
+                                    {
+                                        DealerShipController.SaveOneVehicleData(getCar);
                                     }
                                     if (item.amount <= 0)
                                     {

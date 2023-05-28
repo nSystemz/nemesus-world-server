@@ -150,7 +150,7 @@ let dealerShipBizz = -1;
 let oldVehicleShipColor = 0;
 //Nametags
 let nameTagList = null;
-let nametag = 0;
+let nametagSystem = 0;
 let maxDistance = 25 * 4;
 const color = [255, 255, 255, 255];
 //Nitro
@@ -771,6 +771,16 @@ mp.events.add('render', (nametags) => {
     //Damage
     mp.players.local.setSuffersCriticalHits(false); //Headshots
 
+    //Nametags
+    if(nametagSystem == 0)
+    {
+        UpdateNameTags1(nametags);
+    }
+    else
+    {
+        UpdateNameTags2(nametags);
+    }
+
     //Idle Cam
     const dif = new Date().getTime() - IdleDate.getTime();
     const seconds = dif / 1000;
@@ -1021,16 +1031,6 @@ mp.events.add('render', (nametags) => {
         }
     }
 
-    //Nametags
-    if(nametag == 0)
-    {
-        UpdateNameTags1(nametags);
-    }
-    else
-    {
-        UpdateNameTags2(nametags);
-    }
-
     //Cuffed
     if (cuffed == true) {
         mp.game.controls.disableControlAction(2, 24, true)
@@ -1106,7 +1106,7 @@ mp.events.add("Client:SyncThings", (pricesCsv, animationhotkeys, chair, gprices,
     }
     level = level;
     voicerp = voicerp;
-    nametag = nametag;
+    nametagSystem = nametag;
     hudWindow.execute(`gui.menu.setvoicerp('${voicerp}');`);
     hudWindow.execute(`gui.hud.setvoicerp('${voicerp}');`);
     hudWindow.execute(`gui.speedometer.setvoicerp('${voicerp}');`);

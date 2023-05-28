@@ -25,7 +25,7 @@ namespace NemesusWorld.Database
         public int adcount { get; set; }
         public int admoney { get; set; }
         public int dailyguesslimit { get; set; }
-        //Nametag | 0 = Nur Admins haben Nametags, 1 = Name unbekannt außer du bist befreundet mit jemanden, 2 alle haben Nametags
+        //Nametag | 0 = Nur Admins haben Nametags (wie bisher), 1 = Name unbekannt außer du bist befreundet mit jemanden, 2 alle haben Nametags
         public int nametag { get; set; }
 
         public AdminSettings()

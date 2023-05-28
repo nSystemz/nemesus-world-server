@@ -7921,6 +7921,11 @@ namespace NemesusWorld
                 if (!Account.IsPlayerLoggedIn(player)) return;
                 Character character = Helper.GetCharacterData(player);
                 Player tempPlayer = Helper.GetPlayerByCharacterName(name);
+                if (Helper.adminSettings.nametag != 1)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Das Nametagsystem steht nicht auf 1!", "error", "top-left", 2500);
+                    return;
+                }
                 if ((tempPlayer == null && tempPlayer != player) || character.name == name)
                 {
                     Helper.SendNotificationWithoutButton(player, "Ungültiger Spieler!", "error", "top-left", 2500);
@@ -7950,6 +7955,11 @@ namespace NemesusWorld
                 if (!Account.IsPlayerLoggedIn(player)) return;
                 Character character = Helper.GetCharacterData(player);
                 Player tempPlayer = Helper.GetPlayerByCharacterName(name);
+                if(Helper.adminSettings.nametag != 1)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Das Nametagsystem steht nicht auf 1!", "error", "top-left", 2500);
+                    return;
+                }
                 if (!character.friends.Contains(tempPlayer.Name))
                 {
                     Helper.SendNotificationWithoutButton(player, "Dieser Spieler steht nicht auf deiner Freundesliste!", "error", "top-left", 2500);

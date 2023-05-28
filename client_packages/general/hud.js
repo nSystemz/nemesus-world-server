@@ -1022,15 +1022,13 @@ mp.events.add('render', (nametags) => {
     }
 
     //Nametags
-    if (!localPlayer.name.includes("Spieler-")) {
-        if(nametag == 0)
-        {
-            UpdateNameTags1(nametags);
-        }
-        else
-        {
-            UpdateNameTags2(nametags);
-        }
+    if(nametag == 0)
+    {
+        UpdateNameTags1(nametags);
+    }
+    else
+    {
+        UpdateNameTags2(nametags);
     }
 
     //Cuffed
@@ -1349,8 +1347,8 @@ mp.events.add("Client:Waiting", (set) => {
 mp.events.add("Client:StartLockpicking", (time, action, text) => {
     if (hudWindow != null) {
         lastProgress = action;
+        let closestVeh = getClosestVehicle(localPlayer.position);
         if (action == 'vehicle' || action == 'mecha1' || action == 'mecha2') {
-            let closestVeh = getClosestVehicle(localPlayer.position);
             if (closestVeh && closestVeh.distance < 3.55) {
                 vDoor = closestVeh.vehicle.getWorldPositionOfBone(closestVeh.vehicle.getBoneIndexByName("seat_dside_f"));
                 if (vDoor) {
@@ -1363,10 +1361,12 @@ mp.events.add("Client:StartLockpicking", (time, action, text) => {
                 }
             }
         } else if (action == 'mecha7') {
-            bonnet = closestVeh.vehicle.getWorldPositionOfBone(closestVeh.vehicle.getBoneIndexByName("bonnet"));
-            dist = distanceVector(localPlayer.position, bonnet);
-            if (dist <= 2.15) {
-                startLockpicking = true;
+            if (closestVeh && closestVeh.distance < 6.55) {
+                bonnet = closestVeh.vehicle.getWorldPositionOfBone(closestVeh.vehicle.getBoneIndexByName("bonnet"));
+                dist = distanceVector(localPlayer.position, bonnet);
+                if (dist <= 2.15) {
+                    startLockpicking = true;
+                }
             }
         } else if (action == 'fishing') {
             waterCheck = getWaterByRaycast(5.0);
@@ -1378,7 +1378,6 @@ mp.events.add("Client:StartLockpicking", (time, action, text) => {
         }
         if (startLockpicking == true) {
             if (action == 'mecha1') {
-                let closestVeh = getClosestVehicle(localPlayer.position);
                 closestVeh.vehicle.freezePosition(true);
                 if (closestVeh && closestVeh.distance < 6.55) {
                     mp.events.callRemote('Server:VehicleJack');
@@ -1395,7 +1394,6 @@ mp.events.add("Client:StartLockpicking", (time, action, text) => {
                 }
             } else if (action == 'mecha2') {
                 mp.events.callRemote('Server:VehicleJack');
-                let closestVeh = getClosestVehicle(localPlayer.position);
                 closestVeh.vehicle.freezePosition(true);
                 if (closestVeh && closestVeh.distance < 6.55) {
                     var countInterval = 0;
@@ -4765,7 +4763,7 @@ mp.events.add("Client:PressedEscape", () => {
         }
         if (showRadio == true) {
             setTimeout(function () {
-                mp.events.call('Client:ShowRadio', '');
+                mp.events.call('Client:ShowRadioSystem', '');
             }, 150);
         }
         if (showMusic == true) {
@@ -7771,7 +7769,7 @@ function hideMenus(check = true) {
         mp.events.call('Client:ShowArrest', 'n/A');
     }
     if (showRadio == true) {
-        mp.events.call('Client:ShowRadio', '');
+        mp.events.call('Client:ShowRadioSystem', '');
     }
     if (showMusic == true) {
         mp.events.call('Client:ShowMusicStation');
@@ -8119,11 +8117,6 @@ function UpdateNameTags1(nametags) {
 
                 y -= scale * (0.005 * (screenRes.y / 1080));
 
-                //Nametag
-                if (admindutynt == 1) {
-                    nname = player.name;
-                }
-
                 if (admindutynt == 0) {
                     let admindutytemp = 0;
                     if (player.hasVariable('Player:AdminLogin')) {
@@ -8156,13 +8149,6 @@ function UpdateNameTags1(nametags) {
                                     outline: true
                                 });
                             }
-                        } else {
-                            graphics.drawText(' [' + player.remoteId + '] - AFK', [x, y], {
-                                font: 4,
-                                color: color,
-                                scale: [0.45, 0.45],
-                                outline: true
-                            });
                         }
                     }
                 } else {
@@ -8303,9 +8289,7 @@ function UpdateNameTags2(nametags) {
                 }
             }
         })
-    } catch (e) {
-        mp.console.logInfo(JSON.stringify(e), true, true);
-    }
+    } catch {}
 }
 
 const createObject = (model, pos, rot, dim) => {
@@ -8906,7 +8890,7 @@ mp.events.add("Client:ShowMusicStation", (status) => {
 });
 
 //Radiomenu
-mp.events.add("Client:ShowRadio", (freqz) => {
+mp.events.add("Client:ShowRadioSystem", (freqz) => {
     if (hudWindow == null) return;
     mp.events.call('Client:UpdateHud3');
     showRadio = !showRadio;
@@ -8923,7 +8907,7 @@ mp.events.add("Client:ShowRadio", (freqz) => {
 mp.events.add("Client:SetRadioFreq", (freq) => {
     if (hudWindow == null) return;
     if (freq == 'Aus') {
-        mp.events.call('Client:ShowRadio', '');
+        mp.events.call('Client:ShowRadioSystem', '');
     } else {
         mp.events.callRemote('Server:SetRadioFreq', freq);
     }

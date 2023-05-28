@@ -135,7 +135,7 @@ namespace NemesusWorld.Controllers
                     if (Helper.GetRandomPercentage(randomPercentage/4))
                     {
                         //ToDo: Sound Link anpassen
-                        player.TriggerEvent("Client:Play3DSound", "https://nemesus-world.de/sounds/alarm.wav", -2);
+                        player.TriggerEvent("Client:Play3DSound", "https://nemesus-world.de/testserversounds/alarm.wav", -2);
                     }
                     Dispatch dispatch = new Dispatch();
                     MDCController.dispatchCount++;
@@ -175,7 +175,7 @@ namespace NemesusWorld.Controllers
                             {
                                 Helper.SendNotificationWithoutButton(player, $"Überfall abgebrochen!", "error", "top-left", 4750);
                                 //ToDo: Sound Link anpassen
-                                player.TriggerEvent("Client:Play3DSound", "https://nemesus-world.de/sounds/alarm.wav", -3);
+                                player.TriggerEvent("Client:Play3DSound", "https://nemesus-world.de/testserversounds/alarm.wav", -3);
                                 tempData.inrob = false;
                             }
                         }
@@ -206,7 +206,7 @@ namespace NemesusWorld.Controllers
                                 Helper.SendNotificationWithoutButton(player, $"Überfall abgebrochen!", "error", "top-left", 4750);
                             }
                             //ToDo: Sound Link anpassen
-                            player.TriggerEvent("Client:Play3DSound", "https://nemesus-world.de/sounds/alarm.wav", -3);
+                            player.TriggerEvent("Client:Play3DSound", "https://nemesus-world.de/testserversounds/alarm.wav", -3);
                             tempData.inrob = false;
                         }
                         ped.SetSharedData("Player:AnimData", "0");
@@ -245,7 +245,7 @@ namespace NemesusWorld.Controllers
                                 Helper.SendNotificationWithoutButton(player, $"Überfall abgebrochen!", "error", "top-left", 4750);
                             }
                             //ToDo: Sound Link anpassen
-                            player.TriggerEvent("Client:Play3DSound", "https://nemesus-world.de/sounds/alarm.wav", -3);
+                            player.TriggerEvent("Client:Play3DSound", "https://nemesus-world.de/testserversounds/alarm.wav", -3);
                             tempData.inrob = false;
                         }
                         bizz.nobuy = false;
@@ -323,7 +323,7 @@ namespace NemesusWorld.Controllers
                                 Helper.SendNotificationWithoutButton(player, $"Überfall abgebrochen!", "error", "top-left", 4750);
                             }
                             //ToDo: Sound Link anpassen
-                            player.TriggerEvent("Client:Play3DSound", "https://nemesus-world.de/sounds/alarm.wav", -3);
+                            player.TriggerEvent("Client:Play3DSound", "https://nemesus-world.de/testserversounds/alarm.wav", -3);
                             tempData.inrob = false;
                         }
                         bizz.nobuy = false;
@@ -363,7 +363,7 @@ namespace NemesusWorld.Controllers
                                 Helper.SendNotificationWithoutButton(player, $"Überfall abgebrochen!", "error", "top-left", 4750);
                             }
                             //ToDo: Sound Link anpassen
-                            player.TriggerEvent("Client:Play3DSound", "https://nemesus-world.de/sounds/alarm.wav", -3);
+                            player.TriggerEvent("Client:Play3DSound", "https://nemesus-world.de/testserversounds/alarm.wav", -3);
                             tempData.inrob = false;
                         }
                         bizz.nobuy = false;

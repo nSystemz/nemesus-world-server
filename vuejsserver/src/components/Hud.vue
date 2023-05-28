@@ -94,6 +94,100 @@
         </div>
       </div>
     </div>
+    <div style="height: 100%; background-color: transparent;" v-if="showradiosystem">
+      <div class="row justify-content-center centering4">
+        <div class="col-md-12 mt-1 animate__animated animate__bounceInUp">
+          <div class="col-md-12 mt-1">
+            <div class="box box-default">
+              <div class="row">
+                <div class="card card-primary card-outline">
+                  <div class="card-header" style="font-family: 'Exo', sans-serif; font-size: 1.05vw">
+                    <span>Funkgerät</span>
+                    <button v-if="voicerp == 1" @click="setRadioFreq('LS')" type="button"
+                        class="btn btn-primary float-right">Lautsprecher an/aus</button>
+                  </div>
+                  <div class="card-body" style="max-height:25vh; width: 25vw; overflow-x: auto">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div style="display: flex; justify-content: center; align-items: center;">
+                          <div class="infoboxtext ml-2">
+                            <div class="col-md-4">
+                              <img style="width: 5vw; z-index:" class="float-left" src="../assets/images/inventory/Funkgerät.png">
+                            </div>
+                            <div class="col-md-9">
+                            <span class="ml-3" style="visibility: hidden">Frequenz:</span>
+                            <input type="text" maxlength="3" class="col-md-5 mt-2 form-control text-center float-right"
+                              placeholder="125 mHz" style="border-radius: 1vw" v-model="frequenz" autofocus>
+                            </div>
+                          </div>
+                        </div>
+                        <hr />
+                      </div>
+                    </div>
+                    <div style="display: flex; justify-content: center; align-items: center;">
+                      <button style="margin-top: 0.3vw" @click="setRadioFreq(frequenz)" type="button"
+                        class="btn btn-primary">Einstellen</button>
+                      <button style="display: flex; justify-content: center; align-items: center; margin-top: 0.3vw"
+                        @click="setRadioFreq('-1')" type="button"
+                        class="btn btn-danger ml-3">Ausschalten</button>
+                      <button style="display: flex; justify-content: center; align-items: center; margin-top: 0.3vw"
+                        @click="setRadioFreq('Aus')" type="button"
+                        class="btn btn-secondary ml-3">Abbrechen</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="height: 100%; background-color: transparent;" v-if="showmusic">
+      <div class="row justify-content-center centering4">
+        <div class="col-md-12 mt-1 animate__animated animate__bounceInUp">
+          <div class="col-md-12 mt-1">
+            <div class="box box-default">
+              <div class="row">
+                <div class="card card-primary card-outline">
+                  <div class="card-header" style="font-family: 'Exo', sans-serif; font-size: 1.05vw">
+                    <span>Musik abspielen</span>
+                    <button @click="play3DSound(musiclink, 2)" type="button"
+                        class="btn btn-danger float-right">Musik ausschalten</button>
+                  </div>
+                  <div class="card-body" style="max-height:35vh; width: 25vw; overflow-x: auto">
+                      <div class="col-md-12">
+                        <div style="display: flex; justify-content: center; align-items: center;">
+                            <div class="col-md-4">
+                              <img v-if="showmusicstatus == 1" style="width: 5vw; z-index:" class="float-left" src="../assets/images/turntable.png">
+                              <img v-else style="width: 4vw; z-index:" class="float-left" src="../assets/images/inventory/Ghettoblaster.png">
+                            </div>
+                          <div class="infoboxtext">
+                            <div style="display: flex; justify-content: center; align-items: center;">
+                            <input type="text" maxlength="128" class="col-md-12 mt-2 form-control text-center float-left"
+                              placeholder="Musiklink" style="border-radius: 1vw" v-model="musiclink" autofocus>
+                            </div>
+                          </div>
+                        </div>
+                        <hr />
+                    </div>
+                    <div style="display: flex; justify-content: center; align-items: center;">
+                      <button style="margin-top: 0.3vw" @click="play3DSound(musiclink, 0)" type="button"
+                        class="btn btn-primary">Abspielen</button>
+                      <button style="display: flex; justify-content: center; align-items: center; margin-top: 0.3vw"
+                        @click="play3DSound(musiclink, 1)" type="button"
+                        class="btn btn-success ml-3">Pause/Weiter</button>
+                      <button style="display: flex; justify-content: center; align-items: center; margin-top: 0.3vw"
+                        @click="play3DSound(musiclink, -1)" type="button"
+                        class="btn btn-secondary ml-3">Abbrechen</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
     <div style="height: 100%; background-color: transparent;" v-if="showfuel">
       <div class="row justify-content-center centering3">
         <div class="col-md-12 mt-1 animate__animated animate__bounceInUp">
@@ -211,100 +305,6 @@
                     <div style="display: flex; justify-content: center; align-items: center;">
                       <button style="display: flex; justify-content: center; align-items: center; margin-top: 0.3vw"
                         @click="hideRecept()" type="button"
-                        class="btn btn-secondary ml-3">Abbrechen</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div style="height: 100%; background-color: transparent;" v-if="showradio">
-      <div class="row justify-content-center centering4">
-        <div class="col-md-12 mt-1 animate__animated animate__bounceInUp">
-          <div class="col-md-12 mt-1">
-            <div class="box box-default">
-              <div class="row">
-                <div class="card card-primary card-outline">
-                  <div class="card-header" style="font-family: 'Exo', sans-serif; font-size: 1.05vw">
-                    <span>Funkgerät</span>
-                    <button v-if="voicerp == 1" @click="setRadioFreq('LS')" type="button"
-                        class="btn btn-primary float-right">Lautsprecher an/aus</button>
-                  </div>
-                  <div class="card-body" style="max-height:25vh; width: 25vw; overflow-x: auto">
-                    <div class="row">
-                      <div class="col-md-12">
-                        <div style="display: flex; justify-content: center; align-items: center;">
-                          <div class="infoboxtext ml-2">
-                            <div class="col-md-4">
-                              <img style="width: 5vw; z-index:" class="float-left" src="../assets/images/inventory/Funkgerät.png">
-                            </div>
-                            <div class="col-md-9">
-                            <span class="ml-3" style="visibility: hidden">Frequenz:</span>
-                            <input type="text" maxlength="3" class="col-md-5 mt-2 form-control text-center float-right"
-                              placeholder="125 mHz" style="border-radius: 1vw" v-model="frequenz" autofocus>
-                            </div>
-                          </div>
-                        </div>
-                        <hr />
-                      </div>
-                    </div>
-                    <div style="display: flex; justify-content: center; align-items: center;">
-                      <button style="margin-top: 0.3vw" @click="setRadioFreq(frequenz)" type="button"
-                        class="btn btn-primary">Einstellen</button>
-                      <button style="display: flex; justify-content: center; align-items: center; margin-top: 0.3vw"
-                        @click="setRadioFreq('-1')" type="button"
-                        class="btn btn-danger ml-3">Ausschalten</button>
-                      <button style="display: flex; justify-content: center; align-items: center; margin-top: 0.3vw"
-                        @click="setRadioFreq('Aus')" type="button"
-                        class="btn btn-secondary ml-3">Abbrechen</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div style="height: 100%; background-color: transparent;" v-if="showmusic">
-      <div class="row justify-content-center centering4">
-        <div class="col-md-12 mt-1 animate__animated animate__bounceInUp">
-          <div class="col-md-12 mt-1">
-            <div class="box box-default">
-              <div class="row">
-                <div class="card card-primary card-outline">
-                  <div class="card-header" style="font-family: 'Exo', sans-serif; font-size: 1.05vw">
-                    <span>Musik abspielen</span>
-                    <button @click="play3DSound(musiclink, 2)" type="button"
-                        class="btn btn-danger float-right">Musik ausschalten</button>
-                  </div>
-                  <div class="card-body" style="max-height:35vh; width: 25vw; overflow-x: auto">
-                      <div class="col-md-12">
-                        <div style="display: flex; justify-content: center; align-items: center;">
-                            <div class="col-md-4">
-                              <img v-if="showmusicstatus == 1" style="width: 5vw; z-index:" class="float-left" src="../assets/images/turntable.png">
-                              <img v-else style="width: 4vw; z-index:" class="float-left" src="../assets/images/inventory/Ghettoblaster.png">
-                            </div>
-                          <div class="infoboxtext">
-                            <div style="display: flex; justify-content: center; align-items: center;">
-                            <input type="text" maxlength="128" class="col-md-12 mt-2 form-control text-center float-left"
-                              placeholder="Musiklink" style="border-radius: 1vw" v-model="musiclink" autofocus>
-                            </div>
-                          </div>
-                        </div>
-                        <hr />
-                    </div>
-                    <div style="display: flex; justify-content: center; align-items: center;">
-                      <button style="margin-top: 0.3vw" @click="play3DSound(musiclink, 0)" type="button"
-                        class="btn btn-primary">Abspielen</button>
-                      <button style="display: flex; justify-content: center; align-items: center; margin-top: 0.3vw"
-                        @click="play3DSound(musiclink, 1)" type="button"
-                        class="btn btn-success ml-3">Pause/Weiter</button>
-                      <button style="display: flex; justify-content: center; align-items: center; margin-top: 0.3vw"
-                        @click="play3DSound(musiclink, -1)" type="button"
                         class="btn btn-secondary ml-3">Abbrechen</button>
                     </div>
                   </div>
@@ -1912,7 +1912,7 @@ export default {
       showticket: false,
       //Radio
       frequenz: '',
-      showradio: false,
+      showradiosystem: false,
       //Music
       musiclink: '',
       showmusic: false,
@@ -2652,7 +2652,7 @@ export default {
     showradiomenu(freq)
     {
       this.frequenz = freq;
-      this.showradio = !this.showradio;
+      this.showradiosystem = !this.showradiosystem;
     },
     showmusicmenu(status)
     {
@@ -5105,7 +5105,7 @@ export default {
     },
     showBlackFadeIn: function (blacktext) {
       var soundata = {
-        soundurl: 'https://nemesus-world.de/sounds/tutorial.mp3'
+        soundurl: 'https://nemesus-world.de/testserversounds/tutorial.mp3'
       }
       this.startSound = new Audio(soundata.soundurl);
       this.startSound.volume = 0.05;
@@ -5227,7 +5227,7 @@ export default {
       if(name != 'technobase')
       {
         soundata = {
-          soundurl: 'https://nemesus-world.de/sounds/' + name
+          soundurl: 'https://nemesus-world.de/testserversounds/' + name
         }
       }
       else

@@ -2784,7 +2784,7 @@ namespace NemesusWorld.Controllers
                                     else if (item.description == "Funkgerät")
                                     {
                                         OnShowInventory(player, 1);
-                                        player.TriggerEvent("Client:ShowRadio", tempData.radio);
+                                        player.TriggerEvent("Client:ShowRadioSystem", tempData.radio);
                                         return;
                                     }
                                     else if (item.description == "Filmkamera")

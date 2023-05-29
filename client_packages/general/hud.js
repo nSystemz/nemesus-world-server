@@ -8087,7 +8087,7 @@ function UpdateNameTags1(nametags) {
                         foundDrone = true;
                     }
 
-                    if (player.getAlpha() != 0 && player.getAlpha != 255 && foundDrone == false) {
+                    if (player.getAlpha() != 0 && player.getAlpha != 254 && foundDrone == false) {
                         if (admindutytemp == 1) {
                             if (afk == 0) {
                                 graphics.drawText(realname + ' [' + player.remoteId + ']\n~r~' + GetAdminRang(player, adminlevel), [x, y], {

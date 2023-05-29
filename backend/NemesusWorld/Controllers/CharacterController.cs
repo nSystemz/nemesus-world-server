@@ -708,14 +708,7 @@ namespace NemesusWorld.Controllers
                     NAPI.Player.SetPlayerAccessory(player, 2, (int)obj["clothing"][9], (int)obj["clothingColor"][9]);
                     if (clothingArray[0] == "1")
                     {
-                        if (account.admin_rang == "Development - Scripter")
-                        {
-                            NAPI.Player.SetPlayerAccessory(player, 189, 2, 0);
-                        }
-                        else
-                        {
                             NAPI.Player.SetPlayerAccessory(player, 0, (int)obj["clothing"][7], (int)obj["clothingColor"][7]);
-                        }
                     }
                     else
                     {
@@ -748,10 +741,11 @@ namespace NemesusWorld.Controllers
                     NAPI.Player.SetPlayerClothes(player, 7, 0, 0);
                     NAPI.Player.SetPlayerClothes(player, 10, 0, 0);
                     NAPI.Player.SetPlayerClothes(player, 1, 0, 0);
+                    //ToDo: Adminkleidung setzen
                     if (character.gender == 1)
                     {
                         NAPI.Player.SetPlayerClothes(player, 8, 15, 0);
-                        NAPI.Player.SetPlayerClothes(player, 11, 443+29, 0);
+                        NAPI.Player.SetPlayerClothes(player, 11, 131, 0);
                         NAPI.Player.SetPlayerClothes(player, 3, 0, 0);
                         NAPI.Player.SetPlayerClothes(player, 4, 4, 0);
                         NAPI.Player.SetPlayerClothes(player, 6, 57, 9);

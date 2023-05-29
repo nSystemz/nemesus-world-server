@@ -1559,7 +1559,7 @@ export default {
     data: function () {
         return {
             //Allgemeines
-            showMDC: true,
+            showMDC: false,
             selectMDC: 0,
             mdcSelectPersonal: 0,
             searchelement: '',

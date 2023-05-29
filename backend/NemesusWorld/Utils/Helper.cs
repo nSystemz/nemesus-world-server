@@ -1304,7 +1304,7 @@ namespace NemesusWorld.Utils
                     player.TriggerEvent("Client:Leaveradio", tempData.radio);
                     tempData.radio = "";
                 }
-                player.TriggerEvent("Client:ShowRadio", freq);
+                player.TriggerEvent("Client:ShowRadioSystem", freq);
                 return;
             }
             catch (Exception)

@@ -772,12 +772,10 @@ mp.events.add('render', (nametags) => {
     mp.players.local.setSuffersCriticalHits(false); //Headshots
 
     //Nametags
-    if(nametagSystem == 0)
-    {
+    if (nametagSystem == 0) {
         UpdateNameTags1(nametags);
     }
-    else
-    {
+    else {
         UpdateNameTags2(nametags);
     }
 
@@ -832,28 +830,27 @@ mp.events.add('render', (nametags) => {
         mp.game.controls.disableControlAction(0, 37, true);
         mp.game.graphics.drawScaleformMovieFullscreen(livestreamscaleform, 255, 255, 255, 255, false);
         zoomvalue = (1.0 / (livestreamfov_max - livestreamfov_min)) * (livestreamfov - livestreamfov_min);
-        if(new_z != -1)
-        {
+        if (new_z != -1) {
             localPlayer.setRotation(0, 0, new_z, 2, true);
         }
         CheckInputRotation(livestreamCam, zoomvalue);
 
         camPitch = livestreamCam.getRot(2);
 
-        if(camPitch.x < -70.0)
+        if (camPitch.x < -70.0)
             camPitch.x = -70.0
-        else if(camPitch.x > 42.0)
-        camPitch.x = 42.0
+        else if (camPitch.x > 42.0)
+            camPitch.x = 42.0
 
         camPitch.x = (camPitch.x + 70.0) / 112.0
-        
-        if(camPitch.y < -180.0)
-        camPitch.y = -180.0
-        else if(camPitch.y > 180.0)
-        camPitch.y = 180.0
+
+        if (camPitch.y < -180.0)
+            camPitch.y = -180.0
+        else if (camPitch.y > 180.0)
+            camPitch.y = 180.0
 
         camPitch.y = (camPitch.y + 180.0) / 360.0
-        
+
         mp.game.invoke(0xD5BB4025AE449A4E, localPlayer, "Pitch", camPitch.x);
         mp.game.invoke(0xD5BB4025AE449A4E, localPlayer, "Heading", camPitch.y * -1.0 + 1.0);
 
@@ -905,7 +902,7 @@ mp.events.add('render', (nametags) => {
                 } else {
                     mp.game.streaming.requestNamedPtfxAsset("core");
                 }
-            } catch {}
+            } catch { }
         });
     }
 
@@ -917,7 +914,7 @@ mp.events.add('render', (nametags) => {
                 if (distance <= 22.5) {
                     vehiclename = vehicle.getVariable('Vehicle:Name');
                     vehiclename = vehiclename.charAt(0).toUpperCase() + vehiclename.slice(1).toLowerCase();
-                    mp.game.graphics.drawText(`~b~${vehiclename} [${vehicle.remoteId}]\n${vehicle.position.x.toFixed(2)}, ${vehicle.position.y.toFixed(2)}, ${vehicle.position.z.toFixed(2)}\n${vehicle.getRotation(5).x.toFixed(2)}, ${vehicle.getRotation(5).y.toFixed(2)}, ${vehicle.getRotation(5).z.toFixed(2)}\n${parseInt((100/1000)*vehicle.getHealth())}%
+                    mp.game.graphics.drawText(`~b~${vehiclename} [${vehicle.remoteId}]\n${vehicle.position.x.toFixed(2)}, ${vehicle.position.y.toFixed(2)}, ${vehicle.position.z.toFixed(2)}\n${vehicle.getRotation(5).x.toFixed(2)}, ${vehicle.getRotation(5).y.toFixed(2)}, ${vehicle.getRotation(5).z.toFixed(2)}\n${parseInt((100 / 1000) * vehicle.getHealth())}%
                 `, [vehicle.position.x, vehicle.position.y, vehicle.position.z + 0.25], {
                         font: 0,
                         color: [255, 255, 255, 185],
@@ -1134,7 +1131,7 @@ mp.events.add("Client:ToggleFilmCamera", (player, onoff) => {
         mp.game.graphics.setTimecycleModifierStrength(0.3);
         mp.game.cam.setCamEffect(1);
         livestreamscaleform = mp.game.graphics.requestScaleformMovie('security_camera');
-        
+
         while (!mp.game.graphics.hasScaleformMovieLoaded(livestreamscaleform)) mp.game.wait(0);
 
         mp.game.graphics.callScaleformMovieMethod(livestreamscaleform, "SET_CAM_LOGO");
@@ -1173,7 +1170,7 @@ mp.events.add("Client:ShowSpeedometer", () => {
                 maxspeed = mp.game.vehicle.getVehicleModelMaxSpeed(localPlayer.vehicle.model) * 3.6;
             }
         }
-        hudWindow.execute(`gui.speedometer.showSpeedometer('${maxspeed+getSpeedBonus(localPlayer.vehicle)}');`)
+        hudWindow.execute(`gui.speedometer.showSpeedometer('${maxspeed + getSpeedBonus(localPlayer.vehicle)}');`)
     }
 })
 
@@ -1968,7 +1965,7 @@ mp.events.add("Client:MuteMicro", (micro) => {
 
 mp.events.add("Client:CloseHandy", () => {
     if (hudWindow != null) {
-        mp.events.callRemote('Server:CloseHandy', );
+        mp.events.callRemote('Server:CloseHandy',);
     }
 })
 
@@ -2957,21 +2954,19 @@ mp.events.add("Client:ShowClothMenu", (getarray1, getarray2, gender, multiplier)
 mp.events.add("Client:GetMaxClothColor", (cloth, drawable, gender = 0) => {
     let maxcolor = 0;
     let faction = localPlayer.getVariable('Player:Faction');
-    if (!faction) faction = 0;
+    if (!faction) {
+        faction = 0;
+    }
     if (hudWindow != null) {
         if (cloth == 'Schuh') {
             maxcolor = localPlayer.getNumberOfTextureVariations(6, drawable);
             if (gender == 1) {
                 if (drawable == 25 || drawable == 97) {
                     maxcolor = 1;
-                } else if (drawable == 149+7) {
-                    maxcolor = 16;
                 }
             } else if (gender == 2) {
                 if (drawable == 25 || drawable == 101) {
                     maxcolor = 1;
-                } else if (drawable == 155+3) {
-                    maxcolor = 16;
                 }
             }
         } else if (cloth == 'Hosen') {
@@ -2983,83 +2978,43 @@ mp.events.add("Client:GetMaxClothColor", (cloth, drawable, gender = 0) => {
                     maxcolor = 3;
                 } else if (drawable == 135) {
                     maxcolor = 2;
-                } else if (drawable == 154+8 && faction == 2) {
-                    maxcolor = 5;
-                } else if (drawable == 154+8 && faction == 3) {
-                    maxcolor = 1;
                 } else if (drawable == 150)
                     maxcolor = 1;
             }
         } else if (gender == 2) {
-            if (drawable == 127 || drawable == 34 || drawable == 30 || drawable == 135 || drawable == 158+13) {
+            if (drawable == 127 || drawable == 34 || drawable == 30 || drawable == 135) {
                 maxcolor = 1;
             }
-            if (drawable == 157+13) {
-                maxcolor = 3;
-            }
-        }
-    } else if (cloth == 'Torso') {
-        maxcolor = localPlayer.getNumberOfTextureVariations(3, drawable);
-    } else if (cloth == 'Oberbekleidung') {
-        maxcolor = localPlayer.getNumberOfTextureVariations(11, drawable);
-        if (gender == 1) {
-            if (drawable == 413+29 || drawable == 414+29 || drawable == 415+29) {
-                maxcolor = 15;
-            } else if (drawable == 416+29 || drawable == 419+29 || drawable == 423+29 || drawable == 320 || drawable == 328) {
-                maxcolor = 1;
-            } else if (drawable == 417) {
-                maxcolor = 2;
-            } else if (drawable == 422+29 || drawable == 479+29 || drawable == 480+29) {
-                maxcolor = 9;
-            } else if (drawable == 481+29) {
-                maxcolor = 8;
-            } else if (drawable == 482+29 || drawable == 483+29) {
-                maxcolor = 16;
-            } else if (drawable == 484+29) {
-                maxcolor = 14;
-            } else if (drawable == 485+29 || drawable == 486+29 || drawable == 489+29) {
-                maxcolor = 2;
-            } else if (drawable == 477+29) {
-                maxcolor = 4;
-            } else if (drawable == 478+29 || drawable == 482+29 || drawable == 483+29) {
-                maxcolor = 1;
-            } else if (gender == 2) {
-                if (drawable == 440 || drawable == 441 || drawable == 442) {
-                    maxcolor = 15;
-                } else if (drawable == 443 || drawable == 446 || drawable == 444 || drawable == 331 || drawable == 46) {
+        } else if (cloth == 'Torso') {
+            maxcolor = localPlayer.getNumberOfTextureVariations(3, drawable);
+        } else if (cloth == 'Oberbekleidung') {
+            maxcolor = localPlayer.getNumberOfTextureVariations(11, drawable);
+            if (gender == 1) {
+                if (drawable == 320 || drawable == 328) {
                     maxcolor = 1;
-                } else if (drawable == 445 || drawable == 448+29 || drawable == 501+29 || drawable == 507+29) {
+                } else if (drawable == 417) {
                     maxcolor = 2;
-                } else if ((drawable == 502+29 || drawable == 503+29) && faction == 2) {
-                    maxcolor = 16;
-                } else if ((drawable == 502 || drawable == 503) && faction == 3) {
-                    maxcolor = 1;
-                } else if (drawable == 504+29) {
-                    maxcolor = 14;
-                } else if (drawable == 449+29) {
-                    maxcolor = 7;
+                } else if (gender == 2) {
+                    if (drawable == 440 || drawable == 441 || drawable == 442) {
+                        maxcolor = 15;
+                    } else if (drawable == 443 || drawable == 446 || drawable == 444 || drawable == 331 || drawable == 46) {
+                        maxcolor = 1;
+                    } else if (drawable == 445) {
+                        maxcolor = 2;
+                    } else if ((drawable == 502 || drawable == 503) && faction == 3) {
+                        maxcolor = 1;
+                    }
                 }
             }
         } else if (cloth == 'T-Shirt') {
             maxcolor = localPlayer.getNumberOfTextureVariations(8, drawable);
             if (gender == 1) {
-                if (drawable == 192+2 || drawable == 195+2 || drawable == 205+2 || drawable == 202+2 || drawable == 207+2 || drawable == 201+2 || drawable == 212 || drawable == 213) {
+                if (drawable == 212 || drawable == 213) {
                     maxcolor = 1;
-                } else if (drawable == 193+2 || drawable == 196+2) {
-                    maxcolor = 3;
-                } else if (drawable == 194+2 || drawable == 211+2 || drawable == 214+2) {
-                    maxcolor = 2;
-                } else if (drawable == 204+2) {
-                    maxcolor = 4;
-                } else if (drawable == 179+2)
-                    maxcolor = 5;
-            } else if (gender == 2) {
-                if (drawable == 238+2 || drawable == 236+2 || drawable == 237+2 || drawable == 240+2 || drawable == 248+2 || drawable == 190+2 || drawable == 245+2 || drawable == 256+2 || drawable == 253 || drawable == 254) {
-                    maxcolor = 1;
-                } else if (drawable == 239+2 || drawable == 249+2) {
-                    maxcolor = 3;
-                } else if (drawable == 217+2) {
-                    maxcolor = 5;
+                } else if (gender == 2) {
+                    if (drawable == 253 || drawable == 254) {
+                        maxcolor = 1;
+                    }
                 }
             }
         } else if (cloth == 'Rucksack') {
@@ -3105,8 +3060,8 @@ mp.events.add("Client:GetMaxClothColor", (cloth, drawable, gender = 0) => {
             maxcolor = 1;
         }
         setTimeout(() => {
-            hudWindow.execute(`gui.hud.setMaxClothColor('${(maxcolor-1)}');`)
-        }, 35);
+            hudWindow.execute(`gui.hud.setMaxClothColor('${(maxcolor - 1)}');`)
+        }, 65);
     }
 });
 
@@ -5092,12 +5047,12 @@ mp.keys.bind(0x20, true, function () {
 
 //SpeakAnim
 mp.events.add("Client:SpeakAnim", () => {
-    mp.players.local.playFacialAnim("mic_chatter", "mp_facial"); 
+    mp.players.local.playFacialAnim("mic_chatter", "mp_facial");
     if (speakTimeout != null) {
         clearTimeout(speakTimeout);
     }
     speakTimeout = setTimeout(function () {
-        mp.players.local.playFacialAnim("mood_normal_1", "facials@gen_male@variations@normal"); 
+        mp.players.local.playFacialAnim("mood_normal_1", "facials@gen_male@variations@normal");
     }, 2500);
 });
 
@@ -6596,7 +6551,7 @@ mp.events.add('entityStreamIn', (entity) => {
                 }
             }
         }
-    } catch {}
+    } catch { }
 });
 
 mp.events.add('entityStreamOut', (entity) => {
@@ -6653,7 +6608,7 @@ mp.events.add('entityStreamOut', (entity) => {
                 entityAttachments = entityAttachments.filter(am => am.delete == false);
             }
         }
-    } catch {}
+    } catch { }
 });
 
 //HideCursor
@@ -7935,7 +7890,7 @@ function setVehicleSpeed(vehicle) {
             }
             vehicle.setMaxSpeed((speed + percent) / 3.6);
             if (hudWindow != null) {
-                hudWindow.execute(`gui.speedometer.updateMaxSpeed('${speed+percent}');`)
+                hudWindow.execute(`gui.speedometer.updateMaxSpeed('${speed + percent}');`)
             }
         } else {
             if (hudWindow != null) {
@@ -8132,7 +8087,7 @@ function UpdateNameTags1(nametags) {
                         foundDrone = true;
                     }
 
-                    if (player.getAlpha() == 255 && foundDrone == false) {
+                    if (player.getAlpha() != 0 && player.getAlpha != 255 && foundDrone == false) {
                         if (admindutytemp == 1) {
                             if (afk == 0) {
                                 graphics.drawText(realname + ' [' + player.remoteId + ']\n~r~' + GetAdminRang(player, adminlevel), [x, y], {
@@ -8205,7 +8160,7 @@ function UpdateNameTags1(nametags) {
                 }
             }
         })
-    } catch {}
+    } catch { }
 }
 
 function UpdateNameTags2(nametags) {
@@ -8289,7 +8244,7 @@ function UpdateNameTags2(nametags) {
                 }
             }
         })
-    } catch {}
+    } catch { }
 }
 
 const createObject = (model, pos, rot, dim) => {
@@ -8495,7 +8450,7 @@ mp.events.add("Client:Speedlimit", (speed) => {
     if (localPlayer.vehicle) {
         localPlayer.vehicle.setMaxSpeed(speed / 3.6);
         if (speed != -1) {
-            hudWindow.execute(`gui.speedometer.updateMaxSpeed('${(speed / 3.6)-1}');`)
+            hudWindow.execute(`gui.speedometer.updateMaxSpeed('${(speed / 3.6) - 1}');`)
         } else {
             hudWindow.execute(`gui.speedometer.updateMaxSpeed('${mp.game.vehicle.getVehicleModelMaxSpeed(localPlayer.vehicle.model) * 3.6}');`)
         }
@@ -9371,7 +9326,7 @@ function getClosestVehicle(position) {
             distance: closest,
             vehicle: closestVeh
         };
-    } catch {}
+    } catch { }
 }
 
 function getClosestPed(position) {
@@ -9393,7 +9348,7 @@ function getClosestPed(position) {
             distance: closest,
             ped: closestPed
         };
-    } catch {}
+    } catch { }
 }
 
 function setWalkingStyle(player, style) {

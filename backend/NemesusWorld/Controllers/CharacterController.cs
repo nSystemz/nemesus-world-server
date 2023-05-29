@@ -173,6 +173,7 @@ namespace NemesusWorld.Controllers
                         Helper.SyncThings(player);
                         player.TriggerEvent("Client:ShowHud", player.Id);
                         Helper.SendChatMessage(player, "~b~Willkommen auf Nemesus World " + account.name + ", schau dir doch mal das F2 Menü an, dort findest du auch wichtige Tipps und den Reiter - Erste Schritte für deinen Anfang auf diesem Server!");
+                        Helper.SendChatMessage(player, "~b~Dieser Gamemode wurde von Nemesus.de entwickelt!");
                         Helper.CheckSaltyChat(player);
                         player.TriggerEvent("SaltyChat_InitToTalkClient", player.Id);
                         player.SetOwnSharedData("Player:Spawned", true);
@@ -204,6 +205,7 @@ namespace NemesusWorld.Controllers
                     {
                         player.TriggerEvent("Client:ShowHud", player.Id);
                         Helper.SendChatMessage(player, "~b~Willkommen auf Nemesus World " + account.name + ", schau dir doch mal das F2 Menü an, dort findest du auch wichtige Tipps und den Reiter - Erste Schritte für deinen Anfang auf diesem Server!");
+                        Helper.SendChatMessage(player, "~b~Dieser Gamemode wurde von Nemesus.de entwickelt!");
                         Helper.CheckSaltyChat(player);
                         player.SetOwnSharedData("Player:Spawned", true);
                         CharacterController.SaveCharacter(player);

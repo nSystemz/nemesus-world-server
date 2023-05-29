@@ -1220,7 +1220,7 @@
                     <hr v-if="selectedcloth != 'n/A'" />
                     <h5 v-if="selectedcloth != 'n/A'">{{selectedcloth}}nauswahl ({{selectedclothid}}):</h5>
                     <vue-range-slider
-                      v-if="selectedcloth != 'n/A'"
+                      v-if="selectedcloth != 'n/A' && selectedcloth != 'Torso'"
                       ref="slider" tooltip="false" dotSize="14" height="13" :min="0" :max="maxcloth" value='0'
                       :step="1" v-model="selectedclothid" v-oninput="clothingCustomize(1)" />
                     <h5 class="mt-1" v-if="selectedcloth != 'n/A' && maxclothColor > 0">{{selectedcloth}}nvariante ({{selectedclothcolor}}):
@@ -4702,8 +4702,6 @@ export default {
       if (getcolor < 0) {
         getcolor = 0;
       }
-      // eslint-disable-next-line no-undef
-      mp.trigger("Client:SendNotificationWithoutButton", 'Hier: '+getcolor, 'success', 'top-left', 2500);
       this.maxclothColor = getcolor;
     },
     showClothMenu: function (getarray1, getarray2, gender, multiplier) {

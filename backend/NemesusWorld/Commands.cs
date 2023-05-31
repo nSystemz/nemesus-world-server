@@ -6396,7 +6396,7 @@ namespace NemesusWorld
                 }
                 Helper.CreateAdminLog($"adminlog", account.name + " hat den Server neugestartet!");
                 Helper.SendNotificationWithoutButton(player, "Server wird neugestartet ...", "success", "top-end");
-                Helper.SendAdminMessage2($"{account.name} hat den Server neugestartet, Neustart in ca. 5 Sekunden ...", 1, true);
+                Helper.SendAdminMessage2($"{account.name} hat den Server neugestartet, Neustart in ca. 10 Sekunden ...", 1, true);
                 NAPI.Task.Run(() =>
                 {
                     Helper.SendAdminMessage3($"Server wird in ca. 10 Sekunden neugestartet ...");

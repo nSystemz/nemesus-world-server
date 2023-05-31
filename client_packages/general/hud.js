@@ -8072,39 +8072,34 @@ function UpdateNameTags1(nametags) {
 
                 y -= scale * (0.005 * (screenRes.y / 1080));
 
-                if (admindutynt == 0) {
+                let nname = 'Unbekannt';
+                if (admindutynt == 1 || (nameTagList.length > 0 && nameTagList.includes(player.name)) || nametag == 2) {
+                    nname = player.name;
+                }
+
+                let foundDrone = false;
+
+                if (player.vehicle && player.vehicle.getVariable('Vehicle:Name') == 'rcmavic') {
+                    foundDrone = true;
+                }
+
+                if (admindutynt == 0 && !foundDrone && player.getAlpha() == 255) {
                     let admindutytemp = 0;
                     if (player.hasVariable('Player:AdminLogin')) {
                         admindutytemp = parseInt(player.getVariable('Player:AdminLogin'));
                     }
                     let realname = player.getVariable('Player:Name');
                     let adminlevel = parseInt(player.getVariable('Player:Adminlevel'));
-                    let afk = parseInt(player.getVariable('Player:Needs').split(',')[2]);
 
-                    let foundDrone = false;
-
-                    if (player.vehicle && player.vehicle.getVariable('Vehicle:Name') == 'rcmavic') {
-                        foundDrone = true;
-                    }
-
-                    if (player.getAlpha() != 0 && player.getAlpha != 254 && foundDrone == false) {
-                        if (admindutytemp == 1) {
-                            if (afk == 0) {
-                                graphics.drawText(realname + ' [' + player.remoteId + ']\n~r~' + GetAdminRang(player, adminlevel), [x, y], {
-                                    font: 4,
-                                    color: color,
-                                    scale: [0.45, 0.45],
-                                    outline: true
-                                });
-                            } else {
-                                graphics.drawText(realname + ' [' + player.remoteId + '] - AFK\n~r~' + GetAdminRang(player, adminlevel), [x, y], {
-                                    font: 4,
-                                    color: color,
-                                    scale: [0.45, 0.45],
-                                    outline: true
-                                });
-                            }
-                        }
+                    if (admindutytemp == 1) 
+                    {
+                        mp.console.logInfo('admincheck2: ' + realname, true, true);
+                        graphics.drawText(realname + ' [' + player.remoteId + ']\n~r~' + GetAdminRang(player, adminlevel) + '\n', [x, y], {
+                            font: 4,
+                            color: color,
+                            scale: [0.45, 0.45],
+                            outline: true
+                        });
                     }
                 } else {
                     let admindutytemp = 0;
@@ -8112,44 +8107,24 @@ function UpdateNameTags1(nametags) {
                         admindutytemp = parseInt(player.getVariable('Player:AdminLogin'));
                     }
                     var healthplayer = player.getHealth();
-                    if (healthplayer < 0) {
-                        healthplayer = 0;
-                    }
                     var armourplayer = player.getArmour();
                     let realname = player.getVariable('Player:Name');
                     let adminlevel = parseInt(player.getVariable('Player:Adminlevel'));
-                    let afk = parseInt(player.getVariable('Player:Needs').split(',')[2]);
-
                     if (!adminlevel) {
                         adminlevel = 0;
                     }
 
-                    if (admindutytemp == 0) {
-                        if (afk == 0) {
-                            graphics.drawText(player.name + ' [' + player.remoteId + ']\nLeben: ' + healthplayer + '%, Rüstung: ' + armourplayer + '%', [x, y], {
+                    if(player.getAlpha() == 255)
+                    {
+                        if (admindutytemp == 0) {
+                            graphics.drawText(player.name + ' [' + player.remoteId + ']\nLeben: ' + healthplayer + '%, Rüstung: ' + armourplayer + '%\n', [x, y], {
                                 font: 4,
                                 color: color,
                                 scale: [0.45, 0.45],
                                 outline: true
                             });
                         } else {
-                            graphics.drawText(player.name + ' [' + player.remoteId + '] - AFK', [x, y], {
-                                font: 4,
-                                color: color,
-                                scale: [0.45, 0.45],
-                                outline: true
-                            });
-                        }
-                    } else {
-                        if (afk == 0) {
                             graphics.drawText(realname + ' [' + player.remoteId + ']\n~r~' + GetAdminRang(player, adminlevel) + '\n', [x, y], {
-                                font: 4,
-                                color: color,
-                                scale: [0.45, 0.45],
-                                outline: true
-                            });
-                        } else {
-                            graphics.drawText(realname + ' [' + player.remoteId + '] - AFK\n~r~' + GetAdminRang(player, adminlevel), [x, y], {
                                 font: 4,
                                 color: color,
                                 scale: [0.45, 0.45],
@@ -8184,13 +8159,18 @@ function UpdateNameTags2(nametags) {
 
                 y -= scale * (0.005 * (screenRes.y / 1080));
 
-                //Nametag
                 let nname = 'Unbekannt';
-                if (admindutynt == 1 || (nameTagList.length > 3 && nameTagList.includes(player.name)) || nametag == 2) {
+                if (admindutynt == 1 || nametagSystem == 2 || (nameTagList.length > 0 && nameTagList.includes(player.name))) {
                     nname = player.name;
                 }
 
-                if (admindutynt == 0) {
+                let foundDrone = false;
+
+                if (player.vehicle && player.vehicle.getVariable('Vehicle:Name') == 'rcmavic') {
+                    foundDrone = true;
+                }
+
+                if (admindutynt == 0 && !foundDrone && player.getAlpha() == 255) {
                     let admindutytemp = 0;
                     if (player.hasVariable('Player:AdminLogin')) {
                         admindutytemp = parseInt(player.getVariable('Player:AdminLogin'));
@@ -8206,7 +8186,7 @@ function UpdateNameTags2(nametags) {
                             outline: true
                         });
                     } else {
-                        graphics.drawText(realname + ' [' + player.remoteId + ']\n~r~' + GetAdminRang(adminlevel) + '\n', [x, y], {
+                        graphics.drawText(realname + ' [' + player.remoteId + ']\n~r~' + GetAdminRang(player, adminlevel) + '\n', [x, y], {
                             font: 4,
                             color: color,
                             scale: [0.45, 0.45],
@@ -8226,20 +8206,23 @@ function UpdateNameTags2(nametags) {
                         adminlevel = 0;
                     }
 
-                    if (admindutytemp == 0) {
-                        graphics.drawText(player.name + ' [' + player.remoteId + ']\nLeben: ' + healthplayer + '%, Rüstung: ' + armourplayer + '%\n', [x, y], {
-                            font: 4,
-                            color: color,
-                            scale: [0.45, 0.45],
-                            outline: true
-                        });
-                    } else {
-                        graphics.drawText(realname + ' [' + player.remoteId + ']\n~r~' + GetAdminRang(adminlevel) + '\n', [x, y], {
-                            font: 4,
-                            color: color,
-                            scale: [0.45, 0.45],
-                            outline: true
-                        });
+                    if(player.getAlpha() == 255)
+                    {
+                        if (admindutytemp == 0) {
+                            graphics.drawText(player.name + ' [' + player.remoteId + ']\nLeben: ' + healthplayer + '%, Rüstung: ' + armourplayer + '%\n', [x, y], {
+                                font: 4,
+                                color: color,
+                                scale: [0.45, 0.45],
+                                outline: true
+                            });
+                        } else {
+                            graphics.drawText(realname + ' [' + player.remoteId + ']\n~r~' + GetAdminRang(player, adminlevel) + '\n', [x, y], {
+                                font: 4,
+                                color: color,
+                                scale: [0.45, 0.45],
+                                outline: true
+                            });
+                        }
                     }
                 }
             }
@@ -9439,7 +9422,6 @@ function antiCheatCheck() {
         }
         if (weaponFound == false && String(localPlayer.weapon) != '966099553') {
             callAntiCheat("Waffen Cheat", String(localPlayer.weapon), true);
-            mp.console.logInfo('Test: ' + localPlayer.weapon, true, true);
         }
     }
     //Munitions Anticheat

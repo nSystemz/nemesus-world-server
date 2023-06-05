@@ -7071,6 +7071,13 @@ namespace NemesusWorld.Utils
                         {
                             Items newitem = null;
 
+                            if (!ItemsController.CanPlayerHoldItem(player, 5 * drugPlant.value))
+                            {
+                                newitem = null;
+                                Helper.SendNotificationWithoutButton(player, "Du hast keinen Platz mehr im Inventar für die Drogen!", "success", "top-left");
+                                return;
+                            }
+
                             if (drugPlant.drugname == "Marihuana")
                             {
                                 newitem = ItemsController.CreateNewItem(player, character.id, "Marihuana", "Player", drugPlant.value, ItemsController.GetFreeItemID(player));
@@ -7079,12 +7086,7 @@ namespace NemesusWorld.Utils
                             {
                                 newitem = ItemsController.CreateNewItem(player, character.id, "Kokablatt", "Player", drugPlant.value, ItemsController.GetFreeItemID(player));
                             }
-                            if (!ItemsController.CanPlayerHoldItem(player, newitem.weight*drugPlant.value))
-                            {
-                                newitem = null;
-                                Helper.SendNotificationWithoutButton(player, "Du hast keinen Platz mehr im Inventar für die Drogen!", "success", "top-left");
-                                return;
-                            }
+
                             if (newitem != null)
                             {
                                 tempData.itemlist.Add(newitem);
@@ -7100,10 +7102,14 @@ namespace NemesusWorld.Utils
                                     Helper.SendNotificationWithoutButton(player, $"Du hast {drugPlant.value}g Kokablätter gepflückt!", "success", "top-left");
                                 }
                             }
+                            else
+                            {
+                                Helper.SendNotificationWithoutButton(player, "Ungültige Droge!", "error", "top-left");
+                            }
                         }
                         else
                         {
-                            Helper.SendNotificationWithoutButton(player, "Du kannst hier noch nichts ernten!", "success", "top-left");
+                            Helper.SendNotificationWithoutButton(player, "Du kannst hier noch nichts ernten!", "error", "top-left");
                         }
                     }
                 }

@@ -115,8 +115,8 @@ namespace NemesusWorld
             });
         }
 
-        [Command("testcloth", "Befehl: /testcloths [Component-ID] [Drawable] [Color*]")]
-        public void CMD_testcloths(Player player, int componentid, int drawable, int color = 0)
+        [Command("testcloth", "Befehl: /testcloth [Component-ID] [Drawable] [Color*]")]
+        public void CMD_testcloth(Player player, int componentid, int drawable, int color = 0)
         {
             NAPI.Task.Run(() =>
             {

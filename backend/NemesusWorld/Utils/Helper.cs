@@ -7079,7 +7079,7 @@ namespace NemesusWorld.Utils
                             {
                                 newitem = ItemsController.CreateNewItem(player, character.id, "Kokablatt", "Player", drugPlant.value, ItemsController.GetFreeItemID(player));
                             }
-                            if (!ItemsController.CanPlayerHoldItem(player, newitem.weight))
+                            if (!ItemsController.CanPlayerHoldItem(player, newitem.weight*drugPlant.value))
                             {
                                 newitem = null;
                                 Helper.SendNotificationWithoutButton(player, "Du hast keinen Platz mehr im Inventar für die Drogen!", "success", "top-left");

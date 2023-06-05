@@ -7090,8 +7090,8 @@ namespace NemesusWorld.Utils
                             if (newitem != null)
                             {
                                 tempData.itemlist.Add(newitem);
-                                drugPlant.value = 0;
                                 drugPlant.textLabel.Text = $"~b~{drugPlant.drugname}pflanze\n~b~{drugPlant.value}g - Wasserzustand: {drugPlant.water}%\n\n~b~[E]~w~ zum ernten\n~b~[G]~w~ zum giessen\n~b~[P]~w~ zum zerstören";
+                                drugPlant.value = 0;
                                 Helper.PlayShortAnimation(player, "amb@world_human_gardener_plant@male@idle_a", "idle_b", 2250);
                                 if (drugPlant.drugname == "Marihuana")
                                 {

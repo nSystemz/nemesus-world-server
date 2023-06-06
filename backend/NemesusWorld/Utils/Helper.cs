@@ -7073,7 +7073,6 @@ namespace NemesusWorld.Utils
 
                             if (!ItemsController.CanPlayerHoldItem(player, 5 * drugPlant.value))
                             {
-                                newitem = null;
                                 Helper.SendNotificationWithoutButton(player, "Du hast keinen Platz mehr im Inventar für die Drogen!", "success", "top-left");
                                 return;
                             }
@@ -7090,21 +7089,18 @@ namespace NemesusWorld.Utils
                             if (newitem != null)
                             {
                                 tempData.itemlist.Add(newitem);
-                                drugPlant.textLabel.Text = $"~b~{drugPlant.drugname}pflanze\n~b~{drugPlant.value}g - Wasserzustand: {drugPlant.water}%\n\n~b~[E]~w~ zum ernten\n~b~[G]~w~ zum giessen\n~b~[P]~w~ zum zerstören";
-                                drugPlant.value = 0;
-                                Helper.PlayShortAnimation(player, "amb@world_human_gardener_plant@male@idle_a", "idle_b", 2250);
-                                if (drugPlant.drugname == "Marihuana")
-                                {
-                                    Helper.SendNotificationWithoutButton(player, $"Du hast {drugPlant.value}g Marihuana gepflückt!", "success", "top-left");
-                                }
-                                else if (drugPlant.drugname == "Kokain")
-                                {
-                                    Helper.SendNotificationWithoutButton(player, $"Du hast {drugPlant.value}g Kokablätter gepflückt!", "success", "top-left");
-                                }
                             }
-                            else
+
+                            drugPlant.textLabel.Text = $"~b~{drugPlant.drugname}pflanze\n~b~{drugPlant.value}g - Wasserzustand: {drugPlant.water}%\n\n~b~[E]~w~ zum ernten\n~b~[G]~w~ zum giessen\n~b~[P]~w~ zum zerstören";
+                            drugPlant.value = 0;
+                            Helper.PlayShortAnimation(player, "amb@world_human_gardener_plant@male@idle_a", "idle_b", 2250);
+                            if (drugPlant.drugname == "Marihuana")
                             {
-                                Helper.SendNotificationWithoutButton(player, "Ungültige Droge!", "error", "top-left");
+                                Helper.SendNotificationWithoutButton(player, $"Du hast {drugPlant.value}g Marihuana gepflückt!", "success", "top-left");
+                            }
+                            else if (drugPlant.drugname == "Kokain")
+                            {
+                                Helper.SendNotificationWithoutButton(player, $"Du hast {drugPlant.value}g Kokablätter gepflückt!", "success", "top-left");
                             }
                         }
                         else
@@ -7366,7 +7362,7 @@ namespace NemesusWorld.Utils
                     {
                         prices2 = $"{adminSettings.grouparray[4]},{adminSettings.grouparray[5]},{adminSettings.grouparray[6]},{adminSettings.grouparray[7]},{adminSettings.grouparray[8]},{adminSettings.grouparray[9]},{adminSettings.grouparray[10]},{adminSettings.grouparray[11]},{adminSettings.grouparray[12]},{adminSettings.grouparray[13]}";
                     }
-                    catch(Exception)
+                    catch (Exception)
                     {
                         prices2 = "0,0,0,0,0,0,0,0,0,0";
                     }

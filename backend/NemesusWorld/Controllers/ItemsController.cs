@@ -175,6 +175,25 @@ namespace NemesusWorld.Controllers
             return "n/A";
         }
 
+        public static int GetItemWeightFromList(string itemname)
+        {
+            try
+            {
+                foreach (ItemModel itemmodel in itemModelList)
+                {
+                    if (itemmodel.description.ToLower() == itemname.ToLower())
+                    {
+                        return itemmodel.weight;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[GetItemWeight]: " + e.ToString());
+            }
+            return 0;
+        }
+
         public static void GetItemByName(Items item, string itemname)
         {
             try

@@ -551,13 +551,12 @@ namespace NemesusWorld.Controllers
                 {
                     amount = 10;
                 }
-                Items newitem = ItemsController.CreateNewItem(player, character.id, craftArray[0], "Player", amount, ItemsController.GetFreeItemID(player));
-                if (!ItemsController.CanPlayerHoldItem(player, newitem.weight))
+                if (!ItemsController.CanPlayerHoldItem(player, ItemsController.GetItemWeightFromList(craftArray[0]) * amount))
                 {
-                    newitem = null;
                     Helper.SendNotificationWithoutButton(player, "Du hast keinen Platz mehr im Inventar für diesen Gegenstand!", "error", "top-left");
                     return;
                 }
+                Items newitem = ItemsController.CreateNewItem(player, character.id, craftArray[0], "Player", amount, ItemsController.GetFreeItemID(player));
                 if (craftArray[0] != "Kokain")
                 {
                     mats.amount -= amount;

@@ -62,6 +62,7 @@ Beachtet bitte die ToDos im Code und die Installationsanleitung auf Youtube:
 - https://youtu.be/ggKe51qOM4w (Linux Debian)
 - https://youtu.be/0j1qmqTB8qA (ZAP-Hosting)
 - https://youtu.be/vZP-QDRra64 (Text-RP)
+- https://youtu.be/R4jcu1xuCVo (ForumConnect/PostChangelog System)
 
 Ihr wollt uns unterstützen? https://ko-fi.com/nemesustv
 

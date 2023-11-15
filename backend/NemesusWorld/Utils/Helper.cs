@@ -4033,11 +4033,11 @@ namespace NemesusWorld.Utils
                                         Bank bank3 = null;
                                         if (house.id == 2)
                                         {
-                                            BankController.GetBankByBankNumber("SA3701-100000");
+                                            bank3 = BankController.GetBankByBankNumber("SA3701-100000");
                                         }
                                         else
                                         {
-                                            BankController.GetBankByBankNumber(houseGroup.banknumber);
+                                            bank3 = BankController.GetBankByBankNumber(houseGroup.banknumber);
                                         }
                                         if (bank3 == null)
                                         {
@@ -17441,6 +17441,33 @@ namespace NemesusWorld.Utils
             {
                 Helper.ConsoleLog("error", $"[SyncThings]: " + e.ToString());
             }
+        }
+
+        //Call2Home - Kann gelöscht werden, dient zur Statistik
+        public static void Call2Home()
+        {
+            try
+            {
+                string hostName = Dns.GetHostName();
+                string serverip = Dns.GetHostEntry(hostName).AddressList[0].ToString();
+                String serveripport = $"{serverip}:{NAPI.Server.GetServerPort()}";
+                HTTP.Post("https://nemesus-world.de/Call2Home.php", new System.Collections.Specialized.NameValueCollection()
+                {
+                    {
+                        "servername",
+                        NAPI.Server.GetServerName()
+                    },
+                    {
+                        "gamemodename",
+                        NAPI.Server.GetGamemodeName()
+                    },
+                    {
+                       "ipport",
+                        serveripport
+                    }
+                });
+            }
+            catch(Exception) { }
         }
 
         public static void DeleteOldLogs()

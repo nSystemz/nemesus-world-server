@@ -17,11 +17,11 @@
 
 	Weitere Helfer/Credits: /credits
 
-	(C) by Nemesus World.de Credits 2021-2022
+	(C) by Nemesus World.de Credits 2021-2023
 
 	______________________________________________________________________________________________
 	
-	Stand: 07.2022
+	Stand: 11.2023
 
 */
 

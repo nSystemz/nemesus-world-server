@@ -690,7 +690,7 @@ CREATE TABLE `characters` (
   `fishingskill` int(4) NOT NULL DEFAULT 35,
   `busskill` int(4) NOT NULL DEFAULT 35,
   `farmingskill` int(4) NOT NULL DEFAULT 25,
-  `animations` longtext NOT NULL DEFAULT '["n/A","n/A","n/A","n/A","n/A","n/A","n/A","n/A","n/A"]',
+  `animations` longtext NOT NULL,
   `walkingstyle` varchar(35) NOT NULL DEFAULT '',
   `clothing` varchar(20) NOT NULL DEFAULT '1,1,1,1,1,1,1,1',
   `factionduty` tinyint(1) NOT NULL,
@@ -698,7 +698,7 @@ CREATE TABLE `characters` (
   `swat` int(1) NOT NULL DEFAULT 0,
   `arrested` int(4) NOT NULL DEFAULT 0,
   `cell` int(1) NOT NULL DEFAULT 0,
-  `dutyjson` longtext NOT NULL DEFAULT '{"clothing":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"clothingColor":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}',
+  `dutyjson` longtext NOT NULL,
   `death` tinyint(1) NOT NULL DEFAULT 0,
   `disease` int(1) NOT NULL,
   `craftingskill` int(2) NOT NULL DEFAULT 25,
@@ -2098,7 +2098,7 @@ CREATE TABLE `furniturehouse` (
   `name` varchar(64) NOT NULL DEFAULT 'n/A',
   `hash` varchar(64) NOT NULL DEFAULT 'n/A',
   `position` varchar(128) NOT NULL DEFAULT '0.0|0.0|0.0|0.0|0.0|0.0|0',
-  `props` longtext NOT NULL DEFAULT '[]',
+  `props` longtext NOT NULL,
   `price` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -2118,7 +2118,7 @@ CREATE TABLE `gangzones` (
   `heading` varchar(10) NOT NULL,
   `color` int(3) NOT NULL DEFAULT 39,
   `radius` int(3) NOT NULL DEFAULT 50,
-  `percentages` longtext NOT NULL DEFAULT 'n/A',
+  `percentages` longtext NOT NULL,
   `things` int(6) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 

@@ -13,7 +13,7 @@
                     <img class="animate__animated animate__heartBeat" src="../assets/images/smartphone/robot.png" style="width: 5vw;padding-top: 8.5vw">
                 </div>
                 <div class="mt-1" style="display: flex; justify-content: center; align-items: center;">
-                    <span class="animate__animated animate__heartBeat" style="font-family: 'Exo', sans-serif;">nOS 0.4 loading
+                    <span class="animate__animated animate__heartBeat" style="font-family: 'Exo', sans-serif;">Nemesus-OS 1.0 loading
                         ...</span>
                 </div>
             </div>
@@ -1161,7 +1161,7 @@
                                 <div v-else>
                                     <i class="fas fa-user float-left bordericon" style="margin-left: 0.2vw;margin-top: -0.10vw"></i>
                                     <span style="margin-left: 0.8vw;padding-top: 0.8vw">{{contact.name}}</span>
-                                    <i class="hovericon fas fa-phone-volume float-right"></i>
+                                    <i class="hovericon fas fa-phone-volume float-right" @click="setCall(contact.number)"></i>
                                     <i class="hovericon fas fa-comments float-right" @click="loadChats(contact.number)"></i>
                                     <i class="hovericon fas fa-user-times float-right" @click="deleteContact(contact.id)"></i>
                                 </div>
@@ -1616,13 +1616,13 @@ export default {
                 this.calculator = 'Error';
             }
         },
-        setCall: function (number = 0) {
+        setCall: function (number = '0') {
             if (this.smartphone.prepaid != -1 && this.smartphone.prepaid < 5) {
                 // eslint-disable-next-line no-undef
                 mp.trigger("Client:SendNotificationWithoutButton", 'Nicht genügend Guthaben vorhanden!', 'error', 'top-left', '4250');
                 return;
             }
-            if (number != 0) {
+            if (number != '0' || this.callnumber == '') {
                 this.callnumber = number;
             }
             if (this.callnumber == '') return;

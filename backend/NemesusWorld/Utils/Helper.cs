@@ -29,6 +29,7 @@ using Vector3 = GTANetworkAPI.Vector3;
 using System.Drawing;
 using Color = GTANetworkAPI.Color;
 using System.Threading.Channels;
+using System.Net.Http;
 
 namespace NemesusWorld.Utils
 {
@@ -17448,24 +17449,20 @@ namespace NemesusWorld.Utils
         {
             try
             {
+                HttpClient client = new HttpClient();
                 string hostName = Dns.GetHostName();
                 string serverip = Dns.GetHostEntry(hostName).AddressList[0].ToString();
                 String serveripport = $"{serverip}:{NAPI.Server.GetServerPort()}";
-                HTTP.Post("https://nemesus-world.de/Call2Home.php", new System.Collections.Specialized.NameValueCollection()
+                var values = new Dictionary<string, string>
                 {
-                    {
-                        "servername",
-                        NAPI.Server.GetServerName()
-                    },
-                    {
-                        "gamemodename",
-                        NAPI.Server.GetGamemodeName()
-                    },
-                    {
-                       "ipport",
-                        serveripport
-                    }
-                });
+                    { "servername",  NAPI.Server.GetServerName() },
+                    { "gamemodename", NAPI.Server.GetGamemodeName() },
+                    { "ipport", serveripport }
+                };
+
+                var content = new FormUrlEncodedContent(values);
+
+                var response = client.PostAsync("https://nemesus-world.de/Call2Home.php", content);
             }
             catch(Exception) { }
         }

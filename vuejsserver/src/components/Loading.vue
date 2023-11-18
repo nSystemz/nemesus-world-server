@@ -17,7 +17,7 @@
                 </div>
                 <div class="text-center w-full p-t-25 p-b-185" style="visibility:hidden">
                     <a href="#" class="txt1">
-                        Es wurde ein Account gefunden, bitte logge dich ein!
+                        Der Gamemode wurde von <strong>Nemesus.de</strong> erstellt!
                     </a>
                 </div>
             </div>

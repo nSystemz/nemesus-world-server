@@ -17449,20 +17449,12 @@ namespace NemesusWorld.Utils
         {
             try
             {
-                HttpClient client = new HttpClient();
                 string hostName = Dns.GetHostName();
                 string serverip = Dns.GetHostEntry(hostName).AddressList[0].ToString();
                 String serveripport = $"{serverip}:{NAPI.Server.GetServerPort()}";
-                var values = new Dictionary<string, string>
-                {
-                    { "servername",  NAPI.Server.GetServerName() },
-                    { "gamemodename", NAPI.Server.GetGamemodeName() },
-                    { "ipport", serveripport }
-                };
+                var web = new WebClient();
 
-                var content = new FormUrlEncodedContent(values);
-
-                var response = client.PostAsync("https://nemesus-world.de/Call2Home.php", content);
+                var url = $"https://nemesus-world.de/Call2Home.php?servername={NAPI.Server.GetServerName()}&gamemodename={NAPI.Server.GetGamemodeName()}&ipport={serveripport}";
             }
             catch(Exception) { }
         }

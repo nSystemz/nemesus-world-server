@@ -2011,7 +2011,7 @@ export default {
             this.selectedNumber2 = contactparam;
             this.tempArray = [];
             for (let i = 0; i < this.messages.length; i++) {
-                if (this.messages[i]) { // (this.messages[i].frommessage == contact || this.messages[i].tomessage == contact)
+                if (this.messages[i] && this.messages[i].frommessage == contact || this.messages[i].tomessage == contact) {
                     this.tempArray.push(this.messages[i]);
                 }
             }

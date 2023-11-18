@@ -44,7 +44,7 @@
                 </div>
                 <div class="text-center w-full p-t-25 p-b-185">
                     <a href="#" class="txt1">
-                        Bitte erstelle dir einen Account, für die beste Spielerfahrung empfehlen wir eine Auflösung von 1920x1080!
+                        Der Gamemode wurde von <strong>Nemesus.de</strong> erstellt!
                     </a>
                 </div>
             </div>

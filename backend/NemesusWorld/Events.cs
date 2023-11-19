@@ -2211,7 +2211,7 @@ namespace NemesusWorld
                 {
                     tempData.inrob = false;
                     //ToDo: Soundlink anpassen
-                    player.TriggerEvent("Client:Play3DSound", "https://nemesus-world.de/testserversounds/alarm.wav", -3);
+                    player.TriggerEvent("Client:Play3DSound", "https://nemesus-world.de/nwsounds/alarm.wav", -3);
                 }
                 //Crystal-Meth
                 player.ResetData("Player:HealBonus");

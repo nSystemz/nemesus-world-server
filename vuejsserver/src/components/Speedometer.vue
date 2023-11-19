@@ -1,380 +1,465 @@
 <template>
-<div class="speedometershow">
-    <div style="height: 2px; background-color: transparent" v-if="speedometershow">
-        <div class="info vehicle">
-            <vue-ellipse-progress v-if="windowHeight >= 900 && windowHeight < 1300" :progress="speedProgress" :angle="360" color="#3F6791" emptyColor="rgba(0, 0, 0, 0.5)" :size="203" :thickness="15" emptyThickness="7%" animation="reverse 700 400" lineMode="out-over" :legend="true" legendClass="legend-custom-style" dash="60 0.9" :noData="false" :loading="false" fontColor="white" :half="true" fontSize="1.5rem">
-                <p class="kmhtext">
-                    {{ speed2 }} KM/H</p>
-            </vue-ellipse-progress>
-            <vue-ellipse-progress v-if="windowHeight < 900 && windowHeight > 800" :progress="speedProgress" :angle="360" color="#3F6791" emptyColor="rgba(0, 0, 0, 0.5)" :size="108.5" :thickness="8" emptyThickness="7%" animation="reverse 700 400" lineMode="out-over" :legend="true" legendClass="legend-custom-style" dash="60 0.9" :noData="false" :loading="false" fontColor="white" :half="true" fontSize="1.5rem">
-                <p class="kmhtext">
-                    {{ speed2 }} KM/H</p>
-            </vue-ellipse-progress>
-            <vue-ellipse-progress v-if="windowHeight <= 800" :progress="speedProgress" :angle="360" color="#3F6791" emptyColor="rgba(0, 0, 0, 0.5)" :size="108.5" :thickness="8" emptyThickness="7%" animation="reverse 700 400" lineMode="out-over" :legend="true" legendClass="legend-custom-style" dash="60 0.9" :noData="false" :loading="false" fontColor="white" :half="true" fontSize="1.5rem">
-                <p class="kmhtext">
-                    {{ speed2 }} KM/H</p>
-            </vue-ellipse-progress>
-            <vue-ellipse-progress v-if="windowHeight >= 1300 && windowHeight < 1500" :progress="speedProgress" :angle="360" color="#3F6791" emptyColor="rgba(0, 0, 0, 0.5)" :size="335" :thickness="22.5" emptyThickness="7%" animation="reverse 700 400" lineMode="out-over" :legend="true" legendClass="legend-custom-style" dash="60 0.9" :noData="false" :loading="false" fontColor="white" :half="true" fontSize="1.5rem">
-                <p class="kmhtext">
-                    {{ speed2 }} KM/H</p>
-            </vue-ellipse-progress>
-            <vue-ellipse-progress v-if="windowHeight >= 1500" :progress="speedProgress" :angle="360" color="#3F6791" emptyColor="rgba(0, 0, 0, 0.5)" :size="335" :thickness="21.5" emptyThickness="7%" animation="reverse 700 400" lineMode="out-over" :legend="true" legendClass="legend-custom-style" dash="60 0.9" :noData="false" :loading="false" fontColor="white" :half="true" fontSize="1.5rem">
-                <p class="kmhtext">
-                    {{ speed2 }} KM/H</p>
-            </vue-ellipse-progress>
-        </div>
-        <div class="info vehicle others">
-            <div class="col-md-12">
-                <div class="row">
-                    <div class="icon2">
-                        <i class="fas fa-car" style="color:green;text-shadow: 0 0 2px #000;" v-if="vehiclengine == 1"></i><i class="fas fa-car" style="color:red;text-shadow: 0 0 2px #000;" v-if="vehiclengine != 1"></i><i class="fas fa-key ml-2" style="color:green;text-shadow: 0 0 2px #000;" v-if="locked == 1"></i><i class="fas fa-key ml-2" style="color:red;text-shadow: 0 0 2px #000;" v-else></i><i class="fas fa-user-slash ml-2" style="color:red;text-shadow: 0 0 2px #000;" v-if="belt == 1"></i><i class="fas fa-user-slash ml-2" style="color:green;text-shadow: 0 0 2px #000;" v-if="belt != 1"></i><i class="fas fa-tint ml-2" style="color:green;text-shadow: 0 0 2px #000;" v-if="oel >= 35"></i><i class="fas fa-tint ml-2" style="color:yellow;text-shadow: 0 0 2px #000;" v-if="oel <= 35 && oel > 5"></i>
-                        <i class="fas fa-tint ml-2" style="color:red;text-shadow: 0 0 2px #000;" v-if="!oel || oel <= 5"></i>
-                    </div>
-                    <div class="icon">
-                        <i class="fas fa-car-crash" style="color:#3F6791;text-shadow: 0 0 2px #000;"><span class="ml-3" style="font-family: 'Exo', sans-serif;color:white">{{ health }}%</span></i>
-                    </div>
-                    <div class="icon" v-if="battery > 0">
-                        <i class="fas fa-battery-quarter" style="color:#3F6791;text-shadow: 0 0 2px #000;"><span class="ml-3" style="font-family: 'Exo', sans-serif;color:white">{{ setbattery }}%</span></i>
-                    </div>
-                    <div class="icon" v-if="battery <= 0">
-                        <i class="fas fa-battery-quarter" style="color:#3F6791;text-shadow: 0 0 2px #000;"><span class="ml-3" style="font-family: 'Exo', sans-serif;color:white">/</span></i>
-                    </div>
-                    <div class="icon" v-if="maxfuel > 0">
-                        <i class="fas fa-gas-pump" style="color:#3F6791;text-shadow: 0 0 2px #000;"><span class="ml-3" style="font-family: 'Exo', sans-serif;color:white">{{ setfuel }}%</span></i>
-                    </div>
-                    <div class="icon" v-if="maxfuel <= 0">
-                        <i class="fas fa-gas-pump" style="color:#3F6791;text-shadow: 0 0 2px #000;"><span class="ml-3" style="font-family: 'Exo', sans-serif;color:white">/</span></i>
+    <div class="speedometershow">
+        <div style="height: 2px; background-color: transparent" v-if="speedometershow">
+            <div class="info vehicle">
+                <vue-ellipse-progress v-if="windowHeight >= 900 && windowHeight < 1300" :progress="speedProgress"
+                    :angle="360" color="#3F6791" emptyColor="rgba(0, 0, 0, 0.5)" :size="203" :thickness="15"
+                    emptyThickness="7%" animation="reverse 700 400" lineMode="out-over" :legend="true"
+                    legendClass="legend-custom-style" dash="60 0.9" :noData="false" :loading="false" fontColor="white"
+                    :half="true" fontSize="1.5rem">
+                    <p class="kmhtext">
+                        {{ speed2 }} KM/H</p>
+                </vue-ellipse-progress>
+                <vue-ellipse-progress v-if="windowHeight < 900 && windowHeight > 800" :progress="speedProgress"
+                    :angle="360" color="#3F6791" emptyColor="rgba(0, 0, 0, 0.5)" :size="108.5" :thickness="8"
+                    emptyThickness="7%" animation="reverse 700 400" lineMode="out-over" :legend="true"
+                    legendClass="legend-custom-style" dash="60 0.9" :noData="false" :loading="false" fontColor="white"
+                    :half="true" fontSize="1.5rem">
+                    <p class="kmhtext">
+                        {{ speed2 }} KM/H</p>
+                </vue-ellipse-progress>
+                <vue-ellipse-progress v-if="windowHeight <= 800" :progress="speedProgress" :angle="360" color="#3F6791"
+                    emptyColor="rgba(0, 0, 0, 0.5)" :size="108.5" :thickness="8" emptyThickness="7%"
+                    animation="reverse 700 400" lineMode="out-over" :legend="true" legendClass="legend-custom-style"
+                    dash="60 0.9" :noData="false" :loading="false" fontColor="white" :half="true" fontSize="1.5rem">
+                    <p class="kmhtext">
+                        {{ speed2 }} KM/H</p>
+                </vue-ellipse-progress>
+                <vue-ellipse-progress v-if="windowHeight >= 1300 && windowHeight < 1500" :progress="speedProgress"
+                    :angle="360" color="#3F6791" emptyColor="rgba(0, 0, 0, 0.5)" :size="335" :thickness="22.5"
+                    emptyThickness="7%" animation="reverse 700 400" lineMode="out-over" :legend="true"
+                    legendClass="legend-custom-style" dash="60 0.9" :noData="false" :loading="false" fontColor="white"
+                    :half="true" fontSize="1.5rem">
+                    <p class="kmhtext">
+                        {{ speed2 }} KM/H</p>
+                </vue-ellipse-progress>
+                <vue-ellipse-progress v-if="windowHeight >= 1500" :progress="speedProgress" :angle="360" color="#3F6791"
+                    emptyColor="rgba(0, 0, 0, 0.5)" :size="335" :thickness="21.5" emptyThickness="7%"
+                    animation="reverse 700 400" lineMode="out-over" :legend="true" legendClass="legend-custom-style"
+                    dash="60 0.9" :noData="false" :loading="false" fontColor="white" :half="true" fontSize="1.5rem">
+                    <p class="kmhtext">
+                        {{ speed2 }} KM/H</p>
+                </vue-ellipse-progress>
+            </div>
+            <div class="info vehicle others">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="icon2">
+                            <i class="fas fa-car" style="color:green;text-shadow: 0 0 2px #000;"
+                                v-if="vehiclengine == 1"></i><i class="fas fa-car"
+                                style="color:red;text-shadow: 0 0 2px #000;" v-if="vehiclengine != 1"></i><i
+                                class="fas fa-key ml-2" style="color:green;text-shadow: 0 0 2px #000;"
+                                v-if="locked == 1"></i><i class="fas fa-key ml-2"
+                                style="color:red;text-shadow: 0 0 2px #000;" v-else></i><i
+                                class="fas fa-user-slash ml-2" style="color:red;text-shadow: 0 0 2px #000;"
+                                v-if="belt == 1"></i><i class="fas fa-user-slash ml-2"
+                                style="color:green;text-shadow: 0 0 2px #000;" v-if="belt != 1"></i><i
+                                class="fas fa-tint ml-2" style="color:green;text-shadow: 0 0 2px #000;"
+                                v-if="oel >= 35"></i><i class="fas fa-tint ml-2"
+                                style="color:yellow;text-shadow: 0 0 2px #000;" v-if="oel <= 35 && oel > 5"></i>
+                            <i class="fas fa-tint ml-2" style="color:red;text-shadow: 0 0 2px #000;"
+                                v-if="!oel || oel <= 5"></i>
+                        </div>
+                        <div class="icon">
+                            <i class="fas fa-car-crash" style="color:#3F6791;text-shadow: 0 0 2px #000;"><span
+                                    class="ml-3"
+                                    style="font-family: 'Exo', sans-serif;color:white">{{ health }}%</span></i>
+                        </div>
+                        <div class="icon" v-if="battery > 0">
+                            <i class="fas fa-battery-quarter" style="color:#3F6791;text-shadow: 0 0 2px #000;"><span
+                                    class="ml-3"
+                                    style="font-family: 'Exo', sans-serif;color:white">{{ setbattery }}%</span></i>
+                        </div>
+                        <div class="icon" v-if="battery <= 0">
+                            <i class="fas fa-battery-quarter" style="color:#3F6791;text-shadow: 0 0 2px #000;"><span
+                                    class="ml-3" style="font-family: 'Exo', sans-serif;color:white">/</span></i>
+                        </div>
+                        <div class="icon" v-if="maxfuel > 0">
+                            <i class="fas fa-gas-pump" style="color:#3F6791;text-shadow: 0 0 2px #000;"><span
+                                    class="ml-3"
+                                    style="font-family: 'Exo', sans-serif;color:white">{{ setfuel }}%</span></i>
+                        </div>
+                        <div class="icon" v-if="maxfuel <= 0">
+                            <i class="fas fa-gas-pump" style="color:#3F6791;text-shadow: 0 0 2px #000;"><span
+                                    class="ml-3" style="font-family: 'Exo', sans-serif;color:white">/</span></i>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="weapon" v-if="showhud4">
-        <div class="row">
-            <img src="../assets/images/inventory/Faust.png" :class="[(actualWeapon == 'faust') ? 'weaponimg1 mr-3' : 'weaponimg2 mr-3']">
-            <img v-for="(weapon, index) in weapons" :key="index" :src="getImgUrl(weapon.description)" :class="[(actualWeapon == weapon.description.toLowerCase()) ? [(IsMelee(weapon.description.toLowerCase())) ? 'weaponimg3 mr-3' : 'weaponimg1 mr-3'] : [(IsMelee(weapon.description.toLowerCase())) ? 'weaponimg4 mr-3' : 'weaponimg2 mr-3']]">
-        </div>
-    </div>
-    <div class="weapon2" v-if="weapons && weapons.length > 0 && !IsMelee(actualWeapon) && actualWeapon != 'schlagring' && actualWeapon != 'faust' && actualWeapon != 'n/A' && actualAmmo < 5000 && showhud4">
-        <span class="weapontext1">{{ actualAmmo }}</span>
-    </div>
-    <div style="height: 100%; Width: 100%; background-color: transparent;" v-if="showhud2">
-        <div class="info server others">
+        <div class="weapon" v-if="showhud4">
             <div class="row">
-                <div class="iconnw iconnw2 icon3 text-center">
-                    <i class="fas fa-server" style="color:#3F6791;text-shadow: 0 0 2px #000;"><span class="ml-2 text-center" style="font-family: 'Exo', sans-serif;color:white">Nemesus-World.de</span></i>
-                </div>
-                <div class="icon3 text-center">
-                    <i class="fas fa-portrait" style="color:#3F6791;text-shadow: 0 0 2px #000;"><span class="ml-2 text-center" style="font-family: 'Exo', sans-serif;color:white;">ID: {{ id }}</span></i>
-                </div>
-                <div class="icon3 text-center">
-                    <i class="fas fa-clock" style="color:#3F6791;text-shadow: 0 0 2px #000;"><span class="ml-2 text-center" style="font-family: 'Exo', sans-serif;color:white">Zeit: {{ time }} Uhr</span></i>
-                </div>
-                <div class="iconnw icon3 text-center">
-                    <i class="fas fa-map-marker-alt" style="color:#3F6791;text-shadow: 0 0 2px #000;"><span class="ml-2 text-center" style="font-family: 'Exo', sans-serif;color:white">{{ ort }}</span></i>
-                </div>
-                <div style="margin-left: 0.22vw;margin-top: 1.131vh" v-if="voicerp == 1">
-                    <i v-if="talkstate == 0" class="fas fa-microphone bordericon" style="color:white;text-shadow: 0 0 2px #000;font-size:0.7vw"></i>
-                    <i v-if="talkstate == 1" class="fas fa-microphone bordericon" style="color:#3F6791;text-shadow: 0 0 2px #000;font-size:0.7vw"></i>
-                    <i v-if="talkstate == 2 || talkstate == -1 || talkstate == -2" class="fas fa-microphone bordericon" style="color:red;text-shadow: 0 0 2px #000;font-size:0.7vw"></i>
-                </div>
+                <img src="../assets/images/inventory/Faust.png"
+                    :class="[(actualWeapon == 'faust') ? 'weaponimg1 mr-3' : 'weaponimg2 mr-3']">
+                <img v-for="(weapon, index) in weapons" :key="index" :src="getImgUrl(weapon.description)"
+                    :class="[(actualWeapon == weapon.description.toLowerCase()) ? [(IsMelee(weapon.description.toLowerCase())) ? 'weaponimg3 mr-3' : 'weaponimg1 mr-3'] : [(IsMelee(weapon.description.toLowerCase())) ? 'weaponimg4 mr-3' : 'weaponimg2 mr-3']]">
             </div>
         </div>
-        <div class="crosshair" v-if="crosshairshow && crosshair > 0">
-            <img :src="getCrosshair(crosshair)" alt="Crosshair">
+        <div class="weapon mt-4" v-if="showhud4">
+            <span style="font-size: 9px; font-family: 'Exo', sans-serif; text-shadow: 0 0 2px #000;">Nemesus-World
+                Gamemode by Nemesus.de</span>
+        </div>
+        <div class="weapon2"
+            v-if="weapons && weapons.length > 0 && !IsMelee(actualWeapon) && actualWeapon != 'schlagring' && actualWeapon != 'faust' && actualWeapon != 'n/A' && actualAmmo < 5000 && showhud4">
+            <span class="weapontext1">{{ actualAmmo }}</span>
+        </div>
+        <div style="height: 100%; Width: 100%; background-color: transparent;" v-if="showhud2">
+            <div class="info server others">
+                <div class="row">
+                    <div class="iconnw iconnw2 icon3 text-center">
+                        <i class="fas fa-server" style="color:#3F6791;text-shadow: 0 0 2px #000;"><span
+                                class="ml-2 text-center"
+                                style="font-family: 'Exo', sans-serif;color:white">Nemesus-World.de</span></i>
+                    </div>
+                    <div class="icon3 text-center">
+                        <i class="fas fa-portrait" style="color:#3F6791;text-shadow: 0 0 2px #000;"><span
+                                class="ml-2 text-center" style="font-family: 'Exo', sans-serif;color:white;">ID:
+                                {{ id }}</span></i>
+                    </div>
+                    <div class="icon3 text-center">
+                        <i class="fas fa-clock" style="color:#3F6791;text-shadow: 0 0 2px #000;"><span
+                                class="ml-2 text-center" style="font-family: 'Exo', sans-serif;color:white">Zeit:
+                                {{ time }} Uhr</span></i>
+                    </div>
+                    <div class="iconnw icon3 text-center">
+                        <i class="fas fa-map-marker-alt" style="color:#3F6791;text-shadow: 0 0 2px #000;"><span
+                                class="ml-2 text-center"
+                                style="font-family: 'Exo', sans-serif;color:white">{{ ort }}</span></i>
+                    </div>
+                    <div style="margin-left: 0.22vw;margin-top: 1.131vh" v-if="voicerp == 1">
+                        <i v-if="talkstate == 0" class="fas fa-microphone bordericon"
+                            style="color:white;text-shadow: 0 0 2px #000;font-size:0.7vw"></i>
+                        <i v-if="talkstate == 1" class="fas fa-microphone bordericon"
+                            style="color:#3F6791;text-shadow: 0 0 2px #000;font-size:0.7vw"></i>
+                        <i v-if="talkstate == 2 || talkstate == -1 || talkstate == -2"
+                            class="fas fa-microphone bordericon"
+                            style="color:red;text-shadow: 0 0 2px #000;font-size:0.7vw"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="crosshair" v-if="crosshairshow && crosshair > 0">
+                <img :src="getCrosshair(crosshair)" alt="Crosshair">
+            </div>
+        </div>
+        <div v-if="infomessage && showhud4" class="text-center"
+            style="width: 42vw;max-height:3.55vw;background-color: rgba(0, 0, 0, 0.5);border-radius: 0.5vw;margin-top:-0.6vw;margin-left:30vw;text-shadow: 0 0 0.3px #000">
+            <div
+                style="display: flex; justify-content: center; align-items: center;margin-top:-0.5vw;font-family: 'Exo', sans-serif;">
+                <span style="margin-top:0.4vw;color:white;font-size:1vw"><span style="color:#3F6791">Info:</span>
+                    {{ infomessage }}</span>
+            </div>
+        </div>
+        <div style="height: 100%; Width: 100%; background-color: transparent;" v-if="showhud3">
+            <div class="leftinfo">
+                <i class="textstyle" style="color:#3F6791;text-shadow: 0 0 2px #000;margin-top:4.65vw"><span
+                        class="ml-2 text-center" style="font-family: 'Exo', sans-serif;color:white"><i
+                            style="font-size: 0.9vw; margin-left: 1.2vw;margin-top: 0.15vw;text-shadow: 0 0 2px #000;color:#3F6791"
+                            class="fa-solid fa-solid fa-bars float-left"></i><span
+                            style="margin-left: 1vw;font-size:0.75vw">[F2]</span></span></i>
+                <i class="textstyle" style="color:#3F6791;text-shadow: 0 0 2px #000"><span class="ml-2 text-center"
+                        style="font-family: 'Exo', sans-serif;color:white"><i
+                            style="font-size: 0.9vw; margin-left: 1.2vw;margin-top: 0.15vw;text-shadow: 0 0 2px #000;color:#3F6791"
+                            class="fa-solid fa-solid fa-mobile-screen float-left"></i><span
+                            style="margin-left: 1.1vw;font-size:0.75vw">[F5]</span></span></i>
+                <i class="textstyle" style="color:#3F6791;text-shadow: 0 0 2px #000"><span class="ml-2 text-center"
+                        style="font-family: 'Exo', sans-serif;color:white"><i
+                            style="font-size: 0.9vw; margin-left: 1.2vw;margin-top: 0.15vw;text-shadow: 0 0 2px #000;color:#3F6791"
+                            class="fa-solid fa-solid fa-hand-dots float-left"></i><span
+                            style="margin-left: 1.05vw;font-size:0.75vw">[X]</span></span></i>
+                <i class="textstyle" style="color:#3F6791;text-shadow: 0 0 2px #000"><span class="ml-2 text-center"
+                        style="font-family: 'Exo', sans-serif;color:white"><i
+                            style="font-size: 0.9vw; margin-left: 1.2vw;margin-top: 0.15vw;text-shadow: 0 0 2px #000;color:#3F6791"
+                            class="fa-solid fa-solid fa-user-pen float-left"></i><span
+                            style="margin-left: 0.9vw;font-size:0.75vw">[I]</span></span></i>
+                <i v-if="voicerp == 1" class="textstyle" style="color:#3F6791;text-shadow: 0 0 2px #000"><span
+                        class="ml-2 text-center" style="font-family: 'Exo', sans-serif;color:white"><i
+                            style="font-size: 0.9vw; margin-left: 1.2vw;margin-top: 0.15vw;text-shadow: 0 0 2px #000;color:#3F6791"
+                            class="fa-solid fa-solid fa-microphone-lines float-left"></i><span
+                            style="margin-left: 1.32vw;font-size:0.75vw">[^]</span></span></i>
+                <i class="textstyle" style="color:#3F6791;text-shadow: 0 0 2px #000"><span class="ml-2 text-center"
+                        style="font-family: 'Exo', sans-serif;color:white"><i
+                            style="font-size: 0.9vw; margin-left: 1.2vw;margin-top: 0.16vw;text-shadow: 0 0 2px #000;color:#3F6791"
+                            class="fa-solid fa-solid fa-fingerprint float-left"></i><span
+                            style="margin-left: 1.02vw;font-size:0.75vw">[F]</span></span></i>
+                <i class="textstyle" style="color:#3F6791;text-shadow: 0 0 2px #000"><span class="ml-2 text-center"
+                        style="font-family: 'Exo', sans-serif;color:white"><i
+                            style="font-size: 0.9vw; margin-left: 1.525vw;margin-top: 0.16vw;text-shadow: 0 0 2px #000;color:#3F6791"
+                            class="fa-solid fa-solid fa-arrow-pointer float-left"></i><span
+                            style="margin-left: 0.64vw;font-size:0.75vw">[F10]</span></span></i>
+            </div>
         </div>
     </div>
-    <div v-if="infomessage && showhud4" class="text-center" style="width: 42vw;max-height:3.55vw;background-color: rgba(0, 0, 0, 0.5);border-radius: 0.5vw;margin-top:-0.6vw;margin-left:30vw;text-shadow: 0 0 0.3px #000">
-        <div style="display: flex; justify-content: center; align-items: center;margin-top:-0.5vw;font-family: 'Exo', sans-serif;">
-            <span style="margin-top:0.4vw;color:white;font-size:1vw"><span style="color:#3F6791">Info:</span>
-                {{ infomessage }}</span>
-        </div>
-    </div>
-    <div style="height: 100%; Width: 100%; background-color: transparent;" v-if="showhud3">
-        <div class="leftinfo">
-            <i class="textstyle" style="color:#3F6791;text-shadow: 0 0 2px #000;margin-top:4.65vw"><span class="ml-2 text-center" style="font-family: 'Exo', sans-serif;color:white"><i style="font-size: 0.9vw; margin-left: 1.2vw;margin-top: 0.15vw;text-shadow: 0 0 2px #000;color:#3F6791" class="fa-solid fa-solid fa-bars float-left"></i><span style="margin-left: 1vw;font-size:0.75vw">[F2]</span></span></i>
-            <i class="textstyle" style="color:#3F6791;text-shadow: 0 0 2px #000"><span class="ml-2 text-center" style="font-family: 'Exo', sans-serif;color:white"><i style="font-size: 0.9vw; margin-left: 1.2vw;margin-top: 0.15vw;text-shadow: 0 0 2px #000;color:#3F6791" class="fa-solid fa-solid fa-mobile-screen float-left"></i><span style="margin-left: 1.1vw;font-size:0.75vw">[F5]</span></span></i>
-            <i class="textstyle" style="color:#3F6791;text-shadow: 0 0 2px #000"><span class="ml-2 text-center" style="font-family: 'Exo', sans-serif;color:white"><i style="font-size: 0.9vw; margin-left: 1.2vw;margin-top: 0.15vw;text-shadow: 0 0 2px #000;color:#3F6791" class="fa-solid fa-solid fa-hand-dots float-left"></i><span style="margin-left: 1.05vw;font-size:0.75vw">[X]</span></span></i>
-            <i class="textstyle" style="color:#3F6791;text-shadow: 0 0 2px #000"><span class="ml-2 text-center" style="font-family: 'Exo', sans-serif;color:white"><i style="font-size: 0.9vw; margin-left: 1.2vw;margin-top: 0.15vw;text-shadow: 0 0 2px #000;color:#3F6791" class="fa-solid fa-solid fa-user-pen float-left"></i><span style="margin-left: 0.9vw;font-size:0.75vw">[I]</span></span></i>
-            <i v-if="voicerp == 1" class="textstyle" style="color:#3F6791;text-shadow: 0 0 2px #000"><span class="ml-2 text-center" style="font-family: 'Exo', sans-serif;color:white"><i style="font-size: 0.9vw; margin-left: 1.2vw;margin-top: 0.15vw;text-shadow: 0 0 2px #000;color:#3F6791" class="fa-solid fa-solid fa-microphone-lines float-left"></i><span style="margin-left: 1.32vw;font-size:0.75vw">[^]</span></span></i>
-            <i class="textstyle" style="color:#3F6791;text-shadow: 0 0 2px #000"><span class="ml-2 text-center" style="font-family: 'Exo', sans-serif;color:white"><i style="font-size: 0.9vw; margin-left: 1.2vw;margin-top: 0.16vw;text-shadow: 0 0 2px #000;color:#3F6791" class="fa-solid fa-solid fa-fingerprint float-left"></i><span style="margin-left: 1.02vw;font-size:0.75vw">[F]</span></span></i>
-            <i class="textstyle" style="color:#3F6791;text-shadow: 0 0 2px #000"><span class="ml-2 text-center" style="font-family: 'Exo', sans-serif;color:white"><i style="font-size: 0.9vw; margin-left: 1.525vw;margin-top: 0.16vw;text-shadow: 0 0 2px #000;color:#3F6791" class="fa-solid fa-solid fa-arrow-pointer float-left"></i><span style="margin-left: 0.64vw;font-size:0.75vw">[F10]</span></span></i>
-        </div>
-    </div>
-</div>
 </template>
 
 <script>
-import Vue from 'vue'
-import VueEllipseProgress from 'vue-ellipse-progress';
-
-Vue.use(VueEllipseProgress);
-
-export default {
-    name: 'Speedometer',
-    data: function () {
-        return {
-            voicerp: 1,
-            crosshairshow: false,
-            crosshair: 0,
-            speedometershow: false,
-            showhud2: false,
-            showhud3: false,
-            showhud4: false,
-            checkspeedo: false,
-            speedProgress: 0,
-            speed: 0,
-            speed2: 0,
-            health: 100,
-            fuel: 100,
-            oel: 100,
-            battery: 100,
-            maxfuel: 100,
-            setfuel: 100,
-            setBattery: 100,
-            maxSpeed: 490,
-            locked: 2,
-            belt: 1,
-            vehiclengine: 0,
-            id: 0,
-            ort: 'Ort',
-            time: '00:00',
-            windowHeight: window.innerHeight,
-            windowWidth: window.innerWidth,
-            talkstate: -1,
-            infomessage: '',
-            infotimeout: null,
-            weapons: [],
-            actualWeapon: '',
-            actualAmmo: 0
-        }
-    },
-    watch: {
-        windowHeight: function () {
-            this.$forceUpdate();
-        },
-    },
-    mounted() {
-        this.$nextTick(() => {
-            window.addEventListener('resize', this.onResize);
-        })
-    },
-    beforeDestroy() {
-        window.removeEventListener('resize', this.onResize);
-    },
-    methods: {
-        getImgUrl(pic) {
-            return require('../assets/images/inventory/' + pic + '.png')
-        },
-        setvoicerp: function (voicerp) {
-            this.voicerp = voicerp;
-        },
-        updateWeaponList: function (weapons, actualWeapon, actualAmmo) {
-            this.weapons = JSON.parse(weapons);
-            if (this.weapons) {
-                this.weapons = this.weapons.filter(weapon => weapon.type == 5 && weapon.props.split(',')[1] == 1 && !weapon.description.includes("Schutzweste"));
+    import Vue from 'vue'
+    import VueEllipseProgress from 'vue-ellipse-progress';
+    Vue.use(VueEllipseProgress);
+    export default {
+        name: 'Speedometer',
+        data: function() {
+            return {
+                voicerp: 1,
+                crosshairshow: false,
+                crosshair: 0,
+                speedometershow: false,
+                showhud2: false,
+                showhud3: false,
+                showhud4: false,
+                checkspeedo: false,
+                speedProgress: 0,
+                speed: 0,
+                speed2: 0,
+                health: 100,
+                fuel: 100,
+                oel: 100,
+                battery: 100,
+                maxfuel: 100,
+                setfuel: 100,
+                setBattery: 100,
+                maxSpeed: 490,
+                locked: 2,
+                belt: 1,
+                vehiclengine: 0,
+                id: 0,
+                ort: 'Ort',
+                time: '00:00',
+                windowHeight: window.innerHeight,
+                windowWidth: window.innerWidth,
+                talkstate: -1,
+                infomessage: '',
+                infotimeout: null,
+                weapons: [],
+                actualWeapon: '',
+                actualAmmo: 0
             }
-            this.actualWeapon = actualWeapon;
-            this.actualAmmo = actualAmmo;
         },
-        IsMelee: function (itemname) {
-            switch (itemname.toLowerCase()) {
-                case "dolch": {
-                    return 1;
-                }
-                case "baseballschläger": {
-                    return 1;
-                }
-                case "brechstange": {
-                    return 1;
-                }
-                case "taschenlampe": {
-                    return 1;
-                }
-                case "golfschläger": {
-                    return 1;
-                }
-                case "axt": {
-                    return 1;
-                }
-                case "messer": {
-                    return 1;
-                }
-                case "machete": {
-                    return 1;
-                }
-                case "klappmesser": {
-                    return 1;
-                }
-                case "schlagstock": {
-                    return 1;
-                }
-                case "poolcue": {
-                    return 1;
-                }
-            }
-            return 0;
+        watch: {
+            windowHeight: function() {
+                this.$forceUpdate();
+            },
         },
-        showCrosshair: function (crosshair) {
-            this.crosshair = crosshair;
-            this.crosshairshow = true;
+        mounted() {
+            this.$nextTick(() => {
+                window.addEventListener('resize', this.onResize);
+            })
         },
-        hideCrosshair: function () {
-            this.crosshairshow = false;
+        beforeDestroy() {
+            window.removeEventListener('resize', this.onResize);
         },
-        getCrosshair(crosshair) {
-            return require('../assets/images/crosshair/' + crosshair + '.png')
-        },
-        setInfomessage: function (info, time) {
-            if (this.infotimeout != null) {
-                clearTimeout(this.infotimeout);
-
-            }
-            this.infomessage = info;
-            var self = this;
-            this.infotimeout = setTimeout(function () {
-                self.infomessage = '';
-                self.infotimeout = null;
-            }, time);
-        },
-        setTalkState(settalkstate) {
-            this.talkstate = settalkstate;
-        },
-        onResize() {
-            this.windowHeight = window.innerHeight
-            this.windowWidth = window.innerWidth
-        },
-        showHud2: function (id, ort) {
-            this.id = id;
-            var replacedort = ort;
-            if (this.windowWidth <= 850) {
-                if (ort.length >= 8) {
-                    replacedort = ort.substring(0, 7);
-                    replacedort = replacedort + '.';
+        methods: {
+            getImgUrl(pic) {
+                return require('../assets/images/inventory/' + pic + '.png')
+            },
+            setvoicerp: function(voicerp) {
+                this.voicerp = voicerp;
+            },
+            updateWeaponList: function(weapons, actualWeapon, actualAmmo) {
+                this.weapons = JSON.parse(weapons);
+                if (this.weapons) {
+                    this.weapons = this.weapons.filter(weapon => weapon.type == 5 && weapon.props.split(',')[1] ==
+                        1 && !weapon.description.includes("Schutzweste"));
                 }
-            } else {
-                if (ort.length >= 21) {
-                    replacedort = ort.substring(0, 20);
-                    replacedort = replacedort + '.';
+                this.actualWeapon = actualWeapon;
+                this.actualAmmo = actualAmmo;
+            },
+            IsMelee: function(itemname) {
+                switch (itemname.toLowerCase()) {
+                    case "dolch": {
+                        return 1;
+                    }
+                    case "baseballschläger": {
+                        return 1;
+                    }
+                    case "brechstange": {
+                        return 1;
+                    }
+                    case "taschenlampe": {
+                        return 1;
+                    }
+                    case "golfschläger": {
+                        return 1;
+                    }
+                    case "axt": {
+                        return 1;
+                    }
+                    case "messer": {
+                        return 1;
+                    }
+                    case "machete": {
+                        return 1;
+                    }
+                    case "klappmesser": {
+                        return 1;
+                    }
+                    case "schlagstock": {
+                        return 1;
+                    }
+                    case "poolcue": {
+                        return 1;
+                    }
                 }
-            }
-            this.ort = replacedort;
-            var a = new Date();
-            var b = a.getHours();
-            var c = a.getMinutes();
-            if (b < 10) b = '0' + b;
-            if (c < 10) c = '0' + c;
-            var zeit = b + ':' + c;
-            this.time = zeit;
-            this.showhud2 = !this.showhud2;
-            this.showhud3 = !this.showhud3;
-            this.showhud4 = !this.showhud4;
-            if (this.speedometershow == true) {
-                this.checkspeedo = true;
+                return 0;
+            },
+            showCrosshair: function(crosshair) {
+                this.crosshair = crosshair;
+                this.crosshairshow = true;
+            },
+            hideCrosshair: function() {
+                this.crosshairshow = false;
+            },
+            getCrosshair(crosshair) {
+                return require('../assets/images/crosshair/' + crosshair + '.png')
+            },
+            setInfomessage: function(info, time) {
+                if (this.infotimeout != null) {
+                    clearTimeout(this.infotimeout);
+                }
+                this.infomessage = info;
+                var self = this;
+                this.infotimeout = setTimeout(function() {
+                    self.infomessage = '';
+                    self.infotimeout = null;
+                }, time);
+            },
+            setTalkState(settalkstate) {
+                this.talkstate = settalkstate;
+            },
+            onResize() {
+                this.windowHeight = window.innerHeight
+                this.windowWidth = window.innerWidth
+            },
+            showHud2: function(id, ort) {
+                this.id = id;
+                var replacedort = ort;
+                if (this.windowWidth <= 850) {
+                    if (ort.length >= 8) {
+                        replacedort = ort.substring(0, 7);
+                        replacedort = replacedort + '.';
+                    }
+                } else {
+                    if (ort.length >= 21) {
+                        replacedort = ort.substring(0, 20);
+                        replacedort = replacedort + '.';
+                    }
+                }
+                this.ort = replacedort;
+                var a = new Date();
+                var b = a.getHours();
+                var c = a.getMinutes();
+                if (b < 10) b = '0' + b;
+                if (c < 10) c = '0' + c;
+                var zeit = b + ':' + c;
+                this.time = zeit;
+                this.showhud2 = !this.showhud2;
+                this.showhud3 = !this.showhud3;
+                this.showhud4 = !this.showhud4;
+                if (this.speedometershow == true) {
+                    this.checkspeedo = true;
+                    this.speedometershow = false;
+                } else {
+                    if (this.checkspeedo == true) {
+                        this.checkspeedo = false;
+                        this.speedometershow = true;
+                    }
+                }
+            },
+            hideHud: function() {
+                this.showhud2 = false;
+                this.showhud3 = false;
+                this.showhud4 = false;
                 this.speedometershow = false;
-            } else {
-                if (this.checkspeedo == true) {
-                    this.checkspeedo = false;
-                    this.speedometershow = true;
+                this.checkspeedo = false;
+            },
+            reloadHud: function() {
+                var oldspeedoShow = this.speedometershow;
+                this.showhud2 = false;
+                this.showhud3 = false;
+                this.showhud4 = false;
+                this.speedometershow = false;
+                var self = this;
+                setTimeout(function() {
+                    self.showhud2 = true;
+                    self.showhud3 = true;
+                    self.showhud4 = true;
+                    self.speedometershow = oldspeedoShow;
+                    self.$forceUpdate();
+                }, 555);
+            },
+            updateHud3: function() {
+                this.showhud3 = !this.showhud3;
+                this.showhud4 = !this.showhud4;
+            },
+            updateHud2: function(ort) {
+                var replacedort = ort;
+                if (this.windowWidth <= 850) {
+                    if (ort.length >= 8) {
+                        replacedort = ort.substring(0, 7);
+                        replacedort = replacedort + '.';
+                    }
+                } else {
+                    if (ort.length >= 21) {
+                        replacedort = ort.substring(0, 20);
+                        replacedort = replacedort + '.';
+                    }
                 }
-            }
-        },
-        hideHud: function () {
-            this.showhud2 = false;
-            this.showhud3 = false;
-            this.showhud4 = false;
-            this.speedometershow = false;
-            this.checkspeedo = false;
-        },
-        reloadHud: function () {
-            var oldspeedoShow = this.speedometershow;
-            this.showhud2 = false;
-            this.showhud3 = false;
-            this.showhud4 = false;
-            this.speedometershow = false;
-            var self = this;
-            setTimeout(function () {
-                self.showhud2 = true;
-                self.showhud3 = true;
-                self.showhud4 = true;
-                self.speedometershow = oldspeedoShow;
-                self.$forceUpdate();
-            }, 555);
-        },
-        updateHud3: function () {
-            this.showhud3 = !this.showhud3;
-            this.showhud4 = !this.showhud4;
-        },
-        updateHud2: function (ort) {
-            var replacedort = ort;
-            if (this.windowWidth <= 850) {
-                if (ort.length >= 8) {
-                    replacedort = ort.substring(0, 7);
-                    replacedort = replacedort + '.';
+                this.ort = replacedort;
+                var a = new Date();
+                var b = a.getHours();
+                var c = a.getMinutes();
+                if (b < 10) b = '0' + b;
+                if (c < 10) c = '0' + c;
+                var zeit = b + ':' + c;
+                this.time = zeit;
+            },
+            showSpeedometer: function(maxspeed) {
+                this.speed = 0;
+                this.speedProgress = 0;
+                this.speedometershow = !this.speedometershow;
+                this.maxspeed = (maxspeed - 2);
+            },
+            updateMaxSpeed: function(maxspeed) {
+                this.maxspeed = (maxspeed - 2);
+            },
+            updateSpeedometerSpeed: function(speed, health, locked, engine, belt, fuel, maxfuel, battery, oel) {
+                speed = parseInt(speed);
+                health = parseInt(health);
+                if (speed < 0) {
+                    speed = 0;
                 }
-            } else {
-                if (ort.length >= 21) {
-                    replacedort = ort.substring(0, 20);
-                    replacedort = replacedort + '.';
+                this.speed2 = speed;
+                if (speed > this.maxspeed) {
+                    speed = parseInt(this.maxspeed);
                 }
-            }
-            this.ort = replacedort;
-            var a = new Date();
-            var b = a.getHours();
-            var c = a.getMinutes();
-            if (b < 10) b = '0' + b;
-            if (c < 10) c = '0' + c;
-            var zeit = b + ':' + c;
-            this.time = zeit;
-        },
-        showSpeedometer: function (maxspeed) {
-            this.speed = 0;
-            this.speedProgress = 0;
-            this.speedometershow = !this.speedometershow;
-            this.maxspeed = (maxspeed - 2);
-        },
-        updateMaxSpeed: function (maxspeed) {
-            this.maxspeed = (maxspeed - 2);
-        },
-        updateSpeedometerSpeed: function (speed, health, locked, engine, belt, fuel, maxfuel, battery, oel) {
-            speed = parseInt(speed);
-            health = parseInt(health);
-            if (speed < 0) {
-                speed = 0;
-            }
-            this.speed2 = speed;
-            if (speed > this.maxspeed) {
-                speed = parseInt(this.maxspeed);
-            }
-            if (health < 0) {
-                health = 0;
-            }
-            if (health > 1000) {
-                health = 1000;
-            }
-            this.speed = speed;
-            this.speedProgress = parseInt((100 / this.maxspeed) * speed);
-            this.health = parseInt(100 / 1000 * health);
-            this.locked = locked;
-            this.vehiclengine = parseInt(engine);
-            this.belt = parseInt(belt);
-            this.fuel = Math.ceil(fuel);
-            this.oel = parseInt(oel);
-            this.battery = parseInt(battery);
-            this.maxfuel = parseInt(maxfuel);
-            if (this.maxfuel > 0) {
-                this.setfuel = parseInt((this.fuel * 100) / this.maxfuel);
-            } else {
-                this.setfuel = 0;
-            }
-            if (this.battery > 0) {
-                this.setbattery = parseInt((this.battery * 100) / 100);
-            } else {
-                this.setbattery = 0;
-            }
-        },
+                if (health < 0) {
+                    health = 0;
+                }
+                if (health > 1000) {
+                    health = 1000;
+                }
+                this.speed = speed;
+                this.speedProgress = parseInt((100 / this.maxspeed) * speed);
+                this.health = parseInt(100 / 1000 * health);
+                this.locked = locked;
+                this.vehiclengine = parseInt(engine);
+                this.belt = parseInt(belt);
+                this.fuel = Math.ceil(fuel);
+                this.oel = parseInt(oel);
+                this.battery = parseInt(battery);
+                this.maxfuel = parseInt(maxfuel);
+                if (this.maxfuel > 0) {
+                    this.setfuel = parseInt((this.fuel * 100) / this.maxfuel);
+                } else {
+                    this.setfuel = 0;
+                }
+                if (this.battery > 0) {
+                    this.setbattery = parseInt((this.battery * 100) / 100);
+                } else {
+                    this.setbattery = 0;
+                }
+            },
+        }
     }
-}
 </script>
 
 <style scoped>

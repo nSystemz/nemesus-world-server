@@ -41,7 +41,7 @@ namespace NemesusWorld.Database
             lsteuer = 7;
             gsteuer = 5;
             ksteuer = 0.12f;
-            groupsettings = "3750,1500,55000,65000,55000,45000,42500";
+            groupsettings = "1,1,250,250,30,30,12,250,950,25000,5000,3500,65000,65000";
             grouparray = null;
             adprice = 1500;
             adcount = 0;

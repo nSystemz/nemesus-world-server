@@ -2760,7 +2760,7 @@ namespace NemesusWorld.Utils
             {
                 PetaPoco.Database db = new PetaPoco.Database(General.Connection);
                 adminSettings = db.Single<AdminSettings>("WHERE id = 1");
-                string[] govArray = new string[10];
+                string[] govArray = new string[14];
 
                 //Govvalue
                 Bank bank = BankController.GetBankByBankNumber("SA3701-100000");
@@ -2791,6 +2791,10 @@ namespace NemesusWorld.Utils
                 adminSettings.grouparray[11] = govArray[7];
                 adminSettings.grouparray[12] = govArray[8];
                 adminSettings.grouparray[13] = govArray[9];
+                adminSettings.grouparray[14] = govArray[10];
+                adminSettings.grouparray[15] = govArray[11];
+                adminSettings.grouparray[16] = govArray[12];
+                adminSettings.grouparray[17] = govArray[13];
             }
             catch (Exception e)
             {
@@ -16937,8 +16941,6 @@ namespace NemesusWorld.Utils
                             json1Array = json1.Split(",");
                             json2Array = json2.Split(",");
 
-                            NAPI.Util.ConsoleOutput(json1);
-
                             for (int i = 0; i < json1Array.Length; i++)
                             {
                                 obj["clothing"][i] = Convert.ToInt32(json1Array[i]);
@@ -17147,7 +17149,7 @@ namespace NemesusWorld.Utils
                     NAPI.Task.Run(() =>
                     {
                         if (weatherTimestamp != 0 && weatherTimestamp > UnixTimestamp()) return;
-                        var request = (HttpWebRequest)WebRequest.Create("http://api.openweathermap.org/data/2.5/onecall?lat=40.416775&lon=-3.703790&exclude=minutely,hourly,alerts&appid=2a1286a10ecda09b311ca793ecc0e0b8");
+                        var request = (HttpWebRequest)WebRequest.Create("https://nemesus-world.de/Wetter.json");
                         request.Method = "GET";
                         request.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
                         var content = string.Empty;
@@ -17452,9 +17454,10 @@ namespace NemesusWorld.Utils
                 string hostName = Dns.GetHostName();
                 string serverip = Dns.GetHostEntry(hostName).AddressList[0].ToString();
                 String serveripport = $"{serverip}:{NAPI.Server.GetServerPort()}";
-                var web = new WebClient();
-
-                var url = $"https://nemesus-world.de/Call2Home.php?servername={NAPI.Server.GetServerName()}&gamemodename={NAPI.Server.GetGamemodeName()}&ipport={serveripport}";
+                string url = "https://" + $"nemesus-world.de/Call2Home.php?servername={NAPI.Server.GetServerName()}&gamemodename={NAPI.Server.GetGamemodeName()}&ipport={serveripport}";
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                Stream resStream = response.GetResponseStream();
             }
             catch(Exception) { }
         }

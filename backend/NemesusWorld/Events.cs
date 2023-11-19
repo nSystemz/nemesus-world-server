@@ -68,8 +68,6 @@ namespace NemesusWorld
                         //Start database connection
                         if (General.InitConnection() == true)
                         {
-                            //Call2Home, kann gelöscht werden dient nur zur Statistik
-                            Helper.Call2Home();
                             //Delete old logs and other stuff
                             Helper.DeleteOldLogs();
                             //Load adminsettings
@@ -200,6 +198,8 @@ namespace NemesusWorld
                             }
                             //Discord Bot
                             //DiscordBot.RunBotAsync();
+                            //Call2Home, kann gelöscht werden dient nur zur Statistik
+                            Helper.Call2Home();
                         }
                     }
                 }

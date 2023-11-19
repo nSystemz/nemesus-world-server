@@ -1644,7 +1644,6 @@ namespace NemesusWorld.Controllers
         {
             try
             {
-                NAPI.Util.ConsoleOutput(text);
                 Character character = Helper.GetCharacterData(player);
                 if (character == null) return;
 

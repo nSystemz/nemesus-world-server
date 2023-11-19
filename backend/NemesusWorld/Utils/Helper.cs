@@ -2760,7 +2760,7 @@ namespace NemesusWorld.Utils
             {
                 PetaPoco.Database db = new PetaPoco.Database(General.Connection);
                 adminSettings = db.Single<AdminSettings>("WHERE id = 1");
-                string[] govArray = new string[14];
+                string[] govArray = new string[10];
 
                 //Govvalue
                 Bank bank = BankController.GetBankByBankNumber("SA3701-100000");
@@ -2791,10 +2791,6 @@ namespace NemesusWorld.Utils
                 adminSettings.grouparray[11] = govArray[7];
                 adminSettings.grouparray[12] = govArray[8];
                 adminSettings.grouparray[13] = govArray[9];
-                adminSettings.grouparray[14] = govArray[10];
-                adminSettings.grouparray[15] = govArray[11];
-                adminSettings.grouparray[16] = govArray[12];
-                adminSettings.grouparray[17] = govArray[13];
             }
             catch (Exception e)
             {

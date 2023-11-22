@@ -200,6 +200,8 @@ namespace NemesusWorld
                             //DiscordBot.RunBotAsync();
                             //Call2Home, kann gelöscht werden dient nur zur Statistik
                             Helper.Call2Home();
+                            //Materialversteck befüllen
+                            Helper.MatsImVersteck += 20;
                         }
                     }
                 }

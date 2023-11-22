@@ -10,26 +10,14 @@ using System.IO;
 using System.Text;
 using System.Net;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
 using System.Globalization;
 using Microsoft.VisualBasic;
-using System.Runtime.ConstrainedExecution;
-using System.Reflection.Metadata;
-using Google.Protobuf.WellKnownTypes;
-using static System.Net.Mime.MediaTypeNames;
-using System.Text.RegularExpressions;
-using System.Security.Principal;
-using GTANetworkMethods;
 using Player = GTANetworkAPI.Player;
 using Vehicle = GTANetworkAPI.Vehicle;
 using Blip = GTANetworkAPI.Blip;
 using Ped = GTANetworkAPI.Ped;
-using System.Numerics;
 using Vector3 = GTANetworkAPI.Vector3;
-using System.Drawing;
 using Color = GTANetworkAPI.Color;
-using System.Threading.Channels;
-using System.Net.Http;
 
 namespace NemesusWorld.Utils
 {
@@ -64,7 +52,7 @@ namespace NemesusWorld.Utils
         public static string AdminNotificationWebHook = "TODO";
         public static string ErrorWebhook = "TODO";
         public static string ScreenshotWebhook = "TODO";
-        public static int MatsImVersteck = 15;
+        public static int MatsImVersteck = 0;
         public static Vector3[] fuelPositions = new Vector3[62]
                                 { 
                                   //Bizz 5
@@ -5406,11 +5394,11 @@ namespace NemesusWorld.Utils
                     {
                         if (furniture.name.Contains("Werkbank"))
                         {
-                            Items mats = ItemsController.GetItemByItemName(player, "Materialien");
+                            Items craftingMats = ItemsController.GetItemByItemName(player, "Materialien");
                             int amount = 0;
-                            if (mats != null)
+                            if (craftingMats != null)
                             {
-                                amount = mats.amount;
+                                amount = craftingMats.amount;
                             }
                             player.TriggerEvent("Client:ShowCraft", amount);
                             return;
@@ -7397,30 +7385,33 @@ namespace NemesusWorld.Utils
                     return;
                 }
                 //Apotheke
-                if ((Helper.IsInRangeOfPoint(player.Position, new Vector3(-665.72156, 322.29745, 83.08319), 3.15f)))
+                if (Helper.IsInRangeOfPoint(player.Position, new Vector3(-665.72156, 322.29745, 83.08319), 3.15f))
                 {
                     ShowApotheke(player);
                 }
                 //Materialversteck
-                if (Helper.IsInRangeOfPoint(player.Position, new Vector3(-2070.9304, -1020.88715, 5.884131), 2.15f))
+                if (Helper.IsInRangeOfPoint(player.Position, new Vector3(-2070.9304, -1020.88715, 5.884131), 2.5f))
                 {
                     if (MatsImVersteck <= 0)
                     {
                         SendNotificationWithoutButton(player, "Im Versteck befinden sich keine Materialien mehr!", "error", "top-left", 2250);
                         return;
                     }
-                    Items newitem = ItemsController.CreateNewItem(player, character.id, "Materialien", "Player", MatsImVersteck, ItemsController.GetFreeItemID(player));
-                    if (newitem != null)
+                    Items getMats = ItemsController.CreateNewItem(player, character.id, "Materialien", "Player", MatsImVersteck, ItemsController.GetFreeItemID(player));
+                    if (getMats != null)
                     {
-                        if (!ItemsController.CanPlayerHoldItem(player, newitem.weight))
+                        if (!ItemsController.CanPlayerHoldItem(player, 10*MatsImVersteck))
                         {
-                            newitem = null;
-                            Helper.SendNotificationWithoutButton(player, "Du hast keinen Platz mehr im Inventar für die Materialien!", "success", "top-left");
+                            Helper.SendNotificationWithoutButton(player, "Du hast keinen Platz mehr im Inventar für die Materialien!", "error", "top-left");
                             return;
                         }
-                        tempData.itemlist.Add(newitem);
+                        tempData.itemlist.Add(getMats);
+                        SendNotificationWithoutButton(player, $"Du hast {MatsImVersteck} Materialien aus dem Versteck genommen!", "success", "top-left", 2250);
                         MatsImVersteck = 0;
-                        SendNotificationWithoutButton(player, $"Du hast {MatsImVersteck} Materialien aus dem Versteck genommen!", "error", "top-left", 2250);
+                    }
+                    else
+                    {
+                        SendNotificationWithoutButton(player, $"Hier liegt nichts mehr!", "error", "top-left", 2250);
                     }
                 }
                 //Bar

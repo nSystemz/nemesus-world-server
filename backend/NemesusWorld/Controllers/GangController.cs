@@ -463,12 +463,12 @@ namespace NemesusWorld.Controllers
                 string[] craftArray = new string[4];
                 craftArray = craftsettings.Split(",");
 
-                Items mats = ItemsController.GetItemByItemName(player, "Materialien");
+                Items craftingMats = ItemsController.GetItemByItemName(player, "Materialien");
                 Items schwefel = null;
                 Items koka = null;
                 Items frost = null;
                 Items ibu = null;
-                if (craftArray[0] != "Kokain" && craftArray[0] != "Crystal-Meth" && craftArray[0] != "Space-Cookies" && (mats == null || mats.amount < Convert.ToInt32(craftArray[1])))
+                if (craftArray[0] != "Kokain" && craftArray[0] != "Crystal-Meth" && craftArray[0] != "Space-Cookies" && (craftingMats == null || craftingMats.amount < Convert.ToInt32(craftArray[1])))
                 {
                     Helper.SendNotificationWithoutButton(player, "Du hast nicht genügend Materialien dabei!", "error");
                     return;
@@ -559,10 +559,10 @@ namespace NemesusWorld.Controllers
                 Items newitem = ItemsController.CreateNewItem(player, character.id, craftArray[0], "Player", amount, ItemsController.GetFreeItemID(player));
                 if (craftArray[0] != "Kokain")
                 {
-                    mats.amount -= amount;
-                    if (mats.amount <= 0)
+                    craftingMats.amount -= amount;
+                    if (craftingMats.amount <= 0)
                     {
-                        ItemsController.RemoveItem(player, mats.itemid);
+                        ItemsController.RemoveItem(player, craftingMats.itemid);
                     }
                 }
                 else

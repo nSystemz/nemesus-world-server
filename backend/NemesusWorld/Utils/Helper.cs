@@ -64,7 +64,7 @@ namespace NemesusWorld.Utils
         public static string AdminNotificationWebHook = "TODO";
         public static string ErrorWebhook = "TODO";
         public static string ScreenshotWebhook = "TODO";
-        public static int mats = 15;
+        public static int MatsImVersteck = 15;
         public static Vector3[] fuelPositions = new Vector3[62]
                                 { 
                                   //Bizz 5
@@ -7402,25 +7402,25 @@ namespace NemesusWorld.Utils
                     ShowApotheke(player);
                 }
                 //Materialversteck
-                if ((Helper.IsInRangeOfPoint(player.Position, new Vector3(-2070.9304, -1020.88715, 5.884131), 2.15f)))
+                if (Helper.IsInRangeOfPoint(player.Position, new Vector3(-2070.9304, -1020.88715, 5.884131), 2.15f))
                 {
-                    if (mats <= 0)
+                    if (MatsImVersteck <= 0)
                     {
                         SendNotificationWithoutButton(player, "Im Versteck befinden sich keine Materialien mehr!", "error", "top-left", 2250);
                         return;
                     }
-                    Items newitem = ItemsController.CreateNewItem(player, character.id, "Materialien", "Player", mats, ItemsController.GetFreeItemID(player));
-                    if (!ItemsController.CanPlayerHoldItem(player, newitem.weight))
-                    {
-                        newitem = null;
-                        Helper.SendNotificationWithoutButton(player, "Du hast keinen Platz mehr im Inventar für die Materialien!", "success", "top-left");
-                        return;
-                    }
+                    Items newitem = ItemsController.CreateNewItem(player, character.id, "Materialien", "Player", MatsImVersteck, ItemsController.GetFreeItemID(player));
                     if (newitem != null)
                     {
+                        if (!ItemsController.CanPlayerHoldItem(player, newitem.weight))
+                        {
+                            newitem = null;
+                            Helper.SendNotificationWithoutButton(player, "Du hast keinen Platz mehr im Inventar für die Materialien!", "success", "top-left");
+                            return;
+                        }
                         tempData.itemlist.Add(newitem);
-                        mats = 0;
-                        SendNotificationWithoutButton(player, $"Du hast {mats} Materialien aus dem Versteck genommen!", "error", "top-left", 2250);
+                        MatsImVersteck = 0;
+                        SendNotificationWithoutButton(player, $"Du hast {MatsImVersteck} Materialien aus dem Versteck genommen!", "error", "top-left", 2250);
                     }
                 }
                 //Bar

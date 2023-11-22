@@ -340,7 +340,7 @@ namespace NemesusWorld
                                 StartLotto();
                             }
                             //Material Versteck
-                            Helper.mats += 20;
+                            Helper.MatsImVersteck += 20;
                             //Factions reloaden
                             Helper.GetAllFactions(1);
                             //Save Adminsettings

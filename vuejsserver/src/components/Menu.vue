@@ -42,7 +42,7 @@
         </div>
         <div class="centering5" style="height: 100%;" v-if="showgov">
             <div class="row d-flex justify-content-center"
-                style="margin-left: 15rem !important; margin-top: 16.0vh; height:83vh; overflow-x: auto; scrollbar-width: none;">
+                style="margin-left: 15rem !important; margin-top: 12.0vh; height:83vh; overflow: none; scrollbar-width: none;">
                 <div class="col-md-12">
                     <div class="col-md-12 mt-1 animate__animated animate__bounceInUp">
                         <div class="box box-default">
@@ -875,144 +875,93 @@
                                             <div class="row"
                                                 style="margin-top: 1vw;display: flex; justify-content: center; align-items: center;">
                                                 <ul class="todo-list">
-
                                                     <li class="mt-1">
-
                                                         <span class="handle">
                                                         </span>
-
                                                         <input v-if="faqlist[0] == '1'" type="checkbox" value="" checked
                                                             disabled>
                                                         <input v-else type="checkbox" value="" disabled>
-
-                                                        <span class="text">Joine auf Nemesus World und erstelle dir
-                                                            deinen ersten
-                                                            Charakter!</span>
-
+                                                        <span class="text">Lade dir den Nemesus-World Gamemode von
+                                                            <strong>Nemesus.de</strong> runter und starte diesen!</span>
                                                     </li>
-
                                                     <li class="mt-1">
-
                                                         <span class="handle">
                                                         </span>
-
                                                         <input v-if="faqlist[1] == '1'" type="checkbox" value="" checked
                                                             disabled>
                                                         <input v-else type="checkbox" value="" disabled>
-
                                                         <span class="text">Miete dir vorne am Brunnen einen
                                                             Roller!</span>
-
                                                     </li>
-
                                                     <li class="mt-1">
-
                                                         <span class="handle">
                                                         </span>
-
                                                         <input v-if="faqlist[2] == '1'" type="checkbox" value="" checked
                                                             disabled>
                                                         <input v-else type="checkbox" value="" disabled>
-
                                                         <span class="text">Fahre zu einer Bank und erstelle dein erstes
                                                             eigenes
                                                             Bankkonto!</span>
-
                                                     </li>
-
                                                     <li class="mt-1">
-
                                                         <span class="handle">
                                                         </span>
-
                                                         <input v-if="faqlist[3] == '1'" type="checkbox" value="" checked
                                                             disabled>
                                                         <input v-else type="checkbox" value="" disabled>
-
                                                         <span class="text">Kaufe im 24/7 ein Smartphone!</span>
-
                                                     </li>
-
                                                     <li class="mt-1">
-
                                                         <span class="handle">
                                                         </span>
-
                                                         <input v-if="faqlist[4] == '1'" type="checkbox" value="" checked
                                                             disabled>
                                                         <input v-else type="checkbox" value="" disabled>
-
                                                         <span class="text">Besuche einen Kleidungsladen und kleide dich
                                                             ein!</span>
-
                                                     </li>
-
                                                     <li class="mt-1">
-
                                                         <span class="handle">
                                                         </span>
-
                                                         <input v-if="faqlist[5] == '1'" type="checkbox" value="" checked
                                                             disabled>
                                                         <input v-else type="checkbox" value="" disabled>
-
                                                         <span class="text">Besuche einen Friseur!</span>
-
                                                     </li>
-
                                                     <li class="mt-1">
-
                                                         <span class="handle">
                                                         </span>
-
                                                         <input v-if="faqlist[6] == '1'" type="checkbox" value="" checked
                                                             disabled>
                                                         <input v-else type="checkbox" value="" disabled>
-
                                                         <span class="text">Bestehe den Führerschein bei der
                                                             Fahrschule!</span>
-
                                                     </li>
-
                                                     <li class="mt-1">
-
                                                         <span class="handle">
                                                         </span>
-
                                                         <input v-if="faqlist[7] == '1'" type="checkbox" value="" checked
                                                             disabled>
                                                         <input v-else type="checkbox" value="" disabled>
-
                                                         <span class="text">Such nach einem Job im Rathaus!</span>
-
                                                     </li>
-
                                                     <li class="mt-1">
-
                                                         <span class="handle">
                                                         </span>
-
                                                         <input v-if="faqlist[8] == '1'" type="checkbox" value="" checked
                                                             disabled>
                                                         <input v-else type="checkbox" value="" disabled>
-
                                                         <span class="text">Verdiene dein erstes eigenes Geld - (Payday
                                                             erhalten)!</span>
-
                                                     </li>
                                                     <li class="mt-1">
-
                                                         <span class="handle">
                                                         </span>
-
                                                         <input v-if="faqlist[9] == '1'" type="checkbox" value="" checked
                                                             disabled>
                                                         <input v-else type="checkbox" value="" disabled>
-
                                                         <span class="text">Kaufe dein erstes eigenes Fahrzeug!</span>
-
                                                     </li>
-
                                                 </ul>
                                             </div>
                                             <div class="alert alert-primary"

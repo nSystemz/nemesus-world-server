@@ -6851,7 +6851,7 @@ namespace NemesusWorld
         }
 
         [Command("credits", "Befehl: /credits")]
-        public void cmd_credits(Player player)
+        public static void cmd_credits(Player player)
         {
             try
             {
@@ -6890,34 +6890,41 @@ namespace NemesusWorld
                     }
                     player.SetData<int>("Player:TuneCooldown", Helper.UnixTimestamp() + (30));
 
-                    MySqlCommand command = General.Connection.CreateCommand();
-                    command = General.Connection.CreateCommand();
-                    command.CommandText = "SELECT name,premium FROM users WHERE premium > 0 LIMIT 275";
-
-                    string names = "";
-                    string name = "n/A";
-
-                    using (MySqlDataReader reader = command.ExecuteReader())
+                    if (Helper.GetRandomPercentage(45))
                     {
-                        while (reader.Read())
+                        MySqlCommand command = General.Connection.CreateCommand();
+                        command = General.Connection.CreateCommand();
+                        command.CommandText = "SELECT name,premium FROM users WHERE premium > 0 LIMIT 275";
+
+                        string names = "";
+                        string name = "n/A";
+
+                        using (MySqlDataReader reader = command.ExecuteReader())
                         {
-                            name = reader.GetString("name");
-                            names += $", {name}";
+                            while (reader.Read())
+                            {
+                                name = reader.GetString("name");
+                                names += $", {name}";
+                            }
+                            reader.Close();
                         }
-                        reader.Close();
-                    }
 
-                    if (names.Length == 0)
-                    {
-                        names = "Leider noch keiner :(";
+                        if (names.Length == 0)
+                        {
+                            names = "Leider noch keiner :(";
+                        }
+                        else
+                        {
+                            names = names.Remove(0, 2);
+                        }
+
+                        if (!Account.IsPlayerLoggedIn(player)) return;
+                        Helper.SendNotificationWithTimer(player, "Hall of Fame", $"Großes Dankeschön an unsere Unterstützer: <br /><br />{names}", 15500);
                     }
                     else
                     {
-                        names = names.Remove(0, 2);
+                        cmd_credits(player);
                     }
-
-                    if (!Account.IsPlayerLoggedIn(player)) return;
-                    Helper.SendNotificationWithTimer(player, "Hall of Fame", $"Großes Dankeschön an unsere Unterstützer: <br /><br />{names}", 15500);
                 }
                 else
                 {

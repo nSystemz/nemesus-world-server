@@ -87,7 +87,7 @@
                 </div>
             </div>
         </div>
-        <div class="weapon mb-4" v-if="showhud4">
+        <div class="weapon mb-5" v-if="showhud4">
             <div class="row">
                 <img src="../assets/images/inventory/Faust.png"
                     :class="[(actualWeapon == 'faust') ? 'weaponimg1 mr-3' : 'weaponimg2 mr-3']">

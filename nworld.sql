@@ -76,7 +76,7 @@ CREATE TABLE `adminsettings` (
   `lsteuer` int(3) NOT NULL DEFAULT 7,
   `gsteuer` int(3) NOT NULL DEFAULT 5,
   `ksteuer` float NOT NULL DEFAULT 0.25,
-  `groupsettings` varchar(150) NOT NULL DEFAULT '3750,1500,55000,65000,55000,45000,42500',
+  `groupsettings` varchar(150) NOT NULL DEFAULT '7,5,0.12,250,500,500,450,2500,500,35000,55000,60000,65000,60000',
   `adcount` int(5) NOT NULL DEFAULT 0,
   `adprice` int(5) NOT NULL DEFAULT 1500,
   `admoney` int(11) NOT NULL DEFAULT 0,

@@ -1004,7 +1004,8 @@ namespace NemesusWorld
                         Helper.spikeStripList.Remove(spikestrips);
                     }
                 }
-                Helper.ConsoleLog("success", "[Server]: Server wird beendet!");
+                Helper.ConsoleLog("success", "[Server]: Du brauchst Support? Schau gerne mal auf dem Nemesus.de Discord vorbei - (https://discord.nemesus.de)!");
+                Helper.ConsoleLog("success", "[Server]: Server wird beendet ...");
                 NAPI.Task.Run(() =>
                 {
                     //Close database connection
@@ -1015,7 +1016,7 @@ namespace NemesusWorld
                         General.DatabaseConnectionCheck = false;
                     }
                     Environment.Exit(0);
-                }, delayTime: 6700);
+                }, delayTime: 7500);
             }
             catch (Exception e)
             {
@@ -1052,6 +1053,8 @@ namespace NemesusWorld
                                 }
                             }
                         }
+                        //Adminsettings
+                        Helper.SaveAdminSettings();
                         //Smartphones
                         foreach (Smartphone smartphone in SmartphoneController.smartphoneList)
                         {

@@ -1021,13 +1021,18 @@ namespace NemesusWorld.Utils
         {
             try
             {
-                string[] govArray = new string[10];
+                string[] govArray = new string[14];
                 govArray = csv.Split(',');
                 if (modus == 1)
                 {
                     adminSettings.lsteuer = Convert.ToInt32(govArray[0]);
                     adminSettings.gsteuer = Convert.ToInt32(govArray[1]);
                     adminSettings.ksteuer = float.Parse(govArray[3]);
+
+                    adminSettings.grouparray[0] = govArray[0];
+                    adminSettings.grouparray[1] = govArray[1];
+                    adminSettings.grouparray[2] = govArray[3];
+                    adminSettings.grouparray[3] = ""+adminSettings.towedcash;
                 }
                 else if (modus == 2)
                 {
@@ -1041,15 +1046,13 @@ namespace NemesusWorld.Utils
                 {
                     adminSettings.grouparray[4] = govArray[0];
                     adminSettings.grouparray[5] = govArray[1];
-                    adminSettings.grouparray[6] = govArray[2];
-                    adminSettings.grouparray[7] = govArray[3];
-                    adminSettings.grouparray[8] = govArray[4];
-                    adminSettings.grouparray[9] = govArray[5];
-                    adminSettings.grouparray[10] = govArray[6];
-                    adminSettings.grouparray[11] = govArray[7];
-                    adminSettings.grouparray[12] = govArray[8];
-                    adminSettings.grouparray[13] = govArray[9];
-                    adminSettings.groupsettings = String.Join(",", adminSettings.grouparray);
+                    adminSettings.grouparray[7] = govArray[2];
+                    adminSettings.grouparray[9] = govArray[3];
+                    adminSettings.grouparray[10] = govArray[4];
+                    adminSettings.grouparray[11] = govArray[5];
+                    adminSettings.grouparray[12] = govArray[6];
+                    adminSettings.grouparray[13] = govArray[7];
+                    adminSettings.groupsettings = $"{adminSettings.grouparray[0]},{adminSettings.grouparray[1]},{adminSettings.grouparray[2]},{adminSettings.grouparray[3]},{adminSettings.grouparray[4]},{adminSettings.grouparray[5]},{adminSettings.grouparray[6]},{adminSettings.grouparray[7]},{adminSettings.grouparray[8]},{adminSettings.grouparray[9]},{adminSettings.grouparray[10]},{adminSettings.grouparray[11]},{adminSettings.grouparray[12]},{adminSettings.grouparray[13]}";
                     foreach (Player p in NAPI.Pools.GetAllPlayers())
                     {
                         if (p != null && p.GetOwnSharedData<bool>("Player:Spawned") == true)
@@ -1062,7 +1065,7 @@ namespace NemesusWorld.Utils
             }
             catch (Exception e)
             {
-                Helper.ConsoleLog("error", $"[OnReportPlayer]: " + e.ToString());
+                Helper.ConsoleLog("error", $"[OnSaveGov]: " + e.ToString());
             }
         }
 
@@ -2769,16 +2772,16 @@ namespace NemesusWorld.Utils
                 adminSettings.grouparray[1] = "" + adminSettings.gsteuer;
                 adminSettings.grouparray[2] = "" + adminSettings.ksteuer;
                 adminSettings.grouparray[3] = "" + adminSettings.towedcash;
-                adminSettings.grouparray[4] = govArray[0];
-                adminSettings.grouparray[5] = govArray[1];
-                adminSettings.grouparray[6] = govArray[2];
-                adminSettings.grouparray[7] = govArray[3];
-                adminSettings.grouparray[8] = govArray[4];
-                adminSettings.grouparray[9] = govArray[5];
-                adminSettings.grouparray[10] = govArray[6];
-                adminSettings.grouparray[11] = govArray[7];
-                adminSettings.grouparray[12] = govArray[8];
-                adminSettings.grouparray[13] = govArray[9];
+                adminSettings.grouparray[4] = govArray[4];
+                adminSettings.grouparray[5] = govArray[5];
+                adminSettings.grouparray[6] = govArray[6];
+                adminSettings.grouparray[7] = govArray[7];
+                adminSettings.grouparray[8] = govArray[8];
+                adminSettings.grouparray[9] = govArray[9];
+                adminSettings.grouparray[10] = govArray[10];
+                adminSettings.grouparray[11] = govArray[11];
+                adminSettings.grouparray[12] = govArray[12];
+                adminSettings.grouparray[13] = govArray[13];
             }
             catch (Exception e)
             {
@@ -2790,7 +2793,6 @@ namespace NemesusWorld.Utils
         {
             try
             {
-
                 PetaPoco.Database db = new PetaPoco.Database(General.Connection);
                 db.Save(Helper.adminSettings);
             }
@@ -7349,11 +7351,11 @@ namespace NemesusWorld.Utils
                     string prices2 = "";
                     try
                     {
-                        prices2 = $"{adminSettings.grouparray[4]},{adminSettings.grouparray[5]},{adminSettings.grouparray[6]},{adminSettings.grouparray[7]},{adminSettings.grouparray[8]},{adminSettings.grouparray[9]},{adminSettings.grouparray[10]},{adminSettings.grouparray[11]},{adminSettings.grouparray[12]},{adminSettings.grouparray[13]}";
+                        prices2 = $"{adminSettings.grouparray[4]},{adminSettings.grouparray[5]},{adminSettings.grouparray[7]},{adminSettings.grouparray[9]},{adminSettings.grouparray[10]},{adminSettings.grouparray[11]},{adminSettings.grouparray[12]},{adminSettings.grouparray[13]}";
                     }
                     catch (Exception)
                     {
-                        prices2 = "0,0,0,0,0,0,0,0,0,0";
+                        prices2 = "0,0,0,0,0,0,0,0";
                     }
                     player.TriggerEvent("Client:ShowGovMenu", prices0, prices1, prices2);
                 }

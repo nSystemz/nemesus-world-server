@@ -557,7 +557,7 @@ namespace NemesusWorld.Controllers
                     return;
                 }
                 Items newitem = ItemsController.CreateNewItem(player, character.id, craftArray[0], "Player", amount, ItemsController.GetFreeItemID(player));
-                if (craftArray[0] != "Kokain")
+                if (craftArray[0] != "Kokain" && craftArray[0] != "Crystal-Meth" && craftArray[0] != "Space-Cookies")
                 {
                     craftingMats.amount -= amount;
                     if (craftingMats.amount <= 0)

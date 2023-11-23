@@ -447,6 +447,26 @@ namespace NemesusWorld.Controllers
             return null;
         }
 
+        public static Items GetItemById(Player player, int id)
+        {
+            try
+            {
+                TempData tempData = Helper.GetCharacterTempData(player);
+                foreach (Items item in tempData.itemlist)
+                {
+                    if (item != null && item.itemid == id)
+                    {
+                        return item;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[GetItemById]: " + e.ToString());
+            }
+            return null;
+        }
+
         public static ItemsGlobal GetGlobalItemFromID(int itemid)
         {
             try
@@ -514,7 +534,14 @@ namespace NemesusWorld.Controllers
             try
             {
                 TempData tempData = Helper.GetCharacterTempData(player);
-                return tempData.inventoryid++;
+                tempData.inventoryid++;
+                int nextItemId = tempData.inventoryid;
+                while (GetItemById(player, nextItemId) != null)
+                {
+                    tempData.inventoryid++;
+                    nextItemId = tempData.inventoryid;
+                }
+                return nextItemId;
             }
             catch (Exception e)
             {

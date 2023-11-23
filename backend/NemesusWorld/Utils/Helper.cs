@@ -7397,14 +7397,14 @@ namespace NemesusWorld.Utils
                         SendNotificationWithoutButton(player, "Im Versteck befinden sich keine Materialien mehr!", "error", "top-left", 2250);
                         return;
                     }
+                    if (!ItemsController.CanPlayerHoldItem(player, 10 * MatsImVersteck))
+                    {
+                        Helper.SendNotificationWithoutButton(player, "Du hast keinen Platz mehr im Inventar für die Materialien!", "error", "top-left");
+                        return;
+                    }
                     Items getMats = ItemsController.CreateNewItem(player, character.id, "Materialien", "Player", MatsImVersteck, ItemsController.GetFreeItemID(player));
                     if (getMats != null)
                     {
-                        if (!ItemsController.CanPlayerHoldItem(player, 10*MatsImVersteck))
-                        {
-                            Helper.SendNotificationWithoutButton(player, "Du hast keinen Platz mehr im Inventar für die Materialien!", "error", "top-left");
-                            return;
-                        }
                         tempData.itemlist.Add(getMats);
                         SendNotificationWithoutButton(player, $"Du hast {MatsImVersteck} Materialien aus dem Versteck genommen!", "success", "top-left", 2250);
                         MatsImVersteck = 0;

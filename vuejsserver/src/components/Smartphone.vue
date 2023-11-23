@@ -2572,6 +2572,8 @@ export default {
                 return 0;
             });
             this.save = 1;
+            // eslint-disable-next-line no-undef
+            mp.trigger("Client:SaveSmartphone", JSON.stringify(this.smartphone), JSON.stringify(this.contacts), this.smartphone.phonenumber);
             this.showContacts();
         },
         showUnlockScreen: function () {

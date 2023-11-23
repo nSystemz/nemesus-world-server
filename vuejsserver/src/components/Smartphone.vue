@@ -2547,6 +2547,11 @@ export default {
             }
         },
         createContact: function () {
+            if(this.capacity <= 0)
+            {
+                this.turnOff();
+                return;
+            }
             if (this.contactname.length < 5 || this.contactnumber.length < 6) {
                 this.sendInfoMessage('Ungültige Eingaben!');
                 return;
@@ -2556,6 +2561,7 @@ export default {
                 return;
             }
             var addContact = new Object();
+            this.save = 1;
             addContact.id = this.getFreeID();
             addContact.name = this.contactname;
             addContact.number = this.contactnumber;
@@ -2571,7 +2577,6 @@ export default {
                 }
                 return 0;
             });
-            this.save = 1;
             // eslint-disable-next-line no-undef
             mp.trigger("Client:SaveSmartphone", JSON.stringify(this.smartphone), JSON.stringify(this.contacts), this.smartphone.phonenumber);
             this.showContacts();

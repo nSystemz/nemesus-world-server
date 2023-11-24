@@ -7405,7 +7405,10 @@ namespace NemesusWorld.Utils
                         return;
                     }
                     Items getMats = ItemsController.CreateNewItem(player, character.id, "Materialien", "Player", MatsImVersteck, ItemsController.GetFreeItemID(player));
-                    tempData.itemlist.Add(getMats);
+                    if (getMats != null)
+                    {
+                        tempData.itemlist.Add(getMats);
+                    }
                     SendNotificationWithoutButton(player, $"Du hast {MatsImVersteck} Materialien aus dem Versteck genommen!", "success", "top-left", 2250);
                     MatsImVersteck = 0;
                 }

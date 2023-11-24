@@ -6168,6 +6168,7 @@ mp.events.add('playerWeaponShot', (targetPosition, targetEntity) => {
                 }
             } else {
                 let secs = Date.now() / 1000 - rangeTime;
+		showAmmu = false;
                 if (rangeStatus == 1) {
                     mp.events.callRemote('Server:StartRange', 2, secs);
                 } else {

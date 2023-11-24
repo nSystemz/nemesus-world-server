@@ -222,7 +222,7 @@ namespace NemesusWorld.Controllers
                         NAPI.Task.Run(() =>
                         {
                             SmartphoneController.ShowSmartphone(player, null, character.lastsmartphone);
-                        }, delayTime: 150);
+                        }, delayTime: 215);
                         return;
                     }
                     else if (player.IsInVehicle && player.Vehicle.Class != 13 && player.Vehicle.EngineStatus == true)

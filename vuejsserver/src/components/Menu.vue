@@ -39,7 +39,7 @@
                     </div>
                 </div>
             </div>
-        </div>
+        </div> 
         <div class="centering5" style="height: 100%;" v-if="showgov">
             <div class="row d-flex justify-content-center"
                 style="margin-left: 15rem !important; margin-top: 12.0vh; height:83vh; overflow: none; scrollbar-width: none;">
@@ -181,7 +181,7 @@
                                 Nemesus.de</span></strong>
                     </div>
                     <nav class="mt-2">
-                        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
+                        <ul class="mt-1 nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                             data-accordion="false">
                             <li class="nav-header">HILFE</li>
                             <li class="nav-item" v-on:click="startFAQ()">
@@ -6234,7 +6234,6 @@
                 }, secs);
             },
             stopHack: function(set) {
-                let count = 1;
                 this.showhack = false;
                 if (this.hacktimer) {
                     clearInterval(this.hacktimer)

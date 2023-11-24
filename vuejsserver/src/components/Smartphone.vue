@@ -1842,40 +1842,40 @@ export default {
                 this.phonecount = 0;
                 this.capacity = capacity;
                 this.prepaid = prepaid;
+                this.smartphone = JSON.parse(json);
+                this.premium = premium;
+                this.faction = faction;
+                if (this.smartphone.wallpaper >= 10 && this.premium <= 0) {
+                    this.smartphone.wallpaper = 2;
+                    this.save = 1;
+                }
+                if (this.lastnumber.length > 3 && this.lastnumber != this.smartphone.phonenumber) {
+                    this.messages = [];
+                    this.messageContacts = [];
+                    this.tempArray = [];
+                    this.setting = -1;
+                    this.lastsetting = -1;
+                }
+                if (json3 && JSON.parse(json3).length > this.smartphone.messagecount) {
+                    this.newmessages = 1;
+                    this.smartphone.messagecount = JSON.parse(json3).length;
+                    this.save = 1;
+                }
+                if (json4 && JSON.parse(json4).length > this.smartphone.phonecalls) {
+                    this.phonecount = 1;
+                    this.smartphone.phonecalls = JSON.parse(json4).length;
+                    this.save = 1;
+                }
+                if (json2) {
+                    this.contacts = JSON.parse(json2);
+                }
+                if (json3) {
+                    this.messages = JSON.parse(json3);
+                }
+                if (json4) {
+                    this.calllogs = JSON.parse(json4);
+                }
                 if (this.capacity > 0) {
-                    this.smartphone = JSON.parse(json);
-                    this.premium = premium;
-                    this.faction = faction;
-                    if (this.smartphone.wallpaper >= 10 && this.premium <= 0) {
-                        this.smartphone.wallpaper = 2;
-                        this.save = 1;
-                    }
-                    if (this.lastnumber.length > 3 && this.lastnumber != this.smartphone.phonenumber) {
-                        this.messages = [];
-                        this.messageContacts = [];
-                        this.tempArray = [];
-                        this.setting = -1;
-                        this.lastsetting = -1;
-                    }
-                    if (json3 && JSON.parse(json3).length > this.smartphone.messagecount) {
-                        this.newmessages = 1;
-                        this.smartphone.messagecount = JSON.parse(json3).length;
-                        this.save = 1;
-                    }
-                    if (json4 && JSON.parse(json4).length > this.smartphone.phonecalls) {
-                        this.phonecount = 1;
-                        this.smartphone.phonecalls = JSON.parse(json4).length;
-                        this.save = 1;
-                    }
-                    if (json2) {
-                        this.contacts = JSON.parse(json2);
-                    }
-                    if (json3) {
-                        this.messages = JSON.parse(json3);
-                    }
-                    if (json4) {
-                        this.calllogs = JSON.parse(json4);
-                    }
                     if (this.smartphone.phonestatus == 0) {
                         this.setting = -2;
                     } else {
@@ -1897,8 +1897,10 @@ export default {
                         }
                         this.setting = 18;
                     }
-                } else {
+                }
+                else {
                     this.setting = -2;
+                    this.save = 0;
                 }
                 if (this.lastnumber && this.lastnumber != this.smartphone.phonenumber) {
                     this.lastcheck = (Date.now() / 1000);

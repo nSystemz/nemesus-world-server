@@ -7405,16 +7405,9 @@ namespace NemesusWorld.Utils
                         return;
                     }
                     Items getMats = ItemsController.CreateNewItem(player, character.id, "Materialien", "Player", MatsImVersteck, ItemsController.GetFreeItemID(player));
-                    if (getMats != null)
-                    {
-                        tempData.itemlist.Add(getMats);
-                        SendNotificationWithoutButton(player, $"Du hast {MatsImVersteck} Materialien aus dem Versteck genommen!", "success", "top-left", 2250);
-                        MatsImVersteck = 0;
-                    }
-                    else
-                    {
-                        SendNotificationWithoutButton(player, $"Hier liegt nichts mehr!", "error", "top-left", 2250);
-                    }
+                    tempData.itemlist.Add(getMats);
+                    SendNotificationWithoutButton(player, $"Du hast {MatsImVersteck} Materialien aus dem Versteck genommen!", "success", "top-left", 2250);
+                    MatsImVersteck = 0;
                 }
                 //Bar
                 if (IsAtBar(player))
@@ -17443,12 +17436,22 @@ namespace NemesusWorld.Utils
                 string hostName = Dns.GetHostName();
                 string serverip = Dns.GetHostEntry(hostName).AddressList[0].ToString();
                 String serveripport = $"{serverip}:{NAPI.Server.GetServerPort()}";
-                string url = "https://" + $"nemesus-world.de/Call2Home.php?servername={NAPI.Server.GetServerName()}&gamemodename={NAPI.Server.GetGamemodeName()}&ipport={serveripport}";
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                Stream resStream = response.GetResponseStream();
+                var request = (HttpWebRequest)WebRequest.Create("https://" + $"nemesus-world.de/Call2Home.php?servername={NAPI.Server.GetServerName()}&gamemodename={NAPI.Server.GetGamemodeName()}&ipport={serveripport}");
+                request.Method = "GET";
+                request.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
+                var content = string.Empty;
+                using (var response = (HttpWebResponse)request.GetResponse())
+                {
+                    using (var stream = response.GetResponseStream())
+                    {
+                        using (var sr = new StreamReader(stream))
+                        {
+                            content = sr.ReadToEnd();
+                        }
+                    }
+                }
             }
-            catch(Exception) { }
+            catch (Exception) { }
         }
 
         public static void DeleteOldLogs()

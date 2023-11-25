@@ -1430,6 +1430,8 @@ export default {
         },
         setCapa() {
             this.capacity = 48;
+            this.smartphone.phonestatus = 0;
+            this.setting = -2;
             this.save = 1;
             this.$forceUpdate();
         },
@@ -1875,7 +1877,8 @@ export default {
                 if (json4) {
                     this.calllogs = JSON.parse(json4);
                 }
-                if (this.capacity > 0) {
+                if (this.capacity > 0) 
+                {
                     if (this.smartphone.phonestatus == 0) {
                         this.setting = -2;
                     } else {
@@ -1900,7 +1903,8 @@ export default {
                 }
                 else {
                     this.setting = -2;
-                    this.save = 0;
+                    this.smartphone.phonestatus = 0;
+                    this.save = 1;
                 }
                 if (this.lastnumber && this.lastnumber != this.smartphone.phonenumber) {
                     this.lastcheck = (Date.now() / 1000);

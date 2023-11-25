@@ -5050,6 +5050,7 @@ mp.events.add("Client:SpeakAnim", () => {
     mp.players.local.playFacialAnim("mic_chatter", "mp_facial");
     if (speakTimeout != null) {
         clearTimeout(speakTimeout);
+        speakTimeout = null;
     }
     speakTimeout = setTimeout(function () {
         mp.players.local.playFacialAnim("mood_normal_1", "facials@gen_male@variations@normal");

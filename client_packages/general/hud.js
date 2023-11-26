@@ -929,7 +929,7 @@ mp.events.add('render', (nametags) => {
 
     //Deathsystem
     let spawned = localPlayer.getVariable('Player:Spawned');
-    if (!death && spawned && localPlayer.getHealth() < 10) {
+    if (!death && spawned && (getPlayerHealth(localPlayer)-100) < 10) {
         hideMenus();
         mp.events.callRemote('Server:SetDeath', null, 7);
     }
@@ -5054,6 +5054,7 @@ mp.events.add("Client:SpeakAnim", () => {
     }
     speakTimeout = setTimeout(function () {
         mp.players.local.playFacialAnim("mood_normal_1", "facials@gen_male@variations@normal");
+        speakTimeout = null;
     }, 2500);
 });
 
@@ -5098,7 +5099,7 @@ mp.events.add("Client:ShowHud", (id) => {
         let health = localPlayer.getVariable('Player:Health');
         let armor = localPlayer.getVariable('Player:Armor');
         let needs = localPlayer.getVariable('Player:Needs').split(',');
-        hudWindow.execute(`gui.hud.showHud('${health}','${needs[1]}','${needs[0]}','${armor}');`)
+        hudWindow.execute(`gui.hud.showHud('${health-100}','${needs[1]}','${needs[0]}','${armor}');`)
         //HUD 2
         if (id) {
             playerID = id;
@@ -5115,9 +5116,9 @@ mp.events.add("Client:UpdateHud3", () => {
 });
 
 mp.events.addDataHandler("Player:Health", (entity, value, oldValue) => {
-    oldHealth = parseInt(value);
+    oldHealth = getPlayerHealth(localPlayer);
     if (hudWindow != null) {
-        hudWindow.execute(`gui.hud.updateBar(1,'${value}');`)
+        hudWindow.execute(`gui.hud.updateBar(1,'${oldHealth-100}');`)
     }
     antiCheatWait = (Date.now() / 1000) + (2);
 });
@@ -5419,7 +5420,7 @@ setInterval(() => {
     updateHealthArmor();
     //Damage effect
     if (death == false) {
-        if (localPlayer.getHealth() <= 15) {
+        if ((getPlayerHealth(localPlayer)-100) <= 15 && (getPlayerHealth(localPlayer)-100) > 1) {
             if (damageEffect == false) {
                 damageEffect = true;
                 mp.game.graphics.startScreenEffect("DeathFailMPDark", -1, false);
@@ -5948,7 +5949,7 @@ mp.events.add('incomingDamage', (sourceEntity, sourcePlayer, targetEntity, weapo
         if (hack == true) {
             mp.events.call('Client:StopHack2');
         }
-        if (localPlayer.getHealth() - damage < 1 && death == false) {
+        if (getPlayerHealth(localPlayer) - damage < 100 && death == false) {
             death = true;
             hideMenus();
             mp.events.callRemote('Server:SetDeath', null, 7);
@@ -6019,6 +6020,7 @@ mp.events.add("playerSpawn", (player) => {
         player.setInvincible(false);
     }
     player.resetAlpha();
+    mp.game.graphics.stopScreenEffect("DeathFailMPDark");
 });
 
 //Playerdeath
@@ -6361,7 +6363,7 @@ mp.events.add('entityStreamIn', (entity) => {
         if (mp.peds.exists(entity) && 0 !== entity.handle && entity.type == 'ped') {
             if (entity.hasVariable("Ped:Death")) {
                 let pedDeath = entity.getVariable("Ped:Death");
-                if (pedDeath == 1 && entity.getHealth() > 0) {
+                if (pedDeath == 1 && getPlayerHealth(entity) > 0) {
                     entity.setHealth(0);
                     setTimeout(() => {
                         entity.freezePosition(true);
@@ -8095,7 +8097,6 @@ function UpdateNameTags1(nametags) {
                         let adminlevel = parseInt(player.getVariable('Player:Adminlevel'));
 
                         if (admindutytemp == 1) {
-                            mp.console.logInfo('admincheck2: ' + realname, true, true);
                             graphics.drawText(realname + ' [' + player.remoteId + ']\n~r~' + GetAdminRang(player, adminlevel) + '\n', [x, y], {
                                 font: 4,
                                 color: color,
@@ -8108,9 +8109,9 @@ function UpdateNameTags1(nametags) {
                         if (player.hasVariable('Player:AdminLogin')) {
                             admindutytemp = parseInt(player.getVariable('Player:AdminLogin'));
                         }
-                        var healthplayer = player.getHealth();
+                        var healthplayer = getPlayerHealth(player);
                         if (healthplayer > 100) {
-                            healthplayer = 100;
+                            healthplayer = healthplayer-100;
                         }
                         var armourplayer = player.getArmour();
                         let realname = player.getVariable('Player:Name');
@@ -8204,9 +8205,9 @@ function UpdateNameTags2(nametags) {
                         if (player.hasVariable('Player:AdminLogin')) {
                             admindutytemp = parseInt(player.getVariable('Player:AdminLogin'));
                         }
-                        var healthplayer = player.getHealth();
+                        var healthplayer = getPlayerHealth(player);
                         if (healthplayer > 100) {
-                            healthplayer = 100;
+                            healthplayer = healthplayer-100;
                         }
                         var armourplayer = player.getArmour();
                         let realname = player.getVariable('Player:Name');
@@ -8986,7 +8987,7 @@ mp.events.add("Client:HideMenus", () => {
 mp.events.addDataHandler("Ped:Death", (entity, value, oldValue) => {
     if (mp.peds.exists(entity) && 0 !== entity.handle && entity.type == 'ped') {
         let pedDeath = value;
-        if (pedDeath == 1 && entity.getHealth() > 0) {
+        if (pedDeath == 1 && getPlayerHealth(entity) > 0) {
             entity.setHealth(0);
             setTimeout(() => {
                 entity.freezePosition(true);
@@ -9391,16 +9392,28 @@ function getRndInteger(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
 
+function getPlayerHealth(playerobject)
+{
+    if(playerobject != null)
+    {
+        return playerobject.getHealth()+100;
+    }
+    else
+    {
+        return 200;
+    }
+}
+
 function updateHealthArmor() {
     if (hudWindow == null) return;
     var model = localPlayer.model == mp.game.joaat('mp_f_freemode_01') ? 1 : localPlayer.model == mp.game.joaat('mp_m_freemode_01') ? 1 : 0;
-    if (oldHealth > -1 && oldHealth != localPlayer.getHealth()) {
-        if (!death && (antiCheatWait == 0 || (Date.now() / 1000) > antiCheatWait) && model == 1 && oldHealth > 0 && localPlayer.getHealth() > 0 && localPlayer.getHealth() > oldHealth && localPlayer.getHealth() <= 175) {
-            callAntiCheat("Lebens Cheat", "Lebenswert: " + localPlayer.getHealth(), false);
+    if (oldHealth > -1 && oldHealth != getPlayerHealth(localPlayer)) {
+        if (!death && (antiCheatWait == 0 || (Date.now() / 1000) > antiCheatWait) && model == 1 && oldHealth > 0 && getPlayerHealth(localPlayer) > 0 && getPlayerHealth(localPlayer) > oldHealth && getPlayerHealth(localPlayer) <= 275) {
+            callAntiCheat("Lebens Cheat", "Lebenswert: " + getPlayerHealth(localPlayer)-100, false);
             return;
         }
-        oldHealth = localPlayer.getHealth();
-        hudWindow.execute(`gui.hud.updateBar(1, '${oldHealth}');`)
+        oldHealth = getPlayerHealth(localPlayer);
+        hudWindow.execute(`gui.hud.updateBar(1, '${oldHealth-100}');`)
     }
     if (oldArmor > -1 && oldArmor != localPlayer.getArmour()) {
         if (!death && (antiCheatWait == 0 || (Date.now() / 1000) > antiCheatWait) && model == 1 && oldArmor > 0 && localPlayer.getArmour() > 0 && (oldArmor >= 100 || localPlayer.getArmour() > oldArmor)) {
@@ -9491,27 +9504,27 @@ function antiCheatCheck() {
             }
         }
     }
-    oldposition = localPlayer.position;
-}
-//Alle 2 Minuten
-if (antiCheatTime >= 120) {
-    //Godmode Anticheat
-    let adminduty = localPlayer.getVariable('Player:AdminLogin');
-    if (!adminduty && localPlayer.getHealth() > 1 && death == false && afk == false && ping == false && !localPlayer.isInAnyVehicle(true)) {
-        let healthBefore = localPlayer.getHealth();
-        localPlayer.applyDamageTo(1, true);
-        setTimeout(() => {
-            if (healthBefore == localPlayer.getHealth()) {
-                godmodeCall++;
-                if (godmodeCall >= 2) {
-                    callAntiCheat("Godmode Cheat", "n/A", true);
+    //Alle 2 Minuten
+    if (antiCheatTime >= 120) {
+        //Godmode Anticheat
+        let adminduty = localPlayer.getVariable('Player:AdminLogin');
+        if (!adminduty && getPlayerHealth(localPlayer) > 1 && death == false && afk == false && ping == false && !localPlayer.isInAnyVehicle(true)) {
+            let healthBefore = getPlayerHealth(localPlayer);
+            localPlayer.applyDamageTo(1, true);
+            setTimeout(() => {
+                if (healthBefore == getPlayerHealth(localPlayer)) {
+                    godmodeCall++;
+                    if (godmodeCall >= 2) {
+                        callAntiCheat("Godmode Cheat", "n/A", true);
+                    }
+                } else {
+                    localPlayer.setHealth(healthBefore + 100);
                 }
-            } else {
-                localPlayer.setHealth(healthBefore + 100);
-            }
-        }, 503);
+            }, 503);
+        }
+        antiCheatTime = 0;
     }
-    antiCheatTime = 0;
+    oldposition = localPlayer.position;
 }
 
 //Anticheat

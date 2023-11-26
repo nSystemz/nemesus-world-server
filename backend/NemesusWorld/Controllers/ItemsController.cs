@@ -663,7 +663,7 @@ namespace NemesusWorld.Controllers
                 TempData tempData = Helper.GetCharacterTempData(player);
 
                 Items deleteitem = null;
-                foreach (Items item in tempData.itemlist)
+                foreach (Items item in tempData.itemlist.ToList())
                 {
                     if (item != null && item.props == prop)
                     {
@@ -686,7 +686,7 @@ namespace NemesusWorld.Controllers
                 TempData tempData = Helper.GetCharacterTempData(player);
 
                 Items deleteitem = null;
-                foreach (Items item in tempData.itemlist)
+                foreach (Items item in tempData.itemlist.ToList())
                 {
                     if (item != null && item.itemid == itemid)
                     {

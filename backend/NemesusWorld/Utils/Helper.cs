@@ -17549,7 +17549,7 @@ namespace NemesusWorld.Utils
 
         public static void SetPlayerHealth(Player player, int health)
         {
-            player.SetOwnSharedData("Player:Health", health);
+            player.SetOwnSharedData("Player:Health", (health+100));
             NAPI.Player.SetPlayerHealth(player, health);
         }
 

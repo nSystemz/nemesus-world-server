@@ -742,7 +742,7 @@ namespace NemesusWorld
                                         TempData tempData = Helper.GetCharacterTempData(player);
                                         if (character != null && account != null)
                                         {
-                                            if (character.disease > 0 && Helper.GetRandomPercentage(55) && character.death == false)
+                                            if (character.disease > 0 && Helper.GetRandomPercentage(45) && character.death == false)
                                             {
                                                 if (!player.IsInVehicle)
                                                 {

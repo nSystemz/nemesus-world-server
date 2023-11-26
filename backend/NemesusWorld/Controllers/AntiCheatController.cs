@@ -83,6 +83,10 @@ namespace NemesusWorld.Controllers
                     {
                         Helper.SetPlayerHealth(player, 175);
                     }
+                    else
+                    {
+                        Helper.SetPlayerHealth(player, 100);
+                    }
                 }
                 else if (cheatname == "Godmode Cheat")
                 {

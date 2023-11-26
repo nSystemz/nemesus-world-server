@@ -1884,10 +1884,6 @@ export default {
       mats: 0,
       //Group
       groupid: 0,
-      //Graffity
-      showgraffity: false,
-      graffityposx: 0.0,
-      graffityposy: 0.0,
       //Gangzone
       showgangzone: false,
       gangzone: [],
@@ -2302,12 +2298,6 @@ export default {
           mp.trigger('Client:GetGangzone');
           this.clicked = (Date.now() / 1000) + (1);
         }
-      },
-      showGraffity(posx, posy)
-      {
-        this.showgraffity = true;
-        this.graffityposx = posx;
-        this.graffityposy = posy;
       },
       showGangzone(json1, json2, group)
       {

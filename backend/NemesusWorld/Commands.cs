@@ -2474,6 +2474,7 @@ namespace NemesusWorld
                     Helper.SendNotificationWithoutButton(player, "Du kannst diesen Spieler nicht teleportieren!", "error");
                     return;
                 }
+                ntarget.Dimension = 0;
                 switch (option.ToLower())
                 {
                     case "rathaus":
@@ -6063,7 +6064,7 @@ namespace NemesusWorld
                         Helper.SendNotificationWithoutButton(player, "Der Adminlogin war erfolgreich!", "success", "top-end");
                         NAPI.Data.SetEntitySharedData(player, "Player:AdminLogin", 1);
                         player.SetData<int>("Player:OldHealth", NAPI.Player.GetPlayerHealth(player));
-                        Helper.SetPlayerHealth(player, 999);
+                        Helper.SetPlayerHealth(player, 100);
                         player.SetSharedData("Player:Adminsettings", "1,0,0");
                         JObject obj = JObject.Parse(character.json);
                         CharacterController.SetCharacterCloths(player, obj, character.clothing);

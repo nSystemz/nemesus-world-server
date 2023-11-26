@@ -52,11 +52,11 @@ mp.events.add("Client:DeleteCharacterWindow", () => {
     bodyCam.setActive(false);
 })
 
-mp.events.add("Client:CharacterCameraOn", () => {
+mp.events.add("Client:CharacterCameraOn", (setDist=2.6) => {
     bodyCamStart = player.position;
     let camValues = {
         Angle: player.getRotation(2).z + 90,
-        Dist: 2.6,
+        Dist: setDist,
         Height: 0.2
     };
     let pos = getCameraOffset(new mp.Vector3(bodyCamStart.x, bodyCamStart.y, bodyCamStart.z + camValues.Height), camValues.Angle, camValues.Dist);

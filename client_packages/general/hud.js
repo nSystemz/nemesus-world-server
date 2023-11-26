@@ -591,7 +591,7 @@ let maxWeapons = 0;
 let oldTint = 0;
 let timerCounter = 0;
 let globalBool = false;
-let oldHealth = 100;
+let oldHealth = 200;
 let oldArmor = 0;
 let vehiclePos = null;
 let vehicleKilometre = 0;
@@ -612,7 +612,6 @@ let afk = false;
 let ping = false;
 let level = 1;
 let showgangzone = false;
-let showgraffity = false;
 let showcrafting = false;
 let hack = false;
 let crystalmeth = false;
@@ -811,16 +810,6 @@ mp.events.add('render', (nametags) => {
     if (showBank == true || showCenterMenu == true || showCarSetting == true || showCityhall == true || clothMenu == true || clothMenu2 == true || clothMenu3 == true || clothMenu4 == true || showFuel == true || showAmmu == true || showShop == true || showShop2 == true || nokeys == true || showHandy == true || showTuning == true || showDealer == true || showTab == true || startRange == true || editFurniture == true || showFurniture == true ||
         modusFurniture == true || modusFurniture2 == true || InteriorSwitch == true || startLockpicking == true || barberMenu == true || tattooShop == true || showSped == true || showPerso == true || showLics == true || showMdc == true || showArrest == true || showRadio == true || showMusic == true || showTicket == true || showRecept == true || cctvShow == true || afk == true || ping == true || showgangzone == true || showcrafting == true || hack == true) {
         mp.game.controls.disableControlAction(32, 200, true);
-    }
-
-    //Graffitysystem
-    if (showgraffity == false) {
-        distance = distanceVector(localPlayer.position, new mp.Vector3(-474.72983, -280.7982, 35.735035));
-        if (distance < 3.5) {
-            cefPos = mp.game.graphics.world3dToScreen2d(new mp.Vector3(-474.72983, -280.7982, 35.735035));
-            hudWindow.execute(`gui.hud.showGraffity('${cefPos.x}','${cefPos.y}');`);
-            showgraffity = true;
-        }
     }
 
     //Livestream
@@ -2824,8 +2813,10 @@ mp.events.add("Client:ShowBarberShop", (oldhair, oldcolor, oldbeard, oldcolor2, 
         mp.events.call('Client:UpdateHud3');
         hudWindow.execute(`gui.hud.showBarberMenu('${oldhair}','${oldcolor}','${oldbeard}','${oldcolor2}','${highlight}','${gender}','${multiplier}','${bizzid}','${overlay0}','${overlaycolor0}','${overlay1}','${overlaycolor1}','${overlay2}','${overlaycolor2}');`)
         if (barberMenu == true) {
-            mp.events.call('Client:CharacterCameraOn');
-            mp.events.call('Client:CharacterCamera', 6);
+            setTimeout(() => {
+                mp.events.call('Client:CharacterCameraOn');
+                mp.events.call('Client:CharacterCamera', 6);
+            }, 500);
             mp.gui.cursor.show(true, true);
             mp.game.ui.displayHud(false);
             showHideChat(false);
@@ -3077,8 +3068,10 @@ mp.events.add("Client:ShowTattoShop", (json, gender, multiplier) => {
             localPlayer.setComponentVariation(3, 15, 0, 0);
             localPlayer.setComponentVariation(8, 15, 0, 0);
             localPlayer.setComponentVariation(4, 14, 0, 0);
-            mp.events.call('Client:CharacterCameraOn');
-            mp.events.call('Client:CharacterCamera', 0);
+            setTimeout(() => {
+                mp.events.call('Client:CharacterCameraOn');
+                mp.events.call('Client:CharacterCamera', 0);
+            }, 500);
             localPlayer.freezePosition(true);
             mp.gui.cursor.show(true, true);
             mp.game.ui.displayHud(false);
@@ -3963,24 +3956,30 @@ mp.keys.bind(0x4B, true, function () {
                 if (showCursorTemp == false) {
                     mp.events.call('Client:CharacterCameraOff');
                 } else {
-                    mp.events.call('Client:CharacterCameraOn');
-                    mp.events.call('Client:CharacterCamera', 6);
+                    setTimeout(() => {
+                        mp.events.call('Client:CharacterCameraOn');
+                        mp.events.call('Client:CharacterCamera', 6);
+                    }, 500);
                 }
             }
             if (tattooShop == true) {
                 if (showCursorTemp == false) {
                     mp.events.call('Client:CharacterCameraOff');
                 } else {
-                    mp.events.call('Client:CharacterCameraOn');
-                    mp.events.call('Client:CharacterCamera', 0);
+                    setTimeout(() => {
+                        mp.events.call('Client:CharacterCameraOn');
+                        mp.events.call('Client:CharacterCamera', 0);
+                    }, 500);
                 }
             }
             if (clothMenu == true || clothMenu2 == true || clothMenu3 == true || clothMenu4 == true) {
                 if (showCursorTemp == false) {
                     mp.events.call('Client:CharacterCameraOff');
                 } else {
-                    mp.events.call('Client:CharacterCameraOn');
-                    mp.events.call('Client:CharacterCamera', 0);
+                    setTimeout(() => {
+                        mp.events.call('Client:CharacterCameraOn');
+                        mp.events.call('Client:CharacterCamera', 0);
+                    }, 500);
                 }
             }
             return;
@@ -5116,11 +5115,11 @@ mp.events.add("Client:UpdateHud3", () => {
 });
 
 mp.events.addDataHandler("Player:Health", (entity, value, oldValue) => {
-    oldHealth = getPlayerHealth(localPlayer);
+    antiCheatWait = (Date.now() / 1000) + (3);
+    oldHealth = value;
     if (hudWindow != null) {
-        hudWindow.execute(`gui.hud.updateBar(1,'${oldHealth-100}');`)
+        hudWindow.execute(`gui.hud.updateBar(1,'${(getPlayerHealth-100)}');`)
     }
-    antiCheatWait = (Date.now() / 1000) + (2);
 });
 
 mp.events.addDataHandler("Player:Armor", (entity, value, oldValue) => {
@@ -7279,7 +7278,7 @@ mp.events.addDataHandler("Vehicle:Tuning", (entity, value, oldValue) => {
 });
 
 mp.events.addDataHandler("Vehicle:Sync", (entity, value, oldValue) => {
-    if (mp.vehicles.exists(entity) && 0 !== entity.handle) {
+    if (mp.vehicles.exists(entity) && 0 !== entity.handle && entity.typ == 'vehicle') {
         setTimeout(() => {
             let syncComponents = value.split(",");
             if (syncComponents) {
@@ -8997,7 +8996,7 @@ mp.events.addDataHandler("Ped:Death", (entity, value, oldValue) => {
 });
 
 mp.events.add("Client:UpdateAnimals", (ped) => {
-    if (ped) {
+    if (ped && ped.typ == 'ped') {
         ped.setAsEnemy(true);
         ped.freezePosition(false);
         ped.setCanBeDamaged(true);
@@ -9408,8 +9407,11 @@ function updateHealthArmor() {
     if (hudWindow == null) return;
     var model = localPlayer.model == mp.game.joaat('mp_f_freemode_01') ? 1 : localPlayer.model == mp.game.joaat('mp_m_freemode_01') ? 1 : 0;
     if (oldHealth > -1 && oldHealth != getPlayerHealth(localPlayer)) {
-        if (!death && (antiCheatWait == 0 || (Date.now() / 1000) > antiCheatWait) && model == 1 && oldHealth > 0 && getPlayerHealth(localPlayer) > 0 && getPlayerHealth(localPlayer) > oldHealth && getPlayerHealth(localPlayer) <= 275) {
-            callAntiCheat("Lebens Cheat", "Lebenswert: " + getPlayerHealth(localPlayer)-100, false);
+        if (!death && (antiCheatWait == 0 || (Date.now() / 1000) > antiCheatWait) && model == 1 && oldHealth > 0 && getPlayerHealth(localPlayer) > 0 && getPlayerHealth(localPlayer) > oldHealth && (getPlayerHealth(localPlayer)-100) != 100 && getPlayerHealth(localPlayer) <= 275) {
+            callAntiCheat("Lebens Cheat", "Lebenswert: " + parseInt(getPlayerHealth(localPlayer)-100), false);
+            antiCheatWait = (Date.now() / 1000) + (3);
+            localPlayer.setHealth(200);
+            oldHealth = 200;
             return;
         }
         oldHealth = getPlayerHealth(localPlayer);
@@ -9506,22 +9508,6 @@ function antiCheatCheck() {
     }
     //Alle 2 Minuten
     if (antiCheatTime >= 120) {
-        //Godmode Anticheat
-        let adminduty = localPlayer.getVariable('Player:AdminLogin');
-        if (!adminduty && getPlayerHealth(localPlayer) > 1 && death == false && afk == false && ping == false && !localPlayer.isInAnyVehicle(true)) {
-            let healthBefore = getPlayerHealth(localPlayer);
-            localPlayer.applyDamageTo(1, true);
-            setTimeout(() => {
-                if (healthBefore == getPlayerHealth(localPlayer)) {
-                    godmodeCall++;
-                    if (godmodeCall >= 2) {
-                        callAntiCheat("Godmode Cheat", "n/A", true);
-                    }
-                } else {
-                    localPlayer.setHealth(healthBefore + 100);
-                }
-            }, 503);
-        }
         antiCheatTime = 0;
     }
     oldposition = localPlayer.position;

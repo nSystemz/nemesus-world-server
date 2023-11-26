@@ -1702,7 +1702,7 @@ namespace NemesusWorld
                 if (tempData.adminduty == true)
                 {
                     player.SetSharedData("Player:Adminsettings", "1,0,0");
-                    Helper.SetPlayerHealth(player, 999);
+                    Helper.SetPlayerHealth(player, 100);
                 }
                 if (character.death == true)
                 {

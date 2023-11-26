@@ -549,7 +549,7 @@ namespace NemesusWorld.Database
                 Character character = Helper.GetCharacterData(player);
                 TempData tempData = Helper.GetCharacterTempData(player);
                 if (player.GetData<bool>("Player:InShop") == true) return;
-                Business bizz = Business.GetClosestBusiness(player, 40.5f);
+                Business bizz = Business.GetClosestBusiness(player, 55.5f);
                 if (bizz != null)
                 {
                     if (bizz.nobuy == true)
@@ -1351,7 +1351,7 @@ namespace NemesusWorld.Database
         {
             try
             {
-                if (player.GetData<bool>("Player:InShop") == false) return;
+                if (zoneid == -1) return;
 
                 TempData tempData = Helper.GetCharacterTempData(player);
                 Character character = Helper.GetCharacterData(player);

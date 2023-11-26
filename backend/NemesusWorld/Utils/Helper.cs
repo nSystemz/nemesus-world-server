@@ -4626,7 +4626,7 @@ namespace NemesusWorld.Utils
                                         player.SetData("Client:WrongPW", 0);
                                         player.SetData("Player:AdminDuty", true);
                                         player.SetData<int>("Player:OldHealth", NAPI.Player.GetPlayerHealth(player));
-                                        Helper.SetPlayerHealth(player, 999);
+                                        Helper.SetPlayerHealth(player, 100);
                                         player.SetSharedData("Player:Adminsettings", "1,0,0");
                                         JObject obj = JObject.Parse(character.json);
                                         CharacterController.SetCharacterCloths(player, obj, character.clothing);
@@ -10884,7 +10884,6 @@ namespace NemesusWorld.Utils
                         Helper.SendNotificationWithoutButton(player, $"Zurzeit können wir unsere Dienstleistungen leider nicht anbieten!", "error", "top-end", 3500);
                         return;
                     }
-                    player.SetData<bool>("Player:InShop", true);
                     player.Dimension = (uint)(player.Id + 5);
                     if (bizz.id == 39)
                     {

@@ -1177,7 +1177,7 @@ mp.events.add('Client:StartSpectate', (targetId, targetName) => {
                 specWaiting = 0;
             }
         });
-        if (specTarget) {
+        if (specTarget && interval) {
             clearInterval(interval);
         }
     }, 15);

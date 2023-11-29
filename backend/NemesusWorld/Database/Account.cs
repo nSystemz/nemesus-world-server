@@ -56,12 +56,12 @@ namespace NemesusWorld.Database
         public int crosshair { get; set; }
         public int shootingrange { get; set; }
         public string faq { get; set; }
-        public string[] faqarray { get; set; }
+        public string[] faqarray { get; set; } //Nicht speichern
         public int givepremium { get; set; }
         public int houseslots { get; set; }
         public int vehicleslots { get; set; }
         public int epboost { get; set; }
-        //No Save
+        //Nicht speichern
         public Player _Player;
         public bool logged_in { get; set; }
 
@@ -333,31 +333,73 @@ namespace NemesusWorld.Database
 
         public static void SaveAccount(Player player)
         {
-            if (General.DatabaseConnectionCheck == true)
+            try
             {
-                Account account = Helper.GetAccountData(player);
-                if (account == null) return;
+                if (General.DatabaseConnectionCheck == true)
+                {
+                    Account account = Helper.GetAccountData(player);
+                    if (account == null) return;
 
-                account.last_save = Helper.UnixTimestamp();
-                account.faq = String.Join(",", account.faqarray);
+                    account.last_save = Helper.UnixTimestamp();
+                    account.faq = String.Join(",", account.faqarray);
 
-                MySqlCommand command = General.Connection.CreateCommand();
-                command.CommandText = "UPDATE users SET adminlevel=@adminlevel,identifier=@identifier,shootingrange=@shootingrange,faq=@faq,givepremium=@givepremium,epboost=@epboost,rpquizfinish=@rpquizfinish,online=@online,prison=@prison,forumaccount=@forumaccount,crosshair=@crosshair WHERE id=@id";
+                    MySqlCommand command = General.Connection.CreateCommand();
+                    command.CommandText = "UPDATE users SET name=@name,adminlevel=@adminlevel,admin_since=@admin_since,selectedcharacter=@selectedcharacter,selectedcharacterintern=@selectedcharacterintern,last_login=@last_login,account_created=@account_created," +
+                    "last_save=@last_save,level=@level,play_time=@play_time,play_points=@play_points,kills=@kills,deaths=@deaths,crimes=@crimes,premium=@premium,premium_time=@premium_time,coins=@coins,warns=@warns,warns_text=@warns_text," +
+                    "online=@online,namechanges=@namechanges,theme=@theme,ban=@ban,bantext=@bantext,admin_rang=@admin_rang,prison=@prison,last_ip=@last_ip,identifier=@identifier,login_bonus=@login_bonus,login_bonus_before=@login_bonus_before," +
+                    "dsgvo_closed=@dsgvo_closed,forumaccount=@forumaccount,forumcode=@forumcode,forumupdate=@forumupdate,autologin=@autologin,rpquizfinish=@rpquizfinish,crosshair=@crosshair,shootingrange=@shootingrange,faq=@faq,givepremium=@givepremium," +
+                    "vehicleslots=@vehicleslots,epboost=@epboost" +
+                    " WHERE id=@id";
 
-                command.Parameters.AddWithValue("@adminlevel", account.adminlevel);
-                command.Parameters.AddWithValue("@identifier", player.SocialClubId);
-                command.Parameters.AddWithValue("@shootingrange", account.shootingrange);
-                command.Parameters.AddWithValue("@faq", account.faq);
-                command.Parameters.AddWithValue("@givepremium", account.givepremium);
-                command.Parameters.AddWithValue("@epboost", account.epboost);
-                command.Parameters.AddWithValue("@rpquizfinish", account.rpquizfinish);
-                command.Parameters.AddWithValue("@online", account.online);
-                command.Parameters.AddWithValue("@prison", account.prison);
-                command.Parameters.AddWithValue("@forumaccount", account.forumaccount);
-                command.Parameters.AddWithValue("@crosshair", account.crosshair);
-                command.Parameters.AddWithValue("@id", account.id);
-
-                command.ExecuteNonQuery();
+                    command.Parameters.AddWithValue("@name", account.name);
+                    command.Parameters.AddWithValue("@adminlevel", account.adminlevel);
+                    command.Parameters.AddWithValue("@admin_since", account.admin_since);
+                    command.Parameters.AddWithValue("@selectedcharacter", account.selectedcharacter);
+                    command.Parameters.AddWithValue("@selectedcharacterintern", account.selectedcharacterintern);
+                    command.Parameters.AddWithValue("@last_login", account.last_login);
+                    command.Parameters.AddWithValue("@account_created", account.account_created);
+                    command.Parameters.AddWithValue("@last_save", account.last_save);
+                    command.Parameters.AddWithValue("@level", account.level);
+                    command.Parameters.AddWithValue("@play_time", account.play_time);
+                    command.Parameters.AddWithValue("@play_points", account.play_points);
+                    command.Parameters.AddWithValue("@kills", account.kills);
+                    command.Parameters.AddWithValue("@deaths", account.deaths);
+                    command.Parameters.AddWithValue("@crimes", account.crimes);
+                    command.Parameters.AddWithValue("@premium", account.premium);
+                    command.Parameters.AddWithValue("@premium_time", account.premium_time);
+                    command.Parameters.AddWithValue("@coins", account.coins);
+                    command.Parameters.AddWithValue("@warns", account.warns);
+                    command.Parameters.AddWithValue("@warns_text", account.warns_text);
+                    command.Parameters.AddWithValue("@online", account.online);
+                    command.Parameters.AddWithValue("@namechanges", account.namechanges);
+                    command.Parameters.AddWithValue("@theme", account.theme);
+                    command.Parameters.AddWithValue("@ban", account.ban);
+                    command.Parameters.AddWithValue("@bantext", account.bantext);
+                    command.Parameters.AddWithValue("@admin_rang", account.admin_rang);
+                    command.Parameters.AddWithValue("@prison", account.prison);
+                    command.Parameters.AddWithValue("@last_ip", account.last_ip);
+                    command.Parameters.AddWithValue("@identifier", account.identifier);
+                    command.Parameters.AddWithValue("@login_bonus", account.login_bonus);
+                    command.Parameters.AddWithValue("@login_bonus_before", account.login_bonus_before);
+                    command.Parameters.AddWithValue("@dsgvo_closed", account.dsgvo_closed);
+                    command.Parameters.AddWithValue("@forumaccount", account.forumaccount);
+                    command.Parameters.AddWithValue("@forumcode", account.forumcode);
+                    command.Parameters.AddWithValue("@forumupdate", account.forumupdate);
+                    command.Parameters.AddWithValue("@autologin", account.autologin);
+                    command.Parameters.AddWithValue("@rpquizfinish", account.rpquizfinish);
+                    command.Parameters.AddWithValue("@crosshair", account.crosshair);
+                    command.Parameters.AddWithValue("@shootingrange", account.shootingrange);
+                    command.Parameters.AddWithValue("@faq", account.faq);
+                    command.Parameters.AddWithValue("@givepremium", account.givepremium);
+                    command.Parameters.AddWithValue("@vehicleslots", account.vehicleslots);
+                    command.Parameters.AddWithValue("@epboost", account.epboost);
+                    command.Parameters.AddWithValue("@id", account.id);
+                    command.ExecuteNonQuery();
+                }
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[SaveAccount]: " + e.ToString());
             }
         }
 

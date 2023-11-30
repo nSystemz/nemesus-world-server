@@ -566,7 +566,7 @@ namespace NemesusWorld.Database
 
                 if (!firstlogin)
                 {
-                    if (rpquizfinish == 0)
+                    if (rpquizfinish == 0 && Helper.adminSettings.rpquiz == true)
                     {
                         player.TriggerEvent("Client:ShowRPQuestions");
                     }

@@ -95,13 +95,15 @@
                     :class="[(actualWeapon == weapon.description.toLowerCase()) ? [(IsMelee(weapon.description.toLowerCase())) ? 'weaponimg3 mr-3' : 'weaponimg1 mr-3'] : [(IsMelee(weapon.description.toLowerCase())) ? 'weaponimg4 mr-3' : 'weaponimg2 mr-3']]">
             </div>
         </div>
-        <div class="weapon mt-4" v-if="showhud4">
-            <span style="font-size: 9px; font-family: 'Exo', sans-serif; text-shadow: 0 0 2px #000;">Nemesus-World
-                Gamemode by Nemesus.de</span>
-        </div>
-        <div class="weapon2"
-            v-if="weapons && weapons.length > 0 && !IsMelee(actualWeapon) && actualWeapon != 'schlagring' && actualWeapon != 'faust' && actualWeapon != 'n/A' && actualAmmo < 5000 && showhud4">
-            <span class="weapontext1">{{ actualAmmo }}</span>
+        <div v-if="showhud4">
+            <div class="weapon2"
+                v-if="weapons && weapons.length > 0 && !IsMelee(actualWeapon) && actualWeapon != 'schlagring' && actualWeapon != 'faust' && actualWeapon != 'n/A' && actualAmmo < 5000">
+                <span class="weapontext1">{{ actualAmmo }}</span>
+            </div>
+            <div class="weapon mt-4" v-else>
+                <span style="font-size: 9px; font-family: 'Exo', sans-serif; text-shadow: 0 0 2px #000;">Nemesus-World
+                    Gamemode by Nemesus.de</span>
+            </div>
         </div>
         <div style="height: 100%; Width: 100%; background-color: transparent;" v-if="showhud2">
             <div class="info server others">

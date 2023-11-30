@@ -27,6 +27,9 @@ namespace NemesusWorld.Database
         public int dailyguesslimit { get; set; }
         //Nametag | 0 = Nur Admin Nametags (wie bisher), 1 = Name unbekannt außer du bist befreundet mit jemanden, 2 alle haben Nametags
         public int nametag { get; set; }
+        //Nicht speichern
+        [PetaPoco.ResultColumn]
+        public bool rpquiz { get; set; }
 
         public AdminSettings()
         {
@@ -48,6 +51,7 @@ namespace NemesusWorld.Database
             admoney = 0;
             dailyguesslimit = 0;
             nametag = 0;
+            rpquiz = true; //True = Roleplay Quiz - False = Kein Roleplay Quiz
         }
     }
 }

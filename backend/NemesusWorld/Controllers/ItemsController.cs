@@ -2822,13 +2822,17 @@ namespace NemesusWorld.Controllers
                                         }
                                         OnShowInventory(player, 1);
                                         item.amount -= 1;
-                                        if (NAPI.Player.GetPlayerHealth(player) < 105)
+                                        if (NAPI.Player.GetPlayerHealth(player) <= 50)
                                         {
                                             Helper.SetPlayerHealth(player, NAPI.Player.GetPlayerHealth(player) + 50);
                                         }
-                                        if (NAPI.Player.GetPlayerHealth(player) > 105)
+                                        else
                                         {
-                                            Helper.SetPlayerHealth(player, 105);
+                                            Helper.SetPlayerHealth(player, 100);
+                                        }
+                                        if (NAPI.Player.GetPlayerHealth(player) > 100)
+                                        {
+                                            Helper.SetPlayerHealth(player, 100);
                                         }
                                         if (character.thirst > 15)
                                         {

@@ -779,6 +779,20 @@ namespace NemesusWorld.Utils
             }
         }
 
+        [RemoteEvent("Server:SyncHealth")]
+        public static void OnSyncHealth(Player player)
+        {
+            try
+            {
+                player.SetSharedData("Player:HealthSync", (NAPI.Player.GetPlayerHealth(player) + 100));
+                player.SetOwnSharedData("Player:Health", (NAPI.Player.GetPlayerHealth(player) + 100));
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[SyncHealth]: " + e.ToString());
+            }
+        }
+
         [RemoteEvent("Server:ReportPlayer")]
         public static void OnReportPlayer(Player player, int id)
         {
@@ -3063,6 +3077,16 @@ namespace NemesusWorld.Utils
                                 {
                                     vehicleData.position = $"-1139.5806|-211.71169|37.537098|74.32476|0";
                                     vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(-1139.5806, -211.71169, 37.537098 + 0.25), 74.32476f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
+                                }
+                                else if (bizz.id == 31)
+                                {
+                                    vehicleData.position = $"-754.99304|-1363.0486|0.29581332|-130.13977|0";
+                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(-754.99304, -1363.0486, 0.29581332 + 0.25), -130.13977f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
+                                }
+                                else if (bizz.id == 32)
+                                {
+                                    vehicleData.position = $"-993.2244|-2990.8599|14.545995|60.07966|0";
+                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(-993.2244, -2990.8599, 14.545995 + 0.25), 60.07966f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
                                 }
                                 if (vehicle != null && vehicle.Class != 13)
                                 {
@@ -16936,7 +16960,7 @@ namespace NemesusWorld.Utils
                             character.json = NAPI.Util.ToJson(obj);
 
                             MySqlCommand command = General.Connection.CreateCommand();
-                            command.CommandText = "DELETE FROM outfits WHERE name = @name and owner = @owner LIMIT 1";
+                            command.CommandText = "DELETE FROM outfits WHERE name=@name AND owner=@owner";
                             command.Parameters.AddWithValue("name", name);
                             command.Parameters.AddWithValue("owner", "furniture-" + wardrobeID);
                             command.ExecuteNonQuery();
@@ -17549,6 +17573,7 @@ namespace NemesusWorld.Utils
         public static void SetPlayerHealth(Player player, int health)
         {
             player.SetOwnSharedData("Player:Health", (health+100));
+            player.SetSharedData("Player:HealthSync", (health+100));
             NAPI.Player.SetPlayerHealth(player, health);
         }
 

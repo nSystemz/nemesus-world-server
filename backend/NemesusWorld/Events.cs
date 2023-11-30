@@ -471,6 +471,7 @@ namespace NemesusWorld
                                         player.TriggerEvent("Client:UpdateKilometreTaxi", 0);
                                     }
                                 }
+                                player.SetSharedData("Player:HealthSync", (NAPI.Player.GetPlayerHealth(player) + 100));
                             }
                         }
                         if (halfMinuteCounter >= 2)
@@ -1153,6 +1154,7 @@ namespace NemesusWorld
                 player.SetSharedData("Player:Adminsettings", "0,0,0");
                 player.SetOwnSharedData("Player:InHouse", -1);
                 player.SetSharedData("Player:Attachments", "0");
+                player.SetSharedData("Player:HealthSync", 100);
                 Helper.SetPlayerHealth(player, 100);
                 Helper.SetPlayerArmor(player, 0);
                 NAPI.Task.Run(() =>
@@ -1683,6 +1685,7 @@ namespace NemesusWorld
                 player.SetData<bool>("Player:Spectate", false);
                 player.SetOwnSharedData("Player:InHouse", -1);
                 player.SetSharedData("Player:Attachments", "0");
+                player.SetSharedData("Player:HealthSync", 100);
             }
             catch (Exception e)
             {

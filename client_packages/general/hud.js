@@ -5929,6 +5929,7 @@ mp.events.add('Client:GetWeaponDamage', () => {
 //IncomingDamage
 mp.events.add('incomingDamage', (sourceEntity, sourcePlayer, targetEntity, weapon, boneIndex, damage) => {
     if (damage > 0) {
+        mp.events.callRemote('Server:SyncHealth');
         if (death == true) {
             return true;
         }
@@ -8108,7 +8109,7 @@ function UpdateNameTags1(nametags) {
                         if (player.hasVariable('Player:AdminLogin')) {
                             admindutytemp = parseInt(player.getVariable('Player:AdminLogin'));
                         }
-                        var healthplayer = getPlayerHealth(player);
+                        var healthplayer = player.getVariable('Player:HealthSync');
                         if (healthplayer > 100) {
                             healthplayer = healthplayer-100;
                         }
@@ -8204,7 +8205,7 @@ function UpdateNameTags2(nametags) {
                         if (player.hasVariable('Player:AdminLogin')) {
                             admindutytemp = parseInt(player.getVariable('Player:AdminLogin'));
                         }
-                        var healthplayer = getPlayerHealth(player);
+                        var healthplayer = player.getVariable('Player:HealthSync');
                         if (healthplayer > 100) {
                             healthplayer = healthplayer-100;
                         }

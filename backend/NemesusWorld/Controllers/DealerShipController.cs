@@ -108,6 +108,14 @@ namespace NemesusWorld.Controllers
                                 {
                                     tempData.dealerShip = Cars.createNewCar(dealerArray[0].ToLower(), new Vector3(-1139.5806, -211.71169, 37.537098 + 0.25), 74.32476f, Convert.ToInt32(dealerArray[1]), Convert.ToInt32(dealerArray[1]), "LS-S-100" + player.Id, "Autohaus", false, true, false, player.Dimension);
                                 }
+                                else if (bizz.id == 31)
+                                {
+                                    tempData.dealerShip = Cars.createNewCar(dealerArray[0].ToLower(), new Vector3(-754.99304, -1363.0486, 0.29581332 + 0.25), -130.13977f, Convert.ToInt32(dealerArray[1]), Convert.ToInt32(dealerArray[1]), "LS-S-100" + player.Id, "Autohaus", false, true, false, player.Dimension);
+                                }
+                                else if (bizz.id == 32)
+                                {
+                                    tempData.dealerShip = Cars.createNewCar(dealerArray[0].ToLower(), new Vector3(-993.2244, -2990.8599, 14.545995 + 0.25), 60.07966f, Convert.ToInt32(dealerArray[1]), Convert.ToInt32(dealerArray[1]), "LS-S-100" + player.Id, "Autohaus", false, true, false, player.Dimension);
+                                }
                                 if (player.HasData("Player:TestDriveCD"))
                                 {
                                     player.ResetData("Player:TestDriveCD");

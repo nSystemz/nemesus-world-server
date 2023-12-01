@@ -1628,7 +1628,7 @@ mp.events.add("Client:OnInput2", (input, flag) => {
         setTimeout(function () {
             nokeys = false;
         }, 150);
-        if (flag.toLowerCase() != 'buyvehicle') {
+        if (flag.toLowerCase() != 'buyvehicle' && flag.toLowerCase() != 'buyvehicle2') {
             mp.gui.cursor.show(false, false);
             mp.game.ui.displayHud(true);
             showHideChat(true);

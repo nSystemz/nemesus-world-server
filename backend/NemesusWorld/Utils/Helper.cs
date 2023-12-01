@@ -2842,16 +2842,179 @@ namespace NemesusWorld.Utils
                 Character character = GetCharacterData(player);
                 TempData tempData = Helper.GetCharacterTempData(player);
                 House house = null;
-                if (flag.ToLower() != "buyvehicle")
+                if (flag.ToLower() != "buyvehicle" && flag.ToLower() != "buyvehicle2")
                 {
                     player.TriggerEvent("Client:PlayerFreeze", false);
                 }
                 number = Convert.ToInt32(input);
                 switch (flag.ToLower())
                 {
+                    case "buyvehicle2":
+                        {
+                            string[] carArray = new string[4];
+                            string vColor = "";
+                            string garageName = "";
+                            Bank bank = BankController.GetDefaultBank(player, character.defaultbank);
+                            Business bizz = Business.GetBusinessById(player.GetData<int>("Player:LastBizz"));
+                            int price = (int)(Convert.ToInt32(carArray[1]) * bizz.multiplier);
+                            Groups group = null;
+                            group = GroupsController.GetGroupById(character.mygroup);
+                            carArray = player.GetData<string>("Player:VehicleBuyData").Split(",");
+                            VehicleData vehicleData = new VehicleData();
+                            vehicleData.id = Cars.carList.Count + 1;
+                            vehicleData.owner = number == 1 ? "character-" + character.id : "group-" + group.id;
+                            vehicleData.vehiclename = carArray[0];
+                            vehicleData.plate = "n/A";
+                            vehicleData.fuel = -1;
+                            vehicleData.engine = 0;
+                            vehicleData.status = 1;
+                            SetPlayerPosition(player, tempData.furnitureOldPosition);
+                            player.Dimension = 0;
+                            Vehicle vehicle = null;
+                            vColor = $"{Convert.ToInt32(carArray[3])},{Convert.ToInt32(carArray[3])},-1,-1";
+                            vehicleData.color = vColor;
+                            if (number == 1)
+                            {
+                                if (bizz.id == 31)
+                                {
+                                    vehicleData.garage = "bizz-34";
+                                    garageName = Business.GetBusinessById(34).name;
+                                }
+                                else if (bizz.id == 32)
+                                {
+                                    vehicleData.garage = "bizz-35";
+                                    garageName = Business.GetBusinessById(35).name;
+                                }
+                                else
+                                {
+                                    vehicleData.garage = "bizz-33";
+                                    garageName = Business.GetBusinessById(33).name;
+                                }
+                                Cars car = new Cars();
+                                car.vehicleData = vehicleData;
+                                car.vehicleHandle = null;
+                                Cars.carList.Add(car);
+                            }
+                            else
+                            {
+                                if (bizz.id == 22)
+                                {
+                                    vehicleData.position = $"145.23679|-140.08275|54.24724|-20.416449|0";
+                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(145.23679, -140.08275, 54.24724 + 0.25), -20.416449f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
+                                }
+                                else if (bizz.id == 23)
+                                {
+                                    vehicleData.position = $"274.08023|-1159.84|28.617239|87.37559|0";
+                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(274.08023, -1159.84, 28.617239 + 0.25), 87.37559f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
+                                }
+                                else if (bizz.id == 24)
+                                {
+                                    vehicleData.position = $"-31.80824|-1091.3527|25.65422|-31.949799|0";
+                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(-31.80824, -1091.3527, 25.65422 + 0.25), -31.949799f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
+                                }
+                                else if (bizz.id == 25)
+                                {
+                                    vehicleData.position = $"-68.83505|82.71136|71.28684|63.46722|0";
+                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(-68.83505, 82.71136, 71.28684 + 0.25), 63.46722f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
+                                }
+                                else if (bizz.id == 26)
+                                {
+                                    vehicleData.position = $"-23.408432|-1678.2253|29.160381|110.107635|0";
+                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(-23.408432, -1678.2253, 29.160381 + 0.25), 110.107635f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
+                                }
+                                else if (bizz.id == 27)
+                                {
+                                    vehicleData.position = $"1214.5273|2708.1516|37.477882|156.33295|0";
+                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(1214.5273, 2708.1516, 37.477882 + 0.25), 156.33295f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
+                                }
+                                else if (bizz.id == 28)
+                                {
+                                    vehicleData.position = $"-201.7464|6204.731|31.017431|46.196392|0";
+                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(-201.7464, 6204.731, 31.017431 + 0.25), 46.196392f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
+                                }
+                                else if (bizz.id == 29)
+                                {
+                                    vehicleData.position = $"663.9333|-2687.8196|6.147993|90.25697|0";
+                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(663.9333, -2687.8196, 6.147993 + 0.25), 90.25697f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
+                                }
+                                else if (bizz.id == 30)
+                                {
+                                    vehicleData.position = $"-1139.5806|-211.71169|37.537098|74.32476|0";
+                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(-1139.5806, -211.71169, 37.537098 + 0.25), 74.32476f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
+                                }
+                                else if (bizz.id == 31)
+                                {
+                                    vehicleData.position = $"-754.99304|-1363.0486|0.29581332|-130.13977|0";
+                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(-754.99304, -1363.0486, 0.29581332 + 0.25), -130.13977f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
+                                }
+                                else if (bizz.id == 32)
+                                {
+                                    vehicleData.position = $"-993.2244|-2990.8599|14.545995|60.07966|0";
+                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(-993.2244, -2990.8599, 14.545995 + 0.25), 60.07966f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
+                                }
+                            }
+                            if (vehicle != null && vehicle.Class != 13)
+                            {
+                                vehicleData.tuev = Helper.UnixTimestamp() + (93 * 86400);
+                            }
+                            else
+                            {
+                                vehicleData.tuev = -50;
+                            }
+                            vehicleData.health = "1000.0|1000.0|1000.0";
+                            Items newitem = ItemsController.CreateNewItem(player, character.id, "Fahrzeugschlüssel", "Player", 1, ItemsController.GetFreeItemID(player), vehicleData.vehiclename + ": " + vehicleData.id);
+                            if (newitem != null)
+                            {
+                                tempData.itemlist.Add(newitem);
+                            }
+                            if (carArray[2] == "1")
+                            {
+                                CharacterController.SetMoney(player, -price);
+                            }
+                            else
+                            {
+                                bank.bankvalue -= price;
+                                Helper.BankSettings(bank.banknumber, "Autohaus Rechnung bezahlt", price.ToString(), character.name);
+                            }
+                            int gewinn = 0;
+                            if (bizz.id != 28)
+                            {
+                                gewinn = 6250 + (price / 100 * 5);
+                                Business.ManageBizzCash(bizz, gewinn, true);
+                                bizz.govcash += (gewinn / 100) * Helper.adminSettings.gsteuer;
+                                bizz.products -= 200;
+                            }
+                            else
+                            {
+                                gewinn = 3150 + (price / 100 * 10);
+                                Business.ManageBizzCash(bizz, gewinn, true);
+                                bizz.govcash += (gewinn / 100) * Helper.adminSettings.gsteuer;
+                                bizz.products -= 83;
+                            }
+                            player.TriggerEvent("Client:PlayerFreeze", false);
+                            player.SetData<int>("Player:LastBizz", 0);
+                            player.TriggerEvent("Client:ShowDealerShip", "n/A", "n/A", null, null, -1);
+                            if(garageName != "")
+                            {
+                                Helper.SendNotificationWithoutButton2(player, $"Fahrzeug erfolgreich erworben, das Fahrzeug steht in der Garage {garageName}, alles weitere findest du im F2 Menü!", "success", "center", 3750);
+                            }
+                            else
+                            {
+                                Helper.SendNotificationWithoutButton2(player, "Fahrzeug erfolgreich erworben, das Fahrzeug steht direkt hier vorne, alles weitere findest du im F2 Menü!", "success", "center", 3750);
+                            }
+                            player.ResetData("Player:VehicleBuyData");
+                            if (number == 2)
+                            {
+                                Helper.CreateGroupLog(group.id, $"{character.name} hat ein {carArray[0]} für {price}$, für die Gruppierung erworben!");
+                            }
+                            if (account.faqarray[9] == "0")
+                            {
+                                account.faqarray[9] = "1";
+                            }
+                            break;
+                        }
                     case "buyvehicle":
                         {
-                            string vColor = "";
                             Groups group = null;
                             number = Convert.ToInt32(input);
                             Business bizz = Business.GetBusinessById(player.GetData<int>("Player:LastBizz"));
@@ -3020,125 +3183,7 @@ namespace NemesusWorld.Utils
                                     SendNotificationWithoutButton2(player, "Du hast keinen Platz mehr im Inventar für den Fahrzeugschlüssel!", "error", "center");
                                     return;
                                 }
-                                VehicleData vehicleData = new VehicleData();
-                                vehicleData.id = Cars.carList.Count + 1;
-                                vehicleData.owner = number == 1 ? "character-" + character.id : "group-" + group.id;
-                                vehicleData.vehiclename = carArray[0];
-                                vehicleData.plate = "n/A";
-                                vehicleData.fuel = -1;
-                                vehicleData.engine = 0;
-                                vehicleData.status = 1;
-                                SetPlayerPosition(player, tempData.furnitureOldPosition);
-                                player.Dimension = 0;
-                                Vehicle vehicle = null;
-                                vColor = $"{Convert.ToInt32(carArray[3])},{Convert.ToInt32(carArray[3])},-1,-1";
-                                vehicleData.color = vColor;
-                                if (bizz.id == 22)
-                                {
-                                    vehicleData.position = $"145.23679|-140.08275|54.24724|-20.416449|0";
-                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(145.23679, -140.08275, 54.24724 + 0.25), -20.416449f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
-                                }
-                                else if (bizz.id == 23)
-                                {
-                                    vehicleData.position = $"274.08023|-1159.84|28.617239|87.37559|0";
-                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(274.08023, -1159.84, 28.617239 + 0.25), 87.37559f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
-                                }
-                                else if (bizz.id == 24)
-                                {
-                                    vehicleData.position = $"-31.80824|-1091.3527|25.65422|-31.949799|0";
-                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(-31.80824, -1091.3527, 25.65422 + 0.25), -31.949799f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
-                                }
-                                else if (bizz.id == 25)
-                                {
-                                    vehicleData.position = $"-68.83505|82.71136|71.28684|63.46722|0";
-                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(-68.83505, 82.71136, 71.28684 + 0.25), 63.46722f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
-                                }
-                                else if (bizz.id == 26)
-                                {
-                                    vehicleData.position = $"-23.408432|-1678.2253|29.160381|110.107635|0";
-                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(-23.408432, -1678.2253, 29.160381 + 0.25), 110.107635f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
-                                }
-                                else if (bizz.id == 27)
-                                {
-                                    vehicleData.position = $"1214.5273|2708.1516|37.477882|156.33295|0";
-                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(1214.5273, 2708.1516, 37.477882 + 0.25), 156.33295f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
-                                }
-                                else if (bizz.id == 28)
-                                {
-                                    vehicleData.position = $"-201.7464|6204.731|31.017431|46.196392|0";
-                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(-201.7464, 6204.731, 31.017431 + 0.25), 46.196392f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
-                                }
-                                else if (bizz.id == 29)
-                                {
-                                    vehicleData.position = $"663.9333|-2687.8196|6.147993|90.25697|0";
-                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(663.9333, -2687.8196, 6.147993 + 0.25), 90.25697f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
-                                }
-                                else if (bizz.id == 30)
-                                {
-                                    vehicleData.position = $"-1139.5806|-211.71169|37.537098|74.32476|0";
-                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(-1139.5806, -211.71169, 37.537098 + 0.25), 74.32476f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
-                                }
-                                else if (bizz.id == 31)
-                                {
-                                    vehicleData.position = $"-754.99304|-1363.0486|0.29581332|-130.13977|0";
-                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(-754.99304, -1363.0486, 0.29581332 + 0.25), -130.13977f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
-                                }
-                                else if (bizz.id == 32)
-                                {
-                                    vehicleData.position = $"-993.2244|-2990.8599|14.545995|60.07966|0";
-                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(-993.2244, -2990.8599, 14.545995 + 0.25), 60.07966f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
-                                }
-                                if (vehicle != null && vehicle.Class != 13)
-                                {
-                                    vehicleData.tuev = Helper.UnixTimestamp() + (93 * 86400);
-                                }
-                                else
-                                {
-                                    vehicleData.tuev = -50;
-                                }
-                                vehicleData.health = "1000.0|1000.0|1000.0";
-                                Items newitem = ItemsController.CreateNewItem(player, character.id, "Fahrzeugschlüssel", "Player", 1, ItemsController.GetFreeItemID(player), vehicleData.vehiclename + ": " + vehicleData.id);
-                                if (newitem != null)
-                                {
-                                    tempData.itemlist.Add(newitem);
-                                }
-                                if (carArray[2] == "1")
-                                {
-                                    CharacterController.SetMoney(player, -price);
-                                }
-                                else
-                                {
-                                    bank.bankvalue -= price;
-                                    Helper.BankSettings(bank.banknumber, "Autohaus Rechnung bezahlt", price.ToString(), character.name);
-                                }
-                                int gewinn = 0;
-                                if (bizz.id != 28)
-                                {
-                                    gewinn = 6250 + (price / 100 * 5);
-                                    Business.ManageBizzCash(bizz, gewinn, true);
-                                    bizz.govcash += (gewinn / 100) * Helper.adminSettings.gsteuer;
-                                    bizz.products -= 200;
-                                }
-                                else
-                                {
-                                    gewinn = 3150 + (price / 100 * 10);
-                                    Business.ManageBizzCash(bizz, gewinn, true);
-                                    bizz.govcash += (gewinn / 100) * Helper.adminSettings.gsteuer;
-                                    bizz.products -= 83;
-                                }
-                                player.TriggerEvent("Client:PlayerFreeze", false);
-                                player.SetData<int>("Player:LastBizz", 0);
-                                player.TriggerEvent("Client:ShowDealerShip", "n/A", "n/A", null, null, -1);
-                                Helper.SendNotificationWithoutButton2(player, "Fahrzeug erfolgreich erworben, das Fahrzeug steht direkt hier vorne, alles weitere findest du im F2 Menü!", "success", "center", 3750);
-                                player.ResetData("Player:VehicleBuyData");
-                                if (number == 2)
-                                {
-                                    Helper.CreateGroupLog(group.id, $"{character.name} hat ein {carArray[0]} für {price}$, für die Gruppierung erworben!");
-                                }
-                                if (account.faqarray[9] == "0")
-                                {
-                                    account.faqarray[9] = "1";
-                                }
+                                player.TriggerEvent("Client:CallInput2", "Fahrzeug einparken", "Soll dein Fahrzeug in eine passende Garage geparkt werden?", "BuyVehicle2", "Ja", "Nein");
                             }
                             else
                             {

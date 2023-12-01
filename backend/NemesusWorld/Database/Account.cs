@@ -592,9 +592,15 @@ namespace NemesusWorld.Database
                 }
                 else
                 {
-                    player.TriggerEvent("Client:ShowRPQuestions");
+                    if (Helper.adminSettings.rpquiz == true)
+                    {
+                        player.TriggerEvent("Client:ShowRPQuestions");
+                    }
+                    else
+                    {
+                        CharacterController.GetAvailableCharacters(player, id);
+                    }
                 }
-
                 player.SetData("Client:Login", true);
             }
             catch (Exception e)

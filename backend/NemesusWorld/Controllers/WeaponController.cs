@@ -717,272 +717,218 @@ namespace NemesusWorld.Controllers
                 case "faust":
                     {
                         return "unarmed";
-                        break;
                     }
                 case "pistole":
                     {
                         return "pistol";
-                        break;
                     }
                 case "pistole-mk2":
                     {
                         return "pistol_mk2";
-                        break;
                     }
                 case "pistole-50":
                     {
                         return "pistol50";
-                        break;
                     }
                 case "combat-pistole":
                     {
                         return "combatpistol";
-                        break;
                     }
                 case "heavy-pistole":
                     {
                         return "heavvypistol";
-                        break;
                     }
                 case "keramik-pistole":
                     {
                         return "ceramicpistol";
-                        break;
                     }
                 case "flaregun":
                     {
                         return "flaregun";
-                        break;
                     }
                 case "revolver":
                     {
                         return "revolver";
-                        break;
                     }
                 case "revolver-mk2":
                     {
                         return "revolver_mk2";
-                        break;
                     }
                 case "sns-pistole":
                     {
                         return "snspistol";
-                        break;
                     }
                 case "sns-pistole-mk2":
                     {
                         return "snspistol_mk2";
-                        break;
                     }
                 case "taser":
                     {
                         return "stungun";
-                        break;
                     }
                 case "dolch":
                     {
                         return "dagger";
-                        break;
                     }
                 case "baseballschläger":
                     {
                         return "bat";
-                        break;
                     }
                 case "brechstange":
                     {
                         return "crowbar";
-                        break;
                     }
                 case "taschenlampe":
                     {
                         return "flashlight";
-                        break;
                     }
                 case "golfschläger":
                     {
                         return "golfclub";
-                        break;
                     }
                 case "axt":
                     {
                         return "hatchet";
-                        break;
                     }
                 case "schlagring":
                     {
                         return "knuckle";
-                        break;
                     }
                 case "messer":
                     {
                         return "knife";
-                        break;
                     }
                 case "machete":
                     {
                         return "machete";
-                        break;
                     }
                 case "klappmesser":
                     {
                         return "switchblade";
-                        break;
                     }
                 case "schlagstock":
                     {
                         return "nightstick";
-                        break;
                     }
                 case "poolcue":
                     {
                         return "poolcue";
-                        break;
                     }
                 case "micro-smg":
                     {
                         return "microsmg";
-                        break;
                     }
                 case "mp5":
                     {
                         return "smg";
-                        break;
                     }
                 case "mp5-mk2":
                     {
                         return "smg-mk2";
-                        break;
                     }
                 case "assault-smg":
                     {
                         return "assaultsmg";
-                        break;
                     }
                 case "combat-pdw":
                     {
                         return "combatpdw";
-                        break;
                     }
                 case "tec9":
                     {
                         return "machinepistol";
-                        break;
                     }
                 case "mini-smg":
                     {
                         return "minismg";
-                        break;
                     }
                 case "pumpshotgun":
                     {
                         return "pumpshotgun";
-                        break;
                     }
                 case "pumpshotgun-mk2":
                     {
                         return "pumpshotgun-mk2";
-                        break;
                     }
                 case "sawnoffshotgun":
                     {
                         return "sawnoffshotgun";
-                        break;
                     }
                 case "combatshotgun":
                     {
                         return "comatshotgun";
-                        break;
                     }
                 case "musket":
                     {
                         return "musket";
-                        break;
                     }
                 case "angriffsgewehr":
                     {
                         return "assaultrifle";
-                        break;
                     }
                 case "angriffsgewehr-mk2":
                     {
                         return "assaultrifle_mk2";
-                        break;
                     }
                 case "karabiner-gewehr":
                     {
                         return "carbinerifle";
-                        break;
                     }
                 case "karabiner-gewehr-mk2":
                     {
                         return "carbinerifle_mk2";
-                        break;
                     }
                 case "spezial-karabiner":
                     {
                         return "specialcarbine";
-                        break;
                     }
                 case "spezial-karabiner-mk2":
                     {
                         return "specialcarbine_mk2";
-                        break;
                     }
                 case "m16":
                     {
                         return "tacticalrifle";
-                        break;
                     }
                 case "kompaktgewehr":
                     {
                         return "compactrifle";
-                        break;
                     }
                 case "maschinengewehr":
                     {
                         return "mg";
-                        break;
                     }
                 case "gusenberg":
                     {
                         return "gusenberg";
-                        break;
                     }
                 case "sniper":
                     {
                         return "sniperrifle";
-                        break;
                     }
                 case "rpg":
                     {
                         return "rpg";
-                        break;
                     }
                 case "granate":
                     {
                         return "grenade";
-                        break;
                     }
                 case "bzgas":
                     {
                         return "bzgas";
-                        break;
                     }
                 case "molotowcocktail":
                     {
                         return "molotov";
-                        break;
                     }
                 case "rauchgranate":
                     {
                         return "smokegrenade";
-                        break;
                     }
                 case "feuerlöscher":
                     {
                         return "fireextinguisher";
-                        break;
                     }
             }
             return "unarmed";
@@ -995,287 +941,230 @@ namespace NemesusWorld.Controllers
                 case "faust":
                     {
                         return "-1";
-                        break;
                     }
                 case "pistole":
                     {
                         return "0";
-                        break;
                     }
                 case "pistole-mk2":
                     {
                         return "0";
-                        break;
                     }
                 case "pistole-50":
                     {
                         return "0";
-                        break;
                     }
                 case "combat-pistole":
                     {
                         return "0";
-                        break;
                     }
                 case "heavy-pistole":
                     {
                         return "0";
-                        break;
                     }
                 case "keramik-pistole":
                     {
                         return "0";
-                        break;
                     }
                 case "flaregun":
                     {
                         return "1";
-                        break;
                     }
                 case "revolver":
                     {
                         return "0";
-                        break;
                     }
                 case "revolver-mk2":
                     {
                         return "0";
-                        break;
                     }
                 case "sns-pistole":
                     {
                         return "0";
-                        break;
                     }
                 case "sns-pistole-mk2":
                     {
                         return "0";
-                        break;
                     }
                 case "taser":
                     {
                         return "1";
-                        break;
                     }
                 case "dolch":
                     {
                         return "2";
-                        break;
                     }
                 case "baseballschläger":
                     {
                         return "2";
-                        break;
                     }
                 case "brechstange":
                     {
                         return "2";
-                        break;
                     }
                 case "taschenlampe":
                     {
                         return "2";
-                        break;
                     }
                 case "golfschläger":
                     {
                         return "2";
-                        break;
                     }
                 case "axt":
                     {
                         return "2";
-                        break;
                     }
                 case "schlagring":
                     {
                         return "2";
-                        break;
                     }
                 case "messer":
                     {
                         return "2";
-                        break;
                     }
                 case "machete":
                     {
                         return "2";
-                        break;
                     }
                 case "klappmesser":
                     {
                         return "2";
-                        break;
                     }
                 case "schlagstock":
                     {
                         return "2";
-                        break;
                     }
                 case "poolcue":
                     {
                         return "2";
-                        break;
                     }
                 case "feuerlöscher":
                     {
                         return "2";
-                        break;
                     }
                 case "micro-smg":
                     {
                         return "3";
-                        break;
                     }
                 case "mp5":
                     {
                         return "3";
-                        break;
                     }
                 case "mp5-mk2":
                     {
                         return "3";
-                        break;
                     }
                 case "assault-smg":
                     {
                         return "3";
-                        break;
                     }
                 case "combat-pdw":
                     {
                         return "3";
-                        break;
                     }
                 case "tec9":
                     {
                         return "3";
-                        break;
                     }
                 case "mini-smg":
                     {
                         return "3";
-                        break;
                     }
                 case "pumpshotgun":
                     {
                         return "4";
-                        break;
                     }
                 case "pumpshotgun-mk2":
                     {
                         return "4";
-                        break;
                     }
                 case "sawnoffshotgun":
                     {
                         return "4";
-                        break;
                     }
                 case "combatshotgun":
                     {
                         return "4";
-                        break;
                     }
                 case "musket":
                     {
                         return "6";
-                        break;
                     }
                 case "angriffsgewehr":
                     {
                         return "5";
-                        break;
                     }
                 case "angriffsgewehr-mk2":
                     {
                         return "5";
-                        break;
                     }
                 case "karabiner-gewehr":
                     {
                         return "5";
-                        break;
                     }
                 case "karabiner-gewehr-mk2":
                     {
                         return "5";
-                        break;
                     }
                 case "spezial-karabiner":
                     {
                         return "5";
-                        break;
                     }
                 case "spezial-karabiner-mk2":
                     {
                         return "5";
-                        break;
                     }
                 case "m16":
                     {
                         return "5";
-                        break;
                     }
                 case "kompaktgewehr":
                     {
                         return "5";
-                        break;
                     }
                 case "maschinengewehr":
                     {
                         return "6";
-                        break;
                     }
                 case "gusenberg":
                     {
                         return "6";
-                        break;
                     }
                 case "sniper":
                     {
                         return "7";
-                        break;
                     }
                 case "rpg":
                     {
                         return "8";
-                        break;
                     }
                 case "granate":
                     {
                         return "9";
-                        break;
                     }
                 case "bzgas":
                     {
                         return "9";
-                        break;
                     }
                 case "molotowcocktail":
                     {
                         return "9";
-                        break;
                     }
                 case "rauchgranate":
                     {
                         return "9";
-                        break;
                     }
                 case "kleine-schutzweste":
                     {
                         return "10";
-                        break;
                     }
                 case "schutzweste":
                     {
                         return "10";
-                        break;
                     }
                 case "große-schutzweste":
                     {
                         return "10";
-                        break;
                     }
             }
             return "-1";

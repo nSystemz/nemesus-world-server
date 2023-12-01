@@ -57,7 +57,7 @@
                       <hr />
                       <li class="active">
                         <span class="fa fa-search-plus mt-3 mr-2"></span>Größe
-                        <input placeholder="01m - 80cm" value="01m - 80cm" v-model="size" type="text"
+                        <input placeholder="180cm" value="180cm" v-model="size" type="text"
                           class="form-control mt-1" maxlength="10">
                       </li>
                       <li class="active">
@@ -1579,7 +1579,7 @@
                       <hr />
                       <li class="active">
                         <span class="fa fa-search-plus mt-3 mr-2"></span>Größe
-                        <input placeholder="01m - 80cm" value="01m - 80cm" v-model="size" type="text"
+                        <input placeholder="180cm" value="180cm" v-model="size" type="text"
                           class="form-control mt-1" maxlength="10">
                       </li>
                       <li class="active">
@@ -4960,11 +4960,11 @@ export default {
         })
         return;
       }
-      if (this.size.length < 10 || this.size.length > 10 || !this.size.includes("cm") || !this.size.includes("m") || !this.size.includes(" - ")) {
+      if (this.size.length != 3 && !this.size.includes("cm") && !this.size.startsWith('1')) {
         Swal.fire({
           icon: 'error',
           title: 'Fehler',
-          text: 'Ungültiges Größe, bitte Format überprüfen - (xxm - xxcm)!',
+          text: 'Ungültiges Größe, bitte Format überprüfen - (xxxcm)!',
           showConfirmButton: false,
           timer: 2500
         })

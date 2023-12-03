@@ -48,6 +48,9 @@ namespace NemesusWorld
         public static int halfHourCounter = 0;
         public static int fullHourTimer = 0;
         public static Timer halfOneMinuteTimer = null;
+        public static Timer saveTimer = null;
+        //ToDo: Speicherzeit einstellen (Es wird alles gespeichert)
+        public static int saveMinutes = 15; //Speicherzeit in Minuten
         public static ColShape ammuCol = null;
         public static TextLabel busLabel = null;
         public static int busCount = 0;
@@ -126,7 +129,7 @@ namespace NemesusWorld
                             //Check Business for inactive
                             Business.BizzInActiveCheck();
                             //Load VehicleShops
-                            DealerShipController.GetAllVehicleShop(false);
+                            DealerShipController.GetAllVehicleShop(true);
                             //Load all banks
                             BankController.GetAllBanks();
                             //Bank standingorders
@@ -345,30 +348,6 @@ namespace NemesusWorld
                             Helper.MatsImVersteck += 20;
                             //Factions reloaden
                             Helper.GetAllFactions(1);
-                            //Save Adminsettings
-                            Helper.SaveAdminSettings();
-                            //Save Factions
-                            Helper.SaveFactions();
-                            //Save Gangzones
-                            GangController.SaveAllGangzones();
-                            //Save Gangzones
-                            DrugController.SaveAllDrugPlants();
-                            //Save houses
-                            foreach (House house in House.houseList)
-                            {
-                                if (house != null)
-                                {
-                                    House.SaveHouse(house);
-                                }
-                            }
-                            //Save bizz
-                            foreach (Business bizz in Business.businessList)
-                            {
-                                if (bizz != null)
-                                {
-                                    Business.SaveBusiness(bizz);
-                                }
-                            }
                             //Waffendealer
                             System.DateTime waffendealerTime = new System.DateTime(Helper.UnixTimestamp());
                             if (GangController.dealerPosition == null && (waffendealerTime.Hour == 10 || waffendealerTime.Hour == 13 || waffendealerTime.Hour == 16 || waffendealerTime.Hour == 18 || waffendealerTime.Hour == 20 || waffendealerTime.Hour == 23))
@@ -446,6 +425,18 @@ namespace NemesusWorld
             catch (Exception e)
             {
                 Helper.ConsoleLog("error", $"[OnHalfHourTimer]: " + e.ToString());
+            }
+        }
+
+        public static void OnServerSave(object state)
+        {
+            try
+            {
+                Events.SaveAll();
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[saveTimer]: " + e.ToString());
             }
         }
 
@@ -651,7 +642,7 @@ namespace NemesusWorld
                                         {
                                             minusfuel = 0.1;
                                         }
-                                        if (vehicle.GetSharedData<float>("Vehicle:Fuel") > minusfuel)
+                                        if (vehicle.GetSharedData<float>("Vehicle:Fuel") > minusfuel && vehicle.GetSharedData<float>("Vehicle:Fuel") > 0)
                                         {
                                             vehicle.SetSharedData("Vehicle:Fuel", (vehicle.GetSharedData<float>("Vehicle:Fuel") - minusfuel));
                                         }
@@ -733,7 +724,6 @@ namespace NemesusWorld
                                         }
                                     }
                                 }
-                                //Save accounts/characters
                                 foreach (Player player in NAPI.Pools.GetAllPlayers())
                                 {
                                     if (player != null && player.GetOwnSharedData<bool>("Player:Spawned") == true )
@@ -750,11 +740,6 @@ namespace NemesusWorld
                                                     Helper.PlayShortAnimation(player, "timetable@gardener@smoking_joint", "idle_cough", 4500);
                                                 }
                                                 Helper.SendNotificationWithoutButton(player, "Du fühlst dich nicht gut ...", "info");
-                                            }
-                                            if ((tenMinutesTimerCheck == 15 && account.id % 2 == 0) || (tenMinutesTimerCheck == 30 && account.id % 2 == 1))
-                                            {
-                                                CharacterController.SaveCharacter(player);
-                                                Account.SaveAccount(player);
                                             }
                                             //Gangzones
                                             if (character.afk == 0 && tempData.ingangzone != -1 && character.mygroup != -1)
@@ -1071,6 +1056,14 @@ namespace NemesusWorld
                             if (house != null)
                             {
                                 House.SaveHouse(house);
+                            }
+                        }
+                        //Save Furniture
+                        foreach(FurnitureSetHouse furniture in House.furnitureList)
+                        {
+                            if(furniture != null)
+                            {
+                                House.SaveFurniture(furniture);
                             }
                         }
                         //Save bizz
@@ -2911,6 +2904,7 @@ namespace NemesusWorld
                 ammuCol = NAPI.ColShape.CreatCircleColShape(7.2232156f, -1098.8546f, 0.85f, 0);
                 //Timer
                 halfOneMinuteTimer = new Timer(OnHalfOneMinuteTimer, null, 30000, 30000);
+                saveTimer = new Timer(OnServerSave, null, saveMinutes*60000, saveMinutes * 60000);
                 //Vehicles
                 //Tutorial Taxi
                 Cars.createNewCar("taxi", new Vector3(-1375.683, -817.50415f, 19.111004), -138f, 42, 42, "Taxi", "Tutorial", true, false, false, 1);

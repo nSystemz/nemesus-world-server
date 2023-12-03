@@ -433,12 +433,6 @@
                 if (speed > this.maxspeed) {
                     speed = parseInt(this.maxspeed);
                 }
-                if (health < 0) {
-                    health = 0;
-                }
-                if (health > 1000) {
-                    health = 1000;
-                }
                 this.speed = speed;
                 this.speedProgress = parseInt((100 / this.maxspeed) * speed);
                 this.health = parseInt(100 / 1000 * health);

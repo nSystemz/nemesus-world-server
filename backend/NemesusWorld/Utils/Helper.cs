@@ -2996,7 +2996,7 @@ namespace NemesusWorld.Utils
                             player.TriggerEvent("Client:ShowDealerShip", "n/A", "n/A", null, null, -1);
                             if(garageName != "")
                             {
-                                Helper.SendNotificationWithoutButton2(player, $"Fahrzeug erfolgreich erworben, das Fahrzeug steht in der Garage {garageName}, alles weitere findest du im F2 Menü!", "success", "center", 3750);
+                                Helper.SendNotificationWithoutButton2(player, $"Fahrzeug erfolgreich erworben, das Fahrzeug steht in der Garage {garageName}, alles weitere findest du im F2 Menü!", "success", "center", 5250);
                             }
                             else
                             {
@@ -17617,9 +17617,11 @@ namespace NemesusWorld.Utils
 
         public static void SetPlayerHealth(Player player, int health)
         {
-            player.SetOwnSharedData("Player:Health", (health+100));
-            player.SetSharedData("Player:HealthSync", (health+100));
-            NAPI.Player.SetPlayerHealth(player, health);
+            int setHealth = health;
+            if (setHealth > 100) setHealth = 100;
+            player.SetOwnSharedData("Player:Health", (setHealth + 100));
+            player.SetSharedData("Player:HealthSync", (setHealth + 100));
+            NAPI.Player.SetPlayerHealth(player, setHealth);
         }
 
         //GetClosestVehicleFromVehicle

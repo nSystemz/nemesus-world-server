@@ -7971,6 +7971,8 @@ function updateSpeedometer() {
     if (localPlayer.vehicle && showSpeedo == true) {
         if (hudWindow != null) {
             let engineHealth = localPlayer.vehicle.getHealth();
+            if(engineHealth < 0) engineHealth = 0;
+            if(engineHealth > 1000) engineHealth = 1000;
             let speed = localPlayer.vehicle.getSpeed() * 3.6;
             let locked = localPlayer.vehicle.getDoorLockStatus();
             let engine = localPlayer.getVariable('Player:VehicleEngine');

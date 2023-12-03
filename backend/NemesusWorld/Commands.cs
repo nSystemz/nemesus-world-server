@@ -5,14 +5,12 @@ using NemesusWorld.Database;
 using NemesusWorld.Models;
 using NemesusWorld.Utils;
 using Newtonsoft.Json.Linq;
-using Org.BouncyCastle.Ocsp;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace NemesusWorld
 {

@@ -432,6 +432,7 @@ namespace NemesusWorld
         {
             try
             {
+                Helper.SendAdminMessage3($"Alle Daten vom Server wurden gespeichert!");
                 Events.SaveAll();
             }
             catch (Exception e)

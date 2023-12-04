@@ -2862,7 +2862,7 @@ namespace NemesusWorld.Utils
                             carArray = player.GetData<string>("Player:VehicleBuyData").Split(",");
                             VehicleData vehicleData = new VehicleData();
                             vehicleData.id = Cars.carList.Count + 1;
-                            vehicleData.owner = number == 1 ? "character-" + character.id : "group-" + group.id;
+                            vehicleData.owner = player.GetData<bool>("Player:BuyPrivateVehicle") == true ? "character-" + character.id : "group-" + group.id;
                             vehicleData.vehiclename = carArray[0];
                             vehicleData.plate = "n/A";
                             vehicleData.fuel = -1;
@@ -2890,10 +2890,6 @@ namespace NemesusWorld.Utils
                                     vehicleData.garage = "bizz-33";
                                     garageName = Business.GetBusinessById(33).name;
                                 }
-                                Cars car = new Cars();
-                                car.vehicleData = vehicleData;
-                                car.vehicleHandle = null;
-                                Cars.carList.Add(car);
                             }
                             else
                             {
@@ -2967,30 +2963,6 @@ namespace NemesusWorld.Utils
                             {
                                 tempData.itemlist.Add(newitem);
                             }
-                            if (carArray[2] == "1")
-                            {
-                                CharacterController.SetMoney(player, -price);
-                            }
-                            else
-                            {
-                                bank.bankvalue -= price;
-                                Helper.BankSettings(bank.banknumber, "Autohaus Rechnung bezahlt", price.ToString(), character.name);
-                            }
-                            int gewinn = 0;
-                            if (bizz.id != 28)
-                            {
-                                gewinn = 6250 + (price / 100 * 5);
-                                Business.ManageBizzCash(bizz, gewinn, true);
-                                bizz.govcash += (gewinn / 100) * Helper.adminSettings.gsteuer;
-                                bizz.products -= 200;
-                            }
-                            else
-                            {
-                                gewinn = 3150 + (price / 100 * 10);
-                                Business.ManageBizzCash(bizz, gewinn, true);
-                                bizz.govcash += (gewinn / 100) * Helper.adminSettings.gsteuer;
-                                bizz.products -= 83;
-                            }
                             player.TriggerEvent("Client:PlayerFreeze", false);
                             player.SetData<int>("Player:LastBizz", 0);
                             player.TriggerEvent("Client:ShowDealerShip", "n/A", "n/A", null, null, -1);
@@ -3011,6 +2983,11 @@ namespace NemesusWorld.Utils
                             {
                                 account.faqarray[9] = "1";
                             }
+                            Cars car = new Cars();
+                            car.vehicleData = vehicleData;
+                            car.vehicleHandle = null;
+                            Cars.carList.Add(car);
+                            DealerShipController.SaveOneVehicleData(car);
                             break;
                         }
                     case "buyvehicle":
@@ -3183,6 +3160,31 @@ namespace NemesusWorld.Utils
                                     SendNotificationWithoutButton2(player, "Du hast keinen Platz mehr im Inventar für den Fahrzeugschlüssel!", "error", "center");
                                     return;
                                 }
+                                if (carArray[2] == "1")
+                                {
+                                    CharacterController.SetMoney(player, -price);
+                                }
+                                else
+                                {
+                                    bank.bankvalue -= price;
+                                    Helper.BankSettings(bank.banknumber, "Autohaus Rechnung bezahlt", price.ToString(), character.name);
+                                }
+                                int gewinn = 0;
+                                if (bizz.id != 28)
+                                {
+                                    gewinn = 6250 + (price / 100 * 5);
+                                    Business.ManageBizzCash(bizz, gewinn, true);
+                                    bizz.govcash += (gewinn / 100) * Helper.adminSettings.gsteuer;
+                                    bizz.products -= 200;
+                                }
+                                else
+                                {
+                                    gewinn = 3150 + (price / 100 * 10);
+                                    Business.ManageBizzCash(bizz, gewinn, true);
+                                    bizz.govcash += (gewinn / 100) * Helper.adminSettings.gsteuer;
+                                    bizz.products -= 83;
+                                }
+                                player.SetData<bool>("Player:BuyPrivateVehicle", number == 1 ? true : false);
                                 player.TriggerEvent("Client:CallInput2", "Fahrzeug einparken", "Soll dein Fahrzeug in eine passende Garage geparkt werden?", "BuyVehicle2", "Ja", "Nein");
                             }
                             else
@@ -5905,7 +5907,8 @@ namespace NemesusWorld.Utils
                         }
                     }
                     String rules = "Kosten,Fahrzeugname,Nummernschild,Aktion";
-                    player.TriggerEvent("Client:ShowCenterMenu", rules, NAPI.Util.ToJson(centerMenu.OrderBy(x => x.var3.Length).ThenBy(x => x.var3).ToList()), "Verwahrplatz");
+                    var DistinctItems = centerMenu.GroupBy(x => x.var4).Select(y => y.First()).OrderBy(n => n.var3.Length).ToList();
+                    player.TriggerEvent("Client:ShowCenterMenu", rules, DistinctItems);
                     return;
                 }
                 //Fraktionsgaragen

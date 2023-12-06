@@ -133,7 +133,7 @@ namespace NemesusWorld.Database
                         car.vehicleHandle = NAPI.Vehicle.CreateVehicle(vehash, postionsVector, float.Parse(vehiclePosition[3], new CultureInfo("en-US")), Convert.ToInt32(vehicleColor[0]), Convert.ToInt32(vehicleColor[1]));
                         string[] vehicleHealth = new string[3];
                         vehicleHealth = vehicleData.health.Split("|");
-                        if (vehicleHealth[0].Length > 0)
+                        if (vehicleHealth[0].Length > 0 && vehicleHealth[1].Length > 1 && vehicleHealth[2].Length > 0)
                         {
                             NAPI.Vehicle.SetVehicleBodyHealth(car.vehicleHandle, float.Parse(vehicleHealth[0]));
                             NAPI.Vehicle.SetVehicleEngineHealth(car.vehicleHandle, float.Parse(vehicleHealth[1]));

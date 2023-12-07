@@ -2873,8 +2873,19 @@ namespace NemesusWorld.Utils
                             Vehicle vehicle = null;
                             vColor = $"{Convert.ToInt32(carArray[3])},{Convert.ToInt32(carArray[3])},-1,-1";
                             vehicleData.color = vColor;
+                            vehicleData.health = "1000.0|1000.0|1000.0";
+                            if (vehicle != null && vehicle.Class != 13)
+                            {
+                                vehicleData.tuev = Helper.UnixTimestamp() + (93 * 86400);
+                            }
+                            else
+                            {
+                                vehicleData.tuev = -50;
+                            }
                             if (number == 1)
                             {
+                                vehicleData.position = $"0.0|0.0|0.0|0.0|0";
+                                vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(0.0, 0.0, 0.0), 0.0f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
                                 if (bizz.id == 31)
                                 {
                                     vehicleData.garage = "bizz-34";
@@ -2949,15 +2960,6 @@ namespace NemesusWorld.Utils
                                     vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(-993.2244, -2990.8599, 14.545995 + 0.25), 60.07966f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
                                 }
                             }
-                            if (vehicle != null && vehicle.Class != 13)
-                            {
-                                vehicleData.tuev = Helper.UnixTimestamp() + (93 * 86400);
-                            }
-                            else
-                            {
-                                vehicleData.tuev = -50;
-                            }
-                            vehicleData.health = "1000.0|1000.0|1000.0";
                             Items newitem = ItemsController.CreateNewItem(player, character.id, "Fahrzeugschlüssel", "Player", 1, ItemsController.GetFreeItemID(player), vehicleData.vehiclename + ": " + vehicleData.id);
                             if (newitem != null)
                             {

@@ -130,10 +130,17 @@ namespace NemesusWorld.Database
                         string[] vehicleColor = new string[4];
                         vehicleColor = vehicleData.color.Split(",");
                         Vector3 postionsVector = new Vector3(float.Parse(vehiclePosition[0], new CultureInfo("en-US")), float.Parse(vehiclePosition[1], new CultureInfo("en-US")), float.Parse(vehiclePosition[2], new CultureInfo("en-US"))+0.25);
-                        car.vehicleHandle = NAPI.Vehicle.CreateVehicle(vehash, postionsVector, float.Parse(vehiclePosition[3], new CultureInfo("en-US")), Convert.ToInt32(vehicleColor[0]), Convert.ToInt32(vehicleColor[1]));
+                        if (postionsVector.X > 0 && postionsVector.Y > 0 && postionsVector.Z > 0)
+                        {
+                            car.vehicleHandle = NAPI.Vehicle.CreateVehicle(vehash, postionsVector, float.Parse(vehiclePosition[3], new CultureInfo("en-US")), Convert.ToInt32(vehicleColor[0]), Convert.ToInt32(vehicleColor[1]));
+                        }
+                        else
+                        {
+                            car.vehicleHandle = null;
+                        }
                         string[] vehicleHealth = new string[3];
                         vehicleHealth = vehicleData.health.Split("|");
-                        if (vehicleHealth[0].Length > 0 && vehicleHealth[1].Length > 1 && vehicleHealth[2].Length > 0)
+                        if (vehicleHealth.Length >= 3 && vehicleHealth[0].Length > 0 && vehicleHealth[1].Length > 1 && vehicleHealth[2].Length > 0)
                         {
                             NAPI.Vehicle.SetVehicleBodyHealth(car.vehicleHandle, float.Parse(vehicleHealth[0]));
                             NAPI.Vehicle.SetVehicleEngineHealth(car.vehicleHandle, float.Parse(vehicleHealth[1]));
@@ -145,89 +152,92 @@ namespace NemesusWorld.Database
                             NAPI.Vehicle.SetVehicleEngineHealth(car.vehicleHandle, 1000f);
                             NAPI.Vehicle.SetVehicleHealth(car.vehicleHandle, 1000f);
                         }
-                        car.vehicleHandle.Dimension = dimension;
-                        if (vehicleData.plate != "n/A" && vehicleData.plate.Length > 0)
+                        if (car.vehicleHandle != null)
                         {
-                            car.vehicleHandle.NumberPlate = vehicleData.plate;
-                        }
-                        car.vehicleHandle.Locked = vehicleData.status == 1 ? true : false;
-                        car.vehicleHandle.SetData<string>("Vehicle:Owner", vehicleData.owner);
-                        car.vehicleHandle.SetSharedData("Vehicle:Name", vehicleData.vehiclename.ToLower());
-                        SpedVehicles spedVehicle = Helper.GetSpedVehicleByModel(vehname.ToLower());
-                        if (spedVehicle == null)
-                        {
-                            car.vehicleHandle.SetData<int>("Vehicle:Jobid", 0);
-                        }
-                        else
-                        {
-                            car.vehicleHandle.SetData<int>("Vehicle:Jobid", spedVehicle.id);
-                        }
-                        car.vehicleHandle.SetData<int>("Vehicle:Products", vehicleData.products);
-                        car.vehicleHandle.SetData<int>("Vehicle:Tuev", vehicleData.tuev);
-                        car.vehicleHandle.SetData<Vector3>("Vehicle:Position", postionsVector);
-                        car.vehicleHandle.SetData<float>("Vehicle:Rotation", float.Parse(vehiclePosition[3], System.Globalization.CultureInfo.InvariantCulture));
-                        car.vehicleHandle.SetSharedData("Vehicle:Speedlimit", 0);
-                        car.vehicleHandle.SetData<int>("Vehicle:VLock", vehicleData.vlock);
-                        if (car.vehicleHandle.Class != 13)
-                        {
-                            car.vehicleHandle.SetSharedData("Vehicle:MaxFuel", GetVehicleFuel(car.vehicleHandle));
-                            car.vehicleHandle.SetSharedData("Vehicle:Fuel", vehicleData.fuel);
-                            if (vehicleData.fuel == -1)
+                            car.vehicleHandle.Dimension = dimension;
+                            if (vehicleData.plate != "n/A" && vehicleData.plate.Length > 0)
                             {
-                                car.vehicleHandle.SetSharedData("Vehicle:Fuel", GetVehicleFuel(car.vehicleHandle));
-                                vehicleData.fuel = GetVehicleFuel(car.vehicleHandle);
+                                car.vehicleHandle.NumberPlate = vehicleData.plate;
                             }
-                            car.vehicleHandle.SetSharedData("Vehicle:Oel", vehicleData.oel);
-                            car.vehicleHandle.SetSharedData("Vehicle:Battery", vehicleData.battery);
-                        }
-                        else
-                        {
-                            car.vehicleHandle.SetSharedData("Vehicle:MaxFuel", 0.0f);
-                            car.vehicleHandle.SetSharedData("Vehicle:Fuel", 0.0f);
-                            if (vehicleData.fuel == -1)
+                            car.vehicleHandle.Locked = vehicleData.status == 1 ? true : false;
+                            car.vehicleHandle.SetData<string>("Vehicle:Owner", vehicleData.owner);
+                            car.vehicleHandle.SetSharedData("Vehicle:Name", vehicleData.vehiclename.ToLower());
+                            SpedVehicles spedVehicle = Helper.GetSpedVehicleByModel(vehname.ToLower());
+                            if (spedVehicle == null)
                             {
+                                car.vehicleHandle.SetData<int>("Vehicle:Jobid", 0);
+                            }
+                            else
+                            {
+                                car.vehicleHandle.SetData<int>("Vehicle:Jobid", spedVehicle.id);
+                            }
+                            car.vehicleHandle.SetData<int>("Vehicle:Products", vehicleData.products);
+                            car.vehicleHandle.SetData<int>("Vehicle:Tuev", vehicleData.tuev);
+                            car.vehicleHandle.SetData<Vector3>("Vehicle:Position", postionsVector);
+                            car.vehicleHandle.SetData<float>("Vehicle:Rotation", float.Parse(vehiclePosition[3], System.Globalization.CultureInfo.InvariantCulture));
+                            car.vehicleHandle.SetSharedData("Vehicle:Speedlimit", 0);
+                            car.vehicleHandle.SetData<int>("Vehicle:VLock", vehicleData.vlock);
+                            if (car.vehicleHandle.Class != 13)
+                            {
+                                car.vehicleHandle.SetSharedData("Vehicle:MaxFuel", GetVehicleFuel(car.vehicleHandle));
+                                car.vehicleHandle.SetSharedData("Vehicle:Fuel", vehicleData.fuel);
+                                if (vehicleData.fuel == -1)
+                                {
+                                    car.vehicleHandle.SetSharedData("Vehicle:Fuel", GetVehicleFuel(car.vehicleHandle));
+                                    vehicleData.fuel = GetVehicleFuel(car.vehicleHandle);
+                                }
+                                car.vehicleHandle.SetSharedData("Vehicle:Oel", vehicleData.oel);
+                                car.vehicleHandle.SetSharedData("Vehicle:Battery", vehicleData.battery);
+                            }
+                            else
+                            {
+                                car.vehicleHandle.SetSharedData("Vehicle:MaxFuel", 0.0f);
                                 car.vehicleHandle.SetSharedData("Vehicle:Fuel", 0.0f);
-                                vehicleData.fuel = 0.0f;
+                                if (vehicleData.fuel == -1)
+                                {
+                                    car.vehicleHandle.SetSharedData("Vehicle:Fuel", 0.0f);
+                                    vehicleData.fuel = 0.0f;
+                                }
+                                car.vehicleHandle.SetSharedData("Vehicle:Oel", 0);
+                                car.vehicleHandle.SetSharedData("Vehicle:Battery", 0);
                             }
-                            car.vehicleHandle.SetSharedData("Vehicle:Oel", 0);
-                            car.vehicleHandle.SetSharedData("Vehicle:Battery", 0);
+                            car.vehicleHandle.SetSharedData("Vehicle:MaxSpeed", GetVehicleMaxSpeed(car.vehicleHandle));
+                            car.vehicleHandle.SetSharedData("Vehicle:Kilometre", vehicleData.kilometre);
+                            if (vehicleData.tuning.Length > 10 && vehicleData.tuning != "n/A")
+                            {
+                                car.vehicleHandle.SetSharedData("Vehicle:Tuning", vehicleData.tuning);
+                                string[] vehicleTuning = new string[69];
+                                vehicleTuning = vehicleData.tuning.Split(",");
+                                TuningController.OnTuningPreview(null, 53, Convert.ToInt32(vehicleTuning[53]), false, car.vehicleHandle);
+                                TuningController.OnTuningPreview(null, 56, Convert.ToInt32(vehicleTuning[56]), false, car.vehicleHandle);
+                                TuningController.OnTuningPreview(null, 60, Convert.ToInt32(vehicleTuning[60]), false, car.vehicleHandle);
+                                TuningController.OnTuningPreview(null, 66, Convert.ToInt32(vehicleTuning[66]), false, car.vehicleHandle);
+                                TuningController.OnTuningPreview(null, 67, Convert.ToInt32(vehicleTuning[67]), false, car.vehicleHandle);
+                                TuningController.OnTuningPreview(null, 68, Convert.ToInt32(vehicleTuning[68]), false, car.vehicleHandle);
+                                TuningController.OnTuningPreview(null, 69, Convert.ToInt32(vehicleTuning[69]), false, car.vehicleHandle);
+                            }
+                            else
+                            {
+                                car.vehicleHandle.SetSharedData("Vehicle:Tuning", "n/A");
+                            }
+                            string color = $"{NAPI.Vehicle.GetVehiclePrimaryColor(car.vehicleHandle)},{NAPI.Vehicle.GetVehicleSecondaryColor(car.vehicleHandle)},{NAPI.Vehicle.GetVehiclePearlescentColor(car.vehicleHandle)},{NAPI.Vehicle.GetVehicleWheelColor(car.vehicleHandle)}";
+                            car.vehicleHandle.SetSharedData("Vehicle:Color", color);
+                            Helper.SetVehicleEngine(car.vehicleHandle, vehicleData.engine == 1 ? true : false);
+                            car.vehicleHandle.SetSharedData("Vehicle:Sync", vehicleData.sync);
+                            if (vehicleData.sync.Split(",")[5] != "0")
+                            {
+                                string[] vehicleArray = new string[7];
+                                vehicleArray = vehicleData.sync.Split(",");
+                                car.vehicleHandle.SetSharedData("Vehicle:Sync", $"{vehicleArray[0]},{vehicleArray[1]},{vehicleArray[2]},{vehicleArray[3]},{vehicleArray[4]},0,{vehicleArray[6]}");
+                                vehicleData.sync = car.vehicleHandle.GetSharedData<string>("Vehicle:Sync");
+                            }
+                            car.vehicleHandle.SetData<bool>("Vehicle:EngineStatus", vehicleData.engine == 1 ? true : false);
+                            car.vehicleHandle.SetData<int>("Vehicle:Tuev", vehicleData.tuev);
+                            vehicleData.doors = vehicleData.doors != null ? vehicleData.doors : "[false,false,false,false,false,false]";
+                            vehicleData.windows = vehicleData.windows != null ? vehicleData.windows : "[false,false,false,false]";
+                            car.vehicleHandle.SetSharedData("Vehicle:Doors", vehicleData.doors);
+                            car.vehicleHandle.SetSharedData("Vehicle:Windows", vehicleData.windows);
                         }
-                        car.vehicleHandle.SetSharedData("Vehicle:MaxSpeed", GetVehicleMaxSpeed(car.vehicleHandle));
-                        car.vehicleHandle.SetSharedData("Vehicle:Kilometre", vehicleData.kilometre);
-                        if (vehicleData.tuning.Length > 10 && vehicleData.tuning != "n/A")
-                        {
-                            car.vehicleHandle.SetSharedData("Vehicle:Tuning", vehicleData.tuning);
-                            string[] vehicleTuning = new string[69];
-                            vehicleTuning = vehicleData.tuning.Split(",");
-                            TuningController.OnTuningPreview(null, 53, Convert.ToInt32(vehicleTuning[53]), false, car.vehicleHandle);
-                            TuningController.OnTuningPreview(null, 56, Convert.ToInt32(vehicleTuning[56]), false, car.vehicleHandle);
-                            TuningController.OnTuningPreview(null, 60, Convert.ToInt32(vehicleTuning[60]), false, car.vehicleHandle);
-                            TuningController.OnTuningPreview(null, 66, Convert.ToInt32(vehicleTuning[66]), false, car.vehicleHandle);
-                            TuningController.OnTuningPreview(null, 67, Convert.ToInt32(vehicleTuning[67]), false, car.vehicleHandle);
-                            TuningController.OnTuningPreview(null, 68, Convert.ToInt32(vehicleTuning[68]), false, car.vehicleHandle);
-                            TuningController.OnTuningPreview(null, 69, Convert.ToInt32(vehicleTuning[69]), false, car.vehicleHandle);
-                        }
-                        else
-                        {
-                            car.vehicleHandle.SetSharedData("Vehicle:Tuning", "n/A");
-                        }
-                        string color = $"{NAPI.Vehicle.GetVehiclePrimaryColor(car.vehicleHandle)},{NAPI.Vehicle.GetVehicleSecondaryColor(car.vehicleHandle)},{NAPI.Vehicle.GetVehiclePearlescentColor(car.vehicleHandle)},{NAPI.Vehicle.GetVehicleWheelColor(car.vehicleHandle)}";
-                        car.vehicleHandle.SetSharedData("Vehicle:Color", color);
-                        Helper.SetVehicleEngine(car.vehicleHandle, vehicleData.engine == 1 ? true : false);
-                        car.vehicleHandle.SetSharedData("Vehicle:Sync", vehicleData.sync);
-                        if(vehicleData.sync.Split(",")[5] != "0")
-                        {
-                            string[] vehicleArray = new string[7];
-                            vehicleArray = vehicleData.sync.Split(",");
-                            car.vehicleHandle.SetSharedData("Vehicle:Sync", $"{vehicleArray[0]},{vehicleArray[1]},{vehicleArray[2]},{vehicleArray[3]},{vehicleArray[4]},0,{vehicleArray[6]}");
-                            vehicleData.sync = car.vehicleHandle.GetSharedData<string>("Vehicle:Sync");
-                        }
-                        car.vehicleHandle.SetData<bool>("Vehicle:EngineStatus", vehicleData.engine == 1 ? true : false);
-                        car.vehicleHandle.SetData<int>("Vehicle:Tuev", vehicleData.tuev);
-                        vehicleData.doors = vehicleData.doors != null ? vehicleData.doors : "[false,false,false,false,false,false]";
-                        vehicleData.windows = vehicleData.windows != null ? vehicleData.windows : "[false,false,false,false]";
-                        car.vehicleHandle.SetSharedData("Vehicle:Doors", vehicleData.doors);
-                        car.vehicleHandle.SetSharedData("Vehicle:Windows", vehicleData.windows);
                         if (insert == true)
                         {
                             PetaPoco.Database db = new PetaPoco.Database(General.Connection);

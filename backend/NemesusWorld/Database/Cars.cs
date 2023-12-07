@@ -140,20 +140,20 @@ namespace NemesusWorld.Database
                         }
                         string[] vehicleHealth = new string[3];
                         vehicleHealth = vehicleData.health.Split("|");
-                        if (vehicleHealth.Length >= 3 && vehicleHealth[0].Length > 0 && vehicleHealth[1].Length > 1 && vehicleHealth[2].Length > 0)
-                        {
-                            NAPI.Vehicle.SetVehicleBodyHealth(car.vehicleHandle, float.Parse(vehicleHealth[0]));
-                            NAPI.Vehicle.SetVehicleEngineHealth(car.vehicleHandle, float.Parse(vehicleHealth[1]));
-                            NAPI.Vehicle.SetVehicleHealth(car.vehicleHandle, float.Parse(vehicleHealth[2]));
-                        }
-                        else
-                        {
-                            NAPI.Vehicle.SetVehicleBodyHealth(car.vehicleHandle, 1000f);
-                            NAPI.Vehicle.SetVehicleEngineHealth(car.vehicleHandle, 1000f);
-                            NAPI.Vehicle.SetVehicleHealth(car.vehicleHandle, 1000f);
-                        }
                         if (car.vehicleHandle != null)
                         {
+                            if (vehicleHealth.Length >= 3 && vehicleHealth[0].Length > 0 && vehicleHealth[1].Length > 1 && vehicleHealth[2].Length > 0)
+                            {
+                                NAPI.Vehicle.SetVehicleBodyHealth(car.vehicleHandle, float.Parse(vehicleHealth[0]));
+                                NAPI.Vehicle.SetVehicleEngineHealth(car.vehicleHandle, float.Parse(vehicleHealth[1]));
+                                NAPI.Vehicle.SetVehicleHealth(car.vehicleHandle, float.Parse(vehicleHealth[2]));
+                            }
+                            else
+                            {
+                                NAPI.Vehicle.SetVehicleBodyHealth(car.vehicleHandle, 1000f);
+                                NAPI.Vehicle.SetVehicleEngineHealth(car.vehicleHandle, 1000f);
+                                NAPI.Vehicle.SetVehicleHealth(car.vehicleHandle, 1000f);
+                            }
                             car.vehicleHandle.Dimension = dimension;
                             if (vehicleData.plate != "n/A" && vehicleData.plate.Length > 0)
                             {

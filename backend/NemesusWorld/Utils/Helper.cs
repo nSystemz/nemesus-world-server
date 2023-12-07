@@ -2985,11 +2985,6 @@ namespace NemesusWorld.Utils
                             {
                                 account.faqarray[9] = "1";
                             }
-                            Cars car = new Cars();
-                            car.vehicleData = vehicleData;
-                            car.vehicleHandle = null;
-                            Cars.carList.Add(car);
-                            DealerShipController.SaveOneVehicleData(car);
                             break;
                         }
                     case "buyvehicle":

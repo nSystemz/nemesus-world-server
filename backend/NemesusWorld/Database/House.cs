@@ -1427,7 +1427,7 @@ namespace NemesusWorld.Database
                                             retCar.Position = spawnPD[index];
                                             retCar.Rotation = spawnPDRotation[index];
 
-                                            if (getCar.vehicleData.plate.Contains("LS-"))
+                                            if (getCar.vehicleData != null && getCar.vehicleData.plate.Contains("LS-"))
                                             {
                                                 getCar.vehicleData.plate = "LS-C-1" + rand.Next(10, 99);
                                                 retCar.NumberPlate = getCar.vehicleData.plate;

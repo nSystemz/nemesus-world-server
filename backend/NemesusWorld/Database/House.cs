@@ -1028,6 +1028,7 @@ namespace NemesusWorld.Database
                 int number = 0;
                 Character character = Helper.GetCharacterData(player);
                 TempData tempData = Helper.GetCharacterTempData(player);
+                Business bizz = Business.GetClosestBusiness(player, 55.5f);
                 if (tempData.lasthouse == 0)
                 {
                     if (character.inhouse == -1)
@@ -1047,14 +1048,13 @@ namespace NemesusWorld.Database
                 {
                     house = House.GetHouseById(tempData.lasthouse);
                 }
-                if (setting == "endrent" || setting.Contains("garage") || house != null || house.owner == character.name)
+                if (setting == "endrent" || setting.Contains("garage") || house != null || house.owner == character.name || bizz != null)
                 {
                     List<HouseInteriorModel> tempList = null;
                     if (house != null)
                     {
                         tempList = House.GetHouseInterior(House.GetInteriorClassify(house.interior), character.id, house);
                     }
-                    Business bizz = Business.GetClosestBusiness(player, 35.5f);
                     switch (setting.ToLower())
                     {
                         case "entergarage":
@@ -1516,6 +1516,10 @@ namespace NemesusWorld.Database
                                                 {
                                                     retCar.Rotation = new Vector3(0.0, 0.0, -20.475378f);
                                                 }
+                                            }
+                                            else
+                                            {
+                                                retCar.Rotation = new Vector3(0.0, 0.0, player.Heading);
                                             }
                                         }
                                         retCar.Dimension = player.Dimension;

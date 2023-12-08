@@ -450,12 +450,13 @@ namespace NemesusWorld.Database
 
                     return garagePositions[index];
                 }
+
             }
             catch (Exception e)
             {
                 Helper.ConsoleLog("error", "[GetGaragePosition]: " + e.ToString());
             }
-            return null;
+            return new Vector3(64.216324, 17.14985, 68.60541);
         }
 
         public static void ShowJuweMenu(Player player)

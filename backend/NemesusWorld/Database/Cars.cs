@@ -130,14 +130,7 @@ namespace NemesusWorld.Database
                         string[] vehicleColor = new string[4];
                         vehicleColor = vehicleData.color.Split(",");
                         Vector3 postionsVector = new Vector3(float.Parse(vehiclePosition[0], new CultureInfo("en-US")), float.Parse(vehiclePosition[1], new CultureInfo("en-US")), float.Parse(vehiclePosition[2], new CultureInfo("en-US"))+0.25);
-                        if (postionsVector.X > 0 && postionsVector.Y > 0 && postionsVector.Z > 0)
-                        {
-                            car.vehicleHandle = NAPI.Vehicle.CreateVehicle(vehash, postionsVector, float.Parse(vehiclePosition[3], new CultureInfo("en-US")), Convert.ToInt32(vehicleColor[0]), Convert.ToInt32(vehicleColor[1]));
-                        }
-                        else
-                        {
-                            car.vehicleHandle = null;
-                        }
+                        car.vehicleHandle = NAPI.Vehicle.CreateVehicle(vehash, postionsVector, float.Parse(vehiclePosition[3], new CultureInfo("en-US")), Convert.ToInt32(vehicleColor[0]), Convert.ToInt32(vehicleColor[1]));
                         string[] vehicleHealth = new string[3];
                         vehicleHealth = vehicleData.health.Split("|");
                         if (car.vehicleHandle != null)

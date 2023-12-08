@@ -26,7 +26,7 @@ namespace NemesusWorld.Database
             vehicleData = null;
         }
 
-        public static Vehicle createNewCar(string vehname, Vector3 position, float heading, int color1, int color2, string numberplate, string owner, bool locked = true, bool engine = false, bool addlist = true, uint dimension = 0, VehicleData vehicleData = null, bool insert = false, bool insert2 = true)
+        public static Vehicle createNewCar(string vehname, Vector3 position, float heading, int color1, int color2, string numberplate, string owner, bool locked = true, bool engine = false, bool addlist = true, uint dimension = 0, VehicleData vehicleData = null, bool insert = false, bool insert2 = true, int garage = -1)
         {
             try
             {
@@ -132,6 +132,10 @@ namespace NemesusWorld.Database
                         Vector3 postionsVector = new Vector3(float.Parse(vehiclePosition[0], new CultureInfo("en-US")), float.Parse(vehiclePosition[1], new CultureInfo("en-US")), float.Parse(vehiclePosition[2], new CultureInfo("en-US"))+0.25);
                         car.vehicleHandle = NAPI.Vehicle.CreateVehicle(vehash, postionsVector, float.Parse(vehiclePosition[3], new CultureInfo("en-US")), Convert.ToInt32(vehicleColor[0]), Convert.ToInt32(vehicleColor[1]));
                         string[] vehicleHealth = new string[3];
+                        if(!vehicleData.health.Contains("|"))
+                        {
+                            vehicleData.health = "1000.0|1000.0|1000.0";
+                        }
                         vehicleHealth = vehicleData.health.Split("|");
                         if (car.vehicleHandle != null)
                         {
@@ -230,6 +234,28 @@ namespace NemesusWorld.Database
                             vehicleData.windows = vehicleData.windows != null ? vehicleData.windows : "[false,false,false,false]";
                             car.vehicleHandle.SetSharedData("Vehicle:Doors", vehicleData.doors);
                             car.vehicleHandle.SetSharedData("Vehicle:Windows", vehicleData.windows);
+                            if(garage != -1)
+                            {
+                                if (garage == 31)
+                                {
+                                    vehicleData.garage = "bizz-34";
+                                }
+                                else if (garage == 32)
+                                {
+                                    vehicleData.garage = "bizz-35";
+                                }
+                                else
+                                {
+                                    vehicleData.garage = "bizz-33";
+                                }
+                                Helper.SetVehicleEngine(car.vehicleHandle, false);
+                                car.vehicleHandle.Dimension = 150;
+                                NAPI.Task.Run(() =>
+                                {
+                                    car.vehicleHandle.Delete();
+                                    car.vehicleHandle = null;
+                                }, delayTime: 5500);
+                            }
                         }
                         if (insert == true)
                         {

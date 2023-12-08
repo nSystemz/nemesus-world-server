@@ -2865,6 +2865,7 @@ namespace NemesusWorld.Utils
                             vehicleData.owner = player.GetData<bool>("Player:BuyPrivateVehicle") == true ? "character-" + character.id : "group-" + group.id;
                             vehicleData.vehiclename = carArray[0];
                             vehicleData.plate = "n/A";
+                            vehicleData.garage = "n/A";
                             vehicleData.fuel = -1;
                             vehicleData.engine = 0;
                             vehicleData.status = 1;
@@ -2874,31 +2875,20 @@ namespace NemesusWorld.Utils
                             vColor = $"{Convert.ToInt32(carArray[3])},{Convert.ToInt32(carArray[3])},-1,-1";
                             vehicleData.color = vColor;
                             vehicleData.health = "1000.0|1000.0|1000.0";
-                            if (vehicle != null && vehicle.Class != 13)
-                            {
-                                vehicleData.tuev = Helper.UnixTimestamp() + (93 * 86400);
-                            }
-                            else
-                            {
-                                vehicleData.tuev = -50;
-                            }
                             if (number == 1)
                             {
                                 vehicleData.position = $"0.0|0.0|0.0|0.0|0";
-                                vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(0.0, 0.0, 0.0), 0.0f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
+                                vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(0.0, 0.0, 0.0), 0.0f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true, true, bizz.id);
                                 if (bizz.id == 31)
                                 {
-                                    vehicleData.garage = "bizz-34";
                                     garageName = Business.GetBusinessById(34).name;
                                 }
                                 else if (bizz.id == 32)
                                 {
-                                    vehicleData.garage = "bizz-35";
                                     garageName = Business.GetBusinessById(35).name;
                                 }
                                 else
                                 {
-                                    vehicleData.garage = "bizz-33";
                                     garageName = Business.GetBusinessById(33).name;
                                 }
                             }
@@ -2959,6 +2949,14 @@ namespace NemesusWorld.Utils
                                     vehicleData.position = $"-993.2244|-2990.8599|14.545995|60.07966|0";
                                     vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(-993.2244, -2990.8599, 14.545995 + 0.25), 60.07966f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
                                 }
+                            }
+                            if (vehicle != null && vehicle.Class != 13)
+                            {
+                                vehicleData.tuev = Helper.UnixTimestamp() + (93 * 86400);
+                            }
+                            else
+                            {
+                                vehicleData.tuev = -50;
                             }
                             Items newitem = ItemsController.CreateNewItem(player, character.id, "Fahrzeugschlüssel", "Player", 1, ItemsController.GetFreeItemID(player), vehicleData.vehiclename + ": " + vehicleData.id);
                             if (newitem != null)

@@ -641,7 +641,7 @@ namespace NemesusWorld.Utils
         {
             try
             {
-                if (vehicle.GetSharedData<String>("Vehicle:Name").ToLower().Contains("trailer") || vehicle.GetSharedData<String>("Vehicle:Name").ToLower().Contains("tanker"))
+                if (vehicle.HasSharedData("Vehicle:Name") && (vehicle.GetSharedData<String>("Vehicle:Name").ToLower().Contains("trailer") || vehicle.GetSharedData<String>("Vehicle:Name").ToLower().Contains("tanker")))
                 {
                     return true;
                 }

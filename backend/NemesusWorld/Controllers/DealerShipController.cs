@@ -442,11 +442,11 @@ namespace NemesusWorld.Controllers
                             car.vehicleData.position = $"{car.vehicleHandle.Position.X.ToString(new CultureInfo("en-US"))}|{car.vehicleHandle.Position.Y.ToString(new CultureInfo("en-US"))}|{car.vehicleHandle.Position.Z.ToString(new CultureInfo("en-US"))}|{car.vehicleHandle.Rotation.Z.ToString(new CultureInfo("en-US"))}|{car.vehicleHandle.Dimension}";
                             car.vehicleData.position = car.vehicleData.position.Replace(",", ".");
                         }
-                        car.vehicleData.sync = car.vehicleHandle.GetSharedData<string>("Vehicle:Sync");
-                        car.vehicleData.doors = car.vehicleHandle.GetSharedData<string>("Vehicle:Doors");
-                        car.vehicleData.windows = car.vehicleHandle.GetSharedData<string>("Vehicle:Windows");
+                        car.vehicleData.sync = car.vehicleHandle.GetSharedData<string>("Vehicle:Sync") != null ? car.vehicleHandle.GetSharedData<string>("Vehicle:Sync") : "0,0,0,0,0,0,0";
+                        car.vehicleData.doors = car.vehicleHandle.GetSharedData<string>("Vehicle:Doors") != null ? car.vehicleHandle.GetSharedData<string>("Vehicle:Doors") : "[false,false,false,false,false,false]";
+                        car.vehicleData.windows = car.vehicleHandle.GetSharedData<string>("Vehicle:Windows") != null ? car.vehicleHandle.GetSharedData<string>("Vehicle:Windows") : "[false,false,false,false]";
                         car.vehicleData.health = $"{NAPI.Vehicle.GetVehicleBodyHealth(car.vehicleHandle)}|{NAPI.Vehicle.GetVehicleEngineHealth(car.vehicleHandle)}|{NAPI.Vehicle.GetVehicleHealth(car.vehicleHandle)}";
-                        car.vehicleData.fuel = car.vehicleHandle.GetSharedData<float>("Vehicle:Fuel") > 0 ? (float)Math.Round(car.vehicleHandle.GetSharedData<float>("Vehicle:Fuel"), 2) : 0;
+                        car.vehicleData.fuel = (car.vehicleHandle.HasSharedData("Vehicle:Fuel") && car.vehicleHandle.GetSharedData<float>("Vehicle:Fuel") > 0) ? (float)Math.Round(car.vehicleHandle.GetSharedData<float>("Vehicle:Fuel"), 2) : 0;
                         car.vehicleData.oel = car.vehicleHandle.GetSharedData<int>("Vehicle:Oel");
                         car.vehicleData.battery = car.vehicleHandle.GetSharedData<int>("Vehicle:Battery");
                         car.vehicleData.tuning = car.vehicleHandle.GetSharedData<string>("Vehicle:Tuning");

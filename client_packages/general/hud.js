@@ -945,7 +945,7 @@ mp.events.add('render', (nametags) => {
 
     if (localPlayer.vehicle) {
         let vehiclename = localPlayer.vehicle.getVariable('Vehicle:Name');
-        if (vehiclename.toLowerCase() == "iak_wheelchair") {
+        if (vehiclename && vehiclename.toLowerCase() == "iak_wheelchair") {
             mp.players.local.setHelmet(false);
         }
     }

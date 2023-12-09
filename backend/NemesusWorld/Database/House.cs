@@ -1289,7 +1289,7 @@ namespace NemesusWorld.Database
                                     }
                                     foreach (Cars car in Cars.carList)
                                     {
-                                        if (car.vehicleData != null && car.vehicleHandle == null && car.vehicleData.id == number)
+                                        if (car.vehicleData != null && (car.vehicleHandle == null || (car.vehicleHandle != null && car.vehicleHandle.Dimension > 100)) && car.vehicleData.id == number)
                                         {
                                             getCar = car;
                                             break;
@@ -1371,8 +1371,17 @@ namespace NemesusWorld.Database
                                             }
                                         }
                                     }
+                                    Vehicle retCar = null;
                                     getCar.vehicleData.garage = "n/A";
-                                    Vehicle retCar = Cars.createNewCar(getCar.vehicleData.vehiclename, new Vector3(), 0f, 0, 0, "n/A", "n/A", false, false, true, player.Dimension, getCar.vehicleData, false, false);
+                                    if (getCar.vehicleHandle == null)
+                                    {
+                                        retCar = Cars.createNewCar(getCar.vehicleData.vehiclename, new Vector3(), 0f, 0, 0, "n/A", "n/A", false, false, true, player.Dimension, getCar.vehicleData, false, false);
+                                    }
+                                    else
+                                    {
+                                        retCar = getCar.vehicleHandle;
+                                        retCar.Dimension = player.Dimension;
+                                    }
                                     NAPI.Task.Run(() =>
                                     {
                                         if (Helper.IsInRangeOfPoint(player.Position, new Vector3(445.048, -972.2439, 25.788462), 6.75f))

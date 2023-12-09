@@ -326,6 +326,7 @@ namespace NemesusWorld.Controllers
                 PetaPoco.Database db = new PetaPoco.Database(General.Connection);
                 foreach (VehicleData vehicleData in db.Fetch<VehicleData>("SELECT * FROM vehicles"))
                 {
+                    Helper.ConsoleLog("error", $"[GetAllVehicles]: " + NAPI.Util.ToJson(vehicleData));
                     if (vehicleData != null)
                     {
                         if(vehicleData.towed > 0)

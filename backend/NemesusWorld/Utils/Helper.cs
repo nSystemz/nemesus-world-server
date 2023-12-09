@@ -6053,7 +6053,7 @@ namespace NemesusWorld.Utils
                         List<CenterMenu> centerMenu = new List<CenterMenu>();
                         foreach (Cars car in Cars.carList)
                         {
-                            if (car.vehicleData.garage == "house-" + house.id)
+                            if (car != null && car.vehicleData != null && car.vehicleData.garage == "house-" + house.id)
                             {
                                 CenterMenu cMenu = new CenterMenu();
                                 cMenu.var1 = "" + car.vehicleData.id;
@@ -6085,7 +6085,7 @@ namespace NemesusWorld.Utils
                     List<CenterMenu> centerMenu = new List<CenterMenu>();
                     foreach (Cars car in Cars.carList)
                     {
-                        if (car.vehicleData.garage == "bizz-" + bizz.id)
+                        if (car != null && car.vehicleData != null && car.vehicleData.garage == "bizz-" + bizz.id)
                         {
                             foreach (Items iteminlist in tempData.itemlist)
                             {

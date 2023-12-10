@@ -9061,7 +9061,7 @@ function countWeapons() {
 function checkForZeroWeapons() {
     if (hudWindow == null) return;
     for (i = 0; i < inventory.length; i++) {
-        if ((antiCheatWait == 0 || (Date.now() / 1000) > antiCheatWait) && inventory[i].type == 5 && (inventory[i].description.toLowerCase() == "granate" || inventory[i].description.toLowerCase() == "rauchgranate" || inventory[i].description.toLowerCase() == "bzgas" || inventory[i].description.toLowerCase() == "molotowcocktail" || inventory[i].description.toLowerCase().includes("schutzweste"))) {
+        if ((antiCheatWait == 0 || (Date.now() / 1000) > antiCheatWait) && inventory[i].type == 5 && (inventory[i].description.toLowerCase() == "granate" || inventory[i].description.toLowerCase() == "rauchgranate" || inventory[i].description.toLowerCase() == "bzgas" || inventory[i].description.toLowerCase() == "molotowcocktail" || inventory[i].description.toLowerCase() == "snowball" || inventory[i].description.toLowerCase().includes("schutzweste"))) {
             mp.events.callRemote('Server:CheckForEmptyWeapon');
             return;
         }
@@ -9287,6 +9287,9 @@ function getWeaponByHash(itemname) {
         case "granate": {
             return "weapon_grenade";
         }
+        case "snowball": {
+            return "weapon_snowball";
+        }
         case "bzgas": {
             return "weapon_bzgas";
         }
@@ -9439,9 +9442,9 @@ function antiCheatCheck() {
     }
     //Waffen Anticheat
     let weaponFound = false;
-    if (inventory && wait == false && localPlayer.weapon && localPlayer.weapon != mp.game.joaat('weapon_unarmed') && !startRange) {
+    if (inventory && wait == false && localPlayer.weapon && localPlayer.weapon != mp.game.joaat('weapon_unarmed') && localPlayer.weapon != mp.game.joaat('weapon_snowball') && !startRange) {
         for (i = 0; i < inventory.length; i++) {
-            if (inventory[i].type == 5 && !inventory[i].description.toLowerCase().includes("schutzweste") && inventory[i].props.split(',')[1] == 1) {
+            if (inventory[i].type == 5 && !inventory[i].description.toLowerCase().includes("snowball") && !inventory[i].description.toLowerCase().includes("schutzweste") && inventory[i].props.split(',')[1] == 1) {
                 if (mp.game.joaat(getWeaponByHash(inventory[i].description)) == localPlayer.weapon) {
                     weaponFound = true;
                 }
@@ -9454,7 +9457,7 @@ function antiCheatCheck() {
     //Munitions Anticheat
     if (inventory && wait == false && !startRange) {
         for (i = 0; i < inventory.length; i++) {
-            if (inventory[i].type == 5 && !inventory[i].description.toLowerCase().includes("schutzweste") && !inventory[i].description.toLowerCase().includes("feuerlöscher") && inventory[i].props.split(',')[1] == 1) {
+            if (inventory[i].type == 5 && !inventory[i].description.toLowerCase().includes("schutzweste") && !inventory[i].description.toLowerCase().includes("snowball") && !inventory[i].description.toLowerCase().includes("feuerlöscher") && inventory[i].props.split(',')[1] == 1) {
                 ammo = localPlayer.getWeaponAmmo(mp.game.joaat(getWeaponByHash(inventory[i].description)));
                 if (ammo > parseInt(inventory[i].props.split(',')[0])) {
                     callAntiCheat("Munitions Cheat", "n/A", true);
@@ -9473,7 +9476,7 @@ function antiCheatCheck() {
             speedTrys = 0;
         }
         let speed = localPlayer.vehicle.getSpeed() * 3.6;
-        if (speed >= 450) {
+        if (speed >= 575) {
             speedTrys++;
             if (speedTrys >= 2) {
                 callAntiCheat("Speedhack", "Geschwindigkeit: " + speed + " KM/H", true);

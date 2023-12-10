@@ -16,7 +16,7 @@ namespace NemesusWorld.Controllers
         {
             try
             {
-                if (newWeapon == WeaponHash.Grenade || newWeapon == WeaponHash.Bzgas || newWeapon == WeaponHash.Smokegrenade || newWeapon == WeaponHash.Molotov) return;
+                if (newWeapon == WeaponHash.Grenade || newWeapon == WeaponHash.Bzgas || newWeapon == WeaponHash.Smokegrenade || newWeapon == WeaponHash.Molotov || newWeapon == WeaponHash.Snowball) return;
                 TempData tempData = Helper.GetCharacterTempData(player);
                 if (tempData == null) return;
                 string whash = Convert.ToString(newWeapon).ToLower();
@@ -270,7 +270,7 @@ namespace NemesusWorld.Controllers
                         propArray = iteminlist.props.Split(",");
                         if (propArray.Length > 0 && propArray[1] == "1")
                         {
-                            if (iteminlist.description.ToLower() == "granate" || iteminlist.description.ToLower() == "bzgas" || iteminlist.description.ToLower() == "rauchgranate" || iteminlist.description.ToLower() == "molotowcocktail")
+                            if (iteminlist.description.ToLower() == "granate" || iteminlist.description.ToLower() == "bzgas" || iteminlist.description.ToLower() == "rauchgranate" || iteminlist.description.ToLower() == "molotowcocktail" || iteminlist.description.ToLower() == "snowball")
                             {
                                 if (NAPI.Player.GetPlayerWeaponAmmo(player, (WeaponHash)GetWeaponHashFromName(iteminlist.description)) <= 0)
                                 {
@@ -341,7 +341,7 @@ namespace NemesusWorld.Controllers
                                 tempData.weaponComponents.Add($"{whash.ToLower()}", $"{propArray[6]}");
                                 player.SetSharedData("Player:WeaponComponents", $"{propArray[6]}");
                             }
-                            if (item.description.ToLower() == "granate" || item.description.ToLower() == "rauchgranate" || item.description.ToLower() == "bz-gas" || item.description.ToLower() == "molotowcocktail")
+                            if (item.description.ToLower() == "granate" || item.description.ToLower() == "rauchgranate" || item.description.ToLower() == "bz-gas" || item.description.ToLower() == "molotowcocktail" || item.description.ToLower() == "snowball")
                             {
                                 NAPI.Player.SetPlayerCurrentWeapon(player, weaponHash);
                             }
@@ -685,6 +685,10 @@ namespace NemesusWorld.Controllers
                         {
                             return 0x93E220BD;
                         }
+                    case "snowball":
+                        {
+                            return 0x787F0BB;
+                        }
                     case "bzgas":
                         {
                             return 0xA0973D5E;
@@ -914,6 +918,10 @@ namespace NemesusWorld.Controllers
                     {
                         return "grenade";
                     }
+                case "snowball":
+                    {
+                        return "snowball";
+                    }
                 case "bzgas":
                     {
                         return "bzgas";
@@ -1139,6 +1147,10 @@ namespace NemesusWorld.Controllers
                         return "8";
                     }
                 case "granate":
+                    {
+                        return "9";
+                    }
+                case "snowball":
                     {
                         return "9";
                     }

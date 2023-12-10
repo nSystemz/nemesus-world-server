@@ -2722,7 +2722,7 @@ namespace NemesusWorld.Utils
             foreach (Player c in NAPI.Pools.GetAllPlayers())
             {
                 Account cacc = Helper.GetAccountData(c);
-                if (c.Exists && c.GetOwnSharedData<bool>("Player:Spawned") == true && cacc.adminlevel >= adminlevel)
+                if (c.Exists && Account.IsPlayerLoggedIn(c) && cacc != null && cacc.adminlevel >= adminlevel)
                 {
                     string text2 = "!{#0099ff}[Benachrichtigung]: " + message;
                     SendChatMessage(c, text2, false);

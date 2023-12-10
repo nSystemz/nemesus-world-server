@@ -1786,7 +1786,7 @@
                                                                 </b> <a
                                                                     v-if="car.tuev > 5 && car.tuev < (Date.now() / 1000)"
                                                                     class="float-right" style="color:red">Kein TÜV</a>
-                                                                <b v-if="car.tuev == 2">TÜV</b> <a v-if="car.tuev == 2"
+                                                                <a v-if="car.tuev == 2"
                                                                     class="float-right" style="color:green">Ja</a>
                                                                 <b
                                                                     v-if="(car.tuev != 2 && car.tuev <= 5) || car.tuev < (Date.now() / 1000)">TÜV</b>
@@ -3328,7 +3328,7 @@
                                     </div>
                                 </div>
                                 <div class="card card-primary card-outline"
-                                    v-if="groupinfo.licenses.split('|')[3] == 1">
+                                    v-if="groupinfo.licenses.split('|')[4] == 1">
                                     <div class="card-header" style="font-family: 'Exo', sans-serif;">Sicherheitslizenz
                                     </div>
                                     <div class="card-body">
@@ -5780,6 +5780,7 @@
                                             <p style="color:white">UCP: https://ucp.nemesus-world.de</p>
                                             <p style="color:white">Discord: https://discord.nemesus-world.de</p>
                                             <p style="color:white">Teamspeak: https://ts3.nemesus-world.de</p>
+                                            <p style="color:white">Nemesus.de: https://nemesus.de</p>
                                         </div>
                                     </div>
                                 </div>

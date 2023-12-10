@@ -2732,6 +2732,8 @@ namespace NemesusWorld
                 //Rollerverleih
                 NAPI.TextLabel.CreateTextLabel("~b~Rollerverleih(150$) am Rathaus\n~w~Benutze Taste ~b~[F]~w~ um mit dem Rollerverleiher zu interagieren!", new Vector3(-523.0017, -256.7837, 35.6499 + 1.2), 10.0f, 0.5f, 4, new Color(255, 255, 255), true, 0);
                 NAPI.TextLabel.CreateTextLabel("~b~Rollerverleih(150$) Rancho\n~w~Benutze Taste ~b~[F]~w~ um mit dem Rollerverleiher zu interagieren!", new Vector3(479.0879, -1861.0743, 27.460703 + 1.2), 10.0f, 0.5f, 4, new Color(255, 255, 255), true, 0);
+                //RIP
+                NAPI.TextLabel.CreateTextLabel("~y~Rest in Peace\n~w~J.W.S", new Vector3(-1765.8063, -259.54675, 49.32865 + 0.35), 10.0f, 0.5f, 4, new Color(255, 255, 255), true, 0);
                 //Rathaus
                 NAPI.TextLabel.CreateTextLabel("~b~Los Santos Rathaus\n~w~Benutze Taste ~b~[F]~w~ um mit der Sekretärin zu interagieren!", new Vector3(-555.7711, -185.85564, 38.22111 + 1.3), 7.5f, 0.5f, 4, new Color(255, 255, 255), true, 0);
                 //Kleidungsläden

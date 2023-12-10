@@ -270,8 +270,8 @@ namespace NemesusWorld.Database
                 if (car != null && vehicleData != null)
                 {
                     car.vehicleData = vehicleData;
-                    return car.vehicleHandle;
                 }
+                return car.vehicleHandle;
             }
             catch (Exception e)
             {

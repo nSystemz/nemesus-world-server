@@ -36,8 +36,8 @@
                     </button>
                 </div>
                 <div class="text-center w-full p-t-25 p-b-185">
-                    <a href="#" class="txt1">
-                        Es wurde ein Account gefunden, bitte logge dich ein!
+                    <a href="#" class="txt1" @click="showRegister()">
+                        Zur Registrierung springen
                     </a>
                 </div>
             </div>
@@ -77,6 +77,11 @@ export default {
         },
         showLogin: function () {
             this.loginshow = !this.loginshow;
+            return;
+        },
+        showRegister: function () {
+            this.loginshow = !this.loginshow;
+            mp.trigger('Client:ShowRegister');
             return;
         },
         setWarning: function (text) {

@@ -62,7 +62,7 @@ namespace NemesusWorld
                         return;
                     }
                     itemname = ItemsController.GetItemNameByItemName(itemname);
-                    if (ItemsController.IsItemAWeapon(itemname.ToLower()) && itemname.ToLower() != "granate" && itemname.ToLower() != "bzgas" && itemname.ToLower() != "rauchgranate" && itemname.ToLower() != "molotowcocktail")
+                    if (ItemsController.IsItemAWeapon(itemname.ToLower()) && itemname.ToLower() != "granate" && itemname.ToLower() != "bzgas" && itemname.ToLower() != "rauchgranate" && itemname.ToLower() != "molotowcocktail" && itemname.ToLower() != "snowball")
                     {
                         menge = 1;
                     }
@@ -5867,14 +5867,13 @@ namespace NemesusWorld
                         return;
                     }
                     tempData.adminvehicle = Cars.createNewCar(vehname, new Vector3(player.Position.X, player.Position.Y, player.Position.Z - 0.1), player.Heading, color1, color2, "Admin", "Admin", false, true, false, player.Dimension);
-                    tempData.adminvehicle.Dimension = player.Dimension;
                     NAPI.Task.Run(() =>
                     {
                         if (tempData.adminvehicle != null)
                         {
                             player.SetIntoVehicle(tempData.adminvehicle, (int)VehicleSeat.Driver);
                         }
-                    }, delayTime: 275);
+                    }, delayTime: 315);
                     Helper.CreateAdminLog($"vehlog", account.name + " hat ein/e " + vehname + " gespawned!");
                     Helper.SendNotificationWithoutButton(player, "Adminfahrzeug gespawned!", "success");
                 }

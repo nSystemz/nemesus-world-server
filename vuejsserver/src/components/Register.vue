@@ -42,7 +42,12 @@
                         Weiter
                     </button>
                 </div>
-                <div class="text-center w-full p-t-25 p-b-185">
+                <div class="text-center w-full p-t-25 p-b-5">
+                    <a href="#" class="txt1" @click="showLogin()">
+                        Zum Login springen
+                    </a>
+                </div>
+                <div class="text-center w-full p-t-25 p-b-180">
                     <a href="#" class="txt1">
                         Der Gamemode wurde von <strong>Nemesus.de</strong> erstellt!
                     </a>
@@ -91,6 +96,11 @@ export default {
         },
         showRegister: function () {
             this.registershow = !this.registershow;
+            return;
+        },
+        showLogin: function () {
+            this.registershow = !this.registershow;
+            mp.trigger('Client:ShowLogin');
             return;
         },
         setWarning: function (text) {

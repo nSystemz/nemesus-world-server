@@ -76,7 +76,7 @@ namespace NemesusWorld.Controllers
                 GetItemByName(item, itemname);
                 if (IsItemAWeapon(itemname))
                 {
-                    if (itemname.ToLower() != "granate" && itemname.ToLower() != "bzgas" && itemname.ToLower() != "rauchgranate" && itemname.ToLower() != "molotowcocktail")
+                    if (itemname.ToLower() != "granate" && itemname.ToLower() != "bzgas" && itemname.ToLower() != "rauchgranate" && itemname.ToLower() != "molotowcocktail" && itemname.ToLower() != "snowball")
                     {
                         item.amount = 1;
                         if (!itemname.ToLower().Contains("schutzweste") && !itemname.ToLower().Contains("feuerlöscher"))
@@ -1124,7 +1124,7 @@ namespace NemesusWorld.Controllers
                                 if (!iteminlist.description.ToLower().Contains("schutzweste"))
                                 {
                                     iteminlist.props = $"{NAPI.Player.GetPlayerWeaponAmmo(player, (WeaponHash)WeaponController.GetWeaponHashFromName(iteminlist.description))},1,{weaponArray[2]},{weaponArray[3]},{weaponArray[4]},{weaponArray[5]},{weaponArray[6]}";
-                                    if (iteminlist.description.ToLower() == "granate" || iteminlist.description.ToLower() == "bzgas" || iteminlist.description.ToLower() == "rauchgranate" || iteminlist.description.ToLower() == "molotowcocktail")
+                                    if (iteminlist.description.ToLower() == "granate" || iteminlist.description.ToLower() == "bzgas" || iteminlist.description.ToLower() == "rauchgranate" || iteminlist.description.ToLower() == "molotowcocktail" || iteminlist.description.ToLower() == "snowball")
                                     {
                                         iteminlist.amount = NAPI.Player.GetPlayerWeaponAmmo(player, (WeaponHash)WeaponController.GetWeaponHashFromName(iteminlist.description));
                                     }
@@ -1302,7 +1302,7 @@ namespace NemesusWorld.Controllers
                                         if (iteminlist != null && globalitem.description.ToLower() == iteminlist.description.ToLower())
                                         {
                                             iteminlist.amount += globalitem.amount;
-                                            if (iteminlist.description.ToLower() == "granate" || iteminlist.description.ToLower() == "bzgas" || iteminlist.description.ToLower() == "rauchgranate" || iteminlist.description.ToLower() == "molotowcocktail")
+                                            if (iteminlist.description.ToLower() == "granate" || iteminlist.description.ToLower() == "bzgas" || iteminlist.description.ToLower() == "rauchgranate" || iteminlist.description.ToLower() == "molotowcocktail" || iteminlist.description.ToLower() == "snowball")
                                             {
                                                 string[] weaponArray = new string[7];
                                                 weaponArray = iteminlist.props.Split(",");
@@ -1587,7 +1587,7 @@ namespace NemesusWorld.Controllers
                                             {
                                                 iteminlist.amount += amount;
                                                 itemGlobal.amount -= amount;
-                                                if (itemGlobal.description.ToLower() == "granate" || itemGlobal.description.ToLower() == "bzgas" || itemGlobal.description.ToLower() == "rauchgranate" || itemGlobal.description.ToLower() == "molotowcocktail")
+                                                if (itemGlobal.description.ToLower() == "granate" || itemGlobal.description.ToLower() == "bzgas" || itemGlobal.description.ToLower() == "rauchgranate" || itemGlobal.description.ToLower() == "molotowcocktail" || itemGlobal.description.ToLower() == "snowball")
                                                 {
                                                     string[] weaponArray = new string[7];
                                                     weaponArray = itemGlobal.props.Split(",");
@@ -1610,7 +1610,7 @@ namespace NemesusWorld.Controllers
                                         newItem.amount = amount;
                                         itemGlobal.amount -= amount;
                                         newItem.weight = itemGlobal.weight;
-                                        if (itemGlobal.description.ToLower() == "granate" || itemGlobal.description.ToLower() == "bzgas" || itemGlobal.description.ToLower() == "rauchgranate" || itemGlobal.description.ToLower() == "molotowcocktail")
+                                        if (itemGlobal.description.ToLower() == "granate" || itemGlobal.description.ToLower() == "bzgas" || itemGlobal.description.ToLower() == "rauchgranate" || itemGlobal.description.ToLower() == "molotowcocktail" || itemGlobal.description.ToLower() == "snowball")
                                         {
                                             string[] weaponArray = new string[7];
                                             weaponArray = itemGlobal.props.Split(",");
@@ -1670,7 +1670,7 @@ namespace NemesusWorld.Controllers
                                             {
                                                 iteminlist.amount += amount;
                                                 getItem.amount -= amount;
-                                                if (getItem.description.ToLower() == "granate" || getItem.description.ToLower() == "bzgas" || getItem.description.ToLower() == "rauchgranate" || getItem.description.ToLower() == "molotowcocktail")
+                                                if (getItem.description.ToLower() == "granate" || getItem.description.ToLower() == "bzgas" || getItem.description.ToLower() == "rauchgranate" || getItem.description.ToLower() == "molotowcocktail" || getItem.description.ToLower() == "snowball")
                                                 {
                                                     string[] weaponArray = new string[7];
                                                     weaponArray = getItem.props.Split(",");
@@ -1693,7 +1693,7 @@ namespace NemesusWorld.Controllers
                                         newItem.amount = amount;
                                         getItem.amount -= amount;
                                         newItem.weight = getItem.weight;
-                                        if (getItem.description.ToLower() == "granate" || getItem.description.ToLower() == "bzgas" || getItem.description.ToLower() == "rauchgranate" || getItem.description.ToLower() == "molotowcocktail")
+                                        if (getItem.description.ToLower() == "granate" || getItem.description.ToLower() == "bzgas" || getItem.description.ToLower() == "rauchgranate" || getItem.description.ToLower() == "molotowcocktail" || getItem.description.ToLower() == "snowball")
                                         {
                                             string[] weaponArray = new string[7];
                                             weaponArray = getItem.props.Split(",");
@@ -1845,7 +1845,7 @@ namespace NemesusWorld.Controllers
                                             {
                                                 iteminlist.amount += amount;
                                                 item.amount -= amount;
-                                                if (item.description.ToLower() == "granate" || item.description.ToLower() == "bzgas" || item.description.ToLower() == "rauchgranate" || item.description.ToLower() == "molotowcocktail")
+                                                if (item.description.ToLower() == "granate" || item.description.ToLower() == "bzgas" || item.description.ToLower() == "rauchgranate" || item.description.ToLower() == "molotowcocktail" || item.description.ToLower() == "snowball")
                                                 {
                                                     string[] weaponArray = new string[7];
                                                     weaponArray = iteminlist.props.Split(",");
@@ -1869,7 +1869,7 @@ namespace NemesusWorld.Controllers
                                         newItem.amount = amount;
                                         item.amount -= amount;
                                         newItem.weight = item.weight;
-                                        if (item.description.ToLower() == "granate" || item.description.ToLower() == "bzgas" || item.description.ToLower() == "rauchgranate" || item.description.ToLower() == "molotowcocktail")
+                                        if (item.description.ToLower() == "granate" || item.description.ToLower() == "bzgas" || item.description.ToLower() == "rauchgranate" || item.description.ToLower() == "molotowcocktail" || item.description.ToLower() == "snowball")
                                         {
                                             string[] weaponArray = new string[7];
                                             weaponArray = item.props.Split(",");
@@ -3318,7 +3318,7 @@ namespace NemesusWorld.Controllers
                             itemglobal.amount = amount;
                             itemglobal.weight = item.weight;
                             itemglobal.type = item.type;
-                            if (itemglobal.description.ToLower() == "granate" || itemglobal.description.ToLower() == "bzgas" || itemglobal.description.ToLower() == "rauchgranate" || itemglobal.description.ToLower() == "molotowcocktail")
+                            if (itemglobal.description.ToLower() == "granate" || itemglobal.description.ToLower() == "bzgas" || itemglobal.description.ToLower() == "rauchgranate" || itemglobal.description.ToLower() == "molotowcocktail" || itemglobal.description.ToLower() == "snowball")
                             {
                                 string[] weaponArray = new string[7];
                                 weaponArray = item.props.Split(",");
@@ -3328,7 +3328,7 @@ namespace NemesusWorld.Controllers
                             {
                                 itemglobal.props = item.props;
                             }
-                            if (item.description.ToLower() == "granate" || item.description.ToLower() == "bzgas" || item.description.ToLower() == "rauchgranate" || item.description.ToLower() == "molotowcocktail")
+                            if (item.description.ToLower() == "granate" || item.description.ToLower() == "bzgas" || item.description.ToLower() == "rauchgranate" || item.description.ToLower() == "molotowcocktail" || itemglobal.description.ToLower() == "snowball")
                             {
                                 string[] weaponArray = new string[7];
                                 weaponArray = item.props.Split(",");
@@ -3398,7 +3398,7 @@ namespace NemesusWorld.Controllers
                                 {
                                     iteminlist.amount += item.amount;
                                     item.amount -= amount;
-                                    if (item.description.ToLower() == "granate" || item.description.ToLower() == "bzgas" || item.description.ToLower() == "rauchgranate" || item.description.ToLower() == "molotowcocktail")
+                                    if (item.description.ToLower() == "granate" || item.description.ToLower() == "bzgas" || item.description.ToLower() == "rauchgranate" || item.description.ToLower() == "molotowcocktail" || item.description.ToLower() == "snowball")
                                     {
                                         string[] weaponArray = new string[7];
                                         weaponArray = iteminlist.props.Split(",");
@@ -3420,7 +3420,7 @@ namespace NemesusWorld.Controllers
                                 newItem.amount = amount;
                                 item.amount -= amount;
                                 newItem.weight = item.weight;
-                                if (item.description.ToLower() == "granate" || item.description.ToLower() == "bzgas" || item.description.ToLower() == "rauchgranate" || item.description.ToLower() == "molotowcocktail")
+                                if (item.description.ToLower() == "granate" || item.description.ToLower() == "bzgas" || item.description.ToLower() == "rauchgranate" || item.description.ToLower() == "molotowcocktail" || item.description.ToLower() == "snowball")
                                 {
                                     string[] weaponArray = new string[7];
                                     weaponArray = item.props.Split(",");
@@ -3597,7 +3597,7 @@ namespace NemesusWorld.Controllers
                 {
                     return true;
                 }
-                if (IsItemAWeapon(name) && name.ToLower() != "granate" && name.ToLower() != "bzgas" && name.ToLower() != "rauchgranate" && name.ToLower() != "molotowcocktail")
+                if (IsItemAWeapon(name) && name.ToLower() != "granate" && name.ToLower() != "bzgas" && name.ToLower() != "rauchgranate" && name.ToLower() != "molotowcocktail" && name.ToLower() != "snowball")
                 {
                     return true;
                 }

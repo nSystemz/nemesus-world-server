@@ -964,11 +964,11 @@ CREATE TABLE `factions` (
 --
 
 INSERT INTO `factions` (`id`, `name`, `tag`, `leader`, `created`, `bankvalue`, `members`) VALUES
-(1, 'San Andreas Police Department', 'SAPD', -1, 1633690373, 0, 0),
-(2, 'San Andreas Rescue Center', 'SARC', -1, 1633690373, 0, 0),
-(3, 'San Andreas Abschleppdienst', 'SAA', -1, 1633690373, 0, 0),
-(4, 'San Andreas Regierung', 'SAR', -1, 1633690373, 0, 0),
-(5, 'San Andreas Nachrichtendienst', 'SAN', -1, 1633690373, 0, 0);
+(1, 'Los Santos Police Department', 'LSPD', -1, 1633690373, 0, 0),
+(2, 'Los Santos Rescue Center', 'LSRC', -1, 1633690373, 0, 0),
+(3, 'Los Santos Abschleppdienst', 'LSAA', -1, 1633690373, 0, 0),
+(4, 'Los Santos Regierung', 'LSR', -1, 1633690373, 0, 0),
+(5, 'Los Santos Nachrichtendienst', 'LSN', -1, 1633690373, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -3146,7 +3146,8 @@ INSERT INTO `itemmodels` (`id`, `hash`, `description`, `type`, `weight`) VALUES
 (134, '-1158162337', 'Spitzhacke', 4, 650),
 (135, '-1158162337', 'Kleine-Schaufel', 4, 375),
 (136, '-1158162337', 'Mikrofon', 4, 500),
-(137, '-1158162337', 'Filmkamera', 4, 2350);
+(137, '-1158162337', 'Filmkamera', 4, 2350),
+(138, '-1158162337', 'Snowball', 5, 125),;
 
 -- --------------------------------------------------------
 

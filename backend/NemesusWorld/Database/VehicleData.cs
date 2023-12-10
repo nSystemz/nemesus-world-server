@@ -36,12 +36,12 @@ namespace NemesusWorld.Database
         public VehicleData()
         {
             id = 0;
-            position = "0.0|0.0|0.0|0.0|0|0|-1";
+            position = "0.0|0.0|0.0|0.0|0";
             owner = "n/A";
             vehiclename = "n/A";
             ownname = "n/A";
             plate = "n/A";
-            health = "1000.0|1000.0|1000.0";
+            health = "1000|1000|1000";
             battery = 100;
             status = 1;
             engine = 0;

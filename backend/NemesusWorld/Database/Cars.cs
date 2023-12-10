@@ -134,7 +134,7 @@ namespace NemesusWorld.Database
                         string[] vehicleHealth = new string[3];
                         if (!vehicleData.health.Contains("|"))
                         {
-                            vehicleData.health = "1000.0|1000.0|1000.0";
+                            vehicleData.health = "1000|1000|1000";
                         }
                         vehicleHealth = vehicleData.health.Split("|");
                         if (car.vehicleHandle != null)
@@ -261,15 +261,17 @@ namespace NemesusWorld.Database
                             db.Insert(vehicleData);
                         }
                         car.vehicleData = vehicleData;
-                        Helper.ConsoleLog("error", NAPI.Util.ToJson(car.vehicleData));
                     }
                     if (insert2 == true)
                     {
                         carList.Add(car);
                     }
                 }
-                car.vehicleData = vehicleData;
-                return car.vehicleHandle;
+                if (car != null && vehicleData != null)
+                {
+                    car.vehicleData = vehicleData;
+                    return car.vehicleHandle;
+                }
             }
             catch (Exception e)
             {

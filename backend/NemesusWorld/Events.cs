@@ -173,7 +173,7 @@ namespace NemesusWorld
                             NAPI.Server.SetCommandErrorMessage("~r~Ungültiger Befehl!");
                             NAPI.Server.SetDefaultSpawnLocation(new Vector3(-542.2647, -208.96895, 37.6498), -154.3716f);
                             //Weather
-                            Helper.SetAndGetWeather();
+                            Helper.SetAndGetWeather("https://nemesus-world.de/WetterInfo.php", true);
                             //Set time
                             var time = DateTime.Now;
                             NAPI.World.SetTime(time.Hour, time.Minute, 0);
@@ -193,11 +193,11 @@ namespace NemesusWorld
                             Helper.ConsoleLog("info", "#     #  ######  #    #  ######   ####    ####    ####");
                             if (Helper.adminSettings.voicerp == 1)
                             {
-                                Helper.ConsoleLog("info", "[SERVER]: Nemesus World Gamemode erstellt von Nemesus.de erfolgreich geladen - (Voice-RP)!");
+                                Helper.ConsoleLog("info", "[SERVER]: Nemesus World Gamemode erstellt von Nemesus.de erfolgreich geladen - (Voice-RP)");
                             }
                             else
                             {
-                                Helper.ConsoleLog("info", "[SERVER]: Nemesus World Gamemode erstellt von Nemesus.de erfolgreich geladen - (Text-RP)!");
+                                Helper.ConsoleLog("info", "[SERVER]: Nemesus World Gamemode erstellt von Nemesus.de erfolgreich geladen - (Text-RP)");
                             }
                             //Discord Bot
                             //DiscordBot.RunBotAsync();
@@ -228,7 +228,7 @@ namespace NemesusWorld
                         //Onlinebanking transfer
                         BankController.RunTransfer();
                         //Set weather
-                        Helper.SetAndGetWeather();
+                        Helper.SetAndGetWeather("https://nemesus-world.de/WetterInfo.php");
                         //Smartphone capacity
                         foreach (Smartphone smartphone in SmartphoneController.smartphoneList)
                         {

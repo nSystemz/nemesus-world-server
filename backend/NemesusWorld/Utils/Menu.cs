@@ -209,7 +209,7 @@ namespace NemesusWorld.Utils
                                 car.vehicleData.battery = car.vehicleHandle.GetSharedData<int>("Vehicle:Battery");
                                 car.vehicleData.tuning = car.vehicleHandle.GetSharedData<string>("Vehicle:Tuning");
                                 car.vehicleData.kilometre = car.vehicleHandle.GetSharedData<float>("Vehicle:Kilometre");
-                                car.vehicleData.position = $"{car.vehicleHandle.Position.X}|{car.vehicleHandle.Position.Y}|{car.vehicleHandle.Position.Z}|{car.vehicleHandle.Rotation.Z}|{car.vehicleHandle.PrimaryColor}|{car.vehicleHandle.SecondaryColor}|{car.vehicleHandle.Dimension}|-1";
+                                car.vehicleData.position = $"{car.vehicleHandle.Position.X}|{car.vehicleHandle.Position.Y}|{car.vehicleHandle.Position.Z}|{car.vehicleHandle.Rotation.Z}|{car.vehicleHandle.Dimension}";
                                 car.vehicleData.color = car.vehicleHandle.GetSharedData<string>("Vehicle:Color");
                                 if (car.vehicleHandle.HasSharedData("Vehicle:Tuev"))
                                 {
@@ -239,7 +239,7 @@ namespace NemesusWorld.Utils
                                 car.vehicleData.battery = car.vehicleHandle.GetSharedData<int>("Vehicle:Battery");
                                 car.vehicleData.tuning = car.vehicleHandle.GetSharedData<string>("Vehicle:Tuning");
                                 car.vehicleData.kilometre = car.vehicleHandle.GetSharedData<float>("Vehicle:Kilometre");
-                                car.vehicleData.position = $"{car.vehicleHandle.Position.X}|{car.vehicleHandle.Position.Y}|{car.vehicleHandle.Position.Z}|{car.vehicleHandle.Rotation.Z}|{car.vehicleHandle.PrimaryColor}|{car.vehicleHandle.SecondaryColor}|{car.vehicleHandle.Dimension}|-1";
+                                car.vehicleData.position = $"{car.vehicleHandle.Position.X}|{car.vehicleHandle.Position.Y}|{car.vehicleHandle.Position.Z}|{car.vehicleHandle.Rotation.Z}|{car.vehicleHandle.Dimension}";
                                 car.vehicleData.color = car.vehicleHandle.GetSharedData<string>("Vehicle:Color");
                                 if (car.vehicleHandle.HasSharedData("Vehicle:Tuev"))
                                 {
@@ -269,7 +269,7 @@ namespace NemesusWorld.Utils
                                 car.vehicleData.battery = car.vehicleHandle.GetSharedData<int>("Vehicle:Battery");
                                 car.vehicleData.tuning = car.vehicleHandle.GetSharedData<string>("Vehicle:Tuning");
                                 car.vehicleData.kilometre = car.vehicleHandle.GetSharedData<float>("Vehicle:Kilometre");
-                                car.vehicleData.position = $"{car.vehicleHandle.Position.X}|{car.vehicleHandle.Position.Y}|{car.vehicleHandle.Position.Z}|{car.vehicleHandle.Rotation.Z}|{car.vehicleHandle.PrimaryColor}|{car.vehicleHandle.SecondaryColor}|{car.vehicleHandle.Dimension}|-1";
+                                car.vehicleData.position = $"{car.vehicleHandle.Position.X}|{car.vehicleHandle.Position.Y}|{car.vehicleHandle.Position.Z}|{car.vehicleHandle.Rotation.Z}|{car.vehicleHandle.Dimension}";
                                 car.vehicleData.color = car.vehicleHandle.GetSharedData<string>("Vehicle:Color");
                                 if (car.vehicleHandle.HasSharedData("Vehicle:Tuev"))
                                 {

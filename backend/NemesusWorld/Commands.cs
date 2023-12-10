@@ -2402,7 +2402,7 @@ namespace NemesusWorld
                     case "normal":
                         {
                             Helper.weatherTimestamp = 0;
-                            Helper.SetAndGetWeather();
+                            Helper.SetAndGetWeather("https://nemesus-world.de/WetterInfo.php");
                             break;
                         }
                     default:

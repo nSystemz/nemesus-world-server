@@ -18,6 +18,7 @@ using Blip = GTANetworkAPI.Blip;
 using Ped = GTANetworkAPI.Ped;
 using Vector3 = GTANetworkAPI.Vector3;
 using Color = GTANetworkAPI.Color;
+using Newtonsoft.Json;
 
 namespace NemesusWorld.Utils
 {
@@ -28,7 +29,8 @@ namespace NemesusWorld.Utils
         public static int MeatPrice = 115 + rnd.Next(0, 45);
         public static int FishPrice = 125 + rnd.Next(0, 55);
         public static JObject weatherObj = null;
-        public static String weatherstring = "";
+        public static String weatherstring = "clear sky";
+        public static int weatherErrors = 0;
         public static int weatherTimestamp = 0;
         public static List<SpedVehicles> spedVehiclesList = new List<SpedVehicles>();
         public static List<ShopItems> shopItemList = new List<ShopItems>();
@@ -1046,7 +1048,7 @@ namespace NemesusWorld.Utils
                     adminSettings.grouparray[0] = govArray[0];
                     adminSettings.grouparray[1] = govArray[1];
                     adminSettings.grouparray[2] = govArray[3];
-                    adminSettings.grouparray[3] = ""+adminSettings.towedcash;
+                    adminSettings.grouparray[3] = "" + adminSettings.towedcash;
                 }
                 else if (modus == 2)
                 {
@@ -2874,7 +2876,7 @@ namespace NemesusWorld.Utils
                             Vehicle vehicle = null;
                             vColor = $"{Convert.ToInt32(carArray[3])},{Convert.ToInt32(carArray[3])},-1,-1";
                             vehicleData.color = vColor;
-                            vehicleData.health = "1000.0|1000.0|1000.0";
+                            vehicleData.health = "1000|1000|1000";
                             if (number == 1)
                             {
                                 vehicleData.position = $"0.0|0.0|0.0|0.0|0";
@@ -2897,57 +2899,57 @@ namespace NemesusWorld.Utils
                                 if (bizz.id == 22)
                                 {
                                     vehicleData.position = $"145.23679|-140.08275|54.24724|-20.416449|0";
-                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(145.23679, -140.08275, 54.24724 + 0.25), -20.416449f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
+                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(145.23679, -140.08275, 54.24724 + 0.25), -20.416449f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true, true, -1);
                                 }
                                 else if (bizz.id == 23)
                                 {
                                     vehicleData.position = $"274.08023|-1159.84|28.617239|87.37559|0";
-                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(274.08023, -1159.84, 28.617239 + 0.25), 87.37559f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
+                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(274.08023, -1159.84, 28.617239 + 0.25), 87.37559f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true, true, -1);
                                 }
                                 else if (bizz.id == 24)
                                 {
                                     vehicleData.position = $"-31.80824|-1091.3527|25.65422|-31.949799|0";
-                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(-31.80824, -1091.3527, 25.65422 + 0.25), -31.949799f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
+                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(-31.80824, -1091.3527, 25.65422 + 0.25), -31.949799f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true, true, -1);
                                 }
                                 else if (bizz.id == 25)
                                 {
                                     vehicleData.position = $"-68.83505|82.71136|71.28684|63.46722|0";
-                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(-68.83505, 82.71136, 71.28684 + 0.25), 63.46722f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
+                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(-68.83505, 82.71136, 71.28684 + 0.25), 63.46722f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true, true, -1);
                                 }
                                 else if (bizz.id == 26)
                                 {
                                     vehicleData.position = $"-23.408432|-1678.2253|29.160381|110.107635|0";
-                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(-23.408432, -1678.2253, 29.160381 + 0.25), 110.107635f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
+                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(-23.408432, -1678.2253, 29.160381 + 0.25), 110.107635f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true, true, -1);
                                 }
                                 else if (bizz.id == 27)
                                 {
                                     vehicleData.position = $"1214.5273|2708.1516|37.477882|156.33295|0";
-                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(1214.5273, 2708.1516, 37.477882 + 0.25), 156.33295f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
+                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(1214.5273, 2708.1516, 37.477882 + 0.25), 156.33295f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true, true, -1);
                                 }
                                 else if (bizz.id == 28)
                                 {
                                     vehicleData.position = $"-201.7464|6204.731|31.017431|46.196392|0";
-                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(-201.7464, 6204.731, 31.017431 + 0.25), 46.196392f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
+                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(-201.7464, 6204.731, 31.017431 + 0.25), 46.196392f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true, true, -1);
                                 }
                                 else if (bizz.id == 29)
                                 {
                                     vehicleData.position = $"663.9333|-2687.8196|6.147993|90.25697|0";
-                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(663.9333, -2687.8196, 6.147993 + 0.25), 90.25697f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
+                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(663.9333, -2687.8196, 6.147993 + 0.25), 90.25697f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true, true, -1);
                                 }
                                 else if (bizz.id == 30)
                                 {
                                     vehicleData.position = $"-1139.5806|-211.71169|37.537098|74.32476|0";
-                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(-1139.5806, -211.71169, 37.537098 + 0.25), 74.32476f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
+                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(-1139.5806, -211.71169, 37.537098 + 0.25), 74.32476f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true, true, -1);
                                 }
                                 else if (bizz.id == 31)
                                 {
                                     vehicleData.position = $"-754.99304|-1363.0486|0.29581332|-130.13977|0";
-                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(-754.99304, -1363.0486, 0.29581332 + 0.25), -130.13977f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
+                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(-754.99304, -1363.0486, 0.29581332 + 0.25), -130.13977f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true, true, -1);
                                 }
                                 else if (bizz.id == 32)
                                 {
                                     vehicleData.position = $"-993.2244|-2990.8599|14.545995|60.07966|0";
-                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(-993.2244, -2990.8599, 14.545995 + 0.25), 60.07966f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true);
+                                    vehicle = Cars.createNewCar(carArray[0].ToLower(), new Vector3(-993.2244, -2990.8599, 14.545995 + 0.25), 60.07966f, Convert.ToInt32(carArray[3]), Convert.ToInt32(carArray[3]), vehicleData.owner, "n/A", true, false, true, 0, vehicleData, true, true, -1);
                                 }
                             }
                             if (vehicle != null && vehicle.Class != 13)
@@ -2966,7 +2968,7 @@ namespace NemesusWorld.Utils
                             player.TriggerEvent("Client:PlayerFreeze", false);
                             player.SetData<int>("Player:LastBizz", 0);
                             player.TriggerEvent("Client:ShowDealerShip", "n/A", "n/A", null, null, -1);
-                            if(garageName != "")
+                            if (garageName != "")
                             {
                                 Helper.SendNotificationWithoutButton2(player, $"Fahrzeug erfolgreich erworben, das Fahrzeug steht in der Garage {garageName}, alles weitere findest du im F2 Menü!", "success", "center", 5250);
                             }
@@ -17191,63 +17193,61 @@ namespace NemesusWorld.Utils
             return new Vector3(nx, ny, position.Z);
         }
 
-        public static void SetAndGetWeather()
+        public static void SetAndGetWeather(String apiLink, bool initial = false)
         {
             try
             {
-                System.Threading.Tasks.Task.Run(() =>
+                NAPI.Task.Run(() =>
                 {
-                    NAPI.Task.Run(() =>
+                    if (weatherTimestamp != 0 && weatherTimestamp > UnixTimestamp() && initial == false) return;
+                    var request = (HttpWebRequest)WebRequest.Create(apiLink);
+                    request.Method = "GET";
+                    var content = string.Empty;
+                    using (var response = (HttpWebResponse)request.GetResponse())
                     {
-                        if (weatherTimestamp != 0 && weatherTimestamp > UnixTimestamp()) return;
-                        var request = (HttpWebRequest)WebRequest.Create("https://nemesus-world.de/Wetter.json");
-                        request.Method = "GET";
-                        request.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
-                        var content = string.Empty;
-                        using (var response = (HttpWebResponse)request.GetResponse())
+                        using (var stream = response.GetResponseStream())
                         {
-                            using (var stream = response.GetResponseStream())
+                            using (var sr = new StreamReader(stream))
                             {
-                                using (var sr = new StreamReader(stream))
+                                content = sr.ReadToEnd();
+                                weatherObj = JObject.Parse(content);
+                                Weather weather = new Weather();
+                                string tempstring2;
+                                tempstring2 = weatherObj["current"].ToString();
+                                JObject weatherObjTemp2 = JObject.Parse(tempstring2);
+                                string tempstring;
+                                tempstring = weatherObjTemp2["weather"].ToString();
+                                tempstring = tempstring.Substring(2);
+                                tempstring = tempstring.Substring(0, tempstring.Length - 1);
+                                if (tempstring.Length > 10)
                                 {
-                                    content = sr.ReadToEnd();
-                                    weatherObj = JObject.Parse(content);
-                                    Weather weather = new Weather();
-                                    string tempstring2;
-                                    tempstring2 = weatherObj["current"].ToString();
-                                    JObject weatherObjTemp2 = JObject.Parse(tempstring2);
-                                    string tempstring;
-                                    tempstring = weatherObjTemp2["weather"].ToString();
-                                    tempstring = tempstring.Substring(2);
-                                    tempstring = tempstring.Substring(0, tempstring.Length - 1);
-                                    if (tempstring.Length > 10)
-                                    {
-                                        try
-                                        {
-                                            JObject weatherObjTemp = JObject.Parse(tempstring);
-                                            weatherstring = weatherObjTemp["description"].ToString().ToLower();
-                                        }
-                                        catch (Exception e)
-                                        {
-                                            Helper.ConsoleLog("error", $"[SetAndGetWeather]: " + e.ToString());
-                                            weatherstring = "clear sky";
-                                        }
-                                    }
-                                    else
-                                    {
-                                        weatherstring = "clear sky";
-                                    }
-                                    SetWeather();
+                                    JObject weatherObjTemp = JObject.Parse(tempstring);
+                                    weatherstring = weatherObjTemp["description"].ToString().ToLower();
                                 }
+                                else
+                                {
+                                    weatherstring = "clear sky";
+                                }
+                                Helper.ConsoleLog("success", $"[WETTER-API]: {weatherstring}");
+                                SetWeather();
+                                weatherErrors = 0;
                             }
                         }
-                    });
+                    }
                 });
             }
             catch (Exception)
             {
-                weatherstring = "clear sky";
-                SetWeather();
+                if (weatherErrors <= 3)
+                {
+                    weatherErrors++;
+                    Helper.SetAndGetWeather("https://nemesus-world.de/WetterInfoBackup.php");
+                }
+                else
+                {
+                    weatherstring = "clear sky";
+                    SetWeather();
+                }
             }
         }
 
@@ -17505,7 +17505,7 @@ namespace NemesusWorld.Utils
                 string hostName = Dns.GetHostName();
                 string serverip = Dns.GetHostEntry(hostName).AddressList[0].ToString();
                 String serveripport = $"{serverip}:{NAPI.Server.GetServerPort()}";
-                var request = (HttpWebRequest)WebRequest.Create("https://" + $"nemesus-world.de/Call2Home.php?servername={NAPI.Server.GetServerName()}&gamemodename={NAPI.Server.GetGamemodeName()}&ipport={serveripport}");
+                var request = (HttpWebRequest)WebRequest.Create("https://" + $"nemesus-world.de/Call2Home.php?servername={NAPI.Server.GetServerName()}&gamemodename=NemesusWorld&ipport={serveripport}");
                 request.Method = "GET";
                 request.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
                 var content = string.Empty;

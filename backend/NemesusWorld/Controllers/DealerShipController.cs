@@ -74,47 +74,47 @@ namespace NemesusWorld.Controllers
                                 player.Dimension = (uint)(player.Id + 5);
                                 if (bizz.id == 22)
                                 {
-                                    tempData.dealerShip = Cars.createNewCar(dealerArray[0].ToLower(), new Vector3(145.23679, -140.08275, 54.24724 + 0.25), -20.416449f, Convert.ToInt32(dealerArray[1]), Convert.ToInt32(dealerArray[1]), "LS-S-100" + player.Id, "Autohaus", false, true, false, player.Dimension);
+                                    tempData.dealerShip = Cars.createNewCar(dealerArray[0].ToLower(), new Vector3(145.23679, -140.08275, 54.24724 + 0.25), -20.416449f, Convert.ToInt32(dealerArray[1]), Convert.ToInt32(dealerArray[1]), "LS-S-100" + player.Id, "Autohaus", false, true, false, player.Dimension, null, false, true, -1);
                                 }
                                 else if (bizz.id == 23)
                                 {
-                                    tempData.dealerShip = Cars.createNewCar(dealerArray[0].ToLower(), new Vector3(274.08023, -1159.84, 28.617239 + 0.25), 87.37559f, Convert.ToInt32(dealerArray[1]), Convert.ToInt32(dealerArray[1]), "LS-S-100" + player.Id, "Autohaus", false, true, false, player.Dimension);
+                                    tempData.dealerShip = Cars.createNewCar(dealerArray[0].ToLower(), new Vector3(274.08023, -1159.84, 28.617239 + 0.25), 87.37559f, Convert.ToInt32(dealerArray[1]), Convert.ToInt32(dealerArray[1]), "LS-S-100" + player.Id, "Autohaus", false, true, false, player.Dimension, null, false, true, -1);
                                 }
                                 else if (bizz.id == 24)
                                 {
-                                    tempData.dealerShip = Cars.createNewCar(dealerArray[0].ToLower(), new Vector3(-31.80824, -1091.3527, 25.65422 + 0.25), -31.949799f, Convert.ToInt32(dealerArray[1]), Convert.ToInt32(dealerArray[1]), "LS-S-100" + player.Id, "Autohaus", false, true, false, player.Dimension);
+                                    tempData.dealerShip = Cars.createNewCar(dealerArray[0].ToLower(), new Vector3(-31.80824, -1091.3527, 25.65422 + 0.25), -31.949799f, Convert.ToInt32(dealerArray[1]), Convert.ToInt32(dealerArray[1]), "LS-S-100" + player.Id, "Autohaus", false, true, false, player.Dimension, null, false, true, -1);
                                 }
                                 else if (bizz.id == 25)
                                 {
-                                    tempData.dealerShip = Cars.createNewCar(dealerArray[0].ToLower(), new Vector3(-68.83505, 82.71136, 71.28684 + 0.25), 63.46722f, Convert.ToInt32(dealerArray[1]), Convert.ToInt32(dealerArray[1]), "LS-S-100" + player.Id, "Autohaus", false, true, false, player.Dimension);
+                                    tempData.dealerShip = Cars.createNewCar(dealerArray[0].ToLower(), new Vector3(-68.83505, 82.71136, 71.28684 + 0.25), 63.46722f, Convert.ToInt32(dealerArray[1]), Convert.ToInt32(dealerArray[1]), "LS-S-100" + player.Id, "Autohaus", false, true, false, player.Dimension, null, false, true, -1);
                                 }
                                 else if (bizz.id == 26)
                                 {
-                                    tempData.dealerShip = Cars.createNewCar(dealerArray[0].ToLower(), new Vector3(-23.408432, -1678.2253, 29.160381 + 0.25), 110.107635f, Convert.ToInt32(dealerArray[1]), Convert.ToInt32(dealerArray[1]), "LS-S-100" + player.Id, "Autohaus", false, true, false, player.Dimension);
+                                    tempData.dealerShip = Cars.createNewCar(dealerArray[0].ToLower(), new Vector3(-23.408432, -1678.2253, 29.160381 + 0.25), 110.107635f, Convert.ToInt32(dealerArray[1]), Convert.ToInt32(dealerArray[1]), "LS-S-100" + player.Id, "Autohaus", false, true, false, player.Dimension, null, false, true, -1);
                                 }
                                 else if (bizz.id == 27)
                                 {
-                                    tempData.dealerShip = Cars.createNewCar(dealerArray[0].ToLower(), new Vector3(1214.5273, 2708.1516, 37.477882 + 0.25), 156.33295f, Convert.ToInt32(dealerArray[1]), Convert.ToInt32(dealerArray[1]), "LS-S-100" + player.Id, "Autohaus", false, true, false, player.Dimension);
+                                    tempData.dealerShip = Cars.createNewCar(dealerArray[0].ToLower(), new Vector3(1214.5273, 2708.1516, 37.477882 + 0.25), 156.33295f, Convert.ToInt32(dealerArray[1]), Convert.ToInt32(dealerArray[1]), "LS-S-100" + player.Id, "Autohaus", false, true, false, player.Dimension, null, false, true, -1);
                                 }
                                 else if (bizz.id == 28)
                                 {
-                                    tempData.dealerShip = Cars.createNewCar(dealerArray[0].ToLower(), new Vector3(-201.7464, 6204.731, 31.017431 + 0.25), 46.196392f, Convert.ToInt32(dealerArray[1]), Convert.ToInt32(dealerArray[1]), "LS-S-100" + player.Id, "Autohaus", false, true, false, player.Dimension);
+                                    tempData.dealerShip = Cars.createNewCar(dealerArray[0].ToLower(), new Vector3(-201.7464, 6204.731, 31.017431 + 0.25), 46.196392f, Convert.ToInt32(dealerArray[1]), Convert.ToInt32(dealerArray[1]), "LS-S-100" + player.Id, "Autohaus", false, true, false, player.Dimension, null, false, true, -1);
                                 }
                                 else if (bizz.id == 29)
                                 {
-                                    tempData.dealerShip = Cars.createNewCar(dealerArray[0].ToLower(), new Vector3(663.9333, -2687.8196, 6.147993 + 0.25), 90.25697f, Convert.ToInt32(dealerArray[1]), Convert.ToInt32(dealerArray[1]), "LS-S-100" + player.Id, "Autohaus", false, true, false, player.Dimension);
+                                    tempData.dealerShip = Cars.createNewCar(dealerArray[0].ToLower(), new Vector3(663.9333, -2687.8196, 6.147993 + 0.25), 90.25697f, Convert.ToInt32(dealerArray[1]), Convert.ToInt32(dealerArray[1]), "LS-S-100" + player.Id, "Autohaus", false, true, false, player.Dimension, null, false, true, -1);
                                 }
                                 else if (bizz.id == 30)
                                 {
-                                    tempData.dealerShip = Cars.createNewCar(dealerArray[0].ToLower(), new Vector3(-1139.5806, -211.71169, 37.537098 + 0.25), 74.32476f, Convert.ToInt32(dealerArray[1]), Convert.ToInt32(dealerArray[1]), "LS-S-100" + player.Id, "Autohaus", false, true, false, player.Dimension);
+                                    tempData.dealerShip = Cars.createNewCar(dealerArray[0].ToLower(), new Vector3(-1139.5806, -211.71169, 37.537098 + 0.25), 74.32476f, Convert.ToInt32(dealerArray[1]), Convert.ToInt32(dealerArray[1]), "LS-S-100" + player.Id, "Autohaus", false, true, false, player.Dimension, null, false, true, -1);
                                 }
                                 else if (bizz.id == 31)
                                 {
-                                    tempData.dealerShip = Cars.createNewCar(dealerArray[0].ToLower(), new Vector3(-754.99304, -1363.0486, 0.29581332 + 0.25), -130.13977f, Convert.ToInt32(dealerArray[1]), Convert.ToInt32(dealerArray[1]), "LS-S-100" + player.Id, "Autohaus", false, true, false, player.Dimension);
+                                    tempData.dealerShip = Cars.createNewCar(dealerArray[0].ToLower(), new Vector3(-754.99304, -1363.0486, 0.29581332 + 0.25), -130.13977f, Convert.ToInt32(dealerArray[1]), Convert.ToInt32(dealerArray[1]), "LS-S-100" + player.Id, "Autohaus", false, true, false, player.Dimension, null, false, true, -1);
                                 }
                                 else if (bizz.id == 32)
                                 {
-                                    tempData.dealerShip = Cars.createNewCar(dealerArray[0].ToLower(), new Vector3(-993.2244, -2990.8599, 14.545995 + 0.25), 60.07966f, Convert.ToInt32(dealerArray[1]), Convert.ToInt32(dealerArray[1]), "LS-S-100" + player.Id, "Autohaus", false, true, false, player.Dimension);
+                                    tempData.dealerShip = Cars.createNewCar(dealerArray[0].ToLower(), new Vector3(-993.2244, -2990.8599, 14.545995 + 0.25), 60.07966f, Convert.ToInt32(dealerArray[1]), Convert.ToInt32(dealerArray[1]), "LS-S-100" + player.Id, "Autohaus", false, true, false, player.Dimension, null, false, true, -1);
                                 }
                                 if (player.HasData("Player:TestDriveCD"))
                                 {
@@ -326,7 +326,6 @@ namespace NemesusWorld.Controllers
                 PetaPoco.Database db = new PetaPoco.Database(General.Connection);
                 foreach (VehicleData vehicleData in db.Fetch<VehicleData>("SELECT * FROM vehicles"))
                 {
-                    Helper.ConsoleLog("error", $"[GetAllVehicles]: " + NAPI.Util.ToJson(vehicleData));
                     if (vehicleData != null)
                     {
                         if(vehicleData.towed > 0)
@@ -337,7 +336,7 @@ namespace NemesusWorld.Controllers
                                 vehicleData.towed = 35000;
                             }
                         }
-                        Cars.createNewCar(vehicleData.vehiclename, new Vector3(), 0f, 0, 0, "n/A", "n/A", false, false, true, 0, vehicleData, false);
+                        Cars.createNewCar(vehicleData.vehiclename, new Vector3(), 0f, 0, 0, "n/A", "n/A", false, false, true, 0, vehicleData, false, true, -1);
                     }
                 }
             }

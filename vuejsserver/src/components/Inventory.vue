@@ -34,9 +34,9 @@
                                                         <i v-if="item.type != 5 && item.type != 6 && (!item.props.split(',')[1] || item.props.split(',')[1] == 0)" class="iconresponsive icon fas fas fa-play float-right" @click="useItem(item.itemid)"></i>
                                                         <i v-if="item.type == 6" class="iconresponsive icon fas fas fa-play float-right" @click="useItem2(item)"></i>
                                                         <i v-if="!item.props.split(',')[1] || item.props.split(',')[1] == 0" class="iconresponsive icon fas fa-hand-paper float-right" @click="giveItem(item)"></i>
-                                                        <i v-if="item.type == 5 && item.props && item.description.toLowerCase() != 'feuerlöscher'" class="icon3 fa-solid fa-eye" @click="showGun(item.props)"></i>
-                                                        <i v-if="item.type == 5 && item.props.split(',')[1] == 0" class="icon fa-solid fa-gun" @click="selectGun(item.itemid)"></i>
-                                                        <i v-if="item.type == 5 && item.props.split(',')[1] == 1" class="icon2 fa-solid fa-gun" @click="selectGun(item.itemid)"></i>
+                                                        <i v-if="item.type == 5 && item.description != 'Snowball' && item.props && item.description.toLowerCase() != 'feuerlöscher'" class="icon3 fa-solid fa-eye" @click="showGun(item.props)"></i>
+                                                        <i v-if="item.type == 5 && item.description != 'Snowball' && item.props.split(',')[1] == 0" class="icon fa-solid fa-gun" @click="selectGun(item.itemid)"></i>
+                                                        <i v-if="item.type == 5 && item.description != 'Snowball' && item.props.split(',')[1] == 1" class="icon2 fa-solid fa-gun" @click="selectGun(item.itemid)"></i>
                                                     </div>
                                                 </div>
                                             </div>

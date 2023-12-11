@@ -334,16 +334,27 @@ namespace NemesusWorld.Controllers
                             }
                             NAPI.Player.GivePlayerWeapon(player, (WeaponHash)GetWeaponHashFromName(item.description), Convert.ToInt32(propArray[0]));
                             WeaponHash weaponHash = NAPI.Player.GetPlayerCurrentWeapon(player);
-                            tempData.weaponTints.Add($"{whash.ToLower()}", $"{propArray[5]}");
-                            player.SetSharedData("Player:WeaponTint", Convert.ToInt32(propArray[5]));
-                            if (propArray[6] != "|")
+                            if (item.description.ToLower() != "snowball")
                             {
-                                tempData.weaponComponents.Add($"{whash.ToLower()}", $"{propArray[6]}");
-                                player.SetSharedData("Player:WeaponComponents", $"{propArray[6]}");
+                                tempData.weaponTints.Add($"{whash.ToLower()}", $"{propArray[5]}");
+                                player.SetSharedData("Player:WeaponTint", Convert.ToInt32(propArray[5]));
+                                if (propArray[6] != "|")
+                                {
+                                    tempData.weaponComponents.Add($"{whash.ToLower()}", $"{propArray[6]}");
+                                    player.SetSharedData("Player:WeaponComponents", $"{propArray[6]}");
+                                }
+                            }
+                            else
+                            {
+                                player.SetSharedData("Player:WeaponTint", -1);
+                                player.SetSharedData("Player:WeaponComponents", "-1");
                             }
                             if (item.description.ToLower() == "granate" || item.description.ToLower() == "rauchgranate" || item.description.ToLower() == "bz-gas" || item.description.ToLower() == "molotowcocktail" || item.description.ToLower() == "snowball")
                             {
-                                NAPI.Player.SetPlayerCurrentWeapon(player, weaponHash);
+                                NAPI.Task.Run(() =>
+                                {
+                                    NAPI.Player.SetPlayerCurrentWeapon(player, (WeaponHash)GetWeaponHashFromName(item.description));
+                                }, delayTime: 55);
                             }
                         }
                         else
@@ -383,10 +394,13 @@ namespace NemesusWorld.Controllers
                         {
                             NAPI.Player.SetPlayerWeaponAmmo(player, (WeaponHash)GetWeaponHashFromName(item.description), 0);
                             NAPI.Player.RemovePlayerWeapon(player, (WeaponHash)GetWeaponHashFromName(item.description));
-                            tempData.weaponTints.Remove($"{GetWeaponHash2FromName(item.description).ToLower()}");
-                            player.SetSharedData("Player:WeaponTint", -1);
-                            tempData.weaponComponents.Remove($"{GetWeaponHash2FromName(item.description).ToLower()}");
-                            player.SetSharedData("Player:WeaponComponents", "-1");
+                            if (item.description.ToLower() != "snowball")
+                            {
+                                tempData.weaponTints.Remove($"{GetWeaponHash2FromName(item.description).ToLower()}");
+                                player.SetSharedData("Player:WeaponTint", -1);
+                                tempData.weaponComponents.Remove($"{GetWeaponHash2FromName(item.description).ToLower()}");
+                                player.SetSharedData("Player:WeaponComponents", "-1");
+                            }
                         }
                     }
                     else

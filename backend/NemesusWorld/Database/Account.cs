@@ -720,6 +720,18 @@ namespace NemesusWorld.Database
                     player.TriggerEvent("Client:SetWarningRegister", "Dieser Account existiert bereits!");
                     return;
                 }
+                MySqlCommand command = General.Connection.CreateCommand();
+                command.CommandText = "SELECT autologin,name,id,ban FROM users WHERE identifier=@identifier LIMIT 1";
+                command.Parameters.AddWithValue("@identifier", player.SocialClubId);
+                using (MySqlDataReader reader = command.ExecuteReader())
+                {
+                    if (reader.HasRows)
+                    {
+                        player.TriggerEvent("Client:SetWarningRegister", "Du kannst nur einen Account erstellen!");
+                        reader.Close();
+                        return;
+                    }
+                }
                 string checkBan = AntiCheatController.CheckBan(name, player.SocialClubId);
                 if (checkBan != "n/A")
                 {

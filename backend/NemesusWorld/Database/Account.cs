@@ -721,7 +721,7 @@ namespace NemesusWorld.Database
                     return;
                 }
                 MySqlCommand command = General.Connection.CreateCommand();
-                command.CommandText = "SELECT autologin,name,id,ban FROM users WHERE identifier=@identifier LIMIT 1";
+                command.CommandText = "SELECT id FROM users WHERE identifier=@identifier LIMIT 1";
                 command.Parameters.AddWithValue("@identifier", player.SocialClubId);
                 using (MySqlDataReader reader = command.ExecuteReader())
                 {

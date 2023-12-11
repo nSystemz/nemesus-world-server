@@ -91,6 +91,11 @@ namespace NemesusWorld
                         Helper.SendNotificationWithoutButton(player, "Der Spieler kann das Item nichtmehr tragen!", "error", "top-end");
                         return;
                     }
+                    if(itemname.ToLower() == "snowball" && ItemsController.PlayerHasItem(ntarget, "Snowball"))
+                    {
+                        Helper.SendNotificationWithoutButton(player, "Der Spieler muss seine jetzigen Schneebälle erst benutzen!", "error", "top-end");
+                        return;
+                    }
                     Items newitem = ItemsController.CreateNewItem(ntarget, charactertarget.id, itemname, "Player", menge, ItemsController.GetFreeItemID(ntarget), "n/A", "Administrativ", charactertarget.name);
                     if (newitem != null)
                     {

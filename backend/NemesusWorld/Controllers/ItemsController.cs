@@ -711,7 +711,7 @@ namespace NemesusWorld.Controllers
                 TempData tempData = Helper.GetCharacterTempData(player);
                 foreach (Items item in tempData.itemlist)
                 {
-                    if (item != null && item.description == itemname)
+                    if (item != null && item.description == itemname && item.amount > 0)
                     {
                         hasItem = true;
                         break;

@@ -92,7 +92,7 @@ namespace NemesusWorld
                         return;
                     }
                     Items snowBallItem = ItemsController.GetItemByItemName(player, "Snowball");
-                    if((snowBallItem != null && snowBallItem.amount + menge > 10) || (menge > 10 && itemname.ToLower() == "snowball"))
+                    if(itemname.ToLower() == "snowball" && (snowBallItem != null && snowBallItem.amount + menge > 10) || (menge > 10))
                     {
                         Helper.SendNotificationWithoutButton(player, "Der Spieler kann nur max. 10 Snowballs tragen!", "error", "top-end");
                         return;

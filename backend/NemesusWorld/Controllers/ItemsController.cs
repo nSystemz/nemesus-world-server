@@ -2113,11 +2113,6 @@ namespace NemesusWorld.Controllers
                                             Helper.SendNotificationWithoutButton(player, "Es befindet sich kein Fahrzeug in der Nähe!", "error");
                                             return;
                                         }
-                                        if (NAPI.Vehicle.GetVehicleBodyHealth(vehicle) > 550 && NAPI.Vehicle.GetVehicleHealth(vehicle) > 550 && NAPI.Vehicle.GetVehicleEngineHealth(vehicle) > 550)
-                                        {
-                                            Helper.SendNotificationWithoutButton(player, "Dieses Fahrzeug muss noch nicht repariert werden!", "error");
-                                            return;
-                                        }
                                         player.SetSharedData("Player:AnimData", $"anim@amb@clubhouse@tutorial@bkr_tut_ig3@%machinic_loop_mechandplayer%{1}");
                                         Helper.SendNotificationWithoutButton(player, "Das Fahrzeug wird repariert ...", "success", "top-left", 7700);
                                         player.TriggerEvent("Client:PlayerFreeze", true);
@@ -2126,18 +2121,7 @@ namespace NemesusWorld.Controllers
                                         player.SetData<bool>("Player:Use", true);
                                         NAPI.Task.Run(() =>
                                         {
-                                            if (NAPI.Vehicle.GetVehicleBodyHealth(vehicle) < 550)
-                                            {
-                                                NAPI.Vehicle.SetVehicleBodyHealth(vehicle, 550);
-                                            }
-                                            if (NAPI.Vehicle.GetVehicleHealth(vehicle) < 550)
-                                            {
-                                                NAPI.Vehicle.SetVehicleHealth(vehicle, 550);
-                                            }
-                                            if (NAPI.Vehicle.GetVehicleEngineHealth(vehicle) < 550)
-                                            {
-                                                NAPI.Vehicle.SetVehicleEngineHealth(vehicle, 550);
-                                            }
+                                            NAPI.Vehicle.RepairVehicle(vehicle);
                                             Helper.SendNotificationWithoutButton(player, $"Das Fahrzeug wurde erfolgreich repariert!", "success", "top-left", 3500);
                                             Helper.OnStopAnimation2(player);
                                             player.TriggerEvent("Client:PlayerFreeze", false);

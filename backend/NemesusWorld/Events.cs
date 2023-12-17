@@ -1033,7 +1033,7 @@ namespace NemesusWorld
                         //Save accounts/characters
                         foreach (Player p in NAPI.Pools.GetAllPlayers())
                         {
-                            if (p != null && p.GetOwnSharedData<bool>("Player:Spawned") == true)
+                            if (p != null && Account.IsPlayerLoggedIn(p))
                             {
                                 Character character = Helper.GetCharacterData(p);
                                 Account account2 = Helper.GetAccountData(p);

@@ -11,6 +11,7 @@ namespace NemesusWorld.Database
         public string adminpassword { get; set; }
         public int server_created { get; set; }
         public int punishments { get; set; }
+        //0 = Text-RP , 1 = SaltyChat , 2 = RageMP Voice (Default - In Arbeit)
         public int voicerp { get; set; }
         public int govvalue { get; set; }
         public int changelogcd { get; set; }

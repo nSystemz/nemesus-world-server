@@ -794,8 +794,16 @@ namespace NemesusWorld.Controllers
                         if (target != null)
                         {
                             tempData.inCall2 = true;
-                            player.TriggerEvent("SaltyChat_EstablishedCall", target.Id);
-                            target.TriggerEvent("SaltyChat_EstablishedCall", player.Id);
+                            if (Helper.adminSettings.voicerp == 1)
+                            {
+                                player.TriggerEvent("SaltyChat_EstablishedCall", target.Id);
+                                target.TriggerEvent("SaltyChat_EstablishedCall", player.Id);
+                            }
+                            else if (Helper.adminSettings.voicerp == 2)
+                            {
+                                Helper.OnAdd_Voice_Listener(player, target);
+                                Helper.OnAdd_Voice_Listener(target, player);
+                            }
                             Helper.PlayPhoneAnim(player);
                             if(Helper.adminSettings.voicerp == 0)
                             {
@@ -988,7 +996,14 @@ namespace NemesusWorld.Controllers
                         Player target = GetPlayerFromSmartPhone(player.GetData<string>("Player:InCall"));
                         if (target != null)
                         {
-                            player.TriggerEvent("SaltyChat_EndCall", target.Id);
+                            if (Helper.adminSettings.voicerp == 1)
+                            {
+                                player.TriggerEvent("SaltyChat_EndCall", target.Id);
+                            }
+                            else if (Helper.adminSettings.voicerp == 2)
+                            {
+                                Helper.OnRemove_Voice_Listener(player, target);
+                            }
                             target.TriggerEvent("Client:EndCall");
                             target.SetData<string>("Player:LastNumber", "0");
                             TempData tempData2 = Helper.GetCharacterTempData(target);
@@ -997,7 +1012,14 @@ namespace NemesusWorld.Controllers
                                 tempData2.inCall = false;
                                 tempData2.inCall2 = false;
                                 Helper.PlayPhoneAnim(target);
-                                target.TriggerEvent("SaltyChat_EndCall", player.Id);
+                                if (Helper.adminSettings.voicerp == 1)
+                                {
+                                    target.TriggerEvent("SaltyChat_EndCall", player.Id);
+                                }
+                                else if (Helper.adminSettings.voicerp == 2)
+                                {
+                                    Helper.OnRemove_Voice_Listener(target, player);
+                                }
                             }
                             target.SetData<string>("Player:InCall", "0");
                         }

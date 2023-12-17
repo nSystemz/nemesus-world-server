@@ -2008,7 +2008,7 @@ export default {
       infoboxtextheader3: '',
       infoboxtestmodus: -1,
       //VoiceRP
-      voicerp: 1,
+      voicerp: 0,
       //Sound
       startSound: null,
       //Tutorial
@@ -5046,7 +5046,7 @@ export default {
         })
         return;
       }
-      if (this.size.length < 10 || this.size.length > 10 || !this.size.includes("cm") || !this.size.includes("m") || !this.size.includes(" - ")) {
+      if (this.size.length < 3 || this.size.length > 3 || !this.size.startsWith("1")) {
         Swal.fire({
           icon: 'error',
           title: 'Fehler',

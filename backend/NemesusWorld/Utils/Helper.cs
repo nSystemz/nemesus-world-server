@@ -999,6 +999,7 @@ namespace NemesusWorld.Utils
                     account.coins -= 300;
                     Helper.SendNotificationWithoutButton2(player, "Du hast Premium Gold für 30 Tage freigeschaltet!", "success", "center");
                 }
+                Account.SaveAccount(player);
                 player.TriggerEvent("Client:ShowCoins", account.coins);
             }
             catch (Exception e)
@@ -1007,28 +1008,30 @@ namespace NemesusWorld.Utils
             }
         }
 
-        [RemoteEvent("Server:SetAFK")]
-        public static void OnSetAFK(Player player)
+        //Local Voice-Chat
+        [RemoteEvent("Server:Add_Voice_Listener")]
+        public static void OnAdd_Voice_Listener(Player player, Player target)
         {
             try
             {
-                Character character = Helper.GetCharacterData(player);
-                if (character == null) return;
-                if (character.afk == 0)
-                {
-                    player.TriggerEvent("SaltyChat_InitToTalkClient", player.Id);
-                    character.afk = 1;
-                }
-                else
-                {
-                    player.TriggerEvent("SaltyChat_EndTalkClient", player.Id);
-                    character.afk = 0;
-                }
-                player.SetOwnSharedData("Player:Needs", character.hunger + "," + character.thirst + "," + character.afk);
+                player.EnableVoiceTo(target);
             }
             catch (Exception e)
             {
-                Helper.ConsoleLog("error", $"[OnSetAFK]: " + e.ToString());
+                Helper.ConsoleLog("error", $"[OnAdd_Voice_Listener]: " + e.ToString());
+            }
+        }
+
+        [RemoteEvent("Server:Remove_Voice_Listener")]
+        public static void OnRemove_Voice_Listener(Player player, Player target)
+        {
+            try
+            {
+                player.DisableVoiceTo(target);
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[OnRemove_Voice_Listener]: " + e.ToString());
             }
         }
 
@@ -2984,6 +2987,7 @@ namespace NemesusWorld.Utils
                             if (account.faqarray[9] == "0")
                             {
                                 account.faqarray[9] = "1";
+                                Account.SaveAccount(player);
                             }
                             break;
                         }
@@ -3520,6 +3524,7 @@ namespace NemesusWorld.Utils
                                 if (account.faqarray[1] == "0")
                                 {
                                     account.faqarray[1] = "1";
+                                    Account.SaveAccount(player);
                                 }
                                 OnRollerVerleih(player, true);
                             }
@@ -5008,6 +5013,7 @@ namespace NemesusWorld.Utils
                                 if (account.faqarray[7] == "0")
                                 {
                                     account.faqarray[7] = "1";
+                                    Account.SaveAccount(player);
                                 }
                                 player.SetOwnSharedData("Player:Job", number);
                                 character.job = number;
@@ -7550,6 +7556,7 @@ namespace NemesusWorld.Utils
                     if (account.faqarray[5] == "0")
                     {
                         account.faqarray[5] = "1";
+                        Account.SaveAccount(player);
                     }
                     ShowBarberShop(player);
                 }
@@ -7647,6 +7654,7 @@ namespace NemesusWorld.Utils
                     if (account.faqarray[4] == "0")
                     {
                         account.faqarray[4] = "1";
+                        Account.SaveAccount(player);
                     }
                     Business.ShowClothMenu(player);
                     return;
@@ -8464,7 +8472,7 @@ namespace NemesusWorld.Utils
                     }
                     NAPI.Task.Run(() =>
                     {
-                        SetPlayerPosition(player, new Vector3(-710.9736, -1304.975, 5.1126294));
+                        SetPlayerPosition(player, new Vector3(-710.9736, -1304.975, 5.1126294+0.35));
                         player.Heading = 159.13942f;
                         player.ResetData("Player:CarQuiz");
                         if (id == -1)
@@ -8480,6 +8488,7 @@ namespace NemesusWorld.Utils
                             if (account.faqarray[6] == "0")
                             {
                                 account.faqarray[6] = "1";
+                                Account.SaveAccount(player);
                             }
                         }
                         else if (id == 2)
@@ -8516,7 +8525,7 @@ namespace NemesusWorld.Utils
                         }
                         tempData.jobVehicle.Delete();
                         tempData.jobVehicle = null;
-                    }, delayTime: 95);
+                    }, delayTime: 215);
                 }
             }
             catch (Exception e)
@@ -10144,6 +10153,7 @@ namespace NemesusWorld.Utils
                     account.coins += 5;
                     Helper.SendNotificationWithoutButton(player, $"Levelaufstieg, du bist jetzt Level {account.level}!", "success", "top-end", 3500);
                     Helper.CreateUserTimeline(account.id, character.id, $"Level {account.level} erreicht", 2);
+                    Account.SaveAccount(player);
 
                     if (account.level == 3 && account.geworben != "Keiner")
                     {
@@ -10155,6 +10165,7 @@ namespace NemesusWorld.Utils
                             {
                                 account2.coins += 25;
                                 CreateUserLog(account2.id, "+25 Coins durch geworbenen Spieler: " + account.name);
+                                Account.SaveAccount(getPlayer);
                                 return;
                             }
                         }
@@ -10262,6 +10273,7 @@ namespace NemesusWorld.Utils
                         if (account.faqarray[8] == "0")
                         {
                             account.faqarray[8] = "1";
+                            Account.SaveAccount(player);
                         }
 
                         List<Payday> paydayList = new List<Payday>();
@@ -12466,6 +12478,7 @@ namespace NemesusWorld.Utils
                                     if (account.faqarray[3] == "0")
                                     {
                                         account.faqarray[3] = "1";
+                                        Account.SaveAccount(player);
                                     }
                                 }
                                 Items newitem = null;

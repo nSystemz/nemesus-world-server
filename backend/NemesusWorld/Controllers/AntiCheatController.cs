@@ -200,7 +200,10 @@ namespace NemesusWorld.Controllers
                     tempData.freezed = true;
                 }
 
-                player.TriggerEvent("SaltyChat_EndTalkClient", player.Id);
+                if (Helper.adminSettings.voicerp == 1)
+                {
+                    player.TriggerEvent("SaltyChat_EndTalkClient", player.Id);
+                }
 
                 string kickMessage = announce == true ? $"wurde von/m {from} vom Server gekickt" : "wurde vom Server gekickt";
                 string message2 = $"~r~Server: {name} {kickMessage}, Grund: {text}!";
@@ -269,7 +272,10 @@ namespace NemesusWorld.Controllers
                 player.TriggerEvent("Client:BlockPlayer", true);
                 tempData.freezed = true;
 
-                player.TriggerEvent("SaltyChat_EndTalkClient", player.Id);
+                if (Helper.adminSettings.voicerp == 2)
+                {
+                    player.TriggerEvent("SaltyChat_EndTalkClient", player.Id);
+                }
 
                 MySqlCommand command = General.Connection.CreateCommand();
                 command = General.Connection.CreateCommand();

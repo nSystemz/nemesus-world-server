@@ -4735,6 +4735,10 @@
                                                                         <td>F7</td>
                                                                         <td>Animationsliste anzeigen</td>
                                                                     </tr>
+                                                                    <tr v-if="voicerp == 2">
+                                                                        <td>F9</td>
+                                                                        <td>Voice-Chat aktivieren/deaktivieren</td>
+                                                                    </tr>
                                                                     <tr>
                                                                         <td>F10</td>
                                                                         <td>Cursor anzeigen/ausblenden</td>
@@ -6977,8 +6981,8 @@
                 this.showfaq = !this.showfaq;
                 return;
             },
-            showCoins: function(coins) {
-                this.coins = coins;
+            showCoins: function(getCoins) {
+                this.coins = getCoins;
             },
             startPaydays: function() {
                 if (this.lastcheck18 == 0 || (Date.now() / 1000) > this.lastcheck18) {

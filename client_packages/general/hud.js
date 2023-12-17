@@ -584,7 +584,7 @@ let handsUp = false;
 let showCrosshair = false;
 let oldCrosshair = 0;
 let prices = [];
-let voicerp = 1;
+let voicerp = 2;
 let groupprices = [];
 let oldCheck = 0;
 let maxWeapons = 0;
@@ -788,7 +788,7 @@ mp.events.add('render', (nametags) => {
     }
 
     //Saltychat
-    if (showSaltyError == true || triggerAntiCheat == true) {
+    if ((showSaltyError == true || triggerAntiCheat == true) && voicerp == 1) {
         for (let i = 0; i < 33; i++) {
             if (i == 24) continue;
             mp.game.controls.disableAllControlActions(i);
@@ -1079,7 +1079,7 @@ mp.events.add('render', (nametags) => {
 });
 
 //Prices
-mp.events.add("Client:SyncThings", (pricesCsv, animationhotkeys, chair, gprices, level, name = 'n/A', voicerp, nametag) => {
+mp.events.add("Client:SyncThings", (pricesCsv, animationhotkeys, chair, gprices, level, name = 'n/A', vrp, nametag) => {
     prices = pricesCsv.split(',');
     crosshair = chair;
     groupprices = gprices;
@@ -1091,7 +1091,7 @@ mp.events.add("Client:SyncThings", (pricesCsv, animationhotkeys, chair, gprices,
         }
     }
     level = level;
-    voicerp = voicerp;
+    voicerp = vrp;
     nametagSystem = nametag;
     hudWindow.execute(`gui.menu.setvoicerp('${voicerp}');`);
     hudWindow.execute(`gui.hud.setvoicerp('${voicerp}');`);
@@ -3891,6 +3891,18 @@ mp.keys.bind(0x78, true, function () {
         let spawned = localPlayer.getVariable('Player:Spawned');
         if (showSaltyError == true || triggerAntiCheat == true || localPlayer.isTypingInTextChat || !spawned || nokeys == true || death == true || arrested == true || cuffed == true || showMenu == true || showInventory == true || showWheel == true || showFurniture == true || InteriorSwitch == true || prisonCount > 0 || showCenterMenu == true || showBank == true || showCarSetting == true || showCityhall == true || showSped == true || showFuel == true || showAmmu == true || showShop == true || startRange == true || showShop2 == true || startRange == true || showDealer == true || showTab == true || handsUp == true || barberMenu == true || tattooShop == true || afk == true || ping == true || hack == true) return;
         if (hudWindow != null) {
+            if(voicerp == 2)
+            {
+                mp.voiceChat.muted = !mp.voiceChat.muted;
+                if(mp.voiceChat.muted)
+                {
+                    hudWindow.execute(`gui.hud.sendNotificationWithoutButton('Voice-Chat aktiviert!','success','top-left',1500);`);
+                }
+                else
+                {
+                    hudWindow.execute(`gui.hud.sendNotificationWithoutButton('Voice-Chat deaktiviert!','success','top-left',1500);`);
+                }
+            }
             pressedF9 = (Date.now() / 1000) + (1);
         }
     }
@@ -6975,7 +6987,7 @@ mp.events.addDataHandler("Player:Crouching", (entity, value) => {
 
 //Saltychat
 mp.events.addDataHandler("Player:Voice", (entity, value, oldValue) => {
-    if (hudWindow != null) {
+    if (hudWindow != null && voicerp == 1) {
         if (value == -1 && showSaltyError == false) {
             mp.events.call("Client:EnableSaltyError");
         }
@@ -8865,26 +8877,38 @@ mp.events.add("Client:SetRadioFreq", (freq) => {
 
 mp.events.add("Client:Joinradio", (freq) => {
     if (hudWindow != null) {
-        mp.events.callRemote('SaltyChat_Joinradio', freq);
+        if(voicerp == 1)
+        {
+            mp.events.callRemote('SaltyChat_Joinradio', freq);
+        }
     }
 })
 
 mp.events.add("Client:Leaveradio", (freq) => {
     if (hudWindow != null) {
-        mp.events.callRemote('SaltyChat_Removeradio', freq);
+        if(voicerp == 1)
+        {
+            mp.events.callRemote('SaltyChat_Removeradio', freq);
+        }
     }
 })
 
 mp.events.add("Client:Setspeaker", (status) => {
     if (hudWindow != null) {
-        mp.events.callRemote('SaltyChat_Setspeaker', status);
+        if(voicerp == 1)
+        {
+            mp.events.callRemote('SaltyChat_Setspeaker', status);
+        }
     }
 })
 
 mp.events.add("Client:SendOnRadio", (radioChannel, status) => {
     let spawned = localPlayer.getVariable('Player:Spawned');
     if (showSaltyError == true || triggerAntiCheat == true || localPlayer.isTypingInTextChat || !spawned || nokeys == true || death == true || arrested == true || cuffed == true || showMenu == true || showInventory == true || showWheel == true || showFurniture == true || InteriorSwitch == true || prisonCount > 0 || showCenterMenu == true || showCarSetting == true || showCityhall == true || showSped == true || showFuel == true || showShop == true || showShop2 == true || startRange == true || showDealer == true || showTab == true || showHandy == true || showTuning == true || barberMenu == true || tattooShop == true) return;
-    mp.events.callRemote('SaltyChat_IsSending', radioChannel, status);
+    if(voicerp == 1)
+    {
+        mp.events.callRemote('SaltyChat_IsSending', radioChannel, status);
+    }
     if (status && animationSet == 0) {
         animationSet = 1;
         mp.events.callRemote('Server:PlayAnimation', 'radio2', true);

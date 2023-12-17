@@ -25,3 +25,5 @@ require('./general/screenshot');
 require('./general/passenger');
 require('./general/fire');
 require('./general/misc');
+
+require('./localvoice/index')

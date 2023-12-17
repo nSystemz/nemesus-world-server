@@ -195,6 +195,10 @@ namespace NemesusWorld
                             {
                                 Helper.ConsoleLog("info", "[SERVER]: Nemesus World Gamemode erstellt von Nemesus.de erfolgreich geladen - (Voice-RP)");
                             }
+                            else if (Helper.adminSettings.voicerp == 2)
+                            {
+                                Helper.ConsoleLog("info", "[SERVER]: Nemesus World Gamemode erstellt von Nemesus.de erfolgreich geladen - (Ingame-Voice)");
+                            }
                             else
                             {
                                 Helper.ConsoleLog("info", "[SERVER]: Nemesus World Gamemode erstellt von Nemesus.de erfolgreich geladen - (Text-RP)");

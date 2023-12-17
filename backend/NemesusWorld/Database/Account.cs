@@ -586,6 +586,7 @@ namespace NemesusWorld.Database
                             givepremium = 1;
                             Helper.CreateUserLog(id, "Auf dem Server eingelebt + Willkommensgeschenk erhalten!");
                             Helper.CreateUserTimeline(id, -1, "Auf dem Server eingelebt", 0);
+                            Account.SaveAccount(player);
                         }
                         CharacterController.GetAvailableCharacters(player, id);
                     }

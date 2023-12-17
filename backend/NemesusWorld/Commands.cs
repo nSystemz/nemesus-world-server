@@ -91,9 +91,10 @@ namespace NemesusWorld
                         Helper.SendNotificationWithoutButton(player, "Der Spieler kann das Item nichtmehr tragen!", "error", "top-end");
                         return;
                     }
-                    if(itemname.ToLower() == "snowball" && ItemsController.PlayerHasItem(ntarget, "Snowball"))
+                    Items snowBallItem = ItemsController.GetItemByItemName(player, "Snowball");
+                    if((snowBallItem != null && snowBallItem.amount + menge > 10) || (menge > 10 && itemname.ToLower() == "snowball"))
                     {
-                        Helper.SendNotificationWithoutButton(player, "Der Spieler muss seine jetzigen Schneebälle erst benutzen!", "error", "top-end");
+                        Helper.SendNotificationWithoutButton(player, "Der Spieler kann nur max. 10 Snowballs tragen!", "error", "top-end");
                         return;
                     }
                     Items newitem = ItemsController.CreateNewItem(ntarget, charactertarget.id, itemname, "Player", menge, ItemsController.GetFreeItemID(ntarget), "n/A", "Administrativ", charactertarget.name);
@@ -1232,6 +1233,7 @@ namespace NemesusWorld
                                 return;
                             }
                             accounttarget.coins += number;
+                            Account.SaveAccount(ntarget);
                             break;
                         }
                     case "krankheit":

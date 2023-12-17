@@ -174,8 +174,11 @@ namespace NemesusWorld.Controllers
                         player.TriggerEvent("Client:ShowHud", player.Id);
                         Helper.SendChatMessage(player, "~b~Willkommen auf Nemesus World " + account.name + ", schau dir doch mal das F2 Menü an, dort findest du auch wichtige Tipps und den Reiter - Erste Schritte für deinen Anfang auf diesem Server!");
                         Helper.SendChatMessage(player, "~b~Dieser Gamemode wurde von Nemesus.de entwickelt!");
-                        Helper.CheckSaltyChat(player);
-                        player.TriggerEvent("SaltyChat_InitToTalkClient", player.Id);
+                        if (Helper.adminSettings.voicerp == 1)
+                        {
+                            Helper.CheckSaltyChat(player);
+                            player.TriggerEvent("SaltyChat_InitToTalkClient", player.Id);
+                        }
                         player.SetOwnSharedData("Player:Spawned", true);
                         CharacterController.SaveCharacter(player);
                     }, delayTime: 11000);
@@ -206,10 +209,13 @@ namespace NemesusWorld.Controllers
                         player.TriggerEvent("Client:ShowHud", player.Id);
                         Helper.SendChatMessage(player, "~b~Willkommen auf Nemesus World " + account.name + ", schau dir doch mal das F2 Menü an, dort findest du auch wichtige Tipps und den Reiter - Erste Schritte für deinen Anfang auf diesem Server!");
                         Helper.SendChatMessage(player, "~b~Dieser Gamemode wurde von Nemesus.de entwickelt!");
-                        Helper.CheckSaltyChat(player);
                         player.SetOwnSharedData("Player:Spawned", true);
                         CharacterController.SaveCharacter(player);
-                        player.TriggerEvent("SaltyChat_InitToTalkClient", player.Id);
+                        if (Helper.adminSettings.voicerp == 1)
+                        {
+                            Helper.CheckSaltyChat(player);
+                            player.TriggerEvent("SaltyChat_InitToTalkClient", player.Id);
+                        }
                     }, delayTime: 11000);
                 }
             }
@@ -491,8 +497,11 @@ namespace NemesusWorld.Controllers
                         {
                             player.TriggerEvent("Client:SetArrested", true);
                         }
-                        Helper.CheckSaltyChat(player);
-                        player.TriggerEvent("SaltyChat_InitToTalkClient", player.Id);
+                        if (Helper.adminSettings.voicerp == 1)
+                        {
+                            Helper.CheckSaltyChat(player);
+                            player.TriggerEvent("SaltyChat_InitToTalkClient", player.Id);
+                        }
                         ItemsController.UpdateInventory(player);
                         if (account.forumaccount > -1 && (account.forumupdate + 432000) < Helper.UnixTimestamp())
                         {
@@ -565,6 +574,7 @@ namespace NemesusWorld.Controllers
                                                     account.coins += 10;
                                                     Helper.SendNotificationWithoutButton(player, $"Loginbonus Tag {account.login_bonus} - 10 Coins!", "info", "top-left", 6750);
                                                 }
+                                                Account.SaveAccount(player);
                                             }
                                             else
                                             {

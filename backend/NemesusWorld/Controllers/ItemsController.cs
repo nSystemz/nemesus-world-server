@@ -1281,6 +1281,12 @@ namespace NemesusWorld.Controllers
                                     Helper.SendNotificationWithoutButton(player, "Du kannst das Item nichtmehr tragen!", "error", "top-end");
                                     return;
                                 }
+                                Items snowBallItem = ItemsController.GetItemByItemName(player, "Snowball");
+                                if (snowBallItem != null && globalitem.description == "Snowball" && snowBallItem.amount + globalitem.amount > 10)
+                                {
+                                    Helper.SendNotificationWithoutButton(player, "Soviele Snowballs kannst du nicht mehr tragen!", "error", "top-end");
+                                    return;
+                                }
                                 itemListGlobal.Remove(globalitem);
                                 if (globalitem.objectHandle != null)
                                 {
@@ -2107,7 +2113,7 @@ namespace NemesusWorld.Controllers
                                             Helper.SendNotificationWithoutButton(player, "Es befindet sich kein Fahrzeug in der Nähe!", "error");
                                             return;
                                         }
-                                        if (NAPI.Vehicle.GetVehicleBodyHealth(vehicle) > 250 && NAPI.Vehicle.GetVehicleHealth(vehicle) > 250 && NAPI.Vehicle.GetVehicleEngineHealth(vehicle) > 250)
+                                        if (NAPI.Vehicle.GetVehicleBodyHealth(vehicle) > 550 && NAPI.Vehicle.GetVehicleHealth(vehicle) > 550 && NAPI.Vehicle.GetVehicleEngineHealth(vehicle) > 550)
                                         {
                                             Helper.SendNotificationWithoutButton(player, "Dieses Fahrzeug muss noch nicht repariert werden!", "error");
                                             return;
@@ -2120,17 +2126,17 @@ namespace NemesusWorld.Controllers
                                         player.SetData<bool>("Player:Use", true);
                                         NAPI.Task.Run(() =>
                                         {
-                                            if (NAPI.Vehicle.GetVehicleBodyHealth(vehicle) < 465)
+                                            if (NAPI.Vehicle.GetVehicleBodyHealth(vehicle) < 550)
                                             {
-                                                NAPI.Vehicle.SetVehicleBodyHealth(vehicle, 465);
+                                                NAPI.Vehicle.SetVehicleBodyHealth(vehicle, 550);
                                             }
-                                            if (NAPI.Vehicle.GetVehicleHealth(vehicle) < 465)
+                                            if (NAPI.Vehicle.GetVehicleHealth(vehicle) < 550)
                                             {
-                                                NAPI.Vehicle.SetVehicleHealth(vehicle, 465);
+                                                NAPI.Vehicle.SetVehicleHealth(vehicle, 550);
                                             }
-                                            if (NAPI.Vehicle.GetVehicleEngineHealth(vehicle) < 465)
+                                            if (NAPI.Vehicle.GetVehicleEngineHealth(vehicle) < 550)
                                             {
-                                                NAPI.Vehicle.SetVehicleEngineHealth(vehicle, 465);
+                                                NAPI.Vehicle.SetVehicleEngineHealth(vehicle, 550);
                                             }
                                             Helper.SendNotificationWithoutButton(player, $"Das Fahrzeug wurde erfolgreich repariert!", "success", "top-left", 3500);
                                             Helper.OnStopAnimation2(player);
@@ -3377,6 +3383,11 @@ namespace NemesusWorld.Controllers
                             if (player.HasData("Player:FishingRod") && item.description.ToLower() == "angel")
                             {
                                 Helper.SendNotificationWithoutButton(player, $"Du musst deine Angel zuerst abbauen!", "error", "top-end");
+                                return;
+                            }
+                            if(item.description.ToLower() == "snowball")
+                            {
+                                Helper.SendNotificationWithoutButton(player, $"Du kannst keine Snowballs vergeben!", "error", "top-end");
                                 return;
                             }
                             if (item.type == 5)

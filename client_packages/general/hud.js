@@ -2325,14 +2325,6 @@ mp.events.add("Client:ShowCoins", (coins) => {
     }
 })
 
-mp.events.add("Client:GetCoins", () => {
-    if (hudWindow != null) {
-        if (hudWindow != null) {
-            hudWindow.execute(`gui.menu.showFactionStats('${json}','${json2}','${count}','${count2}','${leadername}','${rangs}','${mychar}');`)
-        }
-    }
-})
-
 mp.events.add("Client:StartCars", (input) => {
     if (hudWindow != null) {
         mp.events.callRemote('Server:StartCars', input, 0);

@@ -769,7 +769,7 @@
                                         <div class="card-header" style="font-family: 'Exo', sans-serif;">NW Shop</div>
                                         <div class="card-body">
                                             <div style="display: flex; justify-content: center; align-items: center">
-                                                <h4 style="font-family: 'Exo', sans-serif;">Verfügbare Coins: {{coins}}
+                                                <h4 style="font-family: 'Exo', sans-serif;">Verfügbare Coins: {{shopCoins}}
                                                     Coins</h4>
                                             </div>
                                             <hr />
@@ -6042,7 +6042,7 @@
                 voicerp: 1,
                 //Shop
                 showshop: false,
-                coins: 0,
+                shopCoins: 0,
                 //FAQ
                 level: 1,
                 percentage: 10,
@@ -6982,7 +6982,7 @@
                 return;
             },
             showCoins: function(getCoins) {
-                this.coins = getCoins;
+                this.shopCoins = getCoins;
             },
             startPaydays: function() {
                 if (this.lastcheck18 == 0 || (Date.now() / 1000) > this.lastcheck18) {
@@ -7043,11 +7043,6 @@
                 }
             },
             startShop: function() {
-                if (this.lastcheck20 == 0 || (Date.now() / 1000) > this.lastcheck20) {
-                    this.lastcheck20 = (Date.now() / 1000) + (300);
-                    // eslint-disable-next-line no-undef
-                    mp.trigger('Client:GetCoins');
-                }
                 this.menushowtticket = 0;
                 this.menushowhelp = false;
                 this.menushowsettings = false;

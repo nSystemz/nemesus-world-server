@@ -293,7 +293,7 @@ namespace NemesusWorld.Database
                         account.crimes = reader.GetInt16("crimes");
                         account.premium = reader.GetInt16("premium");
                         account.premium_time = reader.GetInt32("premium_time");
-                        account.coins = reader.GetInt16("coins");
+                        account.coins = reader.GetInt32("coins");
                         account.warns = reader.GetInt16("warns");
                         account.warns_text = reader.GetString("warns_text");
                         account.online = reader.GetInt16("online");
@@ -341,7 +341,7 @@ namespace NemesusWorld.Database
                     if (account == null) return;
 
                     account.last_save = Helper.UnixTimestamp();
-                    account.faq = String.Join(",", account.faqarray);
+                    account.faq = $"{account.faqarray[0]},{account.faqarray[1]},{account.faqarray[2]},{account.faqarray[3]},{account.faqarray[4]},{account.faqarray[5]},{account.faqarray[6]},{account.faqarray[7]},{account.faqarray[8]},{account.faqarray[9]}";
 
                     MySqlCommand command = General.Connection.CreateCommand();
                     command.CommandText = "UPDATE users SET name=@name,adminlevel=@adminlevel,admin_since=@admin_since,selectedcharacter=@selectedcharacter,selectedcharacterintern=@selectedcharacterintern,last_login=@last_login,account_created=@account_created," +

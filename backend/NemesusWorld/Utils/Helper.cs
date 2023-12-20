@@ -3416,6 +3416,16 @@ namespace NemesusWorld.Utils
                         {
                             if (number == 1)
                             {
+                                if (tempData.jobduty == true)
+                                {
+                                    SendNotificationWithoutButton(player, "Beende zuerst deinen Jobdienst!", "error", "top-end", 2500);
+                                    return;
+                                }
+                                if (tempData.jobVehicle != null || player.HasData("Player:CarQuiz"))
+                                {
+                                    SendNotificationWithoutButton(player, "Du kannst jetzt an keiner Waffenscheinprüfung teilnehmen!", "error", "top-end", 2500);
+                                    return;
+                                }
                                 if (GetAge(DateTime.ParseExact(character.birth, "dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture)) < 18)
                                 {
                                     SendNotificationWithoutButton(player, $"Du bist zu jung für einen Waffenschein!", "error", "top-end");
@@ -8075,6 +8085,23 @@ namespace NemesusWorld.Utils
                 //Fahrschule
                 if (IsInRangeOfPoint(player.Position, new Vector3(-711.8821, -1307.4515, 5.113356), 3.25f) && player.Dimension == 0 && !player.IsInVehicle)
                 {
+                    if (tempData.jobduty == true)
+                    {
+                        SendNotificationWithoutButton(player, "Beende zuerst deinen Jobdienst!", "error", "top-end", 2500);
+                        return;
+                    }
+                    if (tempData.jobVehicle != null || player.HasData("Player:CarQuiz")) 
+                    {
+                        SendNotificationWithoutButton(player, "Was machst du hier? Ich beende deine alte Prüfung, du musst diese neu absolvieren!", "error", "top-end", 2500);
+                        player.ResetData("Player:CarQuiz");
+                        if (tempData.jobVehicle.HasSharedData("Vehicle:Text3D"))
+                        {
+                            tempData.jobVehicle.ResetSharedData("Vehicle:Text3D");
+                        }
+                        tempData.jobVehicle.Delete();
+                        tempData.jobVehicle = null;
+                        return;
+                    }
                     Helper.ShowPreShop(player, "Fahrschule", 0, 1, 1);
                 }
                 //Müll sammeln am Strand
@@ -17213,6 +17240,7 @@ namespace NemesusWorld.Utils
                 NAPI.Task.Run(() =>
                 {
                     if (weatherTimestamp != 0 && weatherTimestamp > UnixTimestamp() && initial == false) return;
+                    JObject weatherObjTemp2 = null;
                     var request = (HttpWebRequest)WebRequest.Create(apiLink);
                     request.Method = "GET";
                     var content = string.Empty;
@@ -17227,15 +17255,22 @@ namespace NemesusWorld.Utils
                                 Weather weather = new Weather();
                                 string tempstring2;
                                 tempstring2 = weatherObj["current"].ToString();
-                                JObject weatherObjTemp2 = JObject.Parse(tempstring2);
-                                string tempstring;
-                                tempstring = weatherObjTemp2["weather"].ToString();
-                                tempstring = tempstring.Substring(2);
-                                tempstring = tempstring.Substring(0, tempstring.Length - 1);
-                                if (tempstring.Length > 10)
+                                try { weatherObjTemp2 = JObject.Parse(tempstring2); } catch { }
+                                if (weatherObjTemp2 != null)
                                 {
-                                    JObject weatherObjTemp = JObject.Parse(tempstring);
-                                    weatherstring = weatherObjTemp["description"].ToString().ToLower();
+                                    string tempstring;
+                                    tempstring = weatherObjTemp2["weather"].ToString();
+                                    tempstring = tempstring.Substring(2);
+                                    tempstring = tempstring.Substring(0, tempstring.Length - 1);
+                                    if (tempstring.Length > 10)
+                                    {
+                                        JObject weatherObjTemp = JObject.Parse(tempstring);
+                                        weatherstring = weatherObjTemp["description"].ToString().ToLower();
+                                    }
+                                    else
+                                    {
+                                        weatherstring = "clear sky";
+                                    }
                                 }
                                 else
                                 {

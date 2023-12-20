@@ -1357,7 +1357,7 @@
                     <hr v-if="selectedcloth != 'n/A'" />
                     <div style="display: flex; justify-content: center; align-items: center;" class="mt-2">
                       <button v-if="selectedcloth != 'n/A'" type="button" class="btn btn-success mr-1"
-                        @click="buyCloth()">Dienst beginnen</button>
+                        @click="buyCloth('dutyCloths')">Dienst beginnen</button>
                       <button v-if="selectedcloth != 'n/A'" type="button" class="btn btn-warning mr-1"
                         @click="endCloth(true)">Dienst beenden</button>
                       <button v-if="selectedcloth != 'n/A'" type="button" class="btn btn-danger mr-1"
@@ -3717,7 +3717,7 @@ export default {
         mp.trigger('Client:BuyShopHair', parseInt(this.selectedclothid), this.selectedclothcolor, parseInt(this.selectedclothid2), this.selectedclothcolor2, parseInt(this.selectedclothid3), this.getBarberPrice(), this.headOverlays[0], this.headOverlaysColors[0], this.headOverlays[1], this.headOverlaysColors[1], this.headOverlays[2], this.headOverlaysColors[2]);
       }
     },
-    buyCloth: function () {
+    buyCloth: function (event = 'none') {
       if ((Date.now() / 1000) > this.clicked) {
         if (this.clothshow4 == true || this.clothcost > 0) {
           if (this.gender == 1) {
@@ -3743,7 +3743,7 @@ export default {
                 this.sendNotificationWithoutButton('Ungültiges T-Shirt, bitte wähle ein anderes!', 'error', 'top-left', 2500)
                 return;
               }
-              if (invalidMenBags && invalidMenBags.includes(this.clothing[5])) {
+              if (invalidMenBags && invalidMenBags.includes(this.clothing[5]) && event != 'dutyCloths') {
                 this.sendNotificationWithoutButton('Ungültiger Rucksack, bitte wähle einen anderen!', 'error', 'top-left', 2500)
                 return;
               }
@@ -3805,7 +3805,7 @@ export default {
                 this.sendNotificationWithoutButton('Ungültiges T-Shirt, bitte wähle ein anderes!', 'error', 'top-left', 2500)
                 return;
               }
-              if (invalidWomanBags && invalidWomanBags.includes(this.clothing[5])) {
+              if (invalidWomanBags && invalidWomanBags.includes(this.clothing[5]) && event != 'dutyCloths') {
                 this.sendNotificationWithoutButton('Ungültiger Rucksack, bitte wähle einen anderen!', 'error', 'top-left', 2500)
                 return;
               }

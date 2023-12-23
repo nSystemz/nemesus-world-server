@@ -511,6 +511,7 @@ namespace NemesusWorld.Controllers
                         {
                             player.SetOwnSharedData("Player:Spawned", true);
                             player.TriggerEvent("Client:Waiting", 0);
+                            player.TriggerEvent("Client:PlayerFreeze", false);
                             Helper.OnPlayerPressF5(player, 1);
                             if (character.faction == 2 && character.death == false && FireController.startFire == true)
                             {
@@ -610,18 +611,23 @@ namespace NemesusWorld.Controllers
         {
             try
             {
-                if (obj == null) return;
-
                 TempData tempData = Helper.GetCharacterTempData(player);
                 Character character = Helper.GetCharacterData(player);
                 Account account = Helper.GetAccountData(player);
+
                 if (tempData == null || character == null) return;
+
+                if (obj == null)
+                {
+                    obj = JObject.Parse(character.json);
+                }
 
                 string[] clothingArray = new string[8];
                 clothingArray = clothes.Split(",");
 
                 if (tempData.adminduty == false)
                 {
+                    Helper.SendNotificationWithoutButton(player, "Test");
                     if (clothingArray[2] == "1")
                     {
                         NAPI.Player.SetPlayerClothes(player, 11, (int)obj["clothing"][0], (int)obj["clothingColor"][0]);

@@ -1,31 +1,31 @@
 //ToDo: Max Anzahl der Kleidungen pro Kategorie anpassen (Jenach Custom Kleidung erhöhen!)
 //Max Clothes
-export const maxShoesMen = 125;
-export const maxShoesWomen = 129;
-export const maxLegsMen = 159;
-export const maxLegsWomen = 168;
-export const maxTorsoMen = 198;
-export const maxTorsoWomen = 243;
-export const maxOberbekleidungMen = 442;
-export const maxOberbekleidungWomen = 473;
-export const maxTShirtMen = 192;
-export const maxTShirtWomen = 237;
+export const maxShoesMen = 146;
+export const maxShoesWomen = 155;
+export const maxLegsMen = 195;
+export const maxLegsWomen = 209;
+export const maxTorsoMen = 213;
+export const maxTorsoWomen = 247;
+export const maxOberbekleidungMen = 532;
+export const maxOberbekleidungWomen = 574;
+export const maxTShirtMen = 208;
+export const maxTShirtWomen = 254;
 export const maxBagsMen = 99;
 export const maxBagsWomen = 99;
-export const maxGlassesMen = 46;
-export const maxGlassesWomen = 49;
-export const maxKopfbedeckungMen = 186;
-export const maxKopfbedeckungWomen = 189;
-export const maxMaskMen = 209;
-export const maxMaskWoman = 216;
-export const maxOhrringMen = 41;
-export const maxOhrringWomen = 22;
-export const maxArmbanduhrMen = 46;
-export const maxArmbanduhrWomen = 35;
-export const maxArmringMen = 12;
-export const maxArmringWoman = 17;
-export const maxAccessoiresMen = 166;
-export const maxAccessoiresWoman = 135;
+export const maxGlassesMen = 55;
+export const maxGlassesWomen = 57;
+export const maxKopfbedeckungMen = 221;
+export const maxKopfbedeckungWomen = 220;
+export const maxMaskMen = 241;
+export const maxMaskWoman = 242;
+export const maxOhrringMen = 42;
+export const maxOhrringWomen = 23;
+export const maxArmbanduhrMen = 47;
+export const maxArmbanduhrWomen = 36;
+export const maxArmringMen = 14;
+export const maxArmringWoman = 21;
+export const maxAccessoiresMen = 177;
+export const maxAccessoiresWoman = 147;
 
 //ToDo: Invalide Kleidungs erweitern (Jenachdem welche Kleidungs Ihr nichtmehr wollt!)
 //Invalid Clothing
@@ -41,8 +41,8 @@ export const invalidWomanShoe = [48, 70, 89, 88, 95, 94];
 export const invalidWomanTop = [19, 44, 108, 196, 197, 203, 287, 288, 289, 290, 291, 296, 299, 300, 302, 304, 4, 12, 41, 47, 48, 82, 180, 188, 238, 237, 241, 260, 297, 298, 325, 326, 327, 328, 329, 330, 331, 348, 391, 420, 440, 441, 442, 443, 444, 445, 446, 447, 448, 449];
 export const invalidMenTShirt = [15, 19, 20, 56, 57, 58, 61, 62, 78, 97, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 137, 143, 145, 151, 152, 153, 154, 155, 156, 159, 160, 161, 162, 164, 170, 172, 181, 182, 183, 189, 190, 192];
 export const invalidWomanTShirt = [2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 14, 18, 19, 33, 34, 35, 43, 42, 81, 105, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 174, 186, 187, 188, 189, 190, 191, 192, 195, 196, 197, 198, 207, 209, 219, 220, 221, 234, 235, 236, 237];
-export const invalidMenBags = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110];
-export const invalidWomanBags = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 110];
+export const invalidMenBags = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99];
+export const invalidWomanBags = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99];
 export const invalidMenGlasses = [1, 6, 11, 14, 26, 27, 32];
 export const invalidWomanGlasses = [5, 12, 13, 15, 28, 29, 34, 42, 43];
 export const invalidMenHats = [3, 8, 9, 10, 11, 22, 23, 24, 38, 39, 41, 42, 43, 40, 46, 47, 57, 91, 92, 97, 98, 99, 100, 101, 111, 112, 113, 114, 115, 116, 117, 118, 119, 121, 122, 123, 124, 125, 126, 129, 133, 134, 137, 138, 141, 144, 147, 148, 149, 150, 173, 174, 175, 177, 178];

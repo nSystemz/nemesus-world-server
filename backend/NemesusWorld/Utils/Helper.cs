@@ -8090,7 +8090,7 @@ namespace NemesusWorld.Utils
                         SendNotificationWithoutButton(player, "Beende zuerst deinen Jobdienst!", "error", "top-end", 2500);
                         return;
                     }
-                    if (tempData.jobVehicle != null || player.HasData("Player:CarQuiz")) 
+                    if (tempData.jobVehicle != null || player.HasData("Player:CarQuiz"))
                     {
                         SendNotificationWithoutButton(player, "Was machst du hier? Ich beende deine alte Prüfung, du musst diese neu absolvieren!", "error", "top-end", 2500);
                         player.ResetData("Player:CarQuiz");
@@ -8499,7 +8499,7 @@ namespace NemesusWorld.Utils
                     }
                     NAPI.Task.Run(() =>
                     {
-                        SetPlayerPosition(player, new Vector3(-710.9736, -1304.975, 5.1126294+0.35));
+                        SetPlayerPosition(player, new Vector3(-710.9736, -1304.975, 5.1126294 + 0.35));
                         player.Heading = 159.13942f;
                         player.ResetData("Player:CarQuiz");
                         if (id == -1)
@@ -10980,6 +10980,7 @@ namespace NemesusWorld.Utils
                 TempData tempData = Helper.GetCharacterTempData(player);
                 if (character == null || tempData == null || player.GetOwnSharedData<bool>("Player:Death") == true) return;
                 Business bizz = Business.GetClosestBusiness(player, 40.5f);
+                JObject obj = JObject.Parse(character.json);
                 if (bizz != null)
                 {
                     if (bizz.nobuy == true)
@@ -17095,76 +17096,76 @@ namespace NemesusWorld.Utils
                             if (character.gender == 1)
                             {
                                 NAPI.Player.SetPlayerClothes(player, 3, 15, 0);
-                                obj["clothing"][1] = 15;
+                                obj["clothing"][1] = obj["clothing"][1];
                                 obj["clothingColor"][1] = 0;
                             }
                             else
                             {
                                 NAPI.Player.SetPlayerClothes(player, 3, 0, 0);
-                                obj["clothing"][1] = 0;
+                                obj["clothing"][1] = obj["clothing"][1];
                                 obj["clothingColor"][1] = 0;
                             }
 
                             NAPI.Player.SetPlayerClothes(player, 11, 15, 0);
-                            obj["clothing"][0] = 15;
+                            obj["clothing"][0] = obj["clothing"][0];
                             obj["clothingColor"][0] = 0;
 
                             NAPI.Player.SetPlayerClothes(player, 4, 14, 0);
-                            obj["clothing"][2] = 14;
+                            obj["clothing"][2] = obj["clothing"][2];
                             obj["clothingColor"][2] = 0;
 
                             if (character.gender == 1)
                             {
                                 NAPI.Player.SetPlayerClothes(player, 8, 15, 0);
-                                obj["clothing"][4] = 15;
+                                obj["clothing"][4] = obj["clothing"][4];
                                 obj["clothingColor"][4] = 0;
                             }
                             else
                             {
                                 NAPI.Player.SetPlayerClothes(player, 8, 0, 0);
-                                obj["clothing"][4] = 0;
+                                obj["clothing"][4] = obj["clothing"][4];
                                 obj["clothingColor"][4] = 0;
                             }
 
                             if (character.gender == 1)
                             {
                                 NAPI.Player.SetPlayerClothes(player, 6, 34, 0);
-                                obj["clothing"][3] = 34;
+                                obj["clothing"][3] = obj["clothing"][3];
                                 obj["clothingColor"][3] = 0;
                             }
                             else
                             {
                                 NAPI.Player.SetPlayerClothes(player, 6, 35, 0);
-                                obj["clothing"][3] = 35;
+                                obj["clothing"][3] = obj["clothing"][3];
                                 obj["clothingColor"][3] = 0;
                             }
 
                             NAPI.Player.ClearPlayerAccessory(player, 1);
-                            obj["clothing"][6] = 255;
+                            obj["clothing"][6] = obj["clothing"][6];
                             obj["clothingColor"][6] = 0;
 
                             NAPI.Player.ClearPlayerAccessory(player, 0);
-                            obj["clothing"][7] = 255;
+                            obj["clothing"][7] = obj["clothing"][7];
                             obj["clothingColor"][7] = 0;
 
                             NAPI.Player.ClearPlayerAccessory(player, 2);
-                            obj["clothing"][9] = 255;
+                            obj["clothing"][9] = obj["clothing"][9];
                             obj["clothingColor"][9] = 0;
                             NAPI.Player.ClearPlayerAccessory(player, 6);
-                            obj["clothing"][10] = 255;
+                            obj["clothing"][10] = obj["clothing"][10];
                             obj["clothingColor"][10] = 0;
                             NAPI.Player.ClearPlayerAccessory(player, 7);
-                            obj["clothing"][11] = 255;
+                            obj["clothing"][11] = obj["clothing"][11];
                             obj["clothingColor"][11] = 0;
                             NAPI.Player.SetPlayerClothes(player, 5, 0, 0);
-                            obj["clothing"][5] = 0;
+                            obj["clothing"][5] = obj["clothing"][5];
                             obj["clothingColor"][5] = 0;
                             NAPI.Player.SetPlayerClothes(player, 7, 0, 0);
-                            obj["clothing"][12] = 0;
+                            obj["clothing"][12] = obj["clothing"][12];
                             obj["clothingColor"][12] = 0;
 
                             NAPI.Player.SetPlayerClothes(player, 1, 0, 0);
-                            obj["clothing"][8] = 0;
+                            obj["clothing"][8] = obj["clothing"][8];
                             obj["clothingColor"][8] = 0;
 
                             character.json = NAPI.Util.ToJson(obj);
@@ -17255,7 +17256,7 @@ namespace NemesusWorld.Utils
                                 Weather weather = new Weather();
                                 string tempstring2;
                                 tempstring2 = weatherObj["current"].ToString();
-                                try { weatherObjTemp2 = JObject.Parse(tempstring2); } catch { }
+                                try { weatherObjTemp2 = JObject.Parse(tempstring2); } catch(Exception) { }
                                 if (weatherObjTemp2 != null)
                                 {
                                     string tempstring;

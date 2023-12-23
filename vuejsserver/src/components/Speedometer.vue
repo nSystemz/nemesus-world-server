@@ -128,12 +128,15 @@
                                 class="ml-2 text-center"
                                 style="font-family: 'Exo', sans-serif;color:white">{{ ort }}</span></i>
                     </div>
-                    <div style="margin-left: 0.22vw;margin-top: 1.131vh" v-if="voicerp == 1">
-                        <i v-if="talkstate == 0" class="fas fa-microphone bordericon"
+                    <div style="margin-left: 0.22vw;margin-top: 1.131vh" v-if="voicerp == 1 || voicerp == 2">
+                        <i v-if="voicerp == 1 && talkstate == 0" class="fas fa-microphone bordericon"
                             style="color:white;text-shadow: 0 0 2px #000;font-size:0.7vw"></i>
-                        <i v-if="talkstate == 1" class="fas fa-microphone bordericon"
+                        <i v-if="(voicerp == 1 && talkstate == 1) || (voicerp == 2 && talkstate2 == 1)" class="fas fa-microphone bordericon"
                             style="color:#3F6791;text-shadow: 0 0 2px #000;font-size:0.7vw"></i>
-                        <i v-if="talkstate == 2 || talkstate == -1 || talkstate == -2"
+                        <i v-if="(voicerp == 1 && (talkstate == 2 || talkstate == -1 || talkstate == -2))"
+                            class="fas fa-microphone bordericon"
+                            style="color:red;text-shadow: 0 0 2px #000;font-size:0.7vw"></i>
+                        <i v-if="(voicerp == 2 && talkstate2 == 0)"
                             class="fas fa-microphone bordericon"
                             style="color:red;text-shadow: 0 0 2px #000;font-size:0.7vw"></i>
                     </div>
@@ -229,6 +232,7 @@
                 windowHeight: window.innerHeight,
                 windowWidth: window.innerWidth,
                 talkstate: -1,
+                talkstate2: 0,
                 infomessage: '',
                 infotimeout: null,
                 weapons: [],
@@ -326,6 +330,9 @@
             },
             setTalkState(settalkstate) {
                 this.talkstate = settalkstate;
+            },
+            setTalkState2(settalkstate2) {
+                this.talkstate2 = settalkstate2;
             },
             onResize() {
                 this.windowHeight = window.innerHeight

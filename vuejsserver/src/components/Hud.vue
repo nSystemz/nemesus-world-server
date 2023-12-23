@@ -56,8 +56,8 @@
                       </div>
                       <hr />
                       <li class="active">
-                        <span class="fa fa-search-plus mt-3 mr-2"></span>Größe
-                        <input placeholder="180cm" value="180cm" v-model="size" type="text"
+                        <span class="fa fa-search-plus mt-3 mr-2"></span>Größe in cm
+                        <input placeholder="180" value="180" v-model="size" type="text"
                           class="form-control mt-1" maxlength="10">
                       </li>
                       <li class="active">
@@ -1564,7 +1564,7 @@
                   <div class="row">
                     <div class="col-md-12 mt-1">
                       <div style="display: flex; justify-content: center; align-items: center;">
-                        <h6>Hallo Herr <b style="color:#3F6791;font-family: 'Exo', sans-serif;">{{name}}</b>,
+                        <h6>Hallo <span v-if="gender == 1">Herr</span> <span v-else>Frau</span> <b style="color:#3F6791;font-family: 'Exo', sans-serif;">{{name}}</b>,
                           Willkommen
                           in Los Santos dem Herzstück von San Andreas! Sie hatten eben ja schon ein nettes Gespräch
                           mit
@@ -1578,8 +1578,8 @@
                       </div>
                       <hr />
                       <li class="active">
-                        <span class="fa fa-search-plus mt-3 mr-2"></span>Größe
-                        <input placeholder="180cm" value="180cm" v-model="size" type="text"
+                        <span class="fa fa-search-plus mt-3 mr-2"></span>Größe in cm
+                        <input placeholder="180" value="180" v-model="size" type="text"
                           class="form-control mt-1" maxlength="10">
                       </li>
                       <li class="active">
@@ -2858,7 +2858,7 @@ export default {
         // eslint-disable-next-line no-undef
         mp.trigger('Client:ResetTattoo2');
         // eslint-disable-next-line no-undef
-        mp.trigger('Client:ShowTattoShop', -1, -1, -1);
+        mp.trigger('Client:BuyTattoo', '-1', '-1', -2);
         this.clicked = (Date.now() / 1000) + (1);
       }
     },
@@ -2876,6 +2876,9 @@ export default {
           self.tattooSelect('Tattoo1');
         }, 75);
       }
+    },
+    hideTattoo() {
+      this.tattooshow = false;
     },
     changeTattoo() {
       var tattooName;

@@ -1097,6 +1097,11 @@ mp.events.add("Client:SyncThings", (pricesCsv, animationhotkeys, chair, gprices,
     hudWindow.execute(`gui.hud.setvoicerp('${voicerp}');`);
     hudWindow.execute(`gui.speedometer.setvoicerp('${voicerp}');`);
     mp.discord.update('Nemesus-World.de (Nemesus.de)', 'Spielt als ' + name);
+    if(voicerp == 2)
+    {
+        mp.events.call("Client:SetTalkstate2", 0);
+        mp.voiceChat.muted = true;
+    }
 })
 
 //Livestream
@@ -1556,7 +1561,7 @@ mp.events.add("Client:StopSound", () => {
 //PrepareCharacterLoad
 mp.events.add("Client:PrepareCharacterLoad", () => {
     mp.events.call('Client:PlaySoundSuccessNormal');
-    mp.events.call('Client:PlayerFreeze', false);
+    mp.events.call('Client:PlayerFreeze', true);
     mp.events.call('Client:Waiting', 1);
     mp.events.call('Client:SetCameraBehindPlayer', false);
     mp.events.call('Client:ShowHud', localPlayer.remoteId);
@@ -3049,6 +3054,19 @@ mp.events.add("Client:GetMaxClothColor", (cloth, drawable, gender = 0) => {
 });
 
 //Tattoo shop
+mp.events.add("Client:HideTattoShop", () => {
+    tattooShop = !tattooShop;
+    showCursorTemp = !showCursorTemp;
+    mp.events.call('Client:UpdateHud3');
+    mp.events.call('Client:CharacterCameraOff');
+    localPlayer.freezePosition(false);
+    mp.gui.cursor.show(false, false);
+    mp.game.ui.displayHud(true);
+    showHideChat(true);
+    enableDisableRadar(true);
+    hudWindow.execute(`gui.hud.hideTattoo();`)
+});
+
 mp.events.add("Client:ShowTattoShop", (json, gender, multiplier) => {
     if (hudWindow != null) {
         tattooShop = !tattooShop;
@@ -3889,10 +3907,12 @@ mp.keys.bind(0x78, true, function () {
                 if(mp.voiceChat.muted)
                 {
                     hudWindow.execute(`gui.hud.sendNotificationWithoutButton('Voice-Chat aktiviert!','success','top-left',1500);`);
+                    mp.events.call("Client:SetTalkstate2", 1);
                 }
                 else
                 {
                     hudWindow.execute(`gui.hud.sendNotificationWithoutButton('Voice-Chat deaktiviert!','success','top-left',1500);`);
+                    mp.events.call("Client:SetTalkstate2", 0);
                 }
             }
             pressedF9 = (Date.now() / 1000) + (1);

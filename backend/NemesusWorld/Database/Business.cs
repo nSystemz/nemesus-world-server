@@ -1358,79 +1358,106 @@ namespace NemesusWorld.Database
                 Character character = Helper.GetCharacterData(player);
                 if (tempData == null || character == null) return;
                 Business bizz = GetClosestBusiness(player, 25.5f);
-                if (bizz == null) return;
-                int price = (int)(750 * bizz.multiplier);
+                if (bizz == null && zoneid != -2) return;
+                int price = 0;
+                if (zoneid != -2)
+                {
+                    price = (int)(750 * bizz.multiplier);
+                }
                 int lastid = 0;
                 Tattoos tattooFound = null;
 
-                if (character.cash < price)
+                if (character.cash < price && zoneid != -2)
                 {
                     Helper.SendNotificationWithoutButton(player, $"Du hast nicht genügend Geld dabei - {price}$!", "error");
                     return;
                 }
 
-                Tattoos tattoo = new Tattoos();
-                tattoo.name = name;
-                tattoo.dlcname = dlcName;
-                tattoo.zoneid = zoneid;
-
-                foreach (Tattoos tattooTemp in tempData.tattoos)
+                if (zoneid != -2)
                 {
-                    if (tattooTemp.name == name && tattooTemp.dlcname == dlcName)
+                    Tattoos tattoo = new Tattoos();
+                    tattoo.name = name;
+                    tattoo.dlcname = dlcName;
+                    tattoo.zoneid = zoneid;
+
+                    foreach (Tattoos tattooTemp in tempData.tattoos)
                     {
-                        tattooFound = tattooTemp;
-                        break;
-                    }
-                }
-
-                PetaPoco.Database db = new PetaPoco.Database(General.Connection);
-
-                Decoration decoration = new Decoration();
-                if (tattooFound != null)
-                {
-                    decoration.Collection = NAPI.Util.GetHashKey(dlcName);
-                    decoration.Overlay = NAPI.Util.GetHashKey(name);
-                    tempData.tattoos.Remove(tattooFound);
-                    db.Delete(tattooFound);
-                    Helper.SendNotificationWithoutButton(player, $"Du hast dir für {price}$ ein Tattoo entfernen lassen!", "success", "top-left", 3750);
-                }
-                else
-                {
-                    if (tempData.tattoos.Count >= 12)
-                    {
-                        Helper.SendNotificationWithoutButton(player, $"Du kannst nur max. 12 Tattoos besitzen!", "error", "top-left", 3750);
-                        return;
+                        if (tattooTemp.name == name && tattooTemp.dlcname == dlcName)
+                        {
+                            tattooFound = tattooTemp;
+                            break;
+                        }
                     }
 
-                    MySqlCommand command = General.Connection.CreateCommand();
+                    PetaPoco.Database db = new PetaPoco.Database(General.Connection);
 
-                    command.CommandText = "INSERT INTO tattoos (characterid, name, dlcname, zoneid) VALUES (@characterid, @name, @dlcname, @zoneid)";
-                    command.Parameters.AddWithValue("@characterid", character.id);
-                    command.Parameters.AddWithValue("@name", name);
-                    command.Parameters.AddWithValue("@dlcname", dlcName);
-                    command.Parameters.AddWithValue("@zoneid", zoneid);
-                    command.ExecuteNonQuery();
-                    lastid = (int)command.LastInsertedId;
+                    Decoration decoration = new Decoration();
+                    if (tattooFound != null)
+                    {
+                        decoration.Collection = NAPI.Util.GetHashKey(dlcName);
+                        decoration.Overlay = NAPI.Util.GetHashKey(name);
+                        tempData.tattoos.Remove(tattooFound);
+                        db.Delete(tattooFound);
+                        Helper.SendNotificationWithoutButton(player, $"Du hast dir für {price}$ ein Tattoo entfernen lassen!", "success", "top-left", 3750);
+                    }
+                    else
+                    {
+                        if (tempData.tattoos.Count >= 12)
+                        {
+                            Helper.SendNotificationWithoutButton(player, $"Du kannst nur max. 12 Tattoos besitzen!", "error", "top-left", 3750);
+                            return;
+                        }
 
-                    tattoo.id = lastid;
+                        MySqlCommand command = General.Connection.CreateCommand();
 
-                    decoration.Collection = NAPI.Util.GetHashKey(dlcName);
-                    decoration.Overlay = NAPI.Util.GetHashKey(name);
+                        command.CommandText = "INSERT INTO tattoos (characterid, name, dlcname, zoneid) VALUES (@characterid, @name, @dlcname, @zoneid)";
+                        command.Parameters.AddWithValue("@characterid", character.id);
+                        command.Parameters.AddWithValue("@name", name);
+                        command.Parameters.AddWithValue("@dlcname", dlcName);
+                        command.Parameters.AddWithValue("@zoneid", zoneid);
+                        command.ExecuteNonQuery();
+                        lastid = (int)command.LastInsertedId;
 
-                    tempData.tattoos.Add(tattoo);
+                        tattoo.id = lastid;
 
-                    Helper.SendNotificationWithoutButton(player, $"Du hast dir für {price}$ ein neues Tattoo stechen lassen!", "success", "top-left", 3750);
+                        decoration.Collection = NAPI.Util.GetHashKey(dlcName);
+                        decoration.Overlay = NAPI.Util.GetHashKey(name);
+
+                        tempData.tattoos.Add(tattoo);
+
+                        Helper.SendNotificationWithoutButton(player, $"Du hast dir für {price}$ ein neues Tattoo stechen lassen!", "success", "top-left", 3750);
+                    }
+
+
+                    if (bizz != null)
+                    {
+                        ManageBizzCash(bizz, price);
+                    }
+
+                    CharacterController.SetMoney(player, -price);
                 }
 
-
-                if (bizz != null)
+                if (zoneid != -2)
                 {
-                    ManageBizzCash(bizz, price);
+                    player.TriggerEvent("Client:BuyTattooAfter", NAPI.Util.ToJson(tempData.tattoos));
                 }
 
-                CharacterController.SetMoney(player, -price);
-
-                player.TriggerEvent("Client:BuyTattooAfter", NAPI.Util.ToJson(tempData.tattoos));
+                if(zoneid == -2)
+                {
+                    JObject obj;
+                    obj = JObject.Parse(character.json);
+                    player.Dimension = 0;
+                    player.TriggerEvent("hairOverlay::update", player, (int)obj["hair"][0]);
+                    player.TriggerEvent("Client:HideTattoShop");
+                    NAPI.Task.Run(() =>
+                    {
+                        Helper.GetCharacterTattoos(player, character.id);
+                        NAPI.Task.Run(() =>
+                        {
+                            CharacterController.SetCharacterCloths(player, obj, character.clothing);
+                        }, delayTime: 155);
+                    }, delayTime: 155);
+                }
             }
             catch (Exception e)
             {

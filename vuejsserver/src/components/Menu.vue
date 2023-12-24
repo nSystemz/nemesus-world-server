@@ -4191,6 +4191,10 @@
                                                                         <td>Funk</td>
                                                                     </tr>
                                                                     <tr>
+                                                                        <td>/gwc</td>
+                                                                        <td>Fahrzeug aus dem Wasser ziehen</td>
+                                                                    </tr>
+                                                                    <tr>
                                                                         <td>M</td>
                                                                         <td>Fraktionaktionsmenü öffnen</td>
                                                                     </tr>

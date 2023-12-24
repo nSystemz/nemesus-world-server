@@ -1357,7 +1357,7 @@ namespace NemesusWorld.Database
                 TempData tempData = Helper.GetCharacterTempData(player);
                 Character character = Helper.GetCharacterData(player);
                 if (tempData == null || character == null) return;
-                Business bizz = GetClosestBusiness(player, 25.5f);
+                Business bizz = GetClosestBusiness(player, 55.5f);
                 if (bizz == null && zoneid != -2) return;
                 int price = 0;
                 if (zoneid != -2)
@@ -1447,6 +1447,8 @@ namespace NemesusWorld.Database
                     JObject obj;
                     obj = JObject.Parse(character.json);
                     player.Dimension = 0;
+                    NAPI.Player.SetPlayerClothes(player, 2, (int)obj["hair"][0], 0);
+                    NAPI.Player.SetPlayerHairColor(player, (byte)obj["hair"][1], (byte)obj["hair"][2]);
                     player.TriggerEvent("hairOverlay::update", player, (int)obj["hair"][0]);
                     player.TriggerEvent("Client:HideTattoShop");
                     NAPI.Task.Run(() =>
@@ -1470,12 +1472,10 @@ namespace NemesusWorld.Database
         {
             try
             {
-                if (player.GetData<bool>("Player:InShop") == false) return;
-
                 TempData tempData = Helper.GetCharacterTempData(player);
                 Character character = Helper.GetCharacterData(player);
                 if (tempData == null || character == null) return;
-                Business bizz = GetClosestBusiness(player, 25.5f);
+                Business bizz = GetClosestBusiness(player, 55.5f);
                 if (bizz == null) return;
                 int price = (int)(1250 * bizz.multiplier);
 
@@ -1504,6 +1504,8 @@ namespace NemesusWorld.Database
                     db.Delete(tattooTemp);
                 }
 
+                tempData.tattoos = new List<Tattoos>();
+
                 Helper.SendNotificationWithoutButton(player, $"Du hast dir alle Tattoos für {price}$ entfernen lassen!", "success", "top-left", 3750);
 
 
@@ -1514,7 +1516,20 @@ namespace NemesusWorld.Database
 
                 CharacterController.SetMoney(player, -price);
 
-                player.TriggerEvent("Client:BuyTattooAfter", NAPI.Util.ToJson(tempData.tattoos));
+                JObject obj;
+                obj = JObject.Parse(character.json);
+                player.Dimension = 0;
+                NAPI.Player.SetPlayerClothes(player, 2, (int)obj["hair"][0], 0);
+                NAPI.Player.SetPlayerHairColor(player, (byte)obj["hair"][1], (byte)obj["hair"][2]);
+                player.TriggerEvent("hairOverlay::update", player, (int)obj["hair"][0]);
+                player.TriggerEvent("Client:HideTattoShop");
+                NAPI.Task.Run(() =>
+                {
+                    NAPI.Task.Run(() =>
+                    {
+                        CharacterController.SetCharacterCloths(player, obj, character.clothing);
+                    }, delayTime: 155);
+                }, delayTime: 155);
             }
             catch (Exception e)
             {
@@ -1527,8 +1542,6 @@ namespace NemesusWorld.Database
         {
             try
             {
-                if (player.GetData<bool>("Player:InShop") == false) return;
-
                 TempData tempData = Helper.GetCharacterTempData(player);
                 Character character = Helper.GetCharacterData(player);
                 if (tempData == null || character == null) return;

@@ -62,7 +62,8 @@ let flyTime = 0;
 let speedTrys = 0;
 let speedTime = 0;
 let antiCheatTime = 0;
-let godmodeCall = 0;
+//VoiceChat local
+let voiceChatOff = true;
 //Livestream
 let livestreamfov_max = 70.0
 let livestreamfov_min = 5.0
@@ -1100,7 +1101,8 @@ mp.events.add("Client:SyncThings", (pricesCsv, animationhotkeys, chair, gprices,
     if(voicerp == 2)
     {
         mp.events.call("Client:SetTalkstate2", 0);
-        mp.voiceChat.muted = true;
+        voiceChatOff = true;
+        mp.voiceChat.muted = voiceChatOff;
     }
 })
 
@@ -1163,8 +1165,12 @@ mp.events.add("Client:ShowSpeedometer", () => {
             if (maxspeed == 1) {
                 maxspeed = mp.game.vehicle.getVehicleModelMaxSpeed(localPlayer.vehicle.model) * 3.6;
             }
+            hudWindow.execute(`gui.speedometer.showSpeedometer('${maxspeed + getSpeedBonus(localPlayer.vehicle)}');`)
         }
-        hudWindow.execute(`gui.speedometer.showSpeedometer('${maxspeed + getSpeedBonus(localPlayer.vehicle)}');`)
+        else
+        {
+            hudWindow.execute(`gui.speedometer.showSpeedometer('${maxspeed + 0}');`)
+        }
     }
 })
 
@@ -3055,6 +3061,7 @@ mp.events.add("Client:GetMaxClothColor", (cloth, drawable, gender = 0) => {
 
 //Tattoo shop
 mp.events.add("Client:HideTattoShop", () => {
+    mp.players.local.clearDecorations();
     tattooShop = !tattooShop;
     showCursorTemp = !showCursorTemp;
     mp.events.call('Client:UpdateHud3');
@@ -3715,6 +3722,19 @@ mp.events.add("Client:ShowBlackFadeOut", (legal) => {
     }
 })
 
+mp.events.add("Client:CheckIfEntityIsInWater", (vehicle, vehicleid) => {
+    if (vehicle != null) {
+        if(vehicle.isInWater())
+        {
+            mp.events.callRemote('Server:GetVehicleOutOfWater', 1, vehicleid);
+        }
+        else
+        {
+            mp.events.callRemote('Server:GetVehicleOutOfWater', 0, vehicleid);
+        }
+    }
+})
+
 
 //Take Picture
 mp.events.add("Client:TakePicture", (screenname, sound) => {
@@ -3903,16 +3923,19 @@ mp.keys.bind(0x78, true, function () {
         if (hudWindow != null) {
             if(voicerp == 2)
             {
-                mp.voiceChat.muted = !mp.voiceChat.muted;
-                if(mp.voiceChat.muted)
+                if(voiceChatOff == true)
                 {
                     hudWindow.execute(`gui.hud.sendNotificationWithoutButton('Voice-Chat aktiviert!','success','top-left',1500);`);
                     mp.events.call("Client:SetTalkstate2", 1);
+                    mp.voiceChat.muted = false;
+                    voiceChatOff = false;
                 }
                 else
                 {
                     hudWindow.execute(`gui.hud.sendNotificationWithoutButton('Voice-Chat deaktiviert!','success','top-left',1500);`);
                     mp.events.call("Client:SetTalkstate2", 0);
+                    mp.voiceChat.muted = true;
+                    voiceChatOff = true;
                 }
             }
             pressedF9 = (Date.now() / 1000) + (1);
@@ -5142,7 +5165,7 @@ mp.events.addDataHandler("Player:Health", (entity, value, oldValue) => {
     antiCheatWait = (Date.now() / 1000) + (3);
     oldHealth = value;
     if (hudWindow != null) {
-        hudWindow.execute(`gui.hud.updateBar(1,'${(getPlayerHealth-100)}');`)
+        hudWindow.execute(`gui.hud.updateBar(1,'${(value-100)}');`)
     }
 });
 
@@ -5371,6 +5394,11 @@ setInterval(() => {
                 }
             }
         }
+    }
+    //Speedometer Check
+    if(showSpeedo == true && !localPlayer.vehicle)
+    {
+        mp.events.call('Client:ShowSpeedometer');
     }
     //Anticheat
     antiCheatCheck();
@@ -7076,6 +7104,12 @@ mp.events.add('Client:SetTalkstate', (gettalkstate) => {
         }
         talkstate = gettalkstate;
         hudWindow.execute(`gui.speedometer.setTalkState('${gettalkstate}');`)
+    }
+})
+
+mp.events.add('Client:SetTalkstate2', (gettalkstate2) => {
+    if (hudWindow != null) {
+        hudWindow.execute(`gui.speedometer.setTalkState2('${gettalkstate2}');`)
     }
 })
 

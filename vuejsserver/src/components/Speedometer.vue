@@ -131,11 +131,13 @@
                     <div style="margin-left: 0.22vw;margin-top: 1.131vh" v-if="voicerp == 1 || voicerp == 2">
                         <i v-if="voicerp == 1 && talkstate == 0" class="fas fa-microphone bordericon"
                             style="color:white;text-shadow: 0 0 2px #000;font-size:0.7vw"></i>
-                        <i v-if="(voicerp == 1 && talkstate == 1) || (voicerp == 2 && talkstate2 == 1)" class="fas fa-microphone bordericon"
+                        <i v-if="(voicerp == 1 && talkstate == 1)" class="fas fa-microphone bordericon"
                             style="color:#3F6791;text-shadow: 0 0 2px #000;font-size:0.7vw"></i>
                         <i v-if="(voicerp == 1 && (talkstate == 2 || talkstate == -1 || talkstate == -2))"
                             class="fas fa-microphone bordericon"
                             style="color:red;text-shadow: 0 0 2px #000;font-size:0.7vw"></i>
+                        <i v-if="(voicerp == 2 && talkstate2 != 0)" class="fas fa-microphone bordericon"
+                            style="color:#3F6791;text-shadow: 0 0 2px #000;font-size:0.7vw"></i>
                         <i v-if="(voicerp == 2 && talkstate2 == 0)"
                             class="fas fa-microphone bordericon"
                             style="color:red;text-shadow: 0 0 2px #000;font-size:0.7vw"></i>

@@ -627,7 +627,6 @@ namespace NemesusWorld.Controllers
 
                 if (tempData.adminduty == false)
                 {
-                    Helper.SendNotificationWithoutButton(player, "Test");
                     if (clothingArray[2] == "1")
                     {
                         NAPI.Player.SetPlayerClothes(player, 11, (int)obj["clothing"][0], (int)obj["clothingColor"][0]);

@@ -1061,7 +1061,7 @@
                         @click="buyTattoo(selectedclothid)">Tattoo stechen/entfernen -
                         {{parseInt(750*multiplier)}}$</button>
                       <button type="button" v-if="selectedclothid >= 0" class="btn btn-danger mr-1"
-                        @click="resetTattoo(0)">Alle entfernen - {{parseInt(1250*multiplier)}}$</button>
+                        @click="resetTattoo()">Entfernen - {{parseInt(1250*multiplier)}}$</button>
                       <button type="button" class="btn btn-secondary" @click="abortTattoo()">Abbrechen</button>
                     </div>
                     <hr>
@@ -2843,11 +2843,11 @@ export default {
         this.clicked = (Date.now() / 1000) + (1);
       }
     },
-    resetTattoo(check) 
+    resetTattoo() 
     {
       if ((Date.now() / 1000) > this.clicked) {
         // eslint-disable-next-line no-undef
-        mp.trigger('Client:ResetTattoo', this.tattoos, check);
+        mp.trigger('Client:ResetTattooDirect');
         this.selectedclothid = 0;
         this.clicked = (Date.now() / 1000) + (1);
       }
@@ -4977,7 +4977,7 @@ export default {
       mp.trigger('Client:PlaySoundSuccess');
       Swal.fire({
         title: 'Geschafft!',
-        text: "Du bist absofort ein offizieller Staatsbürger von Los Santos, hier ist Ihr neuer Personalausweis!",
+        text: "Sie sind absofort ein offizieller Staatsbürger von Los Santos, hier ist Ihr neuer Personalausweis!",
         icon: 'success',
         showCancelButton: false,
         confirmButtonColor: '#3085d6',

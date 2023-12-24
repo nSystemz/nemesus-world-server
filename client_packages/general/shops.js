@@ -110,19 +110,10 @@ mp.events.add("Client:BuyTattoo", (name, dlcName, zone) => {
     }, 125);
 });
 
-mp.events.add("Client:ResetTattoo", (oldTattoosTemp, check) => {
+mp.events.add("Client:ResetTattooDirect", () => {
     try {
         mp.players.local.clearDecorations();
-        if (parseInt(check) == 0) {
-            mp.events.callRemote('Server:ResetAllTattoos');
-        } else {
-            setTimeout(function () {
-                var oldTattoos2 = JSON.parse(oldTattoosTemp);
-                for (let i = 0; i < oldTattoos2.length; i++) {
-                    mp.players.local.setDecoration(mp.game.joaat(oldTattoos2[i].dlcname), mp.game.joaat(oldTattoos2[i].name));
-                }
-            }, 125);
-        }
+        mp.events.callRemote('Server:ResetAllTattoos');
     } catch (e) {
         mp.console.logInfo(JSON.stringify(e), false, false);
     }

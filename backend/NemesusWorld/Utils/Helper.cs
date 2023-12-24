@@ -9677,6 +9677,56 @@ namespace NemesusWorld.Utils
             return null;
         }
 
+        //OnGetVehicleOutOfWater
+        [RemoteEvent("Server:GetVehicleOutOfWater")]
+        public static void OnGetVehicleOutOfWater(Player player, int modus, int vehicleid)
+        {
+            try
+            {
+                if (!player.IsInVehicle)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Du sitzt in keinem Einsatzfahrzeug!", "error");
+                    return;
+                }
+                if(!player.Vehicle.GetSharedData<string>("Vehicle:Name").ToLower().Contains("firetruk"))
+                {
+                    Helper.SendNotificationWithoutButton(player, "Du sitzt in keinem Einsatzfahrzeug!", "error");
+                    return;
+                }
+                Vehicle vehicle = Helper.GetVehicleById(vehicleid);
+                if (vehicle == null || vehicle.Dimension == 150)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Ungültiges Fahrzeug!", "error");
+                    return;
+                }
+                if (vehicle.HasData("Vehicle:Jacked") && vehicle.GetData<bool>("Vehicle:Jacked") == true)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Ungültiges Fahrzeug!", "error");
+                    return;
+                }
+                if (vehicle.Position.DistanceTo(player.Vehicle.Position) >= 100f)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Das Fahrzeug ist zu weit weg!", "error");
+                    return;
+                }
+                if (modus == 1)
+                {
+                    Vector3 positionBehind = Helper.GetPositionBehindOfVehicle(player.Vehicle, 7.55f); //Wert von 7.55f auf beliebigen (höheren) Wert ändern, umso weiter steht das Fahrzeug hinter dem Spielerfahrzeug
+                    vehicle.Position = positionBehind;
+                    vehicle.Rotation.Z = player.Vehicle.Rotation.Z;
+                    Helper.SendNotificationWithoutButton(player, "Das Fahrzeug wurde erfolgreich aus dem Wasser gezogen!", "success");
+                }
+                else
+                {
+                    Helper.SendNotificationWithoutButton(player, "Das Fahrzeug kann nicht aus dem Wasser gezogen werden!", "error");
+                }
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[OnGetVehicleOutOfWater]: " + e.ToString());
+            }
+        }
+
         //OnEntityLock
         [RemoteEvent("Server:OnEntityLock")]
         public static void OnEntityLock(Player player)
@@ -17096,85 +17146,89 @@ namespace NemesusWorld.Utils
                             if (character.gender == 1)
                             {
                                 NAPI.Player.SetPlayerClothes(player, 3, 15, 0);
-                                obj["clothing"][1] = obj["clothing"][1];
-                                obj["clothingColor"][1] = 0;
                             }
                             else
                             {
                                 NAPI.Player.SetPlayerClothes(player, 3, 0, 0);
-                                obj["clothing"][1] = obj["clothing"][1];
-                                obj["clothingColor"][1] = 0;
                             }
 
                             NAPI.Player.SetPlayerClothes(player, 11, 15, 0);
-                            obj["clothing"][0] = obj["clothing"][0];
-                            obj["clothingColor"][0] = 0;
 
                             NAPI.Player.SetPlayerClothes(player, 4, 14, 0);
-                            obj["clothing"][2] = obj["clothing"][2];
-                            obj["clothingColor"][2] = 0;
 
                             if (character.gender == 1)
                             {
                                 NAPI.Player.SetPlayerClothes(player, 8, 15, 0);
-                                obj["clothing"][4] = obj["clothing"][4];
-                                obj["clothingColor"][4] = 0;
                             }
                             else
                             {
                                 NAPI.Player.SetPlayerClothes(player, 8, 0, 0);
-                                obj["clothing"][4] = obj["clothing"][4];
-                                obj["clothingColor"][4] = 0;
                             }
 
                             if (character.gender == 1)
                             {
                                 NAPI.Player.SetPlayerClothes(player, 6, 34, 0);
-                                obj["clothing"][3] = obj["clothing"][3];
-                                obj["clothingColor"][3] = 0;
                             }
                             else
                             {
                                 NAPI.Player.SetPlayerClothes(player, 6, 35, 0);
-                                obj["clothing"][3] = obj["clothing"][3];
-                                obj["clothingColor"][3] = 0;
                             }
 
                             NAPI.Player.ClearPlayerAccessory(player, 1);
-                            obj["clothing"][6] = obj["clothing"][6];
-                            obj["clothingColor"][6] = 0;
-
                             NAPI.Player.ClearPlayerAccessory(player, 0);
-                            obj["clothing"][7] = obj["clothing"][7];
-                            obj["clothingColor"][7] = 0;
-
                             NAPI.Player.ClearPlayerAccessory(player, 2);
-                            obj["clothing"][9] = obj["clothing"][9];
-                            obj["clothingColor"][9] = 0;
                             NAPI.Player.ClearPlayerAccessory(player, 6);
-                            obj["clothing"][10] = obj["clothing"][10];
-                            obj["clothingColor"][10] = 0;
                             NAPI.Player.ClearPlayerAccessory(player, 7);
-                            obj["clothing"][11] = obj["clothing"][11];
-                            obj["clothingColor"][11] = 0;
                             NAPI.Player.SetPlayerClothes(player, 5, 0, 0);
-                            obj["clothing"][5] = obj["clothing"][5];
-                            obj["clothingColor"][5] = 0;
                             NAPI.Player.SetPlayerClothes(player, 7, 0, 0);
-                            obj["clothing"][12] = obj["clothing"][12];
-                            obj["clothingColor"][12] = 0;
-
                             NAPI.Player.SetPlayerClothes(player, 1, 0, 0);
-                            obj["clothing"][8] = obj["clothing"][8];
-                            obj["clothingColor"][8] = 0;
-
-                            character.json = NAPI.Util.ToJson(obj);
 
                             Outfits outfit = new Outfits();
                             outfit.name = name;
                             outfit.owner = "furniture-" + wardrobeID;
                             outfit.json1 = NAPI.Util.ToJson(obj["clothing"]);
                             outfit.json2 = NAPI.Util.ToJson(obj["clothingColor"]);
+
+                            obj["clothing"][0] = 15;
+                            obj["clothingColor"][0] = 0;
+                            obj["clothing"][2] = 14;
+                            obj["clothingColor"][2] = 0;
+                            if (character.gender == 1)
+                            {
+                                obj["clothing"][1] = 15;
+                                obj["clothingColor"][1] = 0;
+                                obj["clothing"][4] = 15;
+                                obj["clothingColor"][4] = 0;
+                                obj["clothing"][3] = 34;
+                                obj["clothingColor"][3] = 0;
+                            }
+                            else
+                            {
+                                obj["clothing"][1] = 0;
+                                obj["clothingColor"][1] = 0;
+                                obj["clothing"][4] = 0;
+                                obj["clothingColor"][4] = 0;
+                                obj["clothing"][3] = 35;
+                                obj["clothingColor"][3] = 0;
+                            }
+                            obj["clothing"][6] = 255;
+                            obj["clothingColor"][6] = 0;
+                            obj["clothing"][7] = 255;
+                            obj["clothingColor"][7] = 0;
+                            obj["clothing"][9] = 255;
+                            obj["clothingColor"][9] = 0;
+                            obj["clothing"][10] = 255;
+                            obj["clothingColor"][10] = 0;
+                            obj["clothing"][11] = 255;
+                            obj["clothingColor"][11] = 0;
+                            obj["clothing"][5] = 255;
+                            obj["clothingColor"][5] = 0;
+                            obj["clothing"][12] = 0;
+                            obj["clothingColor"][12] = 0;
+                            obj["clothing"][8] = 0;
+                            obj["clothingColor"][8] = 0;
+
+                            character.json = NAPI.Util.ToJson(obj);
 
                             db.Insert(outfit);
 
@@ -17256,7 +17310,7 @@ namespace NemesusWorld.Utils
                                 Weather weather = new Weather();
                                 string tempstring2;
                                 tempstring2 = weatherObj["current"].ToString();
-                                try { weatherObjTemp2 = JObject.Parse(tempstring2); } catch(Exception) { }
+                                try { weatherObjTemp2 = JObject.Parse(tempstring2); } catch (Exception) { }
                                 if (weatherObjTemp2 != null)
                                 {
                                     string tempstring;

@@ -8075,5 +8075,48 @@ namespace NemesusWorld
             }
             return;
         }
+
+        [Command("CMD_getwatercar", "Befehl: /CMD_getwatercar [Fahrzeug-ID]", Alias = "gwc")]
+        public void CMD_getwatercar(Player player, int vehicleid)
+        {
+            try
+            {
+                if (!Account.IsPlayerLoggedIn(player)) return;
+                Account account = Helper.GetAccountData(player);
+                Character character = Helper.GetCharacterData(player);
+                if(!player.IsInVehicle)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Du sitzt in keinem Einsatzfahrzeug!", "error");
+                    return;
+                }
+                if (!player.Vehicle.GetSharedData<string>("Vehicle:Name").ToLower().Contains("firetruk"))
+                {
+                    Helper.SendNotificationWithoutButton(player, "Du sitzt in keinem Einsatzfahrzeug!", "error");
+                    return;
+                }
+                Vehicle vehicle = Helper.GetVehicleById(vehicleid);
+                if (vehicle == null || vehicle.Dimension == 150)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Ungültiges Fahrzeug!", "error");
+                    return;
+                }
+                if (vehicle.HasData("Vehicle:Jacked") && vehicle.GetData<bool>("Vehicle:Jacked") == true)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Ungültiges Fahrzeug!", "error");
+                    return;
+                }
+                if (vehicle.Position.DistanceTo(player.Vehicle.Position) >= 100f)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Das Fahrzeug ist zu weit weg!", "error");
+                    return;
+                }
+                player.TriggerEvent("Client:CheckIfEntityIsInWater", vehicle, vehicleid);
+                
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[CMD_getwatercar]: " + e.ToString());
+            }
+        }
     }
 }

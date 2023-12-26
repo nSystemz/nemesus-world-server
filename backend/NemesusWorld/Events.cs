@@ -37,6 +37,7 @@ using System.Linq;
 using System.Data;
 using System.Globalization;
 using Org.BouncyCastle.Ocsp;
+using System.IO;
 
 namespace NemesusWorld
 {
@@ -48,6 +49,7 @@ namespace NemesusWorld
         public static int halfHourCounter = 0;
         public static int fullHourTimer = 0;
         public static Timer halfOneMinuteTimer = null;
+        public static Timer secondTimer = null;
         public static Timer saveTimer = null;
         //ToDo: Speicherzeit einstellen (Es wird alles gespeichert)
         public static int saveMinutes = 15; //Speicherzeit in Minuten
@@ -83,7 +85,7 @@ namespace NemesusWorld
                             Helper.GetAllTaxiRoutes();
                             //Load stuff like blips,textlabel
                             LoadStuff();
-                            if(!labelCheck.Text.Contains("Nem"))
+                            if (!labelCheck.Text.Contains("Nem"))
                             {
                                 Helper.ConsoleLog("error", "[CREDITS]: Bitte die Credits wieder eintragen - Nemesus.de!");
                                 NAPI.Task.Run(() =>
@@ -164,6 +166,8 @@ namespace NemesusWorld
                             DrugController.GetAllDrugPlants();
                             //Animals
                             HuntingController.InitAnimals();
+                            //Load EUP Outfits
+                            Events.LoadEUPOutfits(true, false);
                             //Load all lifeinvaderads
                             //FactionController.GetAllLifeInvaderAds();
                             //General settings
@@ -322,7 +326,7 @@ namespace NemesusWorld
                                         //Robmoney
                                         if (halfHourCounter >= 2 && character.abusemoney > 0)
                                         {
-                                            if(character.abusemoney > 2500)
+                                            if (character.abusemoney > 2500)
                                             {
                                                 character.abusemoney = character.abusemoney / 2;
                                             }
@@ -374,11 +378,11 @@ namespace NemesusWorld
                             if (fullHourTimer >= 4)
                             {
                                 //Gangzonen
-                                foreach(GangZones gangZones in GangController.gangzoneList)
+                                foreach (GangZones gangZones in GangController.gangzoneList)
                                 {
-                                    if(gangZones.percentages.Length > 3 && gangZones.percentages != "n/A")
+                                    if (gangZones.percentages.Length > 3 && gangZones.percentages != "n/A")
                                     {
-                                        if(gangZones.value == "Geld")
+                                        if (gangZones.value == "Geld")
                                         {
                                             gangZones.things += 71 * 4;
                                         }
@@ -386,10 +390,10 @@ namespace NemesusWorld
                                         {
                                             gangZones.things += 25;
                                         }
-                                        else if(gangZones.value == "Drogen")
+                                        else if (gangZones.value == "Drogen")
                                         {
                                             Random random = new Random();
-                                            gangZones.things += random.Next(0,2);
+                                            gangZones.things += random.Next(0, 2);
                                         }
                                     }
                                 }
@@ -448,6 +452,44 @@ namespace NemesusWorld
             }
         }
 
+        public static void OnSecondTimer(object state)
+        {
+            System.Threading.Tasks.Task.Run(() =>
+            {
+                NAPI.Task.Run(() =>
+                {
+                    try
+                    {
+                        //Vehicle Health System
+                        foreach (Vehicle vehicle in NAPI.Pools.GetAllVehicles())
+                        {
+                            Player driver = (Player)NAPI.Vehicle.GetVehicleDriver(vehicle);
+                            if (vehicle.GetSharedData<String>("Vehicle:Name") == "iak_wheelchair") continue;
+                            if (vehicle != null)
+                            {
+                                if ((NAPI.Vehicle.GetVehicleEngineHealth(vehicle) <= 215 || NAPI.Vehicle.GetVehicleHealth(vehicle) <= 215) && vehicle.EngineStatus == true)
+                                {
+                                    Helper.SetVehicleEngine(vehicle, false);
+                                    NAPI.Vehicle.SetVehicleEngineHealth(vehicle, 125);
+                                    NAPI.Vehicle.SetVehicleHealth(vehicle, 125);
+                                    if (driver != null)
+                                    {
+                                        Helper.SendNotificationWithoutButton(driver, "Der Motor ist ausgefallen!", "error");
+                                        driver.SetOwnSharedData("Player:VehicleEngine", false);
+                                        continue;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Helper.ConsoleLog("error", $"[OnSecondTimer]: " + e.ToString());
+                    }
+                });
+            });
+        }
+
         public static void OnHalfOneMinuteTimer(object state)
         {
             System.Threading.Tasks.Task.Run(() =>
@@ -492,12 +534,12 @@ namespace NemesusWorld
                                     if (character != null && account != null && tempData != null)
                                     {
                                         //Hunger Thirst
-                                        if((character.hunger <= 0 || character.thirst <= 0) && character.afk == 0 && character.death == false && tempData.adminduty == false)
+                                        if ((character.hunger <= 0 || character.thirst <= 0) && character.afk == 0 && character.death == false && tempData.adminduty == false)
                                         {
                                             Helper.SetPlayerHealth(player, NAPI.Player.GetPlayerHealth(player) - 3);
                                         }
                                         //Crystal-Meth
-                                        if(player.HasData("Player:HealBonus"))
+                                        if (player.HasData("Player:HealBonus"))
                                         {
                                             if (NAPI.Player.GetPlayerHealth(player) < 105)
                                             {
@@ -507,8 +549,8 @@ namespace NemesusWorld
                                             {
                                                 Helper.SetPlayerHealth(player, 105);
                                             }
-                                            player.SetData("Player:HealBonus", player.GetData<int>("Player:HealBonus") -1);
-                                            if(player.GetData<int>("Player:HealBonus") <= 0)
+                                            player.SetData("Player:HealBonus", player.GetData<int>("Player:HealBonus") - 1);
+                                            if (player.GetData<int>("Player:HealBonus") <= 0)
                                             {
                                                 player.ResetData("Player:HealBonus");
                                             }
@@ -582,7 +624,7 @@ namespace NemesusWorld
                                         //Drunk
                                         if (tempData.drunk > 0)
                                         {
-                                            if(tempData.drunked == true && tempData.drunk < 5)
+                                            if (tempData.drunked == true && tempData.drunk < 5)
                                             {
                                                 tempData.drunked = false;
                                                 player.TriggerEvent("Client:SetDrunk", false);
@@ -597,10 +639,10 @@ namespace NemesusWorld
                                             if (tempData.drunk > 0) tempData.drunk--;
                                         }
                                         //Ping Check
-                                        if(player.Ping >= 200 && tempData.isping == false)
+                                        if (player.Ping >= 200 && tempData.isping == false)
                                         {
                                             tempData.pingcheck++;
-                                            if(tempData.pingcheck >= 3)
+                                            if (tempData.pingcheck >= 3)
                                             {
                                                 tempData.isping = true;
                                                 tempData.pingcheck = 0;
@@ -627,16 +669,6 @@ namespace NemesusWorld
                                 if (vehicle.GetSharedData<String>("Vehicle:Name") == "iak_wheelchair") continue;
                                 if (vehicle != null && vehicle.EngineStatus == true)
                                 {
-                                    if (NAPI.Vehicle.GetVehicleHealth(vehicle) <= 0 || NAPI.Vehicle.GetVehicleEngineHealth(vehicle) <= 50)
-                                    {
-                                        Helper.SetVehicleEngine(vehicle, false);
-                                        if (driver != null)
-                                        {
-                                            Helper.SendNotificationWithoutButton(driver, "Der Motor ist ausgefallen!", "error");
-                                            driver.SetOwnSharedData("Player:VehicleEngine", false);
-                                            continue;
-                                        }
-                                    }
                                     if (vehicle.Class != 13 && vehicle.EngineStatus == true)
                                     {
                                         //Fuel
@@ -650,7 +682,7 @@ namespace NemesusWorld
                                         {
                                             minusfuel = 0.1;
                                         }
-                                        if (vehicle.GetSharedData<float>("Vehicle:Fuel") > minusfuel && vehicle.GetSharedData<float>("Vehicle:Fuel") > 0)
+                                        if (vehicle.GetSharedData<float>("Vehicle:Fuel") >= minusfuel && vehicle.GetSharedData<float>("Vehicle:Fuel") > 0)
                                         {
                                             vehicle.SetSharedData("Vehicle:Fuel", (vehicle.GetSharedData<float>("Vehicle:Fuel") - minusfuel));
                                         }
@@ -734,7 +766,7 @@ namespace NemesusWorld
                                 }
                                 foreach (Player player in NAPI.Pools.GetAllPlayers())
                                 {
-                                    if (player != null && player.GetOwnSharedData<bool>("Player:Spawned") == true )
+                                    if (player != null && player.GetOwnSharedData<bool>("Player:Spawned") == true)
                                     {
                                         Character character = Helper.GetCharacterData(player);
                                         Account account = Helper.GetAccountData(player);
@@ -759,7 +791,7 @@ namespace NemesusWorld
                                                 }
                                             }
                                             //Ping reset
-                                            if(tempData.isping == false)
+                                            if (tempData.isping == false)
                                             {
                                                 tempData.pingcheck = 0;
                                             }
@@ -1067,9 +1099,9 @@ namespace NemesusWorld
                             }
                         }
                         //Save Furniture
-                        foreach(FurnitureSetHouse furniture in House.furnitureList)
+                        foreach (FurnitureSetHouse furniture in House.furnitureList)
                         {
-                            if(furniture != null)
+                            if (furniture != null)
                             {
                                 House.SaveFurniture(furniture);
                             }
@@ -1752,7 +1784,7 @@ namespace NemesusWorld
                 }
                 if (killer != null && accountkiller != null && killer != player)
                 {
-                    if(tempkiller.killsintime == 0 || Helper.UnixTimestamp() > tempkiller.killsintime)
+                    if (tempkiller.killsintime == 0 || Helper.UnixTimestamp() > tempkiller.killsintime)
                     {
                         tempkiller.killsintime = Helper.UnixTimestamp() + (15);
                         tempkiller.kills = 0;
@@ -1761,7 +1793,7 @@ namespace NemesusWorld
                     Helper.SendAdminMessage2($"{accountkiller.name}({killer.Name}) hat {account.name}({player.Name}) umgebracht!", 1, true);
                     Helper.CreateAdminLog($"killlog", $" {accountkiller.name}({killer.Name}) hat {account.name}({player.Name}) umgebracht!");
                     accountkiller.kills++;
-                    if(tempkiller.kills >= 5)
+                    if (tempkiller.kills >= 5)
                     {
                         AntiCheatController.OnCallAntiCheat(player, $"Masskill Cheat", $"{accountkiller.kills}/Kills", true);
                     }
@@ -2914,7 +2946,8 @@ namespace NemesusWorld
                 ammuCol = NAPI.ColShape.CreatCircleColShape(7.2232156f, -1098.8546f, 0.85f, 0);
                 //Timer
                 halfOneMinuteTimer = new Timer(OnHalfOneMinuteTimer, null, 30000, 30000);
-                saveTimer = new Timer(OnServerSave, null, saveMinutes*60000, saveMinutes * 60000);
+                secondTimer = new Timer(OnSecondTimer, null, 1000, 1000);
+                saveTimer = new Timer(OnServerSave, null, saveMinutes * 60000, saveMinutes * 60000);
                 //Vehicles
                 //Tutorial Taxi
                 Cars.createNewCar("taxi", new Vector3(-1375.683, -817.50415f, 19.111004), -138f, 42, 42, "Taxi", "Tutorial", true, false, false, 1);
@@ -3349,6 +3382,111 @@ namespace NemesusWorld
             }
         }
 
+        //LoadEUPOutfits
+        public static void LoadEUPOutfits(bool insert = true, bool delete = false)
+        {
+            try
+            {
+                MySqlCommand command = null;
+                if (delete == true)
+                {
+                    command = General.Connection.CreateCommand();
+                    command.CommandText = "DELETE FROM outfits WHERE owner = 'EUP'";
+                    command.ExecuteNonQuery();
+                }
+
+                if (insert == true)
+                {
+                    command = General.Connection.CreateCommand();
+                    command.CommandText = "SELECT COUNT(*) FROM outfits";
+                    Int64 outfitCount = (Int64)command.ExecuteScalar();
+
+                    if (outfitCount >= 890) return;
+
+                    String line;
+                    String json1 = "[";
+                    String json2 = "[";
+                    String jsonTemp = "";
+                    String headline = "Male LSPD Class A";
+                    String category1 = "LSPD";
+                    String category2 = "Patrol Division";
+                    int count = 0;
+                    PetaPoco.Database db = new PetaPoco.Database(General.Connection);
+                    StreamReader sr = new StreamReader(@"./serverdata/outfits/eup.txt");
+                    line = sr.ReadLine();
+                    if(sr != null && line != null && line != "//EUP Menu by PieRGud | Edit by Nemesus.de")
+                    {
+                        Helper.ConsoleLog("error", $"[LoadEUPOutfits]: Ungültige EUP Liste gefunden oder keine EUP Liste gefunden!");
+                        return;
+                    }
+                    while (!sr.EndOfStream)
+                    {
+                        line = sr.ReadLine();
+                        if (line.StartsWith("[Male") || line.StartsWith("[Female"))
+                        {
+                            count = 0;
+                            json1 = "[";
+                            json2 = "[";
+                            jsonTemp = "";
+                            category1 = "n/A";
+                            category2 = "n/A";
+                            headline = line;
+                            headline = headline.Replace("[", "");
+                            headline = headline.Replace("]", "");
+                        }
+                        else
+                        {
+                            if (!String.IsNullOrWhiteSpace(line))
+                            {
+                                if (line.Contains(":"))
+                                {
+                                    jsonTemp = line.Split("=")[1];
+                                    if (json1 == "[")
+                                    {
+                                        json1 = json1 + $"{jsonTemp.Split(":")[0]}";
+                                        json2 = json2 + $"{jsonTemp.Split(":")[1]}";
+                                    }
+                                    else
+                                    {
+                                        json1 = json1 + $",{jsonTemp.Split(":")[0]}";
+                                        json2 = json2 + $",{jsonTemp.Split(":")[1]}";
+                                    }
+                                    if (line.Contains("Parachute"))
+                                    {
+                                        Outfits outfit = new Outfits();
+                                        outfit.name = headline;
+                                        outfit.owner = "EUP";
+                                        outfit.json1 = (json1 + "]");
+                                        outfit.json2 = (json2 + "]");
+                                        outfit.category1 = category1;
+                                        outfit.category2 = category2;
+                                        db.Save(outfit);
+                                    }
+                                }
+                                else
+                                {
+                                    if (line.StartsWith("Category2"))
+                                    {
+                                        category1 = line.Split("=")[1];
+                                    }
+                                    if (line.StartsWith("Category3"))
+                                    {
+                                        category2 = line.Split("=")[1];
+                                    }
+                                }
+                                count++;
+                            }
+                        }
+                    }
+                    sr.Close();
+                }
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[LoadEUPOutfits]: " + e.ToString());
+            }
+        }
+
         //Chats
         [ServerEvent(Event.ChatMessage)]
         public void OnPlayerChat(Player player, string message)
@@ -3401,30 +3539,32 @@ namespace NemesusWorld
                 if (Helper.adminSettings.voicerp == 0)
                 {
                     //Handychat
-                    if(tempData.inCall == true)
+                    if (tempData.inCall == true)
                     {
                         Player handyPlayer = SmartphoneController.GetPlayerFromSmartPhone(player.GetData<string>("Player:InCall"));
-                        if(handyPlayer != null)
+                        if (handyPlayer != null)
                         {
-                            Helper.SendChatMessage(player, "!{#EE82EE}* " + character.name + " sagt (Handy): " + message);
-                            Helper.SendChatMessage(handyPlayer, "!{#EE82EE}* " + character.name + " sagt (Handy): " + message);
-                            player.TriggerEvent("Client:SpeakAnim");
+                            TempData tempData2 = Helper.GetCharacterTempData(handyPlayer);
+                            if (tempData2 != null && tempData2.inCall2 == true)
+                            {
+                                Helper.SendChatMessage(player, "!{#EE82EE}* " + character.name + " sagt (Handy): " + message);
+                                Helper.SendChatMessage(handyPlayer, "!{#EE82EE}* " + character.name + " sagt (Handy): " + message);
+                                player.TriggerEvent("Client:SpeakAnim");
+                                return;
+                            }
                         }
-                        else
-                        {
-                            Helper.SendChatMessage(player, "!{#FF0000}TÜT - TÜT - TÜT");
-                        }
+                        Helper.SendChatMessage(player, "!{#FF0000}TÜT - TÜT - TÜT");
                         return;
                     }
                     //Normaler Chat
-                    if(tempData.adminduty == true)
+                    if (tempData.adminduty == true)
                     {
                         Helper.SendRadiusMessage("!{#FF0000}* " + message + " (( " + account.name + " ))", 13, player);
                         player.TriggerEvent("Client:SpeakAnim");
                     }
                     else
                     {
-                        Helper.SendRadiusMessage("!{#FFFFFF}* " + character.name+ " sagt: "+ message, 13, player);
+                        Helper.SendRadiusMessage("!{#FFFFFF}* " + character.name + " sagt: " + message, 13, player);
                         player.TriggerEvent("Client:SpeakAnim");
                     }
                     return;

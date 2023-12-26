@@ -36,6 +36,7 @@ namespace NemesusWorld.Database
         public int tutorialstep { get; set; }
         public int health { get; set; }
         public int armor { get; set; }
+        public int armorcolor { get; set; }
         public int thirst { get; set; }
         public int hunger { get; set; }
         public string screen { get; set; }
@@ -107,6 +108,7 @@ namespace NemesusWorld.Database
             tutorialstep = 0;
             health = 200;
             armor = 1;
+            armorcolor = 0;
             thirst = 100;
             hunger = 100;
             screen = "https://i.imgur.com/JjpH0qO.jpg";

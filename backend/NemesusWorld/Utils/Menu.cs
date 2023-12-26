@@ -448,23 +448,24 @@ namespace NemesusWorld.Utils
                 }
                 else if (setting == 3)
                 {
-                    if ((settingsvalue < 0 || settingsvalue >= 15) && character.faction != 1)
+                    if ((character.faction == 1 || character.faction == 2) && character.factionduty == true)
+                    {
+                        Helper.SendNotificationWithoutButton2(player, "Bitte wähle deine visuelle Schutzweste in der Umkleidekabine", "error", "Center");
+                        return;
+                    }
+                    if ((settingsvalue < 0 || settingsvalue > 3) && character.gender == 1)
                     {
                         Helper.SendNotificationWithoutButton2(player, "Ungültiger Wert!", "error", "Center");
                         return;
                     }
-                    if (!(settingsvalue < 0 || settingsvalue >= 15 || settingsvalue == 59 || settingsvalue == 60 || settingsvalue == 62 || settingsvalue == 65 || settingsvalue == 53 || settingsvalue == 51) && character.faction == 1 && character.gender == 1)
-                    {
-                        Helper.SendNotificationWithoutButton2(player, "Ungültiger Wert!", "error", "Center");
-                        return;
-                    }
-                    if (!(settingsvalue < 0 || settingsvalue >= 15 || settingsvalue == 59 || settingsvalue == 58 || settingsvalue == 60 || settingsvalue == 61 || settingsvalue == 62) && character.faction == 1 && character.gender == 2)
+                    if ((settingsvalue < 0 || settingsvalue > 2) && character.gender == 2)
                     {
                         Helper.SendNotificationWithoutButton2(player, "Ungültiger Wert!", "error", "Center");
                         return;
                     }
                     character.armor = settingsvalue;
-                    if (NAPI.Player.GetPlayerArmor(player) > 0)
+                    character.armorcolor = 0;
+                    if (NAPI.Player.GetPlayerArmor(player) > 0 && ((character.faction != 1 && character.faction != 2) || character.factionduty == false))
                     {
                         NAPI.Player.SetPlayerClothes(player, 9, settingsvalue, 0);
                     }

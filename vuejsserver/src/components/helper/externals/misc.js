@@ -59,42 +59,8 @@ export const invalidMask = [];
 export const invalidAccessoiresMen = [1, 2, 3, 4, 5, 6, 7, 8, 9, 13, 14, 15, 33, 40, 41, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 84, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 125, 126, 127, 128, 132, 133, 134, 146, 147, 148, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166];
 export const invalidAccessoiresWoman = [4, 16, 24, 25, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 63, 74, 75, 76, 77, 78, 79, 80, 95, 96, 97, 98, 102, 115, 116, 117, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135];
 
-//ToDo: Fraktionskleidung erweitern (Damit diese beim Dutypunkt angezeigt werden)
+//ToDo: Fraktionskleidung erweitern (Damit diese beim Dutypunkt angezeigt werden, alle nicht erwähnten Fraktionen sind durch das EUP Paket abgedeckt
 //Faction clothes
-//LSPD
-export const faction1TopsMen = [320, 328];
-export const faction1TopsWoman = [46, 331];
-export const faction1LegsMen = [35, 121, 149];
-export const faction1LegsWoman = [30, 34, 127];
-export const faction1ShoesMen = [25];
-export const faction1ShoesWoman = [25];
-export const faction1HeadMen = [-1, 115, 123, 124, 142, 143, 149];
-export const faction1HeadWoman = [-1, 45, 114, 122, 123, 141, 142, 148, 172];
-export const faction1UndershirtMen = [];
-export const faction1UndershirtWoman = [190];
-export const faction1TorsoMen = [0, 1, 4, 11, 174];
-export const faction1TorsoWoman = [0, 3, 9, 14, 215];
-export const faction1SGMen = [0, 2, 3, 4, 5, 7, 8, 9, 10, 15, 16, 17, 23, 33, 34, 35, 36, 37, 38, 39, 40, 41];
-export const faction1SGWoman = [5, 0, 1, 7, 8, 11, 19, 20, 21, 24, 25, 36, 37, 38, 39, 40, 41];
-export const faction1AccessoiresMen = [];
-export const faction1AccessoiresWoman = [];
-
-//LSRC
-export const faction2TopsMen = [314, 315];
-export const faction2TopsWoman = [];
-export const faction2LegsMen = [20, 35, 120];
-export const faction2LegsWoman = [23, 34, 135];
-export const faction2ShoesMen = [7, 25, 97];
-export const faction2ShoesWoman = [25];
-export const faction2HeadMen = [-1, 122, 137, 138, 177, 189];
-export const faction2HeadWoman = [-1, 121, 178, 188];
-export const faction2UndershirtMen = [];
-export const faction2UndershirtWoman = [];
-export const faction2TorsoMen = [0,1,4,11,92,174];
-export const faction2TorsoWoman = [0,3,98,152,215];
-export const faction2AccessoiresMen = [126];
-export const faction2AccessoiresWoman = [96, 97];
-
 //ACLS
 export const faction3TopsMen = [];
 export const faction3TopsWoman = [];

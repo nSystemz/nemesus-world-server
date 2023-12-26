@@ -1119,6 +1119,29 @@ namespace NemesusWorld.Database
                 Character character = Helper.GetCharacterData(player);
                 TempData tempData = Helper.GetCharacterTempData(player);
 
+                if(faction == true && (character.faction == 1 || character.faction == 2))
+                {
+                    if (character.factionduty == false)
+                    {
+                        Helper.SendNotificationWithoutButton(player, $"Dienst begonnen!", "success");
+                        character.factionduty = true;
+                        Items radio = ItemsController.GetItemByItemName(player, "Funkgerät");
+                        if (radio == null)
+                        {
+                            Items newitem = ItemsController.CreateNewItem(player, character.id, "Funkgerät", "Player", 1, ItemsController.GetFreeItemID(player));
+                            if (newitem != null && ItemsController.CanPlayerHoldItem(player, newitem.weight))
+                            {
+                                tempData.itemlist.Add(newitem);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Helper.SendNotificationWithoutButton(player, $"Dienstoutfit gewechselt!", "success");
+                    }
+                    return;
+                }
+
                 if (faction == false)
                 {
                     if (value <= 0 || value > 25000)

@@ -3297,10 +3297,11 @@ namespace NemesusWorld.Utils
 
                                 if (character.faction == 1)
                                 {
-                                    character.armor = 59;
-                                    if (NAPI.Player.GetPlayerArmor(player) > 0)
+                                    character.armor = 4;
+                                    character.armorcolor = 0;
+                                    if (NAPI.Player.GetPlayerArmor(player) > 0 && character.factionduty == false)
                                     {
-                                        NAPI.Player.SetPlayerClothes(player, 9, character.armor, 0);
+                                        NAPI.Player.SetPlayerClothes(player, 9, character.armor, character.armorcolor);
                                     }
                                 }
 
@@ -7728,9 +7729,19 @@ namespace NemesusWorld.Utils
                     }
                     PetaPoco.Database db = new PetaPoco.Database(General.Connection);
                     List<Outfits> outfitList = new List<Outfits>();
-                    foreach (Outfits outfit in db.Fetch<Outfits>("SELECT * FROM outfits WHERE owner = @0 LIMIT 3", "faction-" + character.id))
+                    if (character.gender == 1)
                     {
-                        outfitList.Add(outfit);
+                        foreach (Outfits outfit in db.Fetch<Outfits>("SELECT * FROM outfits WHERE owner = 'EUP' AND category1 IN ('LSPD', 'LSSD', 'SAHP') AND name LIKE 'Male%' LIMIT 150"))
+                        {
+                            outfitList.Add(outfit);
+                        }
+                    }
+                    else
+                    {
+                        foreach (Outfits outfit in db.Fetch<Outfits>("SELECT * FROM outfits WHERE owner = 'EUP' AND category1 IN ('LSPD', 'LSSD', 'SAHP') AND name LIKE 'Female%' LIMIT 150"))
+                        {
+                            outfitList.Add(outfit);
+                        }
                     }
                     if (IsInRangeOfPoint(player.Position, new Vector3(471.16223, -988.9328, 25.734646), 4.25f))
                     {
@@ -7753,13 +7764,20 @@ namespace NemesusWorld.Utils
                         player.TriggerEvent("Client:CharacterCameraOn");
                     }, delayTime: 500);
                     player.SetData<bool>("Player:InShop", true);
-                    NAPI.Player.ClearPlayerAccessory(player, 2);
-                    NAPI.Player.ClearPlayerAccessory(player, 6);
-                    NAPI.Player.ClearPlayerAccessory(player, 7);
-                    NAPI.Player.SetPlayerClothes(player, 5, 0, 0);
-                    NAPI.Player.SetPlayerClothes(player, 7, 0, 0);
-                    NAPI.Player.ClearPlayerAccessory(player, 1);
-                    NAPI.Player.SetPlayerClothes(player, 1, 0, 0);
+                    if(character.gender == 1)
+                    {
+                        foreach(Outfits outfits in outfitList)
+                        {
+                            outfits.name = outfits.name.Substring(4);
+                        }
+                    }
+                    else
+                    {
+                        foreach (Outfits outfits in outfitList)
+                        {
+                            outfits.name = outfits.name.Substring(6);
+                        }
+                    }
                     player.TriggerEvent("Client:ShowFactionClothing", NAPI.Util.ToJson(obj["clothing"]), NAPI.Util.ToJson(obj["clothingColor"]), character.gender, character.faction, NAPI.Util.ToJson(outfitList));
                     return;
                 }
@@ -7789,9 +7807,19 @@ namespace NemesusWorld.Utils
                     }
                     PetaPoco.Database db = new PetaPoco.Database(General.Connection);
                     List<Outfits> outfitList = new List<Outfits>();
-                    foreach (Outfits outfit in db.Fetch<Outfits>("SELECT * FROM outfits WHERE owner = @0 LIMIT 3", "faction-" + character.id))
+                    if (character.gender == 1)
                     {
-                        outfitList.Add(outfit);
+                        foreach (Outfits outfit in db.Fetch<Outfits>("SELECT * FROM outfits WHERE owner = 'EUP' AND category1 IN ('Medical Services', 'LSFD', 'SanFire') AND name LIKE 'Male%' LIMIT 150"))
+                        {
+                            outfitList.Add(outfit);
+                        }
+                    }
+                    else
+                    {
+                        foreach (Outfits outfit in db.Fetch<Outfits>("SELECT * FROM outfits WHERE owner = 'EUP' AND category1 IN ('Medical Services', 'LSFD', 'SanFire') AND name LIKE 'Female%' LIMIT 150"))
+                        {
+                            outfitList.Add(outfit);
+                        }
                     }
                     if (IsInRangeOfPoint(player.Position, new Vector3(-663.262, 321.58627, 92.74433), 4.25f))
                     {
@@ -7811,6 +7839,20 @@ namespace NemesusWorld.Utils
                     NAPI.Player.SetPlayerClothes(player, 7, 0, 0);
                     NAPI.Player.ClearPlayerAccessory(player, 1);
                     NAPI.Player.SetPlayerClothes(player, 1, 0, 0);
+                    if (character.gender == 1)
+                    {
+                        foreach (Outfits outfits in outfitList)
+                        {
+                            outfits.name = outfits.name.Substring(4);
+                        }
+                    }
+                    else
+                    {
+                        foreach (Outfits outfits in outfitList)
+                        {
+                            outfits.name = outfits.name.Substring(6);
+                        }
+                    }
                     player.TriggerEvent("Client:ShowFactionClothing", NAPI.Util.ToJson(obj["clothing"]), NAPI.Util.ToJson(obj["clothingColor"]), character.gender, character.faction, NAPI.Util.ToJson(outfitList));
                     return;
                 }
@@ -9712,8 +9754,13 @@ namespace NemesusWorld.Utils
                 if (modus == 1)
                 {
                     Vector3 positionBehind = Helper.GetPositionBehindOfVehicle(player.Vehicle, 7.55f); //Wert von 7.55f auf beliebigen (höheren) Wert ändern, umso weiter steht das Fahrzeug hinter dem Spielerfahrzeug
-                    vehicle.Position = positionBehind;
-                    vehicle.Rotation.Z = player.Vehicle.Rotation.Z;
+                    vehicle.Dimension = 1;
+                    NAPI.Task.Run(() =>
+                    {
+                        vehicle.Position = positionBehind;
+                        vehicle.Rotation.Z = player.Vehicle.Rotation.Z;
+                        vehicle.Dimension = player.Dimension;
+                    }, delayTime: 215);
                     Helper.SendNotificationWithoutButton(player, "Das Fahrzeug wurde erfolgreich aus dem Wasser gezogen!", "success");
                 }
                 else
@@ -10663,7 +10710,7 @@ namespace NemesusWorld.Utils
                                 SendNotificationWithoutButton(player, "Der Tank des Fahrzeuges ist leer!", "error");
                                 return;
                             }
-                            if (vehicle.GetSharedData<int>("Vehicle:Oel") <= 0 || vehicle.GetSharedData<int>("Vehicle:Battery") <= 0 || NAPI.Vehicle.GetVehicleHealth(vehicle) <= 0 || NAPI.Vehicle.GetVehicleEngineHealth(vehicle) <= 50)
+                            if (vehicle.GetSharedData<int>("Vehicle:Oel") <= 0 || vehicle.GetSharedData<int>("Vehicle:Battery") <= 0 || NAPI.Vehicle.GetVehicleHealth(vehicle) <= 215 || NAPI.Vehicle.GetVehicleEngineHealth(vehicle) <= 215)
                             {
                                 SendNotificationWithoutButton(player, "Der Motor springt nichtmehr an!", "error");
                                 return;
@@ -16339,7 +16386,7 @@ namespace NemesusWorld.Utils
                                     SendNotificationWithoutButton(player, "Der Tank des Fahrzeuges ist leer!", "error");
                                     return;
                                 }
-                                if (player.Vehicle.GetSharedData<int>("Vehicle:Oel") <= 0 || player.Vehicle.GetSharedData<int>("Vehicle:Battery") <= 0 || NAPI.Vehicle.GetVehicleHealth(player.Vehicle) <= 0 || NAPI.Vehicle.GetVehicleEngineHealth(player.Vehicle) <= 50)
+                                if (player.Vehicle.GetSharedData<int>("Vehicle:Oel") <= 0 || player.Vehicle.GetSharedData<int>("Vehicle:Battery") <= 0 || NAPI.Vehicle.GetVehicleHealth(player.Vehicle) <= 215 || NAPI.Vehicle.GetVehicleEngineHealth(player.Vehicle) <= 215)
                                 {
                                     SendNotificationWithoutButton(player, "Der Motor springt nicht an!", "error");
                                     return;
@@ -17044,31 +17091,63 @@ namespace NemesusWorld.Utils
         }
 
         [RemoteEvent("Server:WardrobeAktion")]
-        public static void WardrobeAktion(Player player, String aktion, String name = "n/A")
+        public static void WardrobeAktion(Player player, String aktion, String name = "n/A", String bonus = "n/A")
         {
             try
             {
                 Character character = GetCharacterData(player);
+                String outfitName = "";
 
                 if (character == null) return;
 
-                int wardrobeID = player.GetData<int>("Player:WardrobeID");
+                int wardrobeID = -1;
+
+                if (bonus == "n/A")
+                {
+                    wardrobeID = player.GetData<int>("Player:WardrobeID");
+                }
 
                 PetaPoco.Database db = new PetaPoco.Database(General.Connection);
                 List<Outfits> outfitList = new List<Outfits>();
-                foreach (Outfits outfit in db.Fetch<Outfits>("SELECT * FROM outfits WHERE owner = @0 LIMIT 10", "furniture-" + wardrobeID))
+                if (bonus == "n/A")
                 {
-                    outfitList.Add(outfit);
+                    foreach (Outfits outfit in db.Fetch<Outfits>("SELECT * FROM outfits WHERE owner = @0 LIMIT 10", "furniture-" + wardrobeID))
+                    {
+                        outfitList.Add(outfit);
+                    }
+                }
+
+                if(bonus == "EUP")
+                {
+                    foreach (Outfits outfit in db.Fetch<Outfits>("SELECT * FROM outfits WHERE owner = 'EUP' LIMIT 931"))
+                    {
+                        outfitList.Add(outfit);
+                    }
                 }
 
                 switch (aktion.ToLower())
                 {
                     case "selectoutfit":
                         {
-                            Outfits outfits = outfitList.Find(o => o.name == name);
+                            if (bonus == "EUP")
+                            {
+                                if (character.gender == 1)
+                                {
+                                    outfitName = "Male" + name;
+                                }
+                                else
+                                {
+                                    outfitName = "Female" + name;
+                                }
+                            }
+                            else
+                            {
+                                outfitName = name;
+                            }
+                            Outfits outfits = outfitList.Find(o => o.name == outfitName);
                             if (outfits == null)
                             {
-                                SendNotificationWithoutButton(player, "Ungültiges Outfit!", "error");
+                                SendNotificationWithoutButton(player, $"Ungültiges Outfit - {outfitName}!", "error");
                                 return;
                             }
 
@@ -17079,33 +17158,124 @@ namespace NemesusWorld.Utils
                             JObject obj = null;
 
                             obj = JObject.Parse(character.json);
+
                             json1 = json1.Substring(1, json1.Length - 2);
                             json2 = json2.Substring(1, json2.Length - 2);
 
                             json1Array = json1.Split(",");
                             json2Array = json2.Split(",");
 
-                            for (int i = 0; i < json1Array.Length; i++)
+                            if (outfits.owner != "EUP")
                             {
-                                obj["clothing"][i] = Convert.ToInt32(json1Array[i]);
-                                obj["clothingColor"][i] = Convert.ToInt32(json2Array[i]);
+                                for (int i = 0; i < json1Array.Length; i++)
+                                {
+                                    obj["clothing"][i] = Convert.ToInt32(json1Array[i]);
+                                    obj["clothingColor"][i] = Convert.ToInt32(json2Array[i]);
+                                }
+                            }
+                            else
+                            {
+                                NAPI.Player.ClearPlayerAccessory(player, 0);
+                                NAPI.Player.ClearPlayerAccessory(player, 1);
+                                NAPI.Player.ClearPlayerAccessory(player, 2);
+                                NAPI.Player.ClearPlayerAccessory(player, 6);
+                                NAPI.Player.ClearPlayerAccessory(player, 7);
+                                NAPI.Player.SetPlayerClothes(player, 10, 0, 0);
+                                NAPI.Player.SetPlayerClothes(player, 5, 0, 0);
+                                NAPI.Player.SetPlayerClothes(player, 7, 0, 0);
+                                NAPI.Player.SetPlayerClothes(player, 1, 0, 0);
+                                NAPI.Player.SetPlayerClothes(player, 9, 0, 0);
+
+                                //Top
+                                obj["clothing"][0] = Convert.ToInt32(json1Array[5]) - 1;
+                                obj["clothingColor"][0] = Convert.ToInt32(json2Array[5]) - 1;
+                                //Torso
+                                obj["clothing"][1] = Convert.ToInt32(json1Array[6]) - 1;
+                                obj["clothingColor"][1] = Convert.ToInt32(json2Array[6]) - 1;
+                                //Legs
+                                obj["clothing"][2] = Convert.ToInt32(json1Array[9]) - 1;
+                                obj["clothingColor"][2] = Convert.ToInt32(json2Array[9]) - 1;
+                                //Shoes
+                                obj["clothing"][3] = Convert.ToInt32(json1Array[10]) - 1;
+                                obj["clothingColor"][3] = Convert.ToInt32(json2Array[10]) - 1;
+                                //Undershirt
+                                obj["clothing"][4] = Convert.ToInt32(json1Array[8]) - 1;
+                                obj["clothingColor"][4] = Convert.ToInt32(json2Array[8]) - 1;
+                                //Bag
+                                obj["clothing"][5] = Convert.ToInt32(json1Array[13]) - 1;
+                                obj["clothingColor"][5] = Convert.ToInt32(json2Array[13]) - 1;
+                                //Glasses
+                                obj["clothing"][6] = Convert.ToInt32(json1Array[1]) - 1;
+                                obj["clothingColor"][6] = Convert.ToInt32(json2Array[1]) - 1;
+                                //Hat
+                                obj["clothing"][7] = Convert.ToInt32(json1Array[0]) - 1;
+                                obj["clothingColor"][7] = Convert.ToInt32(json2Array[0]) - 1;
+                                //Mask
+                                obj["clothing"][8] = Convert.ToInt32(json1Array[4]) - 1;
+                                obj["clothingColor"][8] = Convert.ToInt32(json2Array[4]) - 1;
+                                //Ears
+                                obj["clothing"][9] = Convert.ToInt32(json1Array[2]) - 1;
+                                obj["clothingColor"][9] = Convert.ToInt32(json2Array[2]) - 1;
+                                if (Convert.ToInt32(json1Array[2]) <= 0)
+                                {
+                                    obj["clothing"][9] = 255;
+                                    obj["clothingColor"][9] = 0;
+                                }
+                                //Watches
+                                obj["clothing"][10] = Convert.ToInt32(json1Array[3]) - 1;
+                                obj["clothingColor"][10] = Convert.ToInt32(json2Array[3]) - 1;
+                                if (Convert.ToInt32(json1Array[3]) <= 0)
+                                {
+                                    obj["clothing"][10] = 255;
+                                    obj["clothingColor"][10] = 0;
+                                }
+                                //Bracelets
+                                obj["clothing"][11] = Convert.ToInt32(json1Array[7]) - 1;
+                                obj["clothingColor"][11] = Convert.ToInt32(json2Array[7]) - 1;
+                                if (Convert.ToInt32(json1Array[7]) <= 0)
+                                {
+                                    obj["clothing"][11] = 255;
+                                    obj["clothingColor"][11] = 0;
+                                }
+                                //Accessories
+                                obj["clothing"][12] = Convert.ToInt32(json1Array[11]) - 1;
+                                obj["clothingColor"][12] = Convert.ToInt32(json2Array[11]) - 1;
+                                //Armor
+                                NAPI.Player.SetPlayerClothes(player, 9, Convert.ToInt32(json1Array[12])-1, Convert.ToInt32(json2Array[12]) - 1);
+                                character.armor = Convert.ToInt32(json1Array[12]) - 1;
+                                character.armorcolor = Convert.ToInt32(json2Array[12]) - 1;
+                            }
+
+                            if (outfits.owner != "EUP")
+                            {
+                                character.json = NAPI.Util.ToJson(obj);
+                            }
+                            else
+                            {
+                                character.dutyjson = NAPI.Util.ToJson(obj);
                             }
 
                             CharacterController.SetCharacterCloths(player, obj, character.clothing);
 
-                            character.json = NAPI.Util.ToJson(obj);
+                            if (outfits.owner != "EUP")
+                            {
+                                MySqlCommand command = General.Connection.CreateCommand();
+                                command.CommandText = "DELETE FROM outfits WHERE name=@name AND owner=@owner";
+                                command.Parameters.AddWithValue("name", name);
+                                command.Parameters.AddWithValue("owner", "furniture-" + wardrobeID);
+                                command.ExecuteNonQuery();
+                                UpdateWardrobe(player);
+                            }
 
-                            MySqlCommand command = General.Connection.CreateCommand();
-                            command.CommandText = "DELETE FROM outfits WHERE name=@name AND owner=@owner";
-                            command.Parameters.AddWithValue("name", name);
-                            command.Parameters.AddWithValue("owner", "furniture-" + wardrobeID);
-                            command.ExecuteNonQuery();
-
-                            SendNotificationWithoutButton(player, "Outfit ausgewählt!", "success");
-
+                            if (outfits.owner != "EUP")
+                            {
+                                SendNotificationWithoutButton(player, "Outfit ausgewählt!", "success");
+                            }
+                            else
+                            {
+                                SendNotificationWithoutButton(player, "Dienstoutfit ausgewählt!", "success");
+                            }
                             Helper.PlayShortAnimation(player, "missmic4", "michael_tux_fidget", 1500);
-
-                            UpdateWardrobe(player);
                             break;
                         }
                     case "deleteoutfit":

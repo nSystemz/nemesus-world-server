@@ -54,7 +54,10 @@ namespace NemesusWorld.Controllers
                 if (cheatname == "Schutzwesten Cheat")
                 {
                     Helper.SetPlayerArmor(player, 0);
-                    NAPI.Player.SetPlayerClothes(player, 9, 0, 0);
+                    if (character.factionduty == false || (character.faction != 1 && character.faction != 2))
+                    {
+                        NAPI.Player.SetPlayerClothes(player, 9, 0, 0);
+                    }
                     if (character.items.Length > 5)
                     {
                         foreach (Items item in tempData.itemlist)

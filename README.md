@@ -4,7 +4,11 @@ Weitere Credits gehen an Hrred für die Erstellung von vielen Maps und sonstigen
 
 (Euch gefällt der Gamemode? Dann lasst doch gerne ein Stern hier auf Github da ;))
 
-Info Vorab: Dieser Gamemode kann als Voice-RP oder Text-RP Gamemode verwendet werden.
+Info Vorab: Dieser Gamemode kann als Voice-RP (Salty-Chat oder RageMP Voice) oder Text-RP Gamemode verwendet werden.
+
+Bei RageMP Voice bitte folgende Einstellungen zu deiner conf.json hinzufügen:
+"voice-chat": true,
+"voice-chat-sample-rate": 48000 
 
 Bei diesem Gamemode handelt es sich um einen Gamemode für die Multiplayer Modifikation GTA 5/RageMP, Credits sind im Gamemode vermerkt oder bei der jeweiligen Funktion/MLO etc.
 
@@ -44,7 +48,7 @@ Nemesus World ist ein RageMP/GTA5 Roleplay Gamemode und beinhaltet sehr viele Fe
     EUP Kleidung von alex_ashfold
     und vieles mehr ...
 
-game_resources (MLOs etc...) Download: https://bit.ly/3GVBL0U
+game_resources (MLOs etc...) Download: https://bit.ly/3TApxCf
 
 Fehlende MLOs (Diese könnt Ihr euch bei dem jeweiligen Ersteller kaufen/downloaden):
 - MD: ShmannWorks - Eclipse Medical Tower

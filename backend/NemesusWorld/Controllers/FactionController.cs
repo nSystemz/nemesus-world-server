@@ -1159,15 +1159,17 @@ namespace NemesusWorld.Controllers
                                 {
                                     if (character.gender == 1)
                                     {
-                                        character.armor = 4;
+                                        character.armor = 2;
+                                        character.armorcolor = 0;
                                     }
                                     else
                                     {
-                                        character.armor = 5;
+                                        character.armor = 2;
+                                        character.armorcolor = 0;
                                     }
                                     if (NAPI.Player.GetPlayerArmor(player) > 0)
                                     {
-                                        NAPI.Player.SetPlayerClothes(player, 9, character.armor, 0);
+                                        NAPI.Player.SetPlayerClothes(player, 9, character.armor, character.armorcolor);
                                     }
                                 }
 

@@ -140,10 +140,12 @@ namespace NemesusWorld.Controllers
                 if (character.gender == 1)
                 {
                     character.armor = 4;
+                    character.armorcolor = 0;
                 }
                 else
                 {
                     character.armor = 5;
+                    character.armorcolor = 0;
                 }
                 character.hunger = 100;
                 character.thirst = 100;
@@ -346,7 +348,10 @@ namespace NemesusWorld.Controllers
                                             armor = 99;
                                         }
                                         Helper.SetPlayerArmor(player, armor);
-                                        NAPI.Player.SetPlayerClothes(player, 9, Convert.ToInt32(character.armor), 0);
+                                        if (character.factionduty == false || (character.faction != 1 && character.faction != 2))
+                                        {
+                                            NAPI.Player.SetPlayerClothes(player, 9, Convert.ToInt32(character.armor), Convert.ToInt32(character.armorcolor));
+                                        }
                                     }
                                 }
                             }
@@ -722,6 +727,7 @@ namespace NemesusWorld.Controllers
                 }
                 else
                 {
+                    NAPI.Player.SetPlayerClothes(player, 9, 0, 0);
                     NAPI.Player.SetPlayerAccessory(player, 2, (int)obj["clothing"][9], (int)obj["clothingColor"][9]);
                     if (clothingArray[0] == "1")
                     {
@@ -774,6 +780,10 @@ namespace NemesusWorld.Controllers
                         NAPI.Player.SetPlayerClothes(player, 3, 14, 0);
                         NAPI.Player.SetPlayerClothes(player, 4, 75, 0);
                         NAPI.Player.SetPlayerClothes(player, 6, 103, 0);
+                    }
+                    if((character.faction == 1 || character.faction == 2) && character.factionduty == true)
+                    {
+                        NAPI.Player.SetPlayerClothes(player, 9, character.armor, character.armorcolor);
                     }
                 }
             }

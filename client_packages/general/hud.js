@@ -774,8 +774,7 @@ mp.events.add('render', (nametags) => {
     //Nametags
     if (nametagSystem == 0) {
         UpdateNameTags1(nametags);
-    }
-    else {
+    } else {
         UpdateNameTags2(nametags);
     }
 
@@ -892,7 +891,7 @@ mp.events.add('render', (nametags) => {
                 } else {
                     mp.game.streaming.requestNamedPtfxAsset("core");
                 }
-            } catch { }
+            } catch {}
         });
     }
 
@@ -904,7 +903,12 @@ mp.events.add('render', (nametags) => {
                 if (distance <= 22.5) {
                     vehiclename = vehicle.getVariable('Vehicle:Name');
                     vehiclename = vehiclename.charAt(0).toUpperCase() + vehiclename.slice(1).toLowerCase();
-                    mp.game.graphics.drawText(`~b~${vehiclename} [${vehicle.remoteId}]\n${vehicle.position.x.toFixed(2)}, ${vehicle.position.y.toFixed(2)}, ${vehicle.position.z.toFixed(2)}\n${vehicle.getRotation(5).x.toFixed(2)}, ${vehicle.getRotation(5).y.toFixed(2)}, ${vehicle.getRotation(5).z.toFixed(2)}\n${parseInt((100 / 1000) * vehicle.getHealth())}%
+                    let engineHealth = localPlayer.vehicle.getEngineHealth();
+                    if(engineHealth <= 0)
+                    {
+                        engineHealth = 0;
+                    }
+                    mp.game.graphics.drawText(`~b~${vehiclename} [${vehicle.remoteId}]\n${vehicle.position.x.toFixed(2)}, ${vehicle.position.y.toFixed(2)}, ${vehicle.position.z.toFixed(2)}\n${vehicle.getRotation(5).x.toFixed(2)}, ${vehicle.getRotation(5).y.toFixed(2)}, ${vehicle.getRotation(5).z.toFixed(2)}\n${parseInt((100 / 1000) * engineHealth)}%
                 `, [vehicle.position.x, vehicle.position.y, vehicle.position.z + 0.25], {
                         font: 0,
                         color: [255, 255, 255, 185],
@@ -919,7 +923,7 @@ mp.events.add('render', (nametags) => {
 
     //Deathsystem
     let spawned = localPlayer.getVariable('Player:Spawned');
-    if (!death && spawned && (getPlayerHealth(localPlayer)-100) < 10) {
+    if (!death && spawned && (getPlayerHealth(localPlayer) - 100) < 10) {
         hideMenus();
         mp.events.callRemote('Server:SetDeath', null, 7);
     }
@@ -1098,8 +1102,7 @@ mp.events.add("Client:SyncThings", (pricesCsv, animationhotkeys, chair, gprices,
     hudWindow.execute(`gui.hud.setvoicerp('${voicerp}');`);
     hudWindow.execute(`gui.speedometer.setvoicerp('${voicerp}');`);
     mp.discord.update('Nemesus-World.de (Nemesus.de)', 'Spielt als ' + name);
-    if(voicerp == 2)
-    {
+    if (voicerp == 2) {
         mp.events.call("Client:SetTalkstate2", 0);
         voiceChatOff = true;
         mp.voiceChat.muted = voiceChatOff;
@@ -1166,9 +1169,7 @@ mp.events.add("Client:ShowSpeedometer", () => {
                 maxspeed = mp.game.vehicle.getVehicleModelMaxSpeed(localPlayer.vehicle.model) * 3.6;
             }
             hudWindow.execute(`gui.speedometer.showSpeedometer('${maxspeed + getSpeedBonus(localPlayer.vehicle)}');`)
-        }
-        else
-        {
+        } else {
             hudWindow.execute(`gui.speedometer.showSpeedometer('${maxspeed + 0}');`)
         }
     }
@@ -1965,7 +1966,7 @@ mp.events.add("Client:MuteMicro", (micro) => {
 
 mp.events.add("Client:CloseHandy", () => {
     if (hudWindow != null) {
-        mp.events.callRemote('Server:CloseHandy',);
+        mp.events.callRemote('Server:CloseHandy', );
     }
 })
 
@@ -2045,8 +2046,8 @@ mp.events.add("Client:ShowWardrobe", (json) => {
     }
 });
 
-mp.events.add("Client:WardrobeAktion", (aktion, name) => {
-    mp.events.callRemote('Server:WardrobeAktion', aktion, name);
+mp.events.add("Client:WardrobeAktion", (aktion, name, bonus) => {
+    mp.events.callRemote('Server:WardrobeAktion', aktion, name, bonus);
 });
 
 mp.events.add("Client:UpdateWardrobe", (json) => {
@@ -2222,6 +2223,7 @@ mp.events.add("Client:GroupSettings", (settings, json) => {
         showCityhall = false;
         if (settings == 'leave') {
             showMenu = false;
+            localPlayer.freezePosition(false);
         }
         mp.events.callRemote('Server:GroupSettings', settings, json);
     }
@@ -2257,6 +2259,7 @@ mp.events.add("Client:HideMenu", () => {
         showHideChat(true);
         enableDisableRadar(true);
         showMenu = false;
+        localPlayer.freezePosition(false);
     }
 })
 
@@ -2295,6 +2298,7 @@ mp.events.add("Client:ShowCars", (json, set) => {
             let factionrang = localPlayer.getVariable('Player:FactionRang');
             let job = localPlayer.getVariable('Player:Job');
             showMenu = !showMenu;
+            localPlayer.freezePosition(showMenu);
             hudWindow.execute(`gui.menu.showMenu('${admin}','${adminduty}','${group}','${grouprang}','${faction}','${factionrang}','${job}');`)
             if (ticketCooldown == 0 || (Date.now() / 1000) > ticketCooldown) {
                 ticketCooldown = (Date.now() / 1000) + (60 * 2);
@@ -2420,6 +2424,7 @@ mp.events.add("Client:FactionSettings", (settings, json) => {
         showCityhall = false;
         if (settings == 'leave') {
             showMenu = false;
+            localPlayer.freezePosition(false);
         }
         mp.events.callRemote('Server:FactionSettings', settings, json);
     }
@@ -3724,12 +3729,10 @@ mp.events.add("Client:ShowBlackFadeOut", (legal) => {
 
 mp.events.add("Client:CheckIfEntityIsInWater", (vehicle, vehicleid) => {
     if (vehicle != null) {
-        if(vehicle.isInWater())
-        {
+        if (vehicle.isInWater()) {
+            vehicle.setFixed();
             mp.events.callRemote('Server:GetVehicleOutOfWater', 1, vehicleid);
-        }
-        else
-        {
+        } else {
             mp.events.callRemote('Server:GetVehicleOutOfWater', 0, vehicleid);
         }
     }
@@ -3771,6 +3774,7 @@ mp.events.add("Client:PressF2", () => {
     let factionrang = localPlayer.getVariable('Player:FactionRang');
     let job = localPlayer.getVariable('Player:Job');
     showMenu = !showMenu;
+    localPlayer.freezePosition(showMenu);
     mp.events.call('Client:StopAllNotifications');
     hudWindow.execute(`gui.menu.showMenu('${admin}','${adminduty}','${group}','${grouprang}','${faction}','${factionrang}','${job}','${level}');`)
     if (ticketCooldown == 0 || (Date.now() / 1000) > ticketCooldown) {
@@ -3921,17 +3925,13 @@ mp.keys.bind(0x78, true, function () {
         let spawned = localPlayer.getVariable('Player:Spawned');
         if (showSaltyError == true || triggerAntiCheat == true || localPlayer.isTypingInTextChat || !spawned || nokeys == true || death == true || arrested == true || cuffed == true || showMenu == true || showInventory == true || showWheel == true || showFurniture == true || InteriorSwitch == true || prisonCount > 0 || showCenterMenu == true || showBank == true || showCarSetting == true || showCityhall == true || showSped == true || showFuel == true || showAmmu == true || showShop == true || startRange == true || showShop2 == true || startRange == true || showDealer == true || showTab == true || handsUp == true || barberMenu == true || tattooShop == true || afk == true || ping == true || hack == true) return;
         if (hudWindow != null) {
-            if(voicerp == 2)
-            {
-                if(voiceChatOff == true)
-                {
+            if (voicerp == 2) {
+                if (voiceChatOff == true) {
                     hudWindow.execute(`gui.hud.sendNotificationWithoutButton('Voice-Chat aktiviert!','success','top-left',1500);`);
                     mp.events.call("Client:SetTalkstate2", 1);
                     mp.voiceChat.muted = false;
                     voiceChatOff = false;
-                }
-                else
-                {
+                } else {
                     hudWindow.execute(`gui.hud.sendNotificationWithoutButton('Voice-Chat deaktiviert!','success','top-left',1500);`);
                     mp.events.call("Client:SetTalkstate2", 0);
                     mp.voiceChat.muted = true;
@@ -5396,8 +5396,7 @@ setInterval(() => {
         }
     }
     //Speedometer Check
-    if(showSpeedo == true && !localPlayer.vehicle)
-    {
+    if (showSpeedo == true && !localPlayer.vehicle) {
         mp.events.call('Client:ShowSpeedometer');
     }
     //Anticheat
@@ -5471,7 +5470,7 @@ setInterval(() => {
     updateHealthArmor();
     //Damage effect
     if (death == false) {
-        if ((getPlayerHealth(localPlayer)-100) <= 15 && (getPlayerHealth(localPlayer)-100) > 1) {
+        if ((getPlayerHealth(localPlayer) - 100) <= 15 && (getPlayerHealth(localPlayer) - 100) > 1) {
             if (damageEffect == false) {
                 damageEffect = true;
                 mp.game.graphics.startScreenEffect("DeathFailMPDark", -1, false);
@@ -6223,7 +6222,7 @@ mp.events.add('playerWeaponShot', (targetPosition, targetEntity) => {
                 }
             } else {
                 let secs = Date.now() / 1000 - rangeTime;
-		showAmmu = false;
+                showAmmu = false;
                 if (rangeStatus == 1) {
                     mp.events.callRemote('Server:StartRange', 2, secs);
                 } else {
@@ -6607,7 +6606,7 @@ mp.events.add('entityStreamIn', (entity) => {
                 }
             }
         }
-    } catch { }
+    } catch {}
 });
 
 mp.events.add('entityStreamOut', (entity) => {
@@ -6664,7 +6663,7 @@ mp.events.add('entityStreamOut', (entity) => {
                 entityAttachments = entityAttachments.filter(am => am.delete == false);
             }
         }
-    } catch { }
+    } catch {}
 });
 
 //HideCursor
@@ -7723,6 +7722,7 @@ function hideMenus(check = true) {
         if (hudWindow != null) {
             hudWindow.execute(`gui.menu.showMenu('${admin}','${adminduty}','${group}','${grouprang}','${faction}','${factionrang}','${job}');`)
         }
+        localPlayer.freezePosition(false);
     }
     if (showDl == true) {
         showDl = false;
@@ -8028,9 +8028,9 @@ function GetAdminRang(entity, rang) {
 function updateSpeedometer() {
     if (localPlayer.vehicle && showSpeedo == true) {
         if (hudWindow != null) {
-            let engineHealth = localPlayer.vehicle.getHealth();
-            if(engineHealth < 0) engineHealth = 0;
-            if(engineHealth > 1000) engineHealth = 1000;
+            let engineHealth = localPlayer.vehicle.getEngineHealth();
+            if (engineHealth < 0) engineHealth = 0;
+            if (engineHealth > 1000) engineHealth = 1000;
             let speed = localPlayer.vehicle.getSpeed() * 3.6;
             let locked = localPlayer.vehicle.getDoorLockStatus();
             let engine = localPlayer.getVariable('Player:VehicleEngine');
@@ -8171,7 +8171,7 @@ function UpdateNameTags1(nametags) {
                         }
                         var healthplayer = player.getVariable('Player:HealthSync');
                         if (healthplayer > 100) {
-                            healthplayer = healthplayer-100;
+                            healthplayer = healthplayer - 100;
                         }
                         var armourplayer = player.getArmour();
                         let realname = player.getVariable('Player:Name');
@@ -8201,7 +8201,7 @@ function UpdateNameTags1(nametags) {
                 }
             }
         })
-    } catch { }
+    } catch {}
 }
 
 function UpdateNameTags2(nametags) {
@@ -8267,7 +8267,7 @@ function UpdateNameTags2(nametags) {
                         }
                         var healthplayer = player.getVariable('Player:HealthSync');
                         if (healthplayer > 100) {
-                            healthplayer = healthplayer-100;
+                            healthplayer = healthplayer - 100;
                         }
                         var armourplayer = player.getArmour();
                         let realname = player.getVariable('Player:Name');
@@ -8297,7 +8297,7 @@ function UpdateNameTags2(nametags) {
                 }
             }
         })
-    } catch { }
+    } catch {}
 }
 
 const createObject = (model, pos, rot, dim) => {
@@ -8908,6 +8908,9 @@ mp.events.add("Client:ShowRadioSystem", (freqz) => {
     if (showRadio == true) {
         showHideChat(false);
     } else {
+        if (localPlayer.vehicle) {
+            mp.events.call('Client:ShowSpeedometer');
+        }
         showHideChat(true);
     }
 });
@@ -8923,8 +8926,7 @@ mp.events.add("Client:SetRadioFreq", (freq) => {
 
 mp.events.add("Client:Joinradio", (freq) => {
     if (hudWindow != null) {
-        if(voicerp == 1)
-        {
+        if (voicerp == 1) {
             mp.events.callRemote('SaltyChat_Joinradio', freq);
         }
     }
@@ -8932,8 +8934,7 @@ mp.events.add("Client:Joinradio", (freq) => {
 
 mp.events.add("Client:Leaveradio", (freq) => {
     if (hudWindow != null) {
-        if(voicerp == 1)
-        {
+        if (voicerp == 1) {
             mp.events.callRemote('SaltyChat_Removeradio', freq);
         }
     }
@@ -8941,8 +8942,7 @@ mp.events.add("Client:Leaveradio", (freq) => {
 
 mp.events.add("Client:Setspeaker", (status) => {
     if (hudWindow != null) {
-        if(voicerp == 1)
-        {
+        if (voicerp == 1) {
             mp.events.callRemote('SaltyChat_Setspeaker', status);
         }
     }
@@ -8951,8 +8951,7 @@ mp.events.add("Client:Setspeaker", (status) => {
 mp.events.add("Client:SendOnRadio", (radioChannel, status) => {
     let spawned = localPlayer.getVariable('Player:Spawned');
     if (showSaltyError == true || triggerAntiCheat == true || localPlayer.isTypingInTextChat || !spawned || nokeys == true || death == true || arrested == true || cuffed == true || showMenu == true || showInventory == true || showWheel == true || showFurniture == true || InteriorSwitch == true || prisonCount > 0 || showCenterMenu == true || showCarSetting == true || showCityhall == true || showSped == true || showFuel == true || showShop == true || showShop2 == true || startRange == true || showDealer == true || showTab == true || showHandy == true || showTuning == true || barberMenu == true || tattooShop == true) return;
-    if(voicerp == 1)
-    {
+    if (voicerp == 1) {
         mp.events.callRemote('SaltyChat_IsSending', radioChannel, status);
     }
     if (status && animationSet == 0) {
@@ -9394,7 +9393,7 @@ function getClosestVehicle(position) {
             distance: closest,
             vehicle: closestVeh
         };
-    } catch { }
+    } catch {}
 }
 
 function getClosestPed(position) {
@@ -9416,7 +9415,7 @@ function getClosestPed(position) {
             distance: closest,
             ped: closestPed
         };
-    } catch { }
+    } catch {}
 }
 
 function setWalkingStyle(player, style) {
@@ -9467,14 +9466,10 @@ function getRndInteger(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
 
-function getPlayerHealth(playerobject)
-{
-    if(playerobject != null)
-    {
-        return playerobject.getHealth()+100;
-    }
-    else
-    {
+function getPlayerHealth(playerobject) {
+    if (playerobject != null) {
+        return playerobject.getHealth() + 100;
+    } else {
         return 200;
     }
 }
@@ -9483,8 +9478,8 @@ function updateHealthArmor() {
     if (hudWindow == null) return;
     var model = localPlayer.model == mp.game.joaat('mp_f_freemode_01') ? 1 : localPlayer.model == mp.game.joaat('mp_m_freemode_01') ? 1 : 0;
     if (oldHealth > -1 && oldHealth != getPlayerHealth(localPlayer)) {
-        if (!death && (antiCheatWait == 0 || (Date.now() / 1000) > antiCheatWait) && model == 1 && oldHealth > 0 && getPlayerHealth(localPlayer) > 0 && getPlayerHealth(localPlayer) > oldHealth && (getPlayerHealth(localPlayer)-100) != 100 && getPlayerHealth(localPlayer) <= 275) {
-            callAntiCheat("Lebens Cheat", "Lebenswert: " + parseInt(getPlayerHealth(localPlayer)-100), false);
+        if (!death && (antiCheatWait == 0 || (Date.now() / 1000) > antiCheatWait) && model == 1 && oldHealth > 0 && getPlayerHealth(localPlayer) > 0 && getPlayerHealth(localPlayer) > oldHealth && (getPlayerHealth(localPlayer) - 100) != 100 && getPlayerHealth(localPlayer) <= 275) {
+            callAntiCheat("Lebens Cheat", "Lebenswert: " + parseInt(getPlayerHealth(localPlayer) - 100), false);
             antiCheatWait = (Date.now() / 1000) + (3);
             localPlayer.setHealth(200);
             oldHealth = 200;

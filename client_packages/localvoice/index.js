@@ -1,5 +1,5 @@
-const Use3d = true;
-const UseAutoVolume = false;
+const Use3d = false;
+const UseAutoVolume = true;
 
 const MaxRange = 25.0;
 

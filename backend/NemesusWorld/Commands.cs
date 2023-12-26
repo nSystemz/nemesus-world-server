@@ -92,7 +92,12 @@ namespace NemesusWorld
                         return;
                     }
                     Items snowBallItem = ItemsController.GetItemByItemName(player, "Snowball");
-                    if(itemname.ToLower() == "snowball" && (snowBallItem != null && snowBallItem.amount + menge > 10) || (menge > 10))
+                    if(itemname.ToLower() == "snowball" && snowBallItem != null && snowBallItem.amount + menge > 10)
+                    {
+                        Helper.SendNotificationWithoutButton(player, "Der Spieler kann nur max. 10 Snowballs tragen!", "error", "top-end");
+                        return;
+                    }
+                    if (itemname.ToLower() == "snowball" && snowBallItem == null && menge > 10)
                     {
                         Helper.SendNotificationWithoutButton(player, "Der Spieler kann nur max. 10 Snowballs tragen!", "error", "top-end");
                         return;
@@ -315,8 +320,7 @@ namespace NemesusWorld
                                 }
                                 else
                                 {
-                                    Helper.SetPlayerArmor(ntarget, 0);
-                                    NAPI.Player.SetPlayerClothes(player, 9, 0, 0);
+                                    Helper.SendNotificationWithoutButton(player, "Die Schutzweste kann nicht gelöscht werden!", "error", "top-end");
                                 }
                             }
                         }
@@ -1388,18 +1392,20 @@ namespace NemesusWorld
 
                                 if (character.faction == 1)
                                 {
-                                    character.armor = 59;
+                                    character.armor = 4;
+                                    character.armorcolor = 0;
                                     if (NAPI.Player.GetPlayerArmor(ntarget) > 0)
                                     {
-                                        NAPI.Player.SetPlayerClothes(ntarget, 9, character.armor, 0);
+                                        NAPI.Player.SetPlayerClothes(ntarget, 9, character.armor, character.armorcolor);
                                     }
                                 }
                                 else
                                 {
                                     character.armor = 7;
+                                    character.armorcolor = 0;
                                     if (NAPI.Player.GetPlayerArmor(ntarget) > 0)
                                     {
-                                        NAPI.Player.SetPlayerClothes(ntarget, 9, character.armor, 0);
+                                        NAPI.Player.SetPlayerClothes(ntarget, 9, character.armor, character.armorcolor);
                                     }
                                 }
 
@@ -1454,18 +1460,20 @@ namespace NemesusWorld
 
                                 if (character.faction == 1)
                                 {
-                                    character.armor = 59;
+                                    character.armor = 4;
+                                    character.armorcolor = 0;
                                     if (NAPI.Player.GetPlayerArmor(ntarget) > 0)
                                     {
-                                        NAPI.Player.SetPlayerClothes(ntarget, 9, character.armor, 0);
+                                        NAPI.Player.SetPlayerClothes(ntarget, 9, character.armor, character.armorcolor);
                                     }
                                 }
                                 else
                                 {
                                     character.armor = 7;
+                                    character.armorcolor = 0;
                                     if (NAPI.Player.GetPlayerArmor(ntarget) > 0)
                                     {
-                                        NAPI.Player.SetPlayerClothes(ntarget, 9, character.armor, 0);
+                                        NAPI.Player.SetPlayerClothes(ntarget, 9, character.armor, character.armorcolor);
                                     }
                                 }
                                 if (character.faction == 4)
@@ -1539,10 +1547,11 @@ namespace NemesusWorld
                                 faction.leader = 0;
                                 if (character.faction == 1)
                                 {
-                                    character.armor = 7;
+                                    character.armor = 2;
+                                    character.armorcolor = 0;
                                     if (NAPI.Player.GetPlayerArmor(ntarget) > 0)
                                     {
-                                        NAPI.Player.SetPlayerClothes(ntarget, 9, character.armor, 0);
+                                        NAPI.Player.SetPlayerClothes(ntarget, 9, character.armor, character.armorcolor);
                                     }
                                 }
                                 TempData tempData2 = Helper.GetCharacterTempData(ntarget);
@@ -4988,13 +4997,14 @@ namespace NemesusWorld
                         return;
                     }
                 }
+                vehicle.Dimension = 1;
                 NAPI.Task.Run(() =>
                 {
                     vehicle.Position = new Vector3(player.Position.X + 1f,
                                                   player.Position.Y,
                                                   player.Position.Z + 1f);
-                }, delayTime: 155);
-                vehicle.Dimension = player.Dimension;
+                    vehicle.Dimension = player.Dimension;
+                }, delayTime: 215);
                 Helper.SendNotificationWithoutButton(player, $"Du hast das Fahrzeug mit der ID { vehicleid } zu dir teleportiert!", "success", "top-end", 3500);
                 if (ntarget != null)
                 {
@@ -5573,7 +5583,7 @@ namespace NemesusWorld
                 Helper.SendNotificationWithoutButton(player, "Ungültiges Fahrzeug!", "error");
                 return;
             }
-            if (NAPI.Vehicle.GetVehicleEngineHealth(vehicle) <= 50)
+            if (NAPI.Vehicle.GetVehicleEngineHealth(vehicle) <= 215)
             {
                 Helper.SendNotificationWithoutButton(player, "Das Fahrzeug hat schon einen Motorschaden!", "error");
                 return;
@@ -7372,8 +7382,8 @@ namespace NemesusWorld
             }
         }
 
-        [Command("settorso", "Befehl: /settorso [Torso-ID]")]
-        public void cmd_settorso(Player player, int torso)
+        [Command("settorso", "Befehl: /settorso [Torso-ID] [Variation]")]
+        public void cmd_settorso(Player player, int torso, int variation)
         {
             try
             {
@@ -7408,7 +7418,7 @@ namespace NemesusWorld
                     player.SetData<int>("Player:TorsoCD", Helper.UnixTimestamp() + (2));
                     JObject obj = JObject.Parse(character.json);
                     obj["clothing"][1] = torso;
-                    obj["clothingColor"][1] = 0;
+                    obj["clothingColor"][1] = variation;
                     character.json = NAPI.Util.ToJson(obj);
                     NAPI.Player.SetPlayerClothes(player, 3, (int)obj["clothing"][1], (int)obj["clothingColor"][1]);
                     Helper.SendNotificationWithoutButton(player, "Torso erfolgreich gesetzt!", "success", "top-left", 2500);

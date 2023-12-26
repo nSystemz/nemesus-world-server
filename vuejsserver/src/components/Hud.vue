@@ -1298,7 +1298,7 @@
           <div class="col-md-12 mt-1">
             <div class="box box-default">
               <div class="row">
-                <div class="card card-primary card-outline">
+                <div class="card card-primary card-outline" v-if="faction != 1 && faction != 2">
                   <div class="card-header" style="font-family: 'Exo', sans-serif; font-size: 1.2vw">
                     Umkleidekabine
                   </div>
@@ -1307,10 +1307,10 @@
                     <div class="row mt-3">
                       <div class="col-md-12">
                         <div style="display: flex; justify-content: center; align-items: center;">
-                          <img src="../assets/images/clothshop/kopfbedeckung.png" v-if="faction != 3"
+                          <img src="../assets/images/clothshop/kopfbedeckung.png"
                             :class="[(selectedcloth == 'Kopfbedeckung') ? 'clothiconactive mr-2':'clothicon mr-2']"
                             @click="selectCloth('Kopfbedeckung')">
-                          <img src="../assets/images/clothshop/brillen.png" v-if="faction == 1"
+                          <img src="../assets/images/clothshop/brillen.png"
                             :class="[(selectedcloth == 'Brillen') ? 'clothiconactive mr-2':'clothicon mr-2']"
                             @click="selectCloth('Brillen')">
                           <img src="../assets/images/clothshop/torso.png"
@@ -1328,7 +1328,7 @@
                           <img src="../assets/images/clothshop/schuh.png"
                             :class="[(selectedcloth == 'Schuh') ? 'clothiconactive mr-2':'clothicon mr-2']"
                             @click="selectCloth('Schuh')">
-                          <img src="../assets/images/clothshop/krawatte.png" v-if="faction != 3"
+                          <img src="../assets/images/clothshop/krawatte.png"
                             :class="[(selectedcloth == 'Accessoires') ? 'clothiconactive mr-2':'clothicon mr-2']"
                             @click="selectCloth('Accessoires')">
                         </div>
@@ -1369,7 +1369,7 @@
                     <div>
                       <div style="display: flex; justify-content: center; align-items: center;" class="mt-2">
                         <div v-for="(outfit, index) in outfits" :key="index">
-                          <button type="button" class="btn btn-primary mr-1" @click="selectOutfit(outfit)">Outfit: {{outfit.name}}</button>
+                          <button type="button" class="btn btn-primary mr-1" @click="selectOutfit(outfit, 'n/A')">Outfit: {{outfit.name}}</button>
                           <i @click="deleteOutfit(outfit.id)" class="fa-solid fa-trash mr-1" 
                               style="color:rgb(219, 73, 73); text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;font-size: 0.7vw"></i>
                         </div>
@@ -1388,6 +1388,37 @@
                       Taste [K] um die
                       Kamera frei bewegen zu können, ebenfalls kannst du mit der rechten/linken Pfeiltaste die Auswahl
                       steuern!</span>
+                  </div>
+                </div>
+                <div class="card card-primary card-outline" v-else>
+                  <div class="card-header" style="font-family: 'Exo', sans-serif; font-size: 1.2vw">
+                    Umkleidekabine
+                    <input type="text" class="form-control float-left" placeholder="Suche" v-bind:value="searchelement" v-on:input="searchelement = $event.target.value" maxlength="128" autocomplete="off">
+                  </div>
+                  <div class="card-body" style="max-height:60vh; width: 27.5vw; overflow-x: auto">
+                    <h5><u>Fraktionsoutfit auswählen:</u></h5>
+                    <div class="row mt-3">
+                      <div class="col-md-12">
+                        <div style="display: flex; justify-content: center; align-items: center; overflow:auto; display:block; max-height: 30vh">
+                          <div v-for="outfit in filteredList1" :key="outfit.id">
+                            <span class="iconblue" style="font-family: 'Exo', sans-serif; cursor:pointer" @click="selectOutfit(outfit, 'EUP')">{{outfit.name}}</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <hr/>
+                    <div style="display: flex; justify-content: center; align-items: center;" class="mt-1">
+                      <button type="button" class="btn btn-success mr-1"
+                        @click="buyCloth('dutyCloths')">Dienst beginnen</button>
+                      <button type="button" class="btn btn-warning mr-1"
+                        @click="endCloth(true)">Dienst beenden</button>
+                      <button type="button" class="btn btn-secondary" @click="endCloth(false)">Abbrechen</button>
+                    </div>
+                    <hr/>
+                    <span class="text-center"
+                      style="display: flex; justify-content: center; align-items: center;">Benutze
+                      Taste [K] um die
+                      Kamera frei bewegen zu können!</span>
                   </div>
                 </div>
               </div>
@@ -1805,36 +1836,6 @@ import {
   getVehicleColors,
   maxMaskMen,
   maxMaskWoman,
-  faction1TopsMen,
-  faction1TopsWoman,
-  faction1LegsMen,
-  faction1LegsWoman,
-  faction1ShoesMen,
-  faction1ShoesWoman,
-  faction1HeadMen,
-  faction1HeadWoman,
-  faction1UndershirtMen,
-  faction1UndershirtWoman,
-  faction1TorsoMen,
-  faction1TorsoWoman,
-  faction1SGMen,
-  faction1SGWoman,
-  faction1AccessoiresMen,
-  faction1AccessoiresWoman,
-  faction2TopsMen,
-  faction2TopsWoman,
-  faction2LegsMen,
-  faction2LegsWoman,
-  faction2ShoesMen,
-  faction2ShoesWoman,
-  faction2HeadMen,
-  faction2HeadWoman,
-  faction2UndershirtMen,
-  faction2UndershirtWoman,
-  faction2TorsoMen,
-  faction2TorsoWoman,
-  faction2AccessoiresMen,
-  faction2AccessoiresWoman,
   faction3TopsMen,
   faction3TopsWoman,
   faction3LegsMen,
@@ -1874,6 +1875,8 @@ export default {
   name: 'Hud',
   data: function () {
     return {
+      //Searchelement
+      searchelement: '',
       //Wardrobe
       wardrobe: [],
       wardrobe2: 0,
@@ -2201,7 +2204,17 @@ export default {
       self.updateBar(4, this.rhist);
     }, 150);
     },
+    computed: {
+      filteredList1() {
+            return this.filter1(this.outfits)
+        },
+    },
     methods: {
+      filter1: function (outfits) {
+            return outfits.filter(outfits => {
+                return outfits.name.toLowerCase().includes(this.searchelement.toLowerCase())
+            })
+        },
       getImgUrl(pic) {
       try {
         return require('../assets/images/inventory/' + pic + '.png')
@@ -2218,7 +2231,7 @@ export default {
     {
         if ((Date.now() / 1000) > this.clicked) {
           // eslint-disable-next-line no-undef
-          mp.trigger("Client:WardrobeAktion", 'selectoutfit', obj.name);
+          mp.trigger("Client:WardrobeAktion", 'selectoutfit', obj.name, 'n/A');
           this.clicked = (Date.now() / 1000) + (1);
         }
     },
@@ -2246,7 +2259,7 @@ export default {
             return;
           }
           // eslint-disable-next-line no-undef
-          mp.trigger("Client:WardrobeAktion", 'newoutfit', this.outfitname);
+          mp.trigger("Client:WardrobeAktion", 'newoutfit', this.outfitname, 'n/A');
           this.clicked = (Date.now() / 1000) + (1);
         }
     },
@@ -2392,130 +2405,7 @@ export default {
       },
       getfactioncloth() {
           let tempArray = [];
-          if (this.faction == 1) {
-            if (this.selectedcloth == 'Kopfbedeckung') {
-              if (this.gender == 1) {
-                tempArray = faction1HeadMen;
-              } else {
-                tempArray = faction1HeadWoman;
-              }
-            }
-            if (this.selectedcloth == 'Accessoires') {
-              if (this.gender == 1) {
-                tempArray = faction1AccessoiresMen;
-              } else {
-                tempArray = faction1AccessoiresWoman;
-              }
-            }
-            if (this.selectedcloth == 'Brillen') {
-              if (this.gender == 1) {
-                tempArray = faction1SGMen;
-              } else {
-                tempArray = faction1SGWoman;
-              }
-            }
-            else if (this.selectedcloth == 'Torso') {
-              if (this.gender == 1) {
-                tempArray = faction1TorsoMen;
-              } else {
-                tempArray = faction1TorsoWoman;
-              }
-            }
-            else if (this.selectedcloth == 'Oberbekleidung') {
-              if (this.gender == 1) {
-                tempArray = faction1TopsMen;
-              } else {
-                tempArray = faction1TopsWoman;
-              }
-            }
-            else if (this.selectedcloth == 'T-Shirt') {
-              if (this.gender == 1) {
-                tempArray = faction1UndershirtMen;
-              } else {
-                tempArray = faction1UndershirtWoman;
-              }
-            }
-            else if (this.selectedcloth == 'Hosen') {
-              if (this.gender == 1) {
-                tempArray = faction1LegsMen;
-              } else {
-                tempArray = faction1LegsWoman;
-              }
-            }
-            else if (this.selectedcloth == 'Schuh') {
-              if (this.gender == 1) {
-                tempArray = faction1ShoesMen;
-              } else {
-                tempArray = faction1ShoesWoman;
-              }
-            }
-            if (tempArray) {
-            for (let i = 0; i < tempArray.length; i++) {
-                if (tempArray[i] == this.selectedclothid) {
-                  return i;
-                }
-              }
-            }
-          }
-          else if(this.faction == 2) {
-            if (this.selectedcloth == 'Kopfbedeckung') {
-              if (this.gender == 1) {
-                tempArray = faction2HeadMen;
-              } else {
-                tempArray = faction2HeadWoman;
-              }
-            }
-            if (this.selectedcloth == 'Accessoires') {
-              if (this.gender == 1) {
-                tempArray = faction2AccessoiresMen;
-              } else {
-                tempArray = faction2AccessoiresWoman;
-              }
-            }
-            else if (this.selectedcloth == 'Torso') {
-              if (this.gender == 1) {
-                tempArray = faction2TorsoMen;
-              } else {
-                tempArray = faction2TorsoWoman;
-              }
-            }
-            else if (this.selectedcloth == 'Oberbekleidung') {
-              if (this.gender == 1) {
-                tempArray = faction2TopsMen;
-              } else {
-                tempArray = faction2TopsWoman;
-              }
-            }
-            else if (this.selectedcloth == 'T-Shirt') {
-              if (this.gender == 1) {
-                tempArray = faction2UndershirtMen;
-              } else {
-                tempArray = faction2UndershirtWoman;
-              }
-            }
-            else if (this.selectedcloth == 'Hosen') {
-              if (this.gender == 1) {
-                tempArray = faction2LegsMen;
-              } else {
-                tempArray = faction2LegsWoman;
-              }
-            }
-            else if (this.selectedcloth == 'Schuh') {
-              if (this.gender == 1) {
-                tempArray = faction2ShoesMen;
-              } else {
-                tempArray = faction2ShoesWoman;
-              }
-            }
-            if (tempArray) {
-            for (let i = 0; i < tempArray.length; i++) {
-                if (tempArray[i] == this.selectedclothid) {
-                  return i;
-                }
-              }
-            }
-          }
-          else if(this.faction == 3) {
+          if(this.faction == 3) {
             if (this.selectedcloth == 'Kopfbedeckung') {
               if (this.gender == 1) {
                 tempArray = faction3HeadMen;
@@ -2606,29 +2496,38 @@ export default {
         this.clicked = (Date.now() / 1000) + (1);
       }
     },
-    selectOutfit(outfit)
+    selectOutfit(outfit, bonus)
     {
       if ((Date.now() / 1000) > this.clicked) {
-        this.clothing = JSON.parse(outfit.json1);
-        this.clothingColor = JSON.parse(outfit.json2);
-        this.selectCloth(this.selectedcloth);
-        // eslint-disable-next-line no-undef
-        mp.trigger("Client:SendNotificationWithoutButton", 'Gespeichertes Outfit ausgewählt!', 'success', 'top-left', 2500);
-        // eslint-disable-next-line no-undef
-        mp.trigger('Client:ChangeShopClothes', 'Kopfbedeckung', this.clothing[7], this.clothingColor[7]);
-        // eslint-disable-next-line no-undef
-        mp.trigger('Client:ChangeShopClothes', 'Brillen', this.clothing[6], this.clothingColor[6]);
-        // eslint-disable-next-line no-undef
-        mp.trigger('Client:ChangeShopClothes', 'Torso', this.clothing[1], this.clothingColor[1]);
-        // eslint-disable-next-line no-undef
-        mp.trigger('Client:ChangeShopClothes', 'Oberbekleidung', this.clothing[0], this.clothingColor[0]);
-        // eslint-disable-next-line no-undef
-        mp.trigger('Client:ChangeShopClothes', 'T-Shirt', this.clothing[4], this.clothingColor[4]);
-        // eslint-disable-next-line no-undef
-        mp.trigger('Client:ChangeShopClothes', 'Hosen', this.clothing[2], this.clothingColor[2]);
-        // eslint-disable-next-line no-undef
-        mp.trigger('Client:ChangeShopClothes', 'Schuh', this.clothing[3], this.clothingColor[3]);
-        this.clicked = (Date.now() / 1000) + (1);
+        if(bonus == 'EUP')
+        {
+          // eslint-disable-next-line no-undef
+          mp.trigger("Client:WardrobeAktion", 'selectoutfit', outfit.name, 'EUP');
+          this.clicked = (Date.now() / 1000) + (1);
+        }
+        else
+        {
+          this.clothing = JSON.parse(outfit.json1);
+          this.clothingColor = JSON.parse(outfit.json2);
+          this.selectCloth(this.selectedcloth);
+          // eslint-disable-next-line no-undef
+          mp.trigger("Client:SendNotificationWithoutButton", 'Gespeichertes Outfit ausgewählt!', 'success', 'top-left', 2500);
+          // eslint-disable-next-line no-undef
+          mp.trigger('Client:ChangeShopClothes', 'Kopfbedeckung', this.clothing[7], this.clothingColor[7]);
+          // eslint-disable-next-line no-undef
+          mp.trigger('Client:ChangeShopClothes', 'Brillen', this.clothing[6], this.clothingColor[6]);
+          // eslint-disable-next-line no-undef
+          mp.trigger('Client:ChangeShopClothes', 'Torso', this.clothing[1], this.clothingColor[1]);
+          // eslint-disable-next-line no-undef
+          mp.trigger('Client:ChangeShopClothes', 'Oberbekleidung', this.clothing[0], this.clothingColor[0]);
+          // eslint-disable-next-line no-undef
+          mp.trigger('Client:ChangeShopClothes', 'T-Shirt', this.clothing[4], this.clothingColor[4]);
+          // eslint-disable-next-line no-undef
+          mp.trigger('Client:ChangeShopClothes', 'Hosen', this.clothing[2], this.clothingColor[2]);
+          // eslint-disable-next-line no-undef
+          mp.trigger('Client:ChangeShopClothes', 'Schuh', this.clothing[3], this.clothingColor[3]);
+          this.clicked = (Date.now() / 1000) + (1);
+        }
       }
     },
     setRadioFreq(freq)
@@ -3722,6 +3621,11 @@ export default {
     },
     buyCloth: function (event = 'none') {
       if ((Date.now() / 1000) > this.clicked) {
+        if(event == 'dutyCloths' && (this.faction == 1 || this.faction == 2))
+        {
+          mp.trigger('Client:BuyCloths', JSON.stringify(this.clothing), JSON.stringify(this.clothingColor), this.clothcost, true);
+          return;
+        }
         if (this.clothshow4 == true || this.clothcost > 0) {
           if (this.gender == 1) {
             if(this.clothshow == true)
@@ -3954,30 +3858,8 @@ export default {
       if (this.selectedcloth == 'Schuh') {
         selected = this.selectedclothid;
         if(this.clothshow4 == true)
-        {
-          if(this.faction == 1)
-          {
-            if(this.gender == true)
-            {
-              selected = faction1ShoesMen[this.selectedclothid];
-            }
-            else
-            {
-              selected = faction1ShoesWoman[this.selectedclothid];
-            }
-          }
-          else if(this.faction == 2)
-          {
-            if(this.gender == true)
-            {
-              selected = faction2ShoesMen[this.selectedclothid];
-            }
-            else
-            {
-              selected = faction2ShoesWoman[this.selectedclothid];
-            }
-          }
-          else if(this.faction == 3)
+        {       
+          if(this.faction == 3)
           {
             if(this.gender == true)
             {
@@ -3996,29 +3878,7 @@ export default {
         selected = this.selectedclothid;
         if(this.clothshow4 == true)
         {
-          if(this.faction == 1)
-          {
-            if(this.gender == true)
-            {
-              selected = parseInt(faction1LegsMen[this.selectedclothid]);
-            }
-            else
-            {
-              selected = parseInt(faction1LegsWoman[this.selectedclothid]);
-            }
-          }
-          else if(this.faction == 2)
-          {
-            if(this.gender == true)
-            {
-              selected = parseInt(faction2LegsMen[this.selectedclothid]);
-            }
-            else
-            {
-              selected = parseInt(faction2LegsWoman[this.selectedclothid]);
-            }
-          }
-          else if(this.faction == 3)
+          if(this.faction == 3)
           {
             if(this.gender == true)
             {
@@ -4037,29 +3897,7 @@ export default {
         selected = this.selectedclothid;
         if(this.clothshow4 == true)
         {
-          if(this.faction == 1)
-          {
-            if(this.gender == true)
-            {
-              selected = parseInt(faction1TorsoMen[this.selectedclothid]);
-            }
-            else
-            {
-              selected = parseInt(faction1TorsoWoman[this.selectedclothid]);
-            }
-          }
-          else if(this.faction == 2)
-          {
-            if(this.gender == true)
-            {
-              selected = parseInt(faction2TorsoMen[this.selectedclothid]);
-            }
-            else
-            {
-              selected = parseInt(faction2TorsoWoman[this.selectedclothid]);
-            }
-          }
-          else if(this.faction == 3)
+          if(this.faction == 3)
           {
             if(this.gender == true)
             {
@@ -4078,29 +3916,7 @@ export default {
         selected = this.selectedclothid;
         if(this.clothshow4 == true)
         {
-          if(this.faction == 1)
-          {
-            if(this.gender == true)
-            {
-              selected = parseInt(faction1TopsMen[this.selectedclothid]);
-            }
-            else
-            {
-              selected = parseInt(faction1TopsWoman[this.selectedclothid]);
-            }
-          }
-          else if(this.faction == 2)
-          {
-            if(this.gender == true)
-            {
-              selected = parseInt(faction2TopsMen[this.selectedclothid]);
-            }
-            else
-            {
-              selected = parseInt(faction2TopsWoman[this.selectedclothid]);
-            }
-          }
-          else if(this.faction == 3)
+          if(this.faction == 3)
           {
             if(this.gender == true)
             {
@@ -4119,29 +3935,7 @@ export default {
         selected = this.selectedclothid;
         if(this.clothshow4 == true)
         {
-          if(this.faction == 1)
-          {
-            if(this.gender == true)
-            {
-              selected = faction1UndershirtMen[this.selectedclothid];
-            }
-            else
-            {
-              selected = faction1UndershirtWoman[this.selectedclothid];
-            }
-          }
-          else if(this.faction == 2)
-          {
-            if(this.gender == true)
-            {
-              selected = faction2UndershirtMen[this.selectedclothid];
-            }
-            else
-            {
-              selected = faction2UndershirtWoman[this.selectedclothid];
-            }
-          }
-          else if(this.faction == 3)
+          if(this.faction == 3)
           {
             if(this.gender == true)
             {
@@ -4158,18 +3952,6 @@ export default {
         this.clothingColor[4] = this.selectedclothcolor;
       } else if (this.selectedcloth == 'Brillen') {
         selected = this.selectedclothid;
-        if(this.clothshow4 == true)
-        {
-          if(this.gender == true)
-          {
-            selected = parseInt(faction1SGMen[this.selectedclothid]);
-          }
-          else
-          {
-            selected = parseInt(faction1SGWoman[this.selectedclothid]);
-          }
-          this.selectedclothid = this.getfactioncloth();
-        }
         this.clothing[6] = selected;
         this.clothingColor[6] = this.selectedclothcolor;
       } else if (this.selectedcloth == 'Rucksack') {
@@ -4180,29 +3962,7 @@ export default {
         selected = this.selectedclothid;
         if(this.clothshow4 == true)
         {
-          if(this.faction == 1)
-          {
-            if(this.gender == true)
-            {
-              selected = parseInt(faction1HeadMen[this.selectedclothid]);
-            }
-            else
-            {
-              selected = parseInt(faction1HeadWoman[this.selectedclothid]);
-            }
-          }
-          else if(this.faction == 2)
-          {
-            if(this.gender == true)
-            {
-              selected = parseInt(faction2HeadMen[this.selectedclothid]);
-            }
-            else
-            {
-              selected = parseInt(faction2HeadWoman[this.selectedclothid]);
-            }
-          }
-          else if(this.faction == 3)
+          if(this.faction == 3)
           {
             if(this.gender == true)
             {
@@ -4237,29 +3997,7 @@ export default {
         selected = this.selectedclothid;
         if(this.clothshow4 == true)
         {
-          if(this.faction == 1)
-          {
-            if(this.gender == true)
-            {
-              selected = parseInt(faction1AccessoiresMen[this.selectedclothid]);
-            }
-            else
-            {
-              selected = parseInt(faction1AccessoiresWoman[this.selectedclothid]);
-            }
-          }
-          else if(this.faction == 2)
-          {
-            if(this.gender == true)
-            {
-              selected = parseInt(faction2AccessoiresMen[this.selectedclothid]);
-            }
-            else
-            {
-              selected = parseInt(faction2AccessoiresWoman[this.selectedclothid]);
-            }
-          }
-          else if(this.faction == 3)
+          if(this.faction == 3)
           {
             if(this.gender == true)
             {
@@ -4463,23 +4201,7 @@ export default {
       else
       {
         if (this.selectedcloth == 'Schuh') {
-          if(this.faction == 1)
-          {
-            if (this.gender == 1) {
-              this.maxcloth = faction1ShoesMen.length-1;
-            } else {
-              this.maxcloth = faction1ShoesWoman.length-1;
-            }
-          }
-          else if(this.faction == 2)
-          {
-            if (this.gender == 1) {
-              this.maxcloth = faction2ShoesMen.length-1;
-            } else {
-              this.maxcloth = faction2ShoesWoman.length-1;
-            }
-          }
-          else if(this.faction == 3)
+          if(this.faction == 3)
           {
             if (this.gender == 1) {
               this.maxcloth = faction3ShoesMen.length-1;
@@ -4493,23 +4215,7 @@ export default {
           this.selectedclothcolor = this.clothingColor[3];
         }
         else if (this.selectedcloth == 'Kopfbedeckung') {
-          if(this.faction == 1)
-          {
-            if (this.gender == 1) {
-              this.maxcloth = faction1HeadMen.length-1;
-            } else {
-              this.maxcloth = faction1HeadWoman.length-1;
-            }
-          }
-          else if(this.faction == 2)
-          {
-            if (this.gender == 1) {
-              this.maxcloth = faction2HeadMen.length-1;
-            } else {
-              this.maxcloth = faction2HeadWoman.length-1;
-            }
-          }
-          else if(this.faction == 3)
+          if(this.faction == 3)
           {
             if (this.gender == 1) {
               this.maxcloth = faction3HeadMen.length-1;
@@ -4522,38 +4228,9 @@ export default {
           this.selectedclothid = this.getfactioncloth();
           this.selectedclothcolor = this.clothingColor[7];
         }
-        else if (this.selectedcloth == 'Brillen') {
-          if(this.faction == 1)
-          {
-            if (this.gender == 1) {
-              this.maxcloth = faction1SGMen.length-1;
-            } else {
-              this.maxcloth = faction1SGWoman.length-1;
-            }
-          }
-          this.maxclothColor = 0;
-          this.selectedclothid = this.clothing[6];
-          this.selectedclothid = this.getfactioncloth();
-          this.selectedclothcolor = this.clothingColor[6];
-        }
-        else if (this.selectedcloth == 'Oberbekleidung') {
-          if(this.faction == 1)
-          {
-            if (this.gender == 1) {
-              this.maxcloth = faction1TopsMen.length-1;
-            } else {
-              this.maxcloth = faction1TopsWoman.length-1;
-            }
-          }
-          else if(this.faction == 2)
-          {
-            if (this.gender == 1) {
-              this.maxcloth = faction2TopsMen.length-1;
-            } else {
-              this.maxcloth = faction2TopsWoman.length-1;
-            }
-          }
-          else if(this.faction == 3)
+        else if (this.selectedcloth == 'Oberbekleidung') 
+        {
+          if(this.faction == 3)
           {
             if (this.gender == 1) {
               this.maxcloth = faction3TopsMen.length-1;
@@ -4567,23 +4244,7 @@ export default {
           this.selectedclothcolor = this.clothingColor[0];
         }
         else if (this.selectedcloth == 'T-Shirt') {
-          if(this.faction == 1)
-          {
-            if (this.gender == 1) {
-              this.maxcloth = faction1UndershirtMen.length-1;
-            } else {
-              this.maxcloth = faction1UndershirtWoman.length-1;
-            }
-          }
-          else if(this.faction == 2)
-          {
-            if (this.gender == 1) {
-              this.maxcloth = faction2UndershirtMen.length-1;
-            } else {
-              this.maxcloth = faction2UndershirtWoman.length-1;
-            }
-          }
-          else if(this.faction == 3)
+          if(this.faction == 3)
           {
             if (this.gender == 1) {
               this.maxcloth = faction3UndershirtMen.length-1;
@@ -4597,23 +4258,7 @@ export default {
           this.selectedclothcolor = this.clothingColor[4];
         }
         else if (this.selectedcloth == 'Hosen') {
-          if(this.faction == 1)
-          {
-            if (this.gender == 1) {
-              this.maxcloth = faction1LegsMen.length-1;
-            } else {
-              this.maxcloth = faction1LegsWoman.length-1;
-            }
-          }
-          else if(this.faction == 2)
-          {
-            if (this.gender == 1) {
-              this.maxcloth = faction2LegsMen.length-1;
-            } else {
-              this.maxcloth = faction2LegsWoman.length-1;
-            }
-          }
-          else if(this.faction == 3)
+          if(this.faction == 3)
           {
             if (this.gender == 1) {
               this.maxcloth = faction3LegsMen.length-1;
@@ -4627,23 +4272,7 @@ export default {
           this.selectedclothcolor = this.clothingColor[2];
         }
         else if (this.selectedcloth == 'Torso') {
-          if(this.faction == 1)
-          {
-            if (this.gender == 1) {
-              this.maxcloth = faction1TorsoMen.length-1;
-            } else {
-              this.maxcloth = faction1TorsoWoman.length-1;
-            }
-          }
-          else if(this.faction == 2)
-          {
-            if (this.gender == 1) {
-              this.maxcloth = faction2TorsoMen.length-1;
-            } else {
-              this.maxcloth = faction2TorsoWoman.length-1;
-            }
-          }
-          else if(this.faction == 3)
+          if(this.faction == 3)
           {
             if (this.gender == 1) {
               this.maxcloth = faction3TorsoMen.length-1;
@@ -4657,23 +4286,7 @@ export default {
           this.selectedclothcolor = this.clothingColor[1];
         }
         else if (this.selectedcloth == 'Accessoires') {
-          if(this.faction == 1)
-          {
-            if (this.gender == 1) {
-              this.maxcloth = faction1AccessoiresMen.length-1;
-            } else {
-              this.maxcloth = faction1AccessoiresWoman.length-1;
-            }
-          }
-          else if(this.faction == 2)
-          {
-            if (this.gender == 1) {
-              this.maxcloth = faction2AccessoiresMen.length-1;
-            } else {
-              this.maxcloth = faction2AccessoiresWoman.length-1;
-            }
-          }
-          else if(this.faction == 3)
+          if(this.faction == 3)
           {
             if (this.gender == 1) {
               this.maxcloth = faction3AccessoiresMen.length-1;
@@ -4714,6 +4327,7 @@ export default {
       this.clothshow = !this.clothshow;
     },
     showFactionClothMenu: function (getarray1, getarray2, gender, faction, json) {
+      this.searchelement = '';
       this.clothshow4 = !this.clothshow4;
       this.outfitname = '';
       this.clothcost = 1;
@@ -4991,7 +4605,7 @@ export default {
         let timerInterval = 15000;
         Swal.fire({
           title: 'Willkommen!',
-          html: 'Wir wünschen dir viel Spass auf Nemesus World! Solltest du Hilfe benötigen, drücke die F2 Taste, dort kannst du dann z.B dir die Ersten Schritte anschauen oder ein Support Ticket erstellen. Weitere Informationen findest du auf unserer Webseite unter https://nemesus-world.de oder bei uns im UCP auf https://ucp.nemesus-world.de!',
+          html: 'Wir wünschen dir viel Spass auf Nemesus World! Solltest du Hilfe benötigen, drücke die F2 Taste, dort kannst du dann z.B dir die Ersten Schritte anschauen oder ein Support Ticket erstellen. Weitere Informationen findest du auf unserer Webseite unter https://nemesus-world.de oder bei uns im UCP auf https://ucp.nemesus-world.de!. PS: Dieser Gamemode wurde von Nemesus.de entwickelt, alle zukünftigen Updates findest du im Nemesus World Server Github Repo!',
           timer: 12000,
           allowEscapeKey: false,
           timerProgressBar: true,
@@ -5572,6 +5186,10 @@ html, body, template, * {
 
 .iconred:hover {
   color: rgb(219, 73, 73)
+}
+
+.iconblue:hover {
+  color: #3F6791
 }
 
 .container {

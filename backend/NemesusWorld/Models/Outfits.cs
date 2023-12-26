@@ -13,6 +13,8 @@ namespace NemesusWorld.Models
         public string owner { get; set; }
         public string json1 { get; set; }
         public string json2 { get; set; }
+        public string category1 { get; set; }
+        public string category2 { get; set; }
 
         public Outfits()
         {
@@ -21,6 +23,8 @@ namespace NemesusWorld.Models
             owner = "";
             json1 = "";
             json2 = "";
+            category1 = "n/A";
+            category2 = "n/A";
         }
     }
 }

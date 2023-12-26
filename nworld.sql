@@ -671,7 +671,8 @@ CREATE TABLE `characters` (
   `closed` int(1) NOT NULL DEFAULT 0,
   `tutorialstep` int(1) NOT NULL DEFAULT 0,
   `health` int(3) NOT NULL DEFAULT 100,
-  `armor` int(2) NOT NULL DEFAULT 4,
+  `armor` int(2) NOT NULL DEFAULT 1,
+  `armorcolor` int(2) NOT NULL DEFAULT 0,
   `thirst` int(3) NOT NULL DEFAULT 100,
   `hunger` int(3) NOT NULL DEFAULT 100,
   `screen` varchar(128) NOT NULL DEFAULT 'https://i.imgur.com/JjpH0qO.jpg',
@@ -3213,10 +3214,12 @@ CREATE TABLE `namechanges` (
 
 CREATE TABLE `outfits` (
   `id` int(11) NOT NULL,
-  `name` varchar(10) NOT NULL,
+  `name` varchar(35) NOT NULL,
   `owner` varchar(35) NOT NULL,
   `json1` longtext NOT NULL,
-  `json2` longtext NOT NULL
+  `json2` longtext NOT NULL,
+  `category1` varchar(35) NOT NULL,
+  `category2` varchar(35) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------

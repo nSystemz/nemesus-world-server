@@ -259,7 +259,8 @@ namespace NemesusWorld.Controllers
             try
             {
                 TempData tempData = Helper.GetCharacterTempData(player);
-                if (tempData == null) return;
+                Character character = Helper.GetCharacterData(player);
+                if (tempData == null || character == null) return;
 
                 bool found = false;
                 foreach (Items iteminlist in tempData.itemlist.ToList())
@@ -286,7 +287,10 @@ namespace NemesusWorld.Controllers
                                 {
                                     ItemsController.RemoveItem(player, iteminlist.itemid);
                                     Helper.SetPlayerArmor(player, 0);
-                                    NAPI.Player.SetPlayerClothes(player, 9, 0, 0);
+                                    if (character.factionduty == false || (character.faction != 1 && character.faction != 2))
+                                    {
+                                        NAPI.Player.SetPlayerClothes(player, 9, 0, 0);
+                                    }
                                     found = true;
                                     break;
                                 }
@@ -362,7 +366,10 @@ namespace NemesusWorld.Controllers
                             newstatus = 1;
                             Helper.SendNotificationWithoutButton(player, $"{item.description} ausgerüstet!", "success", "top-left", 3500);
                             Helper.SetPlayerArmor(player, Convert.ToInt32(propArray[0]));
-                            NAPI.Player.SetPlayerClothes(player, 9, Convert.ToInt32(character.armor), 0);
+                            if (character.factionduty == false || (character.faction != 1 && character.faction != 2))
+                            {
+                                NAPI.Player.SetPlayerClothes(player, 9, Convert.ToInt32(character.armor), Convert.ToInt32(character.armorcolor));
+                            }
                         }
                     }
                     else
@@ -382,7 +389,10 @@ namespace NemesusWorld.Controllers
                             {
                                 Helper.SendNotificationWithoutButton(player, $"{item.description} abgelegt!", "success", "top-left", 3500);
                             }
-                            NAPI.Player.SetPlayerClothes(player, 9, 0, 0);
+                            if (character.factionduty == false || (character.faction != 1 && character.faction != 2))
+                            {
+                                NAPI.Player.SetPlayerClothes(player, 9, 0, 0);
+                            }
                             Helper.SetPlayerArmor(player, 0);
                         }
                     }

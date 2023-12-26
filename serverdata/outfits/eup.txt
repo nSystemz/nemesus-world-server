@@ -1,3 +1,4 @@
+//EUP Menu by PieRGud | Edit by Nemesus.de
 [Male LSPD Class A]
 Gender=Male
 Category=EUP

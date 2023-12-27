@@ -35,8 +35,8 @@ namespace NemesusWorld.Controllers
                         LoadCharactersModel loadCharacter = new LoadCharactersModel();
                         loadCharacter.ID = reader.GetInt32("id");
                         loadCharacter.Name = reader.GetString("name");
-                        loadCharacter.Cash = reader.GetInt32("cash");
-                        loadCharacter.Bank = reader.GetInt32("bank");
+                        loadCharacter.Cash = reader.GetInt64("cash");
+                        loadCharacter.Bank = reader.GetInt64("bank");
                         loadCharacter.Job = Helper.GetJobName(reader.GetInt32("job"));
                         loadCharacter.Faction = Helper.GetFactionTag(reader.GetInt32("faction"));
                         loadCharacter.Closed = reader.GetInt16("closed");
@@ -49,7 +49,6 @@ namespace NemesusWorld.Controllers
                 player.SetOwnSharedData("Player:Spawned", false);
                 player.TriggerEvent("Client:ShowCharacterSwitch", NAPI.Util.ToJson(loadedCharactersList), count);
                 player.TriggerEvent("Client:ShowLoading");
-
                 if (delete == true)
                 {
                     player.TriggerEvent("Client:CharacterDelete");
@@ -59,6 +58,24 @@ namespace NemesusWorld.Controllers
             {
                 Helper.ConsoleLog("error", $"[GetAvailableCharacters]: " + e.ToString());
             }
+        }
+
+        public static int GetCashFromDefaultBank(Player player, Character character)
+        {
+            try
+            {
+                if (player != null && character != null)
+                {
+                    Bank bank = BankController.GetDefaultBank(player, character.defaultbank);
+                    if (bank == null) return 0;
+                    return bank.bankvalue;
+                }
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[GetCashFromDefaultBank]: " + e.ToString());
+            }
+            return 0;
         }
 
         [RemoteEvent("Server:CharacterChangeGender")]
@@ -348,7 +365,7 @@ namespace NemesusWorld.Controllers
                                             armor = 99;
                                         }
                                         Helper.SetPlayerArmor(player, armor);
-                                        if (character.factionduty == false || (character.faction != 1 && character.faction != 2))
+                                        if (character.factionduty == false || (character.faction != 1 && character.faction != 2 && character.faction != 3))
                                         {
                                             NAPI.Player.SetPlayerClothes(player, 9, Convert.ToInt32(character.armor), Convert.ToInt32(character.armorcolor));
                                         }
@@ -781,7 +798,7 @@ namespace NemesusWorld.Controllers
                         NAPI.Player.SetPlayerClothes(player, 4, 75, 0);
                         NAPI.Player.SetPlayerClothes(player, 6, 103, 0);
                     }
-                    if((character.faction == 1 || character.faction == 2) && character.factionduty == true)
+                    if((character.faction == 1 || character.faction == 2 || character.faction == 3) && character.factionduty == true)
                     {
                         NAPI.Player.SetPlayerClothes(player, 9, character.armor, character.armorcolor);
                     }
@@ -914,6 +931,8 @@ namespace NemesusWorld.Controllers
                     if (character == null || tempData == null || account == null || character.name == null) return;
 
                     PetaPoco.Database db = new PetaPoco.Database(General.Connection);
+
+                    character.bank = CharacterController.GetCashFromDefaultBank(player, character);
 
                     if (tempData.itemlist != null)
                     {

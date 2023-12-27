@@ -903,7 +903,7 @@ mp.events.add('render', (nametags) => {
                 if (distance <= 22.5) {
                     vehiclename = vehicle.getVariable('Vehicle:Name');
                     vehiclename = vehiclename.charAt(0).toUpperCase() + vehiclename.slice(1).toLowerCase();
-                    let engineHealth = localPlayer.vehicle.getEngineHealth();
+                    let engineHealth = vehicle.getEngineHealth();
                     if(engineHealth <= 0)
                     {
                         engineHealth = 0;

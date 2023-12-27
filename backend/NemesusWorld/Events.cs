@@ -1218,7 +1218,7 @@ namespace NemesusWorld
         }
 
         [ServerEvent(Event.PlayerDisconnected)]
-        public void OnPlayerDisconnected(Player player, DisconnectionType type, string reason)
+        public static void OnPlayerDisconnected(Player player, DisconnectionType type, string reason)
         {
             try
             {

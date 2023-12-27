@@ -37,15 +37,7 @@ namespace NemesusWorld.Utils
                 character.dutyjson = "null";
                 account._Player = null;
 
-                Bank bank = BankController.GetBankByBankNumber(character.defaultbank);
-                if (bank != null)
-                {
-                    character.bank = bank.bankvalue;
-                }
-                else
-                {
-                    character.bank = 0;
-                }
+               character.bank = CharacterController.GetCashFromDefaultBank(player, character);
 
                 if (showPlayer == null)
                 {
@@ -448,7 +440,7 @@ namespace NemesusWorld.Utils
                 }
                 else if (setting == 3)
                 {
-                    if ((character.faction == 1 || character.faction == 2) && character.factionduty == true)
+                    if ((character.faction == 1 || character.faction == 2 || character.faction == 3) && character.factionduty == true)
                     {
                         Helper.SendNotificationWithoutButton2(player, "Bitte wähle deine visuelle Schutzweste in der Umkleidekabine", "error", "Center");
                         return;
@@ -465,7 +457,7 @@ namespace NemesusWorld.Utils
                     }
                     character.armor = settingsvalue;
                     character.armorcolor = 0;
-                    if (NAPI.Player.GetPlayerArmor(player) > 0 && ((character.faction != 1 && character.faction != 2) || character.factionduty == false))
+                    if (NAPI.Player.GetPlayerArmor(player) > 0 && ((character.faction != 1 && character.faction != 2 && character.faction != 3) || character.factionduty == false))
                     {
                         NAPI.Player.SetPlayerClothes(player, 9, settingsvalue, 0);
                     }

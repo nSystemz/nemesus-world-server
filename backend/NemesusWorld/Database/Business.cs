@@ -1038,7 +1038,7 @@ namespace NemesusWorld.Database
                 }
                 else
                 {
-                    if (faction == false && !Helper.IsInRangeOfPoint(player.Position, new Vector3(471.16223, -988.9328, 25.734646), 7.5f) && !Helper.IsInRangeOfPoint(player.Position, new Vector3(629.6149, 3.6072264, 76.628044), 7.5f) && !Helper.IsInRangeOfPoint(player.Position, new Vector3(624.4518, -3.4003117, 76.628136), 7.5f) && !Helper.IsInRangeOfPoint(player.Position, new Vector3(624.4518, -3.4003117, 76.628136), 7.5f) && !Helper.IsInRangeOfPoint(player.Position, new Vector3(-663.262, 321.58627, 92.74433), 7.5f) && !Helper.IsInRangeOfPoint(player.Position, new Vector3(-339.501, -161.42168, 44.5875), 7.5f))
+                    if (faction == false && !Helper.IsInRangeOfPoint(player.Position, new Vector3(471.16223, -988.9328, 25.734646), 12.5f) && !Helper.IsInRangeOfPoint(player.Position, new Vector3(629.6149, 3.6072264, 76.628044), 12.5f) && !Helper.IsInRangeOfPoint(player.Position, new Vector3(624.4518, -3.4003117, 76.628136), 12.5f) && !Helper.IsInRangeOfPoint(player.Position, new Vector3(624.4518, -3.4003117, 76.628136), 7.5f) && !Helper.IsInRangeOfPoint(player.Position, new Vector3(-663.262, 321.58627, 92.74433), 12.5f) && !Helper.IsInRangeOfPoint(player.Position, new Vector3(-339.501, -161.42168, 44.5875), 12.5f))
                     {
                         player.TriggerEvent("Client:ShowClothMenu", "null", "null", 0);
                     }
@@ -1119,7 +1119,7 @@ namespace NemesusWorld.Database
                 Character character = Helper.GetCharacterData(player);
                 TempData tempData = Helper.GetCharacterTempData(player);
 
-                if(faction == true && (character.faction == 1 || character.faction == 2))
+                if(faction == true && (character.faction == 1 || character.faction == 2 || character.faction == 3))
                 {
                     if (character.factionduty == false)
                     {
@@ -1139,6 +1139,8 @@ namespace NemesusWorld.Database
                     {
                         Helper.SendNotificationWithoutButton(player, $"Dienstoutfit gewechselt!", "success");
                     }
+                    CharacterController.SaveCharacter(player);
+                    OnHideClothMenu(player, false);
                     return;
                 }
 
@@ -1162,10 +1164,10 @@ namespace NemesusWorld.Database
                 json2 = json2.Substring(1);
                 json2 = json2.Substring(0, json2.Length - 1);
 
-                string[] clothArray = new string[15];
+                string[] clothArray = new string[13];
                 clothArray = json1.Split(",");
 
-                string[] clothColorArray = new string[15];
+                string[] clothColorArray = new string[13];
                 clothColorArray = json2.Split(",");
 
                 JObject obj = null;

@@ -287,7 +287,7 @@ namespace NemesusWorld.Controllers
                                 {
                                     ItemsController.RemoveItem(player, iteminlist.itemid);
                                     Helper.SetPlayerArmor(player, 0);
-                                    if (character.factionduty == false || (character.faction != 1 && character.faction != 2))
+                                    if (character.factionduty == false || (character.faction != 1 && character.faction != 2 && character.faction != 3))
                                     {
                                         NAPI.Player.SetPlayerClothes(player, 9, 0, 0);
                                     }
@@ -366,7 +366,7 @@ namespace NemesusWorld.Controllers
                             newstatus = 1;
                             Helper.SendNotificationWithoutButton(player, $"{item.description} ausgerüstet!", "success", "top-left", 3500);
                             Helper.SetPlayerArmor(player, Convert.ToInt32(propArray[0]));
-                            if (character.factionduty == false || (character.faction != 1 && character.faction != 2))
+                            if (character.factionduty == false || (character.faction != 1 && character.faction != 2 && character.faction != 3))
                             {
                                 NAPI.Player.SetPlayerClothes(player, 9, Convert.ToInt32(character.armor), Convert.ToInt32(character.armorcolor));
                             }
@@ -389,7 +389,7 @@ namespace NemesusWorld.Controllers
                             {
                                 Helper.SendNotificationWithoutButton(player, $"{item.description} abgelegt!", "success", "top-left", 3500);
                             }
-                            if (character.factionduty == false || (character.faction != 1 && character.faction != 2))
+                            if (character.factionduty == false || (character.faction != 1 && character.faction != 2 && character.faction != 3))
                             {
                                 NAPI.Player.SetPlayerClothes(player, 9, 0, 0);
                             }

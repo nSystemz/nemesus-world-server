@@ -4930,6 +4930,10 @@
                                                                     <td>Möbelposition/rotation anpassen</td>
                                                                 </tr>
                                                                 <tr>
+                                                                    <td>/logout</td>
+                                                                    <td>Charakterauswahl aufrufen</td>
+                                                                </tr>
+                                                                <tr>
                                                                     <td>/addfriend & /deletefriend</td>
                                                                     <td>Freund hinzufügen/löschen</td>
                                                                 </tr>
@@ -5155,6 +5159,16 @@
                                                                 <tr>
                                                                     <td>/createcoupon</td>
                                                                     <td>Gutschein erstellen</td>
+                                                                    <td>Supporter</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>/testcloth</td>
+                                                                    <td>Kleidung testen</td>
+                                                                    <td>Supporter</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>/testeupoutfit</td>
+                                                                    <td>EUP Outfits testen</td>
                                                                     <td>Supporter</td>
                                                                 </tr>
                                                             </tbody>

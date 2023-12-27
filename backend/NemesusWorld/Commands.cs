@@ -156,6 +156,100 @@ namespace NemesusWorld
             });
         }
 
+        [Command("testeupoutfit", "Befehl: /testeupoutfit [Outfit-Name]", GreedyArg = true)]
+        public void CMD_testeupoutfit(Player player, String outfitname)
+        {
+            NAPI.Task.Run(() =>
+            {
+                try
+                {
+                    if (!Account.IsPlayerLoggedIn(player)) return;
+                    Account account = Helper.GetAccountData(player);
+                    if (!Account.IsAdminOnDuty(player, (int)Account.AdminRanks.Supporter))
+                    {
+                        Helper.SendNotificationWithoutButton(player, "Unzureichende Adminrechte!", "error", "top-end");
+                        return;
+                    }
+                    if(outfitname.Length < 5 || outfitname.Length > 35)
+                    {
+                        Helper.SendNotificationWithoutButton(player, "Ungültiger Outfitname!", "error", "top-end");
+                        return;
+                    }
+                    PetaPoco.Database db = new PetaPoco.Database(General.Connection);
+                    Outfits outfit = null;
+                    outfit = db.Single<Outfits>("WHERE name = @0", outfitname);
+                    if(outfit == null)
+                    {
+                        Helper.SendNotificationWithoutButton(player, "Ungültiges Outfit!", "error", "top-end");
+                        return;
+                    }
+                    if(outfit.owner != "EUP")
+                    {
+                        Helper.SendNotificationWithoutButton(player, "Du kannst nur EUP Outfits testen!", "error", "top-end");
+                        return;
+                    }
+
+                    String json1 = outfit.json1;
+                    String json2 = outfit.json2;
+
+                    string[] json1Array = new string[14];
+                    string[] json2Array = new string[14];
+
+                    json1 = json1.Substring(1, json1.Length - 2);
+                    json2 = json2.Substring(1, json2.Length - 2);
+
+                    json1Array = json1.Split(",");
+                    json2Array = json2.Split(",");
+
+                    NAPI.Player.ClearPlayerAccessory(player, 0);
+                    NAPI.Player.ClearPlayerAccessory(player, 1);
+                    NAPI.Player.ClearPlayerAccessory(player, 2);
+                    NAPI.Player.ClearPlayerAccessory(player, 6);
+                    NAPI.Player.ClearPlayerAccessory(player, 7);
+                    NAPI.Player.SetPlayerClothes(player, 10, 0, 0);
+                    NAPI.Player.SetPlayerClothes(player, 5, 0, 0);
+                    NAPI.Player.SetPlayerClothes(player, 7, 0, 0);
+                    NAPI.Player.SetPlayerClothes(player, 1, 0, 0);
+                    NAPI.Player.SetPlayerClothes(player, 9, 0, 0);
+
+                    //Top
+                    NAPI.Player.SetPlayerClothes(player, 11, Convert.ToInt32(json1Array[5]) - 1, Convert.ToInt32(json2Array[5]) - 1);
+                    //Torso
+                    NAPI.Player.SetPlayerClothes(player, 3, Convert.ToInt32(json1Array[6]) - 1, Convert.ToInt32(json2Array[6]) - 1);
+                    //Legs
+                    NAPI.Player.SetPlayerClothes(player, 4, Convert.ToInt32(json1Array[9]) - 1, Convert.ToInt32(json2Array[9]) - 1);
+                    //Shoes
+                    NAPI.Player.SetPlayerClothes(player, 6, Convert.ToInt32(json1Array[10]) - 1, Convert.ToInt32(json2Array[10]) - 1);
+                    //Undershirt
+                    NAPI.Player.SetPlayerClothes(player, 8, Convert.ToInt32(json1Array[8]) - 1, Convert.ToInt32(json2Array[8]) - 1);
+                    //Bag
+                    NAPI.Player.SetPlayerClothes(player, 5, Convert.ToInt32(json1Array[13]) - 1, Convert.ToInt32(json2Array[13]) - 1);
+                    //Glasses
+                    NAPI.Player.SetPlayerAccessory(player, 1, Convert.ToInt32(json1Array[1]) - 1, Convert.ToInt32(json2Array[1]) - 1);
+                    //Hat
+                    NAPI.Player.SetPlayerAccessory(player, 0, Convert.ToInt32(json1Array[0]) - 1, Convert.ToInt32(json2Array[0]) - 1);
+                    //Mask
+                    NAPI.Player.SetPlayerClothes(player, 1, Convert.ToInt32(json1Array[4]) - 1, Convert.ToInt32(json2Array[4]) - 1);
+                    //Ears
+                    NAPI.Player.SetPlayerAccessory(player, 2, Convert.ToInt32(json1Array[2]) - 1, Convert.ToInt32(json2Array[2]) - 1);
+                    //Watches
+                    NAPI.Player.SetPlayerClothes(player, 6, Convert.ToInt32(json1Array[3]) - 1, Convert.ToInt32(json2Array[3]) - 1);
+                    //Bracelets
+                    NAPI.Player.SetPlayerAccessory(player, 7, Convert.ToInt32(json1Array[7]) - 1, Convert.ToInt32(json2Array[7]) - 1);
+                    //Accessories
+                    NAPI.Player.SetPlayerClothes(player, 7, Convert.ToInt32(json1Array[11]) - 1, Convert.ToInt32(json2Array[11]) - 1);
+                    //Armor
+                    NAPI.Player.SetPlayerClothes(player, 9, Convert.ToInt32(json1Array[12]) - 1, Convert.ToInt32(json2Array[12]) - 1);
+                    Helper.SendNotificationWithoutButton(player, "Testoutfit (EUP) gesetzt!", "success", "top-end", 5500);
+                }
+                catch (Exception e)
+                {
+                    Helper.ConsoleLog("error", $"[CMD_testeupoutfit]: " + e.ToString());
+                }
+                return;
+            });
+        }
+
         [Command("testacc", "Befehl: /testacc [Component-ID] [Drawable] [Color*]")]
         public void CMD_testacc(Player player, int componentid, int drawable, int color = 0)
         {
@@ -7931,6 +8025,42 @@ namespace NemesusWorld
             catch (Exception e)
             {
                 Helper.ConsoleLog("error", $"[cmd_report]: " + e.ToString());
+            }
+        }
+
+        [Command("logout", "Befehl: /logout")]
+        public void cmd_logout(Player player)
+        {
+            try
+            {
+                if (!Account.IsPlayerLoggedIn(player)) return;
+                Account account = Helper.GetAccountData(player);
+                TempData tempData = Helper.GetCharacterTempData(player);
+                Character character = Helper.GetCharacterData(player);
+                if (account == null || tempData == null) return;
+                if (tempData.freezed == true || player.Vehicle != null)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Du kannst dich jetzt nicht ausloggen!", "error", "top-end");
+                    return;
+                }
+                if(tempData.adminduty == true)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Du musst zuerst deinen Admindienst beenden!", "error", "tSop-end");
+                    return;
+                }
+                CharacterController.SaveCharacter(player);
+                Account.SaveAccount(player);
+                Events.OnPlayerDisconnected(player, DisconnectionType.Left, "Charakterswitch");
+                player.TriggerEvent("Client:PlayerFreeze", true);
+                player.TriggerEvent("Client:ShowHud");
+                NAPI.Task.Run(() =>
+                {
+                    CharacterController.GetAvailableCharacters(player, account.id);
+                }, delayTime: 215);
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[cmd_logout]: " + e.ToString());
             }
         }
 

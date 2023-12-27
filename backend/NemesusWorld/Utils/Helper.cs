@@ -1837,7 +1837,7 @@ namespace NemesusWorld.Utils
         {
             switch (job)
             {
-                case -1: return "Arbeitslos";
+                case -1: return "Arbeitslos"; ;
                 case 1: return "Spediteur";
                 case 2: return "Jäger";
                 case 3: return "Busfahrer";
@@ -7882,9 +7882,19 @@ namespace NemesusWorld.Utils
                     }
                     PetaPoco.Database db = new PetaPoco.Database(General.Connection);
                     List<Outfits> outfitList = new List<Outfits>();
-                    foreach (Outfits outfit in db.Fetch<Outfits>("SELECT * FROM outfits WHERE owner = @0 LIMIT 3", "faction-" + character.id))
+                    if (character.gender == 1)
                     {
-                        outfitList.Add(outfit);
+                        foreach (Outfits outfit in db.Fetch<Outfits>("SELECT * FROM outfits WHERE owner = 'EUP' AND category1 IN ('General Services') AND category2 IN ('Sanitation', 'Road Assistance', 'Road Assistance') AND name LIKE 'Male%' LIMIT 150"))
+                        {
+                            outfitList.Add(outfit);
+                        }
+                    }
+                    else
+                    {
+                        foreach (Outfits outfit in db.Fetch<Outfits>("SELECT * FROM outfits WHERE owner = 'EUP' AND category1 IN ('General Services') AND category2 IN ('Sanitation', 'Road Assistance', 'Road Assistance') AND name LIKE 'Female%' LIMIT 150"))
+                        {
+                            outfitList.Add(outfit);
+                        }
                     }
                     if (IsInRangeOfPoint(player.Position, new Vector3(-340.87454, -161.04536, 44.58743), 4.25f))
                     {
@@ -7904,6 +7914,20 @@ namespace NemesusWorld.Utils
                     NAPI.Player.SetPlayerClothes(player, 7, 0, 0);
                     NAPI.Player.ClearPlayerAccessory(player, 1);
                     NAPI.Player.SetPlayerClothes(player, 1, 0, 0);
+                    if (character.gender == 1)
+                    {
+                        foreach (Outfits outfits in outfitList)
+                        {
+                            outfits.name = outfits.name.Substring(4);
+                        }
+                    }
+                    else
+                    {
+                        foreach (Outfits outfits in outfitList)
+                        {
+                            outfits.name = outfits.name.Substring(6);
+                        }
+                    }
                     player.TriggerEvent("Client:ShowFactionClothing", NAPI.Util.ToJson(obj["clothing"]), NAPI.Util.ToJson(obj["clothingColor"]), character.gender, character.faction, NAPI.Util.ToJson(outfitList));
                     return;
                 }
@@ -17119,7 +17143,7 @@ namespace NemesusWorld.Utils
 
                 if(bonus == "EUP")
                 {
-                    foreach (Outfits outfit in db.Fetch<Outfits>("SELECT * FROM outfits WHERE owner = 'EUP' LIMIT 931"))
+                    foreach (Outfits outfit in db.Fetch<Outfits>("SELECT * FROM outfits WHERE owner = 'EUP' LIMIT 1000"))
                     {
                         outfitList.Add(outfit);
                     }
@@ -17153,8 +17177,8 @@ namespace NemesusWorld.Utils
 
                             String json1 = outfits.json1;
                             String json2 = outfits.json2;
-                            string[] json1Array = new string[15];
-                            string[] json2Array = new string[15];
+                            string[] json1Array = new string[14];
+                            string[] json2Array = new string[14];
                             JObject obj = null;
 
                             obj = JObject.Parse(character.json);
@@ -17480,7 +17504,23 @@ namespace NemesusWorld.Utils
                                 Weather weather = new Weather();
                                 string tempstring2;
                                 tempstring2 = weatherObj["current"].ToString();
-                                try { weatherObjTemp2 = JObject.Parse(tempstring2); } catch (Exception) { }
+                                try 
+                                { 
+                                    weatherObjTemp2 = JObject.Parse(tempstring2); 
+                                } 
+                                catch (Exception) 
+                                {
+                                    if (weatherErrors <= 3)
+                                    {
+                                        weatherErrors++;
+                                        Helper.SetAndGetWeather("https://nemesus-world.de/WetterInfoBackup.php");
+                                    }
+                                    else
+                                    {
+                                        weatherstring = "clear sky";
+                                        SetWeather();
+                                    }
+                                }
                                 if (weatherObjTemp2 != null)
                                 {
                                     string tempstring;
@@ -17511,16 +17551,8 @@ namespace NemesusWorld.Utils
             }
             catch (Exception)
             {
-                if (weatherErrors <= 3)
-                {
-                    weatherErrors++;
-                    Helper.SetAndGetWeather("https://nemesus-world.de/WetterInfoBackup.php");
-                }
-                else
-                {
-                    weatherstring = "clear sky";
-                    SetWeather();
-                }
+                weatherstring = "clear sky";
+                SetWeather();
             }
         }
 

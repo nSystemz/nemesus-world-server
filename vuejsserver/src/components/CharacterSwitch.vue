@@ -31,7 +31,7 @@
                                                         <b>Konto</b> <a class="float-right"> {{character.Bank}}$</a>
                                                     </li>
                                                     <li class="list-group-item">
-                                                        <b>Job</b> <a class="float-right">Keinen</a>
+                                                        <b>Job</b> <a class="float-right">{{character.Job}}</a>
                                                     </li>
                                                 </ul>
                                             </div>

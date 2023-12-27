@@ -7,8 +7,8 @@ Weitere Credits gehen an Hrred für die Erstellung von vielen Maps und sonstigen
 Info Vorab: Dieser Gamemode kann als Voice-RP (Salty-Chat oder RageMP Voice) oder Text-RP Gamemode verwendet werden.
 
 Bei RageMP Voice bitte folgende Einstellungen zu deiner conf.json hinzufügen:
-"voice-chat": true
-"voice-chat-sample-rate": 48000 
+- "voice-chat": true,
+- "voice-chat-sample-rate": 48000 
 
 Bei diesem Gamemode handelt es sich um einen Gamemode für die Multiplayer Modifikation GTA 5/RageMP, Credits sind im Gamemode vermerkt oder bei der jeweiligen Funktion/MLO etc.
 

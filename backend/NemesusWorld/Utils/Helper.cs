@@ -1837,7 +1837,7 @@ namespace NemesusWorld.Utils
         {
             switch (job)
             {
-                case -1: return "Arbeitslos"; ;
+                case -1: return "Arbeitslos";
                 case 1: return "Spediteur";
                 case 2: return "Jäger";
                 case 3: return "Busfahrer";

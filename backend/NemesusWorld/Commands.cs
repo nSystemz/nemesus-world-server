@@ -8045,7 +8045,7 @@ namespace NemesusWorld
                 }
                 if(tempData.adminduty == true)
                 {
-                    Helper.SendNotificationWithoutButton(player, "Du musst zuerst deinen Admindienst beenden!", "error", "tSop-end");
+                    Helper.SendNotificationWithoutButton(player, "Du musst zuerst deinen Admindienst beenden!", "error", "top-end");
                     return;
                 }
                 CharacterController.SaveCharacter(player);

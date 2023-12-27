@@ -59,24 +59,6 @@ export const invalidMask = [];
 export const invalidAccessoiresMen = [1, 2, 3, 4, 5, 6, 7, 8, 9, 13, 14, 15, 33, 40, 41, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71, 72, 73, 84, 95, 96, 97, 98, 99, 100, 101, 102, 103, 104, 105, 106, 107, 108, 109, 125, 126, 127, 128, 132, 133, 134, 146, 147, 148, 152, 153, 154, 155, 156, 157, 158, 159, 160, 161, 162, 163, 164, 165, 166];
 export const invalidAccessoiresWoman = [4, 16, 24, 25, 43, 44, 45, 46, 47, 48, 49, 50, 51, 52, 63, 74, 75, 76, 77, 78, 79, 80, 95, 96, 97, 98, 102, 115, 116, 117, 121, 122, 123, 124, 125, 126, 127, 128, 129, 130, 131, 132, 133, 134, 135];
 
-//ToDo: Fraktionskleidung erweitern (Damit diese beim Dutypunkt angezeigt werden, alle nicht erwähnten Fraktionen sind durch das EUP Paket abgedeckt
-//Faction clothes
-//ACLS
-export const faction3TopsMen = [];
-export const faction3TopsWoman = [];
-export const faction3LegsMen = [150];
-export const faction3LegsWoman = [135];
-export const faction3ShoesMen = [97, 25];
-export const faction3ShoesWoman = [25, 101];
-export const faction3HeadMen = [];
-export const faction3HeadWoman = [];
-export const faction3UndershirtMen = [];
-export const faction3UndershirtWoman = [];
-export const faction3TorsoMen = [0, 1, 179];
-export const faction3TorsoWoman = [0, 1, 163];
-export const faction3AccessoiresMen = [];
-export const faction3AccessoiresWoman = [];
-
 //Vehicle Colors
 export const getVehicleColors = [{
         "ID": "0",

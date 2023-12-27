@@ -37,7 +37,7 @@ namespace NemesusWorld.Utils
                 character.dutyjson = "null";
                 account._Player = null;
 
-               character.bank = CharacterController.GetCashFromDefaultBank(player, character);
+                character.bank = CharacterController.GetMaxBankCash(character.id);
 
                 if (showPlayer == null)
                 {

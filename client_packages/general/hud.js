@@ -1966,7 +1966,7 @@ mp.events.add("Client:MuteMicro", (micro) => {
 
 mp.events.add("Client:CloseHandy", () => {
     if (hudWindow != null) {
-        mp.events.callRemote('Server:CloseHandy', );
+        mp.events.callRemote('Server:CloseHandy');
     }
 })
 

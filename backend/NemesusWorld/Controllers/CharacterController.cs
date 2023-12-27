@@ -23,7 +23,7 @@ namespace NemesusWorld.Controllers
                 int count = 0;
 
                 MySqlCommand command = General.Connection.CreateCommand();
-                command.CommandText = "SELECT id,name,cash,bank,job,faction,screen,closed FROM characters WHERE userid=@userid AND closed = 0 LIMIT 3";
+                command.CommandText = "SELECT id,name,cash,job,faction,screen,closed FROM characters WHERE userid=@userid AND closed = 0 LIMIT 3";
                 command.Parameters.AddWithValue("@userid", userid);
 
                 List<LoadCharactersModel> loadedCharactersList = new List<LoadCharactersModel>();
@@ -36,7 +36,7 @@ namespace NemesusWorld.Controllers
                         loadCharacter.ID = reader.GetInt32("id");
                         loadCharacter.Name = reader.GetString("name");
                         loadCharacter.Cash = reader.GetInt64("cash");
-                        loadCharacter.Bank = reader.GetInt64("bank");
+                        loadCharacter.Bank = CharacterController.GetMaxBankCash(loadCharacter.ID);
                         loadCharacter.Job = Helper.GetJobName(reader.GetInt32("job"));
                         loadCharacter.Faction = Helper.GetFactionTag(reader.GetInt32("faction"));
                         loadCharacter.Closed = reader.GetInt16("closed");
@@ -60,20 +60,26 @@ namespace NemesusWorld.Controllers
             }
         }
 
-        public static int GetCashFromDefaultBank(Player player, Character character)
+        public static int GetMaxBankCash(int characterid)
         {
             try
             {
-                if (player != null && character != null)
+                if (characterid > 0)
                 {
-                    Bank bank = BankController.GetDefaultBank(player, character.defaultbank);
-                    if (bank == null) return 0;
-                    return bank.bankvalue;
+                    int bankValue = 0;
+                    foreach(Bank bank in BankController.bankList)
+                    {
+                        if(bank.ownercharid == characterid)
+                        {
+                            bankValue += bank.bankvalue;
+                        }
+                    }
+                    return bankValue;
                 }
             }
             catch (Exception e)
             {
-                Helper.ConsoleLog("error", $"[GetCashFromDefaultBank]: " + e.ToString());
+                Helper.ConsoleLog("error", $"[GetMaxBankCash]: " + e.ToString());
             }
             return 0;
         }
@@ -931,8 +937,6 @@ namespace NemesusWorld.Controllers
                     if (character == null || tempData == null || account == null || character.name == null) return;
 
                     PetaPoco.Database db = new PetaPoco.Database(General.Connection);
-
-                    character.bank = CharacterController.GetCashFromDefaultBank(player, character);
 
                     if (tempData.itemlist != null)
                     {

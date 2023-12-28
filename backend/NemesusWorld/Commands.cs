@@ -181,10 +181,23 @@ namespace NemesusWorld
                         Helper.SendNotificationWithoutButton(player, "Du kannst dir nur männliche Outfits setzen!", "error", "top-end");
                         return;
                     }
-                    if (outfitname.ToLower().Contains("male") && character.gender != 1)
+                    if (!outfitname.ToLower().Contains("female") && character.gender != 1)
                     {
                         Helper.SendNotificationWithoutButton(player, "Du kannst dir nur weibliche Outfits setzen!", "error", "top-end");
                         return;
+                    }
+                    MySqlCommand command = General.Connection.CreateCommand();
+                    command.CommandText = "SELECT id FROM outfits WHERE name = @name LIMIT 1";
+                    command.Parameters.AddWithValue("@name", outfitname);
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (!reader.HasRows)
+                        {
+                            Helper.SendNotificationWithoutButton(player, "Ungültiges Outfit!", "error", "top-end");
+                            reader.Close();
+                            return;
+                        }
+                        reader.Close();
                     }
                     PetaPoco.Database db = new PetaPoco.Database(General.Connection);
                     Outfits outfit = null;

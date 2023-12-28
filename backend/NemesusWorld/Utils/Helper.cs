@@ -451,7 +451,9 @@ namespace NemesusWorld.Utils
         public static void ForumUpdate(Player player, string action, int forumid = -1, string grund = "n/A", int zeit = -1)
         {
             return;
+            #pragma warning disable CS0162 // Unerreichbarer Code wurde entdeckt - löschen wenn ToDo oben erledigt
             Character character = Helper.GetCharacterData(player);
+            #pragma warning restore CS0162 // Unerreichbarer Code wurde entdeckt - löschen wenn ToDo oben erledigt
             Account account = Helper.GetAccountData(player);
             TempData tempData = Helper.GetCharacterTempData(player);
 
@@ -1750,7 +1752,9 @@ namespace NemesusWorld.Utils
             TimeZoneInfo str_Berlin = TimeZoneInfo.CreateCustomTimeZone("Berlin Time", new TimeSpan(01, 00, 00), timeZoneBerlin, "Berlin Time");
             string data_Berlin = TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.Local, str_Berlin).ToString();
             DateTime dt = DateTime.Parse(s: data_Berlin);
+            #pragma warning disable CS0618 // Typ oder Element ist veraltet
             bool winterSummerTime = dt.Equals(TimeZone.CurrentTimeZone.GetDaylightChanges(dt.Year).Start);
+            #pragma warning restore CS0618 // Typ oder Element ist veraltet
             Int32 unixTimestamp;
             if (winterSummerTime == true) //Sommerzeit
             {
@@ -2219,74 +2223,79 @@ namespace NemesusWorld.Utils
                             if (busRoutes.routes.Length > 0)
                             {
                                 routesArray = busRoutes.routes.Split("|");
-                                for (int i = 0; i < routesArray.Length; i++)
+                                if(routesArray != null)
                                 {
-                                    if (routesArray.Length == player.GetData<int>("Player:BusStation"))
+                                    #pragma warning disable CS0162
+                                    for (int j = 0; j < routesArray.Length; j++)
                                     {
-                                        if (Helper.UnixTimestamp() < player.GetData<int>("Player:BusTime"))
+                                        if (routesArray.Length == player.GetData<int>("Player:BusStation"))
                                         {
-                                            AntiCheatController.OnCallAntiCheat(player, "Teleport to Checkpoint Cheat", "Busfahrer", false);
-                                            return;
-                                        }
-                                        int skill = character.busskill / 35;
-                                        string[] positionsArray = new string[4];
-                                        positionsArray = routesArray[0].Split(",");
-                                        string[] positionsArray2 = new string[4];
-                                        positionsArray2 = routesArray[player.GetData<int>("Player:BusStation") - 1].Split(",");
-                                        int salary = ((int)new Vector3(float.Parse(positionsArray[0], new CultureInfo("en-US")), float.Parse(positionsArray[1], new CultureInfo("en-US")), float.Parse(positionsArray[2], new CultureInfo("en-US"))).DistanceTo(new Vector3(float.Parse(positionsArray2[0], new CultureInfo("en-US")), float.Parse(positionsArray2[1], new CultureInfo("en-US")), float.Parse(positionsArray2[2], new CultureInfo("en-US")))));
-                                        salary = salary / 2 * 2;
-                                        salary = salary + (salary / 100 * skill);
-                                        if (character.mygroup != -1 && Helper.IsABusDriver(player) == 1)
-                                        {
-                                            int money = 0;
-                                            Groups mygroup = GroupsController.GetGroupById(character.mygroup);
-                                            Bank bank = BankController.GetBankByBankNumber(mygroup.banknumber);
-                                            if (bank != null)
+                                            if (Helper.UnixTimestamp() < player.GetData<int>("Player:BusTime"))
                                             {
-                                                money = salary;
-                                                int prov = 0;
-                                                if (mygroup.provision > 0)
+                                                AntiCheatController.OnCallAntiCheat(player, "Teleport to Checkpoint Cheat", "Busfahrer", false);
+                                                return;
+                                            }
+                                            int skill = character.busskill / 35;
+                                            string[] positionsArray = new string[4];
+                                            positionsArray = routesArray[0].Split(",");
+                                            string[] positionsArray2 = new string[4];
+                                            positionsArray2 = routesArray[player.GetData<int>("Player:BusStation") - 1].Split(",");
+                                            int salary = ((int)new Vector3(float.Parse(positionsArray[0], new CultureInfo("en-US")), float.Parse(positionsArray[1], new CultureInfo("en-US")), float.Parse(positionsArray[2], new CultureInfo("en-US"))).DistanceTo(new Vector3(float.Parse(positionsArray2[0], new CultureInfo("en-US")), float.Parse(positionsArray2[1], new CultureInfo("en-US")), float.Parse(positionsArray2[2], new CultureInfo("en-US")))));
+                                            salary = salary / 2 * 2;
+                                            salary = salary + (salary / 100 * skill);
+                                            if (character.mygroup != -1 && Helper.IsABusDriver(player) == 1)
+                                            {
+                                                int money = 0;
+                                                Groups mygroup = GroupsController.GetGroupById(character.mygroup);
+                                                Bank bank = BankController.GetBankByBankNumber(mygroup.banknumber);
+                                                if (bank != null)
                                                 {
-                                                    prov = money / 100 * mygroup.provision;
-                                                }
-                                                if (prov > 0 && character.defaultbank != "n/A")
-                                                {
-                                                    Bank bank2 = BankController.GetDefaultBank(player, character.defaultbank);
-                                                    bank.bankvalue += money;
-                                                    bank.bankvalue -= prov;
-                                                    if (bank2 != null)
+                                                    money = salary;
+                                                    int prov = 0;
+                                                    if (mygroup.provision > 0)
                                                     {
-                                                        bank2.bankvalue += prov;
+                                                        prov = money / 100 * mygroup.provision;
                                                     }
-                                                    Helper.SendNotificationWithoutButton(player, $"Route erfolgreich beendet, {money}$ werden dem Konto deiner Firma gutgeschrieben. Du erhälst {prov}$ Provision!", "success", "top-left", 5500);
-                                                    Helper.CreateGroupMoneyLog(mygroup.id, $"{character.name} hat eine Route erfolgreich beendet und {money - prov}$ erwirtschaftet!");
-                                                }
-                                                else
-                                                {
-                                                    Helper.SendNotificationWithoutButton(player, $"Route erfolgreich beendet, {money}$ werden dem Konto deiner Firma gutgeschrieben!", "success", "top-left", 5500);
-                                                    Helper.CreateGroupMoneyLog(mygroup.id, $"{character.name} hat eine Route erfolgreich beendet und {money}$ erwirtschaftet!");
+                                                    if (prov > 0 && character.defaultbank != "n/A")
+                                                    {
+                                                        Bank bank2 = BankController.GetDefaultBank(player, character.defaultbank);
+                                                        bank.bankvalue += money;
+                                                        bank.bankvalue -= prov;
+                                                        if (bank2 != null)
+                                                        {
+                                                            bank2.bankvalue += prov;
+                                                        }
+                                                        Helper.SendNotificationWithoutButton(player, $"Route erfolgreich beendet, {money}$ werden dem Konto deiner Firma gutgeschrieben. Du erhälst {prov}$ Provision!", "success", "top-left", 5500);
+                                                        Helper.CreateGroupMoneyLog(mygroup.id, $"{character.name} hat eine Route erfolgreich beendet und {money - prov}$ erwirtschaftet!");
+                                                    }
+                                                    else
+                                                    {
+                                                        Helper.SendNotificationWithoutButton(player, $"Route erfolgreich beendet, {money}$ werden dem Konto deiner Firma gutgeschrieben!", "success", "top-left", 5500);
+                                                        Helper.CreateGroupMoneyLog(mygroup.id, $"{character.name} hat eine Route erfolgreich beendet und {money}$ erwirtschaftet!");
+                                                    }
                                                 }
                                             }
+                                            else
+                                            {
+                                                Helper.SendNotificationWithoutButton(player, $"Route erfolgreich beendet, du erhältst {salary}$ für den nächsten Payday gutgeschrieben!", "success", "top-left", 5500);
+                                                character.nextpayday += salary;
+                                            }
+                                            player.SetData<int>("Player:BusStation", 0);
+                                            GetNextBusStation(player, busRoutes.name);
+                                            if (character.busskill < 175)
+                                            {
+                                                character.busskill++;
+                                            }
+                                            player.SetData<int>("Player:BusTime", Helper.UnixTimestamp() + (60));
+                                            return;
                                         }
                                         else
                                         {
-                                            Helper.SendNotificationWithoutButton(player, $"Route erfolgreich beendet, du erhältst {salary}$ für den nächsten Payday gutgeschrieben!", "success", "top-left", 5500);
-                                            character.nextpayday += salary;
+                                            GetNextBusStation(player, busRoutes.name);
+                                            return;
                                         }
-                                        player.SetData<int>("Player:BusStation", 0);
-                                        GetNextBusStation(player, busRoutes.name);
-                                        if (character.busskill < 175)
-                                        {
-                                            character.busskill++;
-                                        }
-                                        player.SetData<int>("Player:BusTime", Helper.UnixTimestamp() + (60));
-                                        return;
                                     }
-                                    else
-                                    {
-                                        GetNextBusStation(player, busRoutes.name);
-                                        return;
-                                    }
+                                    #pragma warning restore CS0162 
                                 }
                             }
                         }

@@ -728,7 +728,10 @@ namespace NemesusWorld.Controllers
                         NAPI.Player.SetPlayerAccessory(player, 6, (int)obj["clothing"][10], (int)obj["clothingColor"][10]);
                         NAPI.Player.SetPlayerAccessory(player, 7, (int)obj["clothing"][11], (int)obj["clothingColor"][11]);
                         NAPI.Player.SetPlayerClothes(player, 5, (int)obj["clothing"][5], (int)obj["clothingColor"][5]);
-                        NAPI.Player.SetPlayerClothes(player, 7, (int)obj["clothing"][12], (int)obj["clothingColor"][12]);
+                        if (obj["clothing"].Count() >= 12)
+                        {
+                            NAPI.Player.SetPlayerClothes(player, 7, (int)obj["clothing"][12], (int)obj["clothingColor"][12]);
+                        }
                     }
                     else
                     {

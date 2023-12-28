@@ -627,7 +627,7 @@
                                                                 <ul class="list-group list-group-bordered mb-3">
                                                                     <li class="list-group-item">
                                                                         <b>Account-ID</b> <a class="float-right">
-                                                                            {{accountinfos.id+99}}</a>
+                                                                            {{accountinfos.id}}</a>
                                                                     </li>
                                                                     <li class="list-group-item">
                                                                         <b>Accountname</b> <a

@@ -720,21 +720,6 @@ INSERT INTO `characters` (`id`, `userid`, `name`, `json`, `cash`, `birth`, `bank
 -- --------------------------------------------------------
 
 --
--- Tabellenstruktur für Tabelle `cloths`
---
-
-CREATE TABLE `cloths` (
-  `id` int(11) NOT NULL,
-  `component` int(4) NOT NULL,
-  `gender` varchar(5) NOT NULL,
-  `drawable` int(4) NOT NULL,
-  `color` int(4) NOT NULL,
-  `name` varchar(35) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
 -- Tabellenstruktur für Tabelle `coupons`
 --
 
@@ -4367,13 +4352,6 @@ ALTER TABLE `characters`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indizes für die Tabelle `cloths`
---
-ALTER TABLE `cloths`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `name` (`name`);
-
---
 -- Indizes für die Tabelle `coupons`
 --
 ALTER TABLE `coupons`
@@ -4808,12 +4786,6 @@ ALTER TABLE `cctvs`
 --
 ALTER TABLE `characters`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT für Tabelle `cloths`
---
-ALTER TABLE `cloths`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT für Tabelle `coupons`

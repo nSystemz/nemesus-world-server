@@ -17,11 +17,11 @@
 
 	Weitere Helfer/Credits: /credits
 
-	(C) by Nemesus World.de Credits 2021-2023
+	(C) by Nemesus World.de Credits 2021-2024
 
 	______________________________________________________________________________________________
 	
-	Stand: 11.2023
+	Stand: 12.2023
 
 */
 
@@ -35,8 +35,6 @@ using NemesusWorld.Models;
 using MySql.Data.MySqlClient;
 using System.Linq;
 using System.Data;
-using System.Globalization;
-using Org.BouncyCastle.Ocsp;
 using System.IO;
 
 namespace NemesusWorld
@@ -1188,6 +1186,7 @@ namespace NemesusWorld
                 player.SetOwnSharedData("Player:InHouse", -1);
                 player.SetSharedData("Player:Attachments", "0");
                 player.SetSharedData("Player:HealthSync", 100);
+                player.SetData<bool>("Player:AcceptCall", false);
                 Helper.SetPlayerHealth(player, 100);
                 Helper.SetPlayerArmor(player, 0);
                 NAPI.Task.Run(() =>
@@ -2254,6 +2253,8 @@ namespace NemesusWorld
                     //ToDo: Soundlink anpassen
                     player.TriggerEvent("Client:Play3DSound", "https://nemesus-world.de/nwsounds/alarm.wav", -3);
                 }
+                //Accept Call
+                player.SetData<bool>("Player:AcceptCall", false);
                 //Crystal-Meth
                 player.ResetData("Player:HealBonus");
                 //Crouching
@@ -3545,7 +3546,7 @@ namespace NemesusWorld
                         if (handyPlayer != null)
                         {
                             TempData tempData2 = Helper.GetCharacterTempData(handyPlayer);
-                            if (tempData2 != null && tempData2.inCall2 == true)
+                            if (tempData2 != null && tempData2.inCall2 == true && handyPlayer.GetData<bool>("Player:AcceptCall") == true)
                             {
                                 Helper.SendChatMessage(player, "!{#EE82EE}* " + character.name + " sagt (Handy): " + message);
                                 Helper.SendChatMessage(handyPlayer, "!{#EE82EE}* " + character.name + " sagt (Handy): " + message);
@@ -3580,11 +3581,18 @@ namespace NemesusWorld
         [ServerEvent(Event.UnhandledException)]
         public static void OnUnhandledException(Exception e)
         {
-            Helper.ConsoleLog("error", $"[OnUnhandledException]: " + e.ToString());
-            if (NAPI.Server.GetServerPort() == 22005)
+            try
             {
-                Helper.DiscordWebhook(Helper.ErrorWebhook, e.ToString(), "nMonitoring");
+                if (!e.ToString().ToLower().Contains("setandgetweather"))
+                {
+                    Helper.ConsoleLog("error", $"[OnUnhandledException]: " + e.ToString());
+                    if (NAPI.Server.GetServerPort() == 22005)
+                    {
+                        Helper.DiscordWebhook(Helper.ErrorWebhook, e.ToString(), "nMonitoring");
+                    }
+                }
             }
+            catch(Exception) { }
         }
     }
 }

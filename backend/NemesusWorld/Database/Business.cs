@@ -1382,6 +1382,7 @@ namespace NemesusWorld.Database
                 TempData tempData = Helper.GetCharacterTempData(player);
                 Character character = Helper.GetCharacterData(player);
                 if (tempData == null || character == null) return;
+                MySqlCommand command = General.Connection.CreateCommand();
                 Business bizz = GetClosestBusiness(player, 55.5f);
                 if (bizz == null && zoneid != -2) return;
                 int price = 0;
@@ -1414,15 +1415,18 @@ namespace NemesusWorld.Database
                         }
                     }
 
-                    PetaPoco.Database db = new PetaPoco.Database(General.Connection);
-
                     Decoration decoration = new Decoration();
                     if (tattooFound != null)
                     {
+                        NAPI.Player.ClearPlayerDecorations(player);
                         decoration.Collection = NAPI.Util.GetHashKey(dlcName);
                         decoration.Overlay = NAPI.Util.GetHashKey(name);
                         tempData.tattoos.Remove(tattooFound);
-                        db.Delete(tattooFound);
+                        command.CommandText = "DELETE FROM tattoos WHERE characterid=@characterid AND name=@name AND dlcname=@dlcname";
+                        command.Parameters.AddWithValue("@characterid", character.id);
+                        command.Parameters.AddWithValue("@name", name);
+                        command.Parameters.AddWithValue("@dlcname", dlcName);
+                        command.ExecuteNonQuery();
                         Helper.SendNotificationWithoutButton(player, $"Du hast dir für {price}$ ein Tattoo entfernen lassen!", "success", "top-left", 3750);
                     }
                     else
@@ -1432,8 +1436,6 @@ namespace NemesusWorld.Database
                             Helper.SendNotificationWithoutButton(player, $"Du kannst nur max. 12 Tattoos besitzen!", "error", "top-left", 3750);
                             return;
                         }
-
-                        MySqlCommand command = General.Connection.CreateCommand();
 
                         command.CommandText = "INSERT INTO tattoos (characterid, name, dlcname, zoneid) VALUES (@characterid, @name, @dlcname, @zoneid)";
                         command.Parameters.AddWithValue("@characterid", character.id);

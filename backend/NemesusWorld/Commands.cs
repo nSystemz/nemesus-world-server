@@ -165,6 +165,7 @@ namespace NemesusWorld
                 {
                     if (!Account.IsPlayerLoggedIn(player)) return;
                     Account account = Helper.GetAccountData(player);
+                    Character character = Helper.GetCharacterData(player);
                     if (!Account.IsAdminOnDuty(player, (int)Account.AdminRanks.Supporter))
                     {
                         Helper.SendNotificationWithoutButton(player, "Unzureichende Adminrechte!", "error", "top-end");
@@ -173,6 +174,16 @@ namespace NemesusWorld
                     if(outfitname.Length < 5 || outfitname.Length > 35)
                     {
                         Helper.SendNotificationWithoutButton(player, "Ungültiger Outfitname!", "error", "top-end");
+                        return;
+                    }
+                    if(outfitname.ToLower().Contains("female") && character.gender == 1)
+                    {
+                        Helper.SendNotificationWithoutButton(player, "Du kannst dir nur männliche Outfits setzen!", "error", "top-end");
+                        return;
+                    }
+                    if (outfitname.ToLower().Contains("male") && character.gender != 1)
+                    {
+                        Helper.SendNotificationWithoutButton(player, "Du kannst dir nur weibliche Outfits setzen!", "error", "top-end");
                         return;
                     }
                     PetaPoco.Database db = new PetaPoco.Database(General.Connection);

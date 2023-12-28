@@ -535,7 +535,7 @@ export default {
             }
         },
         resetClothes: function () {
-            this.character.clothing = [0, 0, 0, 1, 0, 0, 0, 255, 0, 255, 255, 255];
+            this.character.clothing = [0, 0, 0, 1, 0, 0, 0, 255, 0, 255, 255, 255, 0];
             this.reRender();
             setTimeout(function () {
                 // eslint-disable-next-line no-undef
@@ -568,7 +568,7 @@ export default {
                         this.clothingMax = [maxOberbekleidungWomen, maxTorsoWomen, maxLegsWomen, maxShoesWomen, maxTShirtWomen];
                     }
                     this.character.faceFeatures = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-                    this.character.clothing = [0, 0, 0, 1, 0, 0, 0, 255, 0, 255, 255, 255];
+                    this.character.clothing = [0, 0, 0, 1, 0, 0, 0, 255, 0, 255, 255, 255, 0];
                     this.character.headOverlays = [-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1];
                     this.character.headOverlaysColors = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
                     this.character.eyeColor = 0;

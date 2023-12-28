@@ -9041,7 +9041,10 @@ namespace NemesusWorld.Utils
                             NAPI.Player.SetPlayerAccessory(player, 6, (int)obj["clothing"][10], (int)obj["clothingColor"][10]);
                             NAPI.Player.SetPlayerAccessory(player, 7, (int)obj["clothing"][11], (int)obj["clothingColor"][11]);
                             NAPI.Player.SetPlayerClothes(player, 5, (int)obj["clothing"][5], (int)obj["clothingColor"][5]);
-                            NAPI.Player.SetPlayerClothes(player, 7, (int)obj["clothing"][12], (int)obj["clothingColor"][12]);
+                            if (obj["clothing"].Count() >= 12)
+                            {
+                                NAPI.Player.SetPlayerClothes(player, 7, (int)obj["clothing"][12], (int)obj["clothingColor"][12]);
+                            }
                             SendNotificationWithoutButton(player, "Accessoires angezogen!", "success", "top-left", 1150);
                             dict = "nmt_3_rcm-10";
                             anim = "cs_nigel_dual-10";
@@ -17508,7 +17511,7 @@ namespace NemesusWorld.Utils
                                 { 
                                     weatherObjTemp2 = JObject.Parse(tempstring2); 
                                 } 
-                                catch (Exception) 
+                                catch (Newtonsoft.Json.JsonReaderException) 
                                 {
                                     if (weatherErrors <= 3)
                                     {

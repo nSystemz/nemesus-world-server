@@ -807,6 +807,7 @@ namespace NemesusWorld.Controllers
                             Helper.PlayPhoneAnim(player);
                             if(Helper.adminSettings.voicerp == 0)
                             {
+                                player.SetData<bool>("Player:AcceptCall", true);
                                 Helper.SendNotificationWithoutButton(target, "~w~Dein Gesprächspartner hat das Telefonat angenommen!");
                             }
                         }
@@ -836,6 +837,7 @@ namespace NemesusWorld.Controllers
                         player.SetData<string>("Player:InCall", "0");
                         player.SetData<string>("Player:LastNumber", "0");
                         Helper.PlayPhoneAnim(player);
+                        player.SetData<bool>("Player:AcceptCall", false);
                         if (target != null)
                         {
                             target.TriggerEvent("Client:EndCall");
@@ -850,6 +852,7 @@ namespace NemesusWorld.Controllers
                             }
                             if (Helper.adminSettings.voicerp == 0)
                             {
+                                target.SetData<bool>("Player:AcceptCall", false);
                                 Helper.SendNotificationWithoutButton(target, "~w~Dein Gesprächspartner hat das Telefonat abgelehnt!", "error");
                             }
                         }

@@ -1148,6 +1148,7 @@ namespace NemesusWorld
         {
             try
             {
+                Helper.SetPlayerArmor(player, 0);
                 Helper.SetPlayerHealth(player, 100);
                 player.SetData("Player:ConnectName", player.Name);
                 player.Dimension = 50;

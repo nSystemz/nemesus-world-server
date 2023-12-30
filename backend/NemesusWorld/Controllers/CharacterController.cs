@@ -250,30 +250,31 @@ namespace NemesusWorld.Controllers
             }
         }
 
-        public static int GetRowFromCharacter(Player player, int characterid)
+        public static int GetRowFromCharacter(Player player, String charaktername)
         {
             try
             {
                 Account account = Helper.GetAccountData(player);
                 if (account == null) return 0;
                 MySqlCommand command = General.Connection.CreateCommand();
-                command.CommandText = "SELECT id FROM characters WHERE userid=@userid ORDER BY id ASC";
+                command.CommandText = "SELECT name FROM characters WHERE userid=@userid";
                 command.Parameters.AddWithValue("@userid", account.id);
-                int count = 0, id = 0;
+                int count = 0;
+                String name = "n/A";
 
                 using (MySqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
-                        reader.Read();
-                        id = reader.GetInt32("id");
-                        if (id == characterid)
+                        name = reader.GetString("name");
+                        if (name == charaktername)
                         {
                             reader.Close();
                             return count;
                         }
                         count++;
                     }
+                    reader.Close();
                 }
                 return count;
             }
@@ -330,7 +331,7 @@ namespace NemesusWorld.Controllers
                 player.Name = character.name;
                 player.SetData(Helper.GetCharacterKey(), character);
 
-                account.selectedcharacter = GetRowFromCharacter(player, characterid);
+                account.selectedcharacter = GetRowFromCharacter(player, character.name);
                 account.selectedcharacterintern = character.id;
 
                 if (character.items.Length > 5)
@@ -603,7 +604,6 @@ namespace NemesusWorld.Controllers
                                                     account.coins += 10;
                                                     Helper.SendNotificationWithoutButton(player, $"Loginbonus Tag {account.login_bonus} - 10 Coins!", "info", "top-left", 6750);
                                                 }
-                                                Account.SaveAccount(player);
                                             }
                                             else
                                             {
@@ -623,6 +623,7 @@ namespace NemesusWorld.Controllers
                                     }
                                 }
                                 Helper.SendNotificationWithoutButton(player, "Willkommen zurück " + account.name + "!", "info", "top-left", 1850);
+                                Account.SaveAccount(player);
                             }
                         }, delayTime: 3550);
                     }
@@ -1021,13 +1022,15 @@ namespace NemesusWorld.Controllers
                 }
                 if (checkCharacter == true)
                 {
-                    command.CommandText = "UPDATE users SET selectedcharacter = -1,selectedcharacterintern = -1 WHERE id=@userid2";
-                    command.Parameters.AddWithValue("@userid2", account.id);
-                    command.ExecuteNonQuery();
+                    MySqlCommand command2 = General.Connection.CreateCommand();
+                    command2.CommandText = "UPDATE users SET selectedcharacter = -1,selectedcharacterintern = -1 WHERE id=@id";
+                    command2.Parameters.AddWithValue("@id", account.id);
+                    command2.ExecuteNonQuery();
 
-                    command.CommandText = "UPDATE characters SET closed = 1,ucp_privat = 1 WHERE id=@id2 LIMIT 1";
-                    command.Parameters.AddWithValue("@id2", characterid);
-                    command.ExecuteNonQuery();
+                    MySqlCommand command3 = General.Connection.CreateCommand();
+                    command3.CommandText = "UPDATE characters SET closed = 1,ucp_privat = 1 WHERE id=@id2";
+                    command3.Parameters.AddWithValue("@id2", characterid);
+                    command3.ExecuteNonQuery();
 
                     Helper.CreateAdminLog($"characterlog", account.name + " hat den Charakter (Name: " + name + ") zur Löschung markiert!");
                     Helper.CreateUserLog(account.id, "Charakter " + name + " gelöscht");
@@ -1035,6 +1038,9 @@ namespace NemesusWorld.Controllers
                     account.selectedcharacterintern = -1;
                     player.TriggerEvent("Client:HideCharacterSwitch");
                     GetAvailableCharacters(player, account.id, true);
+
+                    Account.SaveAccount(player);
+
                 }
                 else
                 {
@@ -1152,7 +1158,7 @@ namespace NemesusWorld.Controllers
                 player.SetData("Player:Screenshot", id);
                 player.TriggerEvent("Client:TakePicture", "Char-" + id, 1);
 
-                int rowid = GetRowFromCharacter(player, id);
+                int rowid = GetRowFromCharacter(player, name);
 
                 MySqlCommand command2 = General.Connection.CreateCommand();
                 command2.CommandText = "UPDATE users SET selectedcharacter = @selectedcharacter, selectedcharacterintern = @selectedcharacterintern WHERE id = @userid2";

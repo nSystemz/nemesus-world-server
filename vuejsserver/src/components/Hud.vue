@@ -58,7 +58,7 @@
                       <li class="active">
                         <span class="fa fa-search-plus mt-3 mr-2"></span>Größe in cm
                         <input placeholder="180" value="180" v-model="size" type="text"
-                          class="form-control mt-1" maxlength="10">
+                          class="form-control mt-1" maxlength="3">
                       </li>
                       <li class="active">
                         <span class="fa fa-tint mt-3 mr-2"></span>Augenfarbe
@@ -1611,7 +1611,7 @@
                       <li class="active">
                         <span class="fa fa-search-plus mt-3 mr-2"></span>Größe in cm
                         <input placeholder="180" value="180" v-model="size" type="text"
-                          class="form-control mt-1" maxlength="10">
+                          class="form-control mt-1" maxlength="3">
                       </li>
                       <li class="active">
                         <span class="fa fa-tint mt-3 mr-2"></span>Augenfarbe

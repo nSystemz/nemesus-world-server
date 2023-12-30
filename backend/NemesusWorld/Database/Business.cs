@@ -1400,6 +1400,8 @@ namespace NemesusWorld.Database
                     return;
                 }
 
+                player.SetData<bool>("Player:InShop", false);
+
                 if (zoneid != -2)
                 {
                     Tattoos tattoo = new Tattoos();
@@ -1518,6 +1520,8 @@ namespace NemesusWorld.Database
                     Helper.SendNotificationWithoutButton(player, $"Du hast nicht genügend Geld dabei - {price}$!", "error");
                     return;
                 }
+
+                player.SetData<bool>("Player:InShop", false);
 
                 Decoration decoration = new Decoration();
 

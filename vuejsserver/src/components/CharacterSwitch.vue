@@ -36,7 +36,7 @@
                                                 </ul>
                                             </div>
                                             <button @click="selectCharacter(character.ID)" type="button" class="btn btn-danger mr-3 ml-3 mb-2" disabled v-if="character.Closed == 1">Auswählen</button>
-                                            <button @click="selectCharacter(character.ID)" type="button" class="btn btn-primary mr-3 ml-3 mb-2" v-if="index == 0" v-on:keyup.enter="selectCharacter(character.ID)" autofocus>Auswählen</button>
+                                            <button @click="selectCharacter(character.ID)" type="button" class="btn btn-primary mr-3 ml-3 mb-2" v-if="index == 0" v-on:keyup.enter="selectCharacter(character.ID)">Auswählen</button>
                                             <button @click="selectCharacter(character.ID)" type="button" class="btn btn-primary mr-3 ml-3 mb-2" v-else>Auswählen</button>
                                             <button @click="deleteCharacter(character.ID)" type="button" class="btn btn-danger mr-3 ml-3 mb-2" v-if="character.Closed == 0">Löschen</button>
                                         </div>

@@ -4089,7 +4089,7 @@ mp.keys.bind(0x4C, true, function () {
 mp.keys.bind(0x4D, true, function () {
     if (pressedM == 0 || (Date.now() / 1000) > pressedM) {
         let spawned = localPlayer.getVariable('Player:Spawned');
-        if (showSaltyError == true || triggerAntiCheat == true || localPlayer.isTypingInTextChat || !spawned || nokeys == true || death == true || cuffed == true || showMenu == true) return;
+        if (showSaltyError == true || triggerAntiCheat == true || localPlayer.isTypingInTextChat || !spawned || nokeys == true || death == true || cuffed == true || showMenu == true || showHandy == true) return;
         if (localPlayer.vehicle && showTuning == false) {
             mp.events.callRemote('Server:VehicleEngine');
         }

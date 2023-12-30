@@ -3754,6 +3754,11 @@ namespace NemesusWorld.Utils
                                         SendNotificationWithoutButton(player, "Dieses Haus wurde bereits verkauft!", "error", "top-end");
                                         return;
                                     }
+                                    if (house.status == 5)
+                                    {
+                                        SendNotificationWithoutButton(player, "Dieses Haus kann nicht gekauft werden!", "error", "top-end");
+                                        return;
+                                    }
                                     int count = 0;
                                     MySqlCommand command = General.Connection.CreateCommand();
                                     command.CommandText = "SELECT COUNT(*) as count FROM houses where owner=@owner";
@@ -8226,7 +8231,6 @@ namespace NemesusWorld.Utils
                 //Häuser
                 foreach (House house in House.houseList)
                 {
-                    if (house == null || house.interior == 0) continue;
                     if (player.Position.DistanceTo(house.position) <= 1.65f && player.Dimension == house.dimension)
                     {
                         if (house.locked == 1)
@@ -8243,6 +8247,11 @@ namespace NemesusWorld.Utils
                             }
                             else
                             {
+                                if(house.interior == 0)
+                                {
+                                    SendNotificationWithoutButton(player, "Dieses Haus kann direkt über den Hauseingang besichtigt werden!", "error");
+                                    return;
+                                }
                                 player.TriggerEvent("Client:LoadIPL", House.GetInteriorIPL(house.interior));
                                 SetPlayerPosition(player, House.GetHouseExitPoint(house.interior));
                                 player.Dimension = Convert.ToUInt32(house.id);

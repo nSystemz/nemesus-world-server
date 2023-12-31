@@ -3844,6 +3844,11 @@ namespace NemesusWorld.Utils
                                 }
                                 else
                                 {
+                                    if (house.interior == 0)
+                                    {
+                                        SendNotificationWithoutButton(player, "Dieses Haus kann direkt über den Hauseingang besichtigt werden!", "error");
+                                        return;
+                                    }
                                     player.TriggerEvent("Client:LoadIPL", House.GetInteriorIPL(house.interior));
                                     SetPlayerPosition(player, House.GetHouseExitPoint(house.interior));
                                     player.Dimension = Convert.ToUInt32(house.id);
@@ -17520,16 +17525,16 @@ namespace NemesusWorld.Utils
                         {
                             using (var sr = new StreamReader(stream))
                             {
-                                content = sr.ReadToEnd();
-                                weatherObj = JObject.Parse(content);
-                                Weather weather = new Weather();
                                 string tempstring2;
-                                tempstring2 = weatherObj["current"].ToString();
+                                content = sr.ReadToEnd();
+                                Weather weather = new Weather();
                                 try 
-                                { 
+                                {
+                                    weatherObj = JObject.Parse(content);
+                                    tempstring2 = weatherObj["current"].ToString();
                                     weatherObjTemp2 = JObject.Parse(tempstring2); 
                                 } 
-                                catch (Newtonsoft.Json.JsonReaderException) 
+                                catch (Exception) 
                                 {
                                     if (weatherErrors <= 3)
                                     {

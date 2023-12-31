@@ -623,6 +623,7 @@ namespace NemesusWorld.Controllers
                                     }
                                 }
                                 Helper.SendNotificationWithoutButton(player, "Willkommen zurück " + account.name + "!", "info", "top-left", 1850);
+                                account.online = 1;
                                 Account.SaveAccount(player);
                             }
                         }, delayTime: 3550);

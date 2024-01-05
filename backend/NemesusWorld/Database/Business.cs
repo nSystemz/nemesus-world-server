@@ -1039,7 +1039,7 @@ namespace NemesusWorld.Database
                 else
                 {
                     Business bizz = Business.GetClosestBusiness(player, 45.5f);
-                    if (faction == false && bizz != null && !Helper.IsInRangeOfPoint(player.Position, new Vector3(471.16223, -988.9328, 25.734646), 12.5f) && !Helper.IsInRangeOfPoint(player.Position, new Vector3(629.6149, 3.6072264, 76.628044), 12.5f) && !Helper.IsInRangeOfPoint(player.Position, new Vector3(624.4518, -3.4003117, 76.628136), 12.5f) && !Helper.IsInRangeOfPoint(player.Position, new Vector3(624.4518, -3.4003117, 76.628136), 7.5f) && !Helper.IsInRangeOfPoint(player.Position, new Vector3(-663.262, 321.58627, 92.74433), 12.5f) && !Helper.IsInRangeOfPoint(player.Position, new Vector3(-339.501, -161.42168, 44.5875), 12.5f))
+                    if (faction == false && bizz != null && tempData.adminduty == false && !Helper.IsInRangeOfPoint(player.Position, new Vector3(471.16223, -988.9328, 25.734646), 12.5f) && !Helper.IsInRangeOfPoint(player.Position, new Vector3(629.6149, 3.6072264, 76.628044), 12.5f) && !Helper.IsInRangeOfPoint(player.Position, new Vector3(624.4518, -3.4003117, 76.628136), 12.5f) && !Helper.IsInRangeOfPoint(player.Position, new Vector3(624.4518, -3.4003117, 76.628136), 7.5f) && !Helper.IsInRangeOfPoint(player.Position, new Vector3(-663.262, 321.58627, 92.74433), 12.5f) && !Helper.IsInRangeOfPoint(player.Position, new Vector3(-339.501, -161.42168, 44.5875), 12.5f))
                     {
                         player.TriggerEvent("Client:ShowClothMenu", "null", "null", 0);
                     }

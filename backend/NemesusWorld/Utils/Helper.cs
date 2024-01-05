@@ -17146,9 +17146,10 @@ namespace NemesusWorld.Utils
             try
             {
                 Character character = GetCharacterData(player);
+                TempData tempData = GetCharacterTempData(player);
                 String outfitName = "";
 
-                if (character == null) return;
+                if (character == null || tempData == null) return;
 
                 int wardrobeID = -1;
 
@@ -17292,20 +17293,60 @@ namespace NemesusWorld.Utils
                                 obj["clothingColor"][12] = Convert.ToInt32(json2Array[11]) - 1;
                                 //Armor
                                 NAPI.Player.SetPlayerClothes(player, 9, Convert.ToInt32(json1Array[12])-1, Convert.ToInt32(json2Array[12]) - 1);
-                                character.armor = Convert.ToInt32(json1Array[12]) - 1;
-                                character.armorcolor = Convert.ToInt32(json2Array[12]) - 1;
+                                if (tempData.adminduty == false)
+                                {
+                                    character.armor = Convert.ToInt32(json1Array[12]) - 1;
+                                    character.armorcolor = Convert.ToInt32(json2Array[12]) - 1;
+                                }
                             }
 
-                            if (outfits.owner != "EUP")
+                            if (tempData.adminduty == false)
                             {
-                                character.json = NAPI.Util.ToJson(obj);
+                                if (outfits.owner != "EUP")
+                                {
+                                    character.json = NAPI.Util.ToJson(obj);
+                                }
+                                else
+                                {
+                                    character.dutyjson = NAPI.Util.ToJson(obj);
+                                }
                             }
                             else
                             {
-                                character.dutyjson = NAPI.Util.ToJson(obj);
+                                //Top
+                                NAPI.Player.SetPlayerClothes(player, 11, Convert.ToInt32(json1Array[5]) - 1, Convert.ToInt32(json2Array[5]) - 1);
+                                //Torso
+                                NAPI.Player.SetPlayerClothes(player, 3, Convert.ToInt32(json1Array[6]) - 1, Convert.ToInt32(json2Array[6]) - 1);
+                                //Legs
+                                NAPI.Player.SetPlayerClothes(player, 4, Convert.ToInt32(json1Array[9]) - 1, Convert.ToInt32(json2Array[9]) - 1);
+                                //Shoes
+                                NAPI.Player.SetPlayerClothes(player, 6, Convert.ToInt32(json1Array[10]) - 1, Convert.ToInt32(json2Array[10]) - 1);
+                                //Undershirt
+                                NAPI.Player.SetPlayerClothes(player, 8, Convert.ToInt32(json1Array[8]) - 1, Convert.ToInt32(json2Array[8]) - 1);
+                                //Bag
+                                NAPI.Player.SetPlayerClothes(player, 5, Convert.ToInt32(json1Array[13]) - 1, Convert.ToInt32(json2Array[13]) - 1);
+                                //Glasses
+                                NAPI.Player.SetPlayerAccessory(player, 1, Convert.ToInt32(json1Array[1]) - 1, Convert.ToInt32(json2Array[1]) - 1);
+                                //Hat
+                                NAPI.Player.SetPlayerAccessory(player, 0, Convert.ToInt32(json1Array[0]) - 1, Convert.ToInt32(json2Array[0]) - 1);
+                                //Mask
+                                NAPI.Player.SetPlayerClothes(player, 1, Convert.ToInt32(json1Array[4]) - 1, Convert.ToInt32(json2Array[4]) - 1);
+                                //Ears
+                                NAPI.Player.SetPlayerAccessory(player, 2, Convert.ToInt32(json1Array[2]) - 1, Convert.ToInt32(json2Array[2]) - 1);
+                                //Watches
+                                NAPI.Player.SetPlayerClothes(player, 6, Convert.ToInt32(json1Array[3]) - 1, Convert.ToInt32(json2Array[3]) - 1);
+                                //Bracelets
+                                NAPI.Player.SetPlayerAccessory(player, 7, Convert.ToInt32(json1Array[7]) - 1, Convert.ToInt32(json2Array[7]) - 1);
+                                //Accessories
+                                NAPI.Player.SetPlayerClothes(player, 7, Convert.ToInt32(json1Array[11]) - 1, Convert.ToInt32(json2Array[11]) - 1);
+                                //Armor
+                                NAPI.Player.SetPlayerClothes(player, 9, Convert.ToInt32(json1Array[12]) - 1, Convert.ToInt32(json2Array[12]) - 1);
                             }
 
-                            CharacterController.SetCharacterCloths(player, obj, character.clothing);
+                            if (tempData.adminduty == false)
+                            {
+                                CharacterController.SetCharacterCloths(player, obj, character.clothing);
+                            }
 
                             if (outfits.owner != "EUP")
                             {
@@ -17323,9 +17364,17 @@ namespace NemesusWorld.Utils
                             }
                             else
                             {
-                                SendNotificationWithoutButton(player, "Dienstoutfit ausgewählt!", "success");
+                                if (tempData.adminduty == false)
+                                {
+                                    SendNotificationWithoutButton(player, "Dienstoutfit ausgewählt!", "success");
+                                }
+                                else
+                                {
+                                    SendNotificationWithoutButton(player, "EUP Testoutfit ausgewählt!", "success");
+                                }
                             }
                             Helper.PlayShortAnimation(player, "missmic4", "michael_tux_fidget", 1500);
+                            player.SetData<bool>("Player:InShop", false);
                             break;
                         }
                     case "deleteoutfit":

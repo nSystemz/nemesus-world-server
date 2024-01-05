@@ -156,8 +156,8 @@ namespace NemesusWorld
             });
         }
 
-        [Command("testeupoutfit", "Befehl: /testeupoutfit [Outfit-Name]", GreedyArg = true)]
-        public void CMD_testeupoutfit(Player player, String outfitname)
+        [Command("testeupoutfit", "Befehl: /testeupoutfit [Outfit-Name/Auswahlmenü] [Kategorie]", GreedyArg = true)]
+        public void CMD_testeupoutfit(Player player, String outfitname = "Auswahlmenü", String category = "n/A")
         {
             NAPI.Task.Run(() =>
             {
@@ -176,95 +176,159 @@ namespace NemesusWorld
                         Helper.SendNotificationWithoutButton(player, "Ungültiger Outfitname!", "error", "top-end");
                         return;
                     }
-                    if(outfitname.ToLower().Contains("female") && character.gender == 1)
+                    if (outfitname != "Auswahlmenü")
                     {
-                        Helper.SendNotificationWithoutButton(player, "Du kannst dir nur männliche Outfits setzen!", "error", "top-end");
-                        return;
-                    }
-                    if (!outfitname.ToLower().Contains("female") && character.gender != 1)
-                    {
-                        Helper.SendNotificationWithoutButton(player, "Du kannst dir nur weibliche Outfits setzen!", "error", "top-end");
-                        return;
-                    }
-                    MySqlCommand command = General.Connection.CreateCommand();
-                    command.CommandText = "SELECT id FROM outfits WHERE name = @name LIMIT 1";
-                    command.Parameters.AddWithValue("@name", outfitname);
-                    using (MySqlDataReader reader = command.ExecuteReader())
-                    {
-                        if (!reader.HasRows)
+                        if (outfitname.ToLower().Contains("female") && character.gender == 1)
                         {
-                            Helper.SendNotificationWithoutButton(player, "Ungültiges Outfit!", "error", "top-end");
-                            reader.Close();
+                            Helper.SendNotificationWithoutButton(player, "Du kannst dir nur männliche Outfits setzen!", "error", "top-end");
                             return;
                         }
-                        reader.Close();
+                        if (!outfitname.ToLower().Contains("female") && character.gender != 1)
+                        {
+                            Helper.SendNotificationWithoutButton(player, "Du kannst dir nur weibliche Outfits setzen!", "error", "top-end");
+                            return;
+                        }
                     }
-                    PetaPoco.Database db = new PetaPoco.Database(General.Connection);
-                    Outfits outfit = null;
-                    outfit = db.Single<Outfits>("WHERE name = @0", outfitname);
-                    if(outfit == null)
+                    if (outfitname != "Auswahlmenü")
                     {
-                        Helper.SendNotificationWithoutButton(player, "Ungültiges Outfit!", "error", "top-end");
+                        MySqlCommand command = General.Connection.CreateCommand();
+                        command.CommandText = "SELECT id FROM outfits WHERE name = @name LIMIT 1";
+                        command.Parameters.AddWithValue("@name", outfitname);
+                        using (MySqlDataReader reader = command.ExecuteReader())
+                        {
+                            if (!reader.HasRows)
+                            {
+                                Helper.SendNotificationWithoutButton(player, "Ungültiges Outfit!", "error", "top-end");
+                                reader.Close();
+                                return;
+                            }
+                            reader.Close();
+                        }
+                        PetaPoco.Database db = new PetaPoco.Database(General.Connection);
+                        Outfits outfit = null;
+                        outfit = db.Single<Outfits>("WHERE name = @0", outfitname);
+                        if (outfit == null)
+                        {
+                            Helper.SendNotificationWithoutButton(player, "Ungültiges Outfit!", "error", "top-end");
+                            return;
+                        }
+                        if (outfit.owner != "EUP")
+                        {
+                            Helper.SendNotificationWithoutButton(player, "Du kannst nur EUP Outfits testen!", "error", "top-end");
+                            return;
+                        }
+
+                        String json1 = outfit.json1;
+                        String json2 = outfit.json2;
+
+                        string[] json1Array = new string[14];
+                        string[] json2Array = new string[14];
+
+                        json1 = json1.Substring(1, json1.Length - 2);
+                        json2 = json2.Substring(1, json2.Length - 2);
+
+                        json1Array = json1.Split(",");
+                        json2Array = json2.Split(",");
+
+                        NAPI.Player.ClearPlayerAccessory(player, 0);
+                        NAPI.Player.ClearPlayerAccessory(player, 1);
+                        NAPI.Player.ClearPlayerAccessory(player, 2);
+                        NAPI.Player.ClearPlayerAccessory(player, 6);
+                        NAPI.Player.ClearPlayerAccessory(player, 7);
+                        NAPI.Player.SetPlayerClothes(player, 10, 0, 0);
+                        NAPI.Player.SetPlayerClothes(player, 5, 0, 0);
+                        NAPI.Player.SetPlayerClothes(player, 7, 0, 0);
+                        NAPI.Player.SetPlayerClothes(player, 1, 0, 0);
+                        NAPI.Player.SetPlayerClothes(player, 9, 0, 0);
+
+                        //Top
+                        NAPI.Player.SetPlayerClothes(player, 11, Convert.ToInt32(json1Array[5]) - 1, Convert.ToInt32(json2Array[5]) - 1);
+                        //Torso
+                        NAPI.Player.SetPlayerClothes(player, 3, Convert.ToInt32(json1Array[6]) - 1, Convert.ToInt32(json2Array[6]) - 1);
+                        //Legs
+                        NAPI.Player.SetPlayerClothes(player, 4, Convert.ToInt32(json1Array[9]) - 1, Convert.ToInt32(json2Array[9]) - 1);
+                        //Shoes
+                        NAPI.Player.SetPlayerClothes(player, 6, Convert.ToInt32(json1Array[10]) - 1, Convert.ToInt32(json2Array[10]) - 1);
+                        //Undershirt
+                        NAPI.Player.SetPlayerClothes(player, 8, Convert.ToInt32(json1Array[8]) - 1, Convert.ToInt32(json2Array[8]) - 1);
+                        //Bag
+                        NAPI.Player.SetPlayerClothes(player, 5, Convert.ToInt32(json1Array[13]) - 1, Convert.ToInt32(json2Array[13]) - 1);
+                        //Glasses
+                        NAPI.Player.SetPlayerAccessory(player, 1, Convert.ToInt32(json1Array[1]) - 1, Convert.ToInt32(json2Array[1]) - 1);
+                        //Hat
+                        NAPI.Player.SetPlayerAccessory(player, 0, Convert.ToInt32(json1Array[0]) - 1, Convert.ToInt32(json2Array[0]) - 1);
+                        //Mask
+                        NAPI.Player.SetPlayerClothes(player, 1, Convert.ToInt32(json1Array[4]) - 1, Convert.ToInt32(json2Array[4]) - 1);
+                        //Ears
+                        NAPI.Player.SetPlayerAccessory(player, 2, Convert.ToInt32(json1Array[2]) - 1, Convert.ToInt32(json2Array[2]) - 1);
+                        //Watches
+                        NAPI.Player.SetPlayerClothes(player, 6, Convert.ToInt32(json1Array[3]) - 1, Convert.ToInt32(json2Array[3]) - 1);
+                        //Bracelets
+                        NAPI.Player.SetPlayerAccessory(player, 7, Convert.ToInt32(json1Array[7]) - 1, Convert.ToInt32(json2Array[7]) - 1);
+                        //Accessories
+                        NAPI.Player.SetPlayerClothes(player, 7, Convert.ToInt32(json1Array[11]) - 1, Convert.ToInt32(json2Array[11]) - 1);
+                        //Armor
+                        NAPI.Player.SetPlayerClothes(player, 9, Convert.ToInt32(json1Array[12]) - 1, Convert.ToInt32(json2Array[12]) - 1);
+                        Helper.SendNotificationWithoutButton(player, "EUP Testoutfit ausgewählt!", "success");
+                    }
+                    else
+                    {
+                        if(category == "n/A")
+                        {
+                            Helper.SendNotificationWithoutButton(player, "Bitte wähle eine Kategorien (category1)!", "error");
+                            Helper.SendChatMessage(player, "~y~Verfügbare Kategorien: ~w~LSPD, LSSD, SAHP, SASP, BCSO, FIB, DOA, USMS, NOOSE, IAA, USAF Secruity Forces, SAPA, LSIA, LSPP, RHPD, DPPD, NYSP, LSDRP, SADFW, U.S NPS, USFWD, NOAA, BLM, BIA Tribal Police, LSFD, LSCoFD, BCFD, SanFire, Lifeguard, Medical Services, United Stats Armed Forces, Parking Enforcement, Private Security, General Services");
+                            return;
+                        }
+                        player.SetData<bool>("Player:InShop", true);
+                        player.TriggerEvent("Client:PlayerFreeze", true);
+                        JObject obj = null;
+                        obj = JObject.Parse(character.json);
+                        PetaPoco.Database db = new PetaPoco.Database(General.Connection);
+                        List<Outfits> outfitList = new List<Outfits>();
+                        if (character.gender == 1)
+                        {
+                            foreach (Outfits outfit in db.Fetch<Outfits>($"SELECT * FROM outfits WHERE owner = 'EUP' AND name LIKE 'Male%' AND category1 = '{category.Trim()}' LIMIT 215"))
+                            {
+                                outfitList.Add(outfit);
+                            }
+                        }
+                        else
+                        {
+                            foreach (Outfits outfit in db.Fetch<Outfits>($"SELECT * FROM outfits WHERE owner = 'EUP' AND name LIKE 'Female%' AND category1 = '{category.Trim()}' LIMIT 215"))
+                            {
+                                outfitList.Add(outfit);
+                            }
+                        }
+                        if (outfitList.Count > 0)
+                        {
+                            player.Dimension = (uint)(player.Id + 5);
+                            NAPI.Task.Run(() =>
+                            {
+                                player.TriggerEvent("Client:CharacterCameraOn");
+                            }, delayTime: 500);
+                            player.SetData<bool>("Player:InShop", true);
+                            if (character.gender == 1)
+                            {
+                                foreach (Outfits outfits in outfitList)
+                                {
+                                    outfits.name = outfits.name.Substring(4);
+                                }
+                            }
+                            else
+                            {
+                                foreach (Outfits outfits in outfitList)
+                                {
+                                    outfits.name = outfits.name.Substring(6);
+                                }
+                            }
+                            player.TriggerEvent("Client:ShowFactionClothing", NAPI.Util.ToJson(obj["clothing"]), NAPI.Util.ToJson(obj["clothingColor"]), character.gender, 1337, NAPI.Util.ToJson(outfitList));
+                        }
+                        else
+                        {
+                            Helper.SendNotificationWithoutButton(player, "Keine Outfits gefunden!", "error");
+                        }
                         return;
                     }
-                    if(outfit.owner != "EUP")
-                    {
-                        Helper.SendNotificationWithoutButton(player, "Du kannst nur EUP Outfits testen!", "error", "top-end");
-                        return;
-                    }
-
-                    String json1 = outfit.json1;
-                    String json2 = outfit.json2;
-
-                    string[] json1Array = new string[14];
-                    string[] json2Array = new string[14];
-
-                    json1 = json1.Substring(1, json1.Length - 2);
-                    json2 = json2.Substring(1, json2.Length - 2);
-
-                    json1Array = json1.Split(",");
-                    json2Array = json2.Split(",");
-
-                    NAPI.Player.ClearPlayerAccessory(player, 0);
-                    NAPI.Player.ClearPlayerAccessory(player, 1);
-                    NAPI.Player.ClearPlayerAccessory(player, 2);
-                    NAPI.Player.ClearPlayerAccessory(player, 6);
-                    NAPI.Player.ClearPlayerAccessory(player, 7);
-                    NAPI.Player.SetPlayerClothes(player, 10, 0, 0);
-                    NAPI.Player.SetPlayerClothes(player, 5, 0, 0);
-                    NAPI.Player.SetPlayerClothes(player, 7, 0, 0);
-                    NAPI.Player.SetPlayerClothes(player, 1, 0, 0);
-                    NAPI.Player.SetPlayerClothes(player, 9, 0, 0);
-
-                    //Top
-                    NAPI.Player.SetPlayerClothes(player, 11, Convert.ToInt32(json1Array[5]) - 1, Convert.ToInt32(json2Array[5]) - 1);
-                    //Torso
-                    NAPI.Player.SetPlayerClothes(player, 3, Convert.ToInt32(json1Array[6]) - 1, Convert.ToInt32(json2Array[6]) - 1);
-                    //Legs
-                    NAPI.Player.SetPlayerClothes(player, 4, Convert.ToInt32(json1Array[9]) - 1, Convert.ToInt32(json2Array[9]) - 1);
-                    //Shoes
-                    NAPI.Player.SetPlayerClothes(player, 6, Convert.ToInt32(json1Array[10]) - 1, Convert.ToInt32(json2Array[10]) - 1);
-                    //Undershirt
-                    NAPI.Player.SetPlayerClothes(player, 8, Convert.ToInt32(json1Array[8]) - 1, Convert.ToInt32(json2Array[8]) - 1);
-                    //Bag
-                    NAPI.Player.SetPlayerClothes(player, 5, Convert.ToInt32(json1Array[13]) - 1, Convert.ToInt32(json2Array[13]) - 1);
-                    //Glasses
-                    NAPI.Player.SetPlayerAccessory(player, 1, Convert.ToInt32(json1Array[1]) - 1, Convert.ToInt32(json2Array[1]) - 1);
-                    //Hat
-                    NAPI.Player.SetPlayerAccessory(player, 0, Convert.ToInt32(json1Array[0]) - 1, Convert.ToInt32(json2Array[0]) - 1);
-                    //Mask
-                    NAPI.Player.SetPlayerClothes(player, 1, Convert.ToInt32(json1Array[4]) - 1, Convert.ToInt32(json2Array[4]) - 1);
-                    //Ears
-                    NAPI.Player.SetPlayerAccessory(player, 2, Convert.ToInt32(json1Array[2]) - 1, Convert.ToInt32(json2Array[2]) - 1);
-                    //Watches
-                    NAPI.Player.SetPlayerClothes(player, 6, Convert.ToInt32(json1Array[3]) - 1, Convert.ToInt32(json2Array[3]) - 1);
-                    //Bracelets
-                    NAPI.Player.SetPlayerAccessory(player, 7, Convert.ToInt32(json1Array[7]) - 1, Convert.ToInt32(json2Array[7]) - 1);
-                    //Accessories
-                    NAPI.Player.SetPlayerClothes(player, 7, Convert.ToInt32(json1Array[11]) - 1, Convert.ToInt32(json2Array[11]) - 1);
-                    //Armor
-                    NAPI.Player.SetPlayerClothes(player, 9, Convert.ToInt32(json1Array[12]) - 1, Convert.ToInt32(json2Array[12]) - 1);
-                    Helper.SendNotificationWithoutButton(player, "Testoutfit (EUP) gesetzt!", "success", "top-end", 5500);
                 }
                 catch (Exception e)
                 {

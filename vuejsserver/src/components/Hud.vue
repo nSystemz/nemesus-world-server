@@ -1298,7 +1298,7 @@
           <div class="col-md-12 mt-1">
             <div class="box box-default">
               <div class="row">
-                <div class="card card-primary card-outline" v-if="faction != 1 && faction != 2 && faction != 3">
+                <div class="card card-primary card-outline" v-if="faction != 1 && faction != 2 && faction != 3 && faction != 1337">
                   <div class="card-header" style="font-family: 'Exo', sans-serif; font-size: 1.2vw">
                     Umkleidekabine
                   </div>
@@ -1396,7 +1396,8 @@
                     <input type="text" class="form-control float-left" placeholder="Suche" v-bind:value="searchelement" v-on:input="searchelement = $event.target.value" maxlength="128" autocomplete="off">
                   </div>
                   <div class="card-body" style="max-height:60vh; width: 27.5vw; overflow-x: auto">
-                    <h5><u>Fraktionsoutfit auswählen:</u></h5>
+                    <h5 v-if="faction != 1337"><u>Fraktionsoutfit auswählen:</u></h5>
+                    <h5 v-else><u>EUP Testoutfit auswählen:</u></h5>
                     <div class="row mt-3">
                       <div class="col-md-12">
                         <div style="display: flex; justify-content: center; align-items: center; overflow:auto; display:block; max-height: 30vh">
@@ -1407,11 +1408,16 @@
                       </div>
                     </div>
                     <hr/>
-                    <div style="display: flex; justify-content: center; align-items: center;" class="mt-1">
+                    <div style="display: flex; justify-content: center; align-items: center;" class="mt-1" v-if="faction != 1337">
                       <button type="button" class="btn btn-success mr-1"
                         @click="buyCloth('dutyCloths')">Dienst beginnen</button>
                       <button type="button" class="btn btn-warning mr-1"
                         @click="endCloth(true)">Dienst beenden</button>
+                      <button type="button" class="btn btn-secondary" @click="endCloth(false)">Abbrechen</button>
+                    </div>
+                    <div style="display: flex; justify-content: center; align-items: center;" class="mt-1" v-if="outfitaduty == 1337">
+                      <button type="button" class="btn btn-success mr-1"
+                        @click="buyCloth('dutyCloths')">Outfit testen</button>
                       <button type="button" class="btn btn-secondary" @click="endCloth(false)">Abbrechen</button>
                     </div>
                     <hr/>
@@ -3548,7 +3554,7 @@ export default {
     },
     buyCloth: function (event = 'none') {
       if ((Date.now() / 1000) > this.clicked) {
-        if(event == 'dutyCloths' && (this.faction == 1 || this.faction == 2))
+        if(event == 'dutyCloths' && (this.faction == 1 || this.faction == 2 || this.faction == 3 || this.faction == 1337))
         {
           // eslint-disable-next-line no-undef
           mp.trigger('Client:BuyCloths', JSON.stringify(this.clothing), JSON.stringify(this.clothingColor), this.clothcost, true);
@@ -4130,7 +4136,7 @@ export default {
         this.faction = faction;
         this.selectedcloth = 'n/A';
         this.gender = gender;
-        if(this.outfits != 'null')
+        if(this.outfits != 'null' || this.faction == 1337)
         {
           this.outfits = JSON.parse(json);
         }
@@ -4142,14 +4148,7 @@ export default {
         this.clothingColor = JSON.parse(getarray2);
         this.clothingBackup = JSON.parse(getarray1);
         this.clothingColorBackup = JSON.parse(getarray2);
-        if(faction != 3)
-        {
-          this.selectCloth('Kopfbedeckung');
-        }
-        else
-        {
-          this.selectCloth('Torso');
-        }
+        this.selectCloth('Kopfbedeckung');
       }
     },
     showJuweMenu: function (getarray1, getarray2, gender, multiplier) {

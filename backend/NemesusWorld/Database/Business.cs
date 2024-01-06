@@ -1012,10 +1012,6 @@ namespace NemesusWorld.Database
         {
             Character character = Helper.GetCharacterData(player);
             TempData tempData = Helper.GetCharacterTempData(player);
-            if (tempData.adminduty == false)
-            {
-                if (player.GetData<bool>("Player:InShop") == false) return;
-            }
             try
             {
                 bool unset = false;
@@ -1119,10 +1115,6 @@ namespace NemesusWorld.Database
         {
             Character character = Helper.GetCharacterData(player);
             TempData tempData = Helper.GetCharacterTempData(player);
-            if (tempData.adminduty == false)
-            {
-                if (player.GetData<bool>("Player:InShop") == false) return;
-            }
             try
             {
 

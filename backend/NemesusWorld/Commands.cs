@@ -316,7 +316,6 @@ namespace NemesusWorld
                                     outfits.name = outfits.name.Substring(6);
                                 }
                             }
-                            player.SetData<bool>("Player:InShop", true);
                             player.TriggerEvent("Client:ShowFactionClothing", NAPI.Util.ToJson(obj["clothing"]), NAPI.Util.ToJson(obj["clothingColor"]), character.gender, 1337, NAPI.Util.ToJson(outfitList));
                         }
                         else

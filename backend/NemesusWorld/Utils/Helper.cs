@@ -7735,7 +7735,6 @@ namespace NemesusWorld.Utils
                         SendNotificationWithoutButton(player, "Du besitzt keinen Schlüssel für einen Spint!", "error", "top-end", 2250);
                         return;
                     }
-                    player.SetData<bool>("Player:InShop", true);
                     player.TriggerEvent("Client:PlayerFreeze", true);
                     JObject obj = null;
                     if (character.factionduty == false)
@@ -7782,7 +7781,6 @@ namespace NemesusWorld.Utils
                     {
                         player.TriggerEvent("Client:CharacterCameraOn");
                     }, delayTime: 500);
-                    player.SetData<bool>("Player:InShop", true);
                     if(character.gender == 1)
                     {
                         foreach(Outfits outfits in outfitList)
@@ -7813,7 +7811,6 @@ namespace NemesusWorld.Utils
                         SendNotificationWithoutButton(player, "Du besitzt keinen Schlüssel für einen Spint!", "error", "top-end", 2250);
                         return;
                     }
-                    player.SetData<bool>("Player:InShop", true);
                     player.TriggerEvent("Client:PlayerFreeze", true);
                     JObject obj = null;
                     if (character.factionduty == false)
@@ -7850,7 +7847,6 @@ namespace NemesusWorld.Utils
                     {
                         player.TriggerEvent("Client:CharacterCameraOn");
                     }, delayTime: 500);
-                    player.SetData<bool>("Player:InShop", true);
                     NAPI.Player.ClearPlayerAccessory(player, 2);
                     NAPI.Player.ClearPlayerAccessory(player, 6);
                     NAPI.Player.ClearPlayerAccessory(player, 7);
@@ -7888,7 +7884,6 @@ namespace NemesusWorld.Utils
                         SendNotificationWithoutButton(player, "Du besitzt keinen Schlüssel für einen Spint!", "error", "top-end", 2250);
                         return;
                     }
-                    player.SetData<bool>("Player:InShop", true);
                     player.TriggerEvent("Client:PlayerFreeze", true);
                     JObject obj = null;
                     if (character.factionduty == false)
@@ -7925,7 +7920,6 @@ namespace NemesusWorld.Utils
                     {
                         player.TriggerEvent("Client:CharacterCameraOn");
                     }, delayTime: 500);
-                    player.SetData<bool>("Player:InShop", true);
                     NAPI.Player.ClearPlayerAccessory(player, 2);
                     NAPI.Player.ClearPlayerAccessory(player, 6);
                     NAPI.Player.ClearPlayerAccessory(player, 7);

@@ -156,8 +156,8 @@ namespace NemesusWorld
             });
         }
 
-        [Command("testeupoutfit", "Befehl: /testeupoutfit [Outfit-Name/Auswahlmenü] [Kategorie]", GreedyArg = true)]
-        public void CMD_testeupoutfit(Player player, String outfitname = "Auswahlmenü", String category = "n/A")
+        [Command("testeupoutfit", "Befehl: /testeupoutfit [Outfit/Auswahlmenü] [Kategorie/Outfitname]", GreedyArg = true)]
+        public void CMD_testeupoutfit(Player player, String usecase = "n/A", String categoryoutfit = "n/A")
         {
             NAPI.Task.Run(() =>
             {
@@ -171,29 +171,26 @@ namespace NemesusWorld
                         Helper.SendNotificationWithoutButton(player, "Unzureichende Adminrechte!", "error", "top-end");
                         return;
                     }
-                    if(outfitname.Length < 5 || outfitname.Length > 35)
+                    if (usecase == "Outfit")
                     {
-                        Helper.SendNotificationWithoutButton(player, "Ungültiger Outfitname!", "error", "top-end");
-                        return;
-                    }
-                    if (outfitname != "Auswahlmenü")
-                    {
-                        if (outfitname.ToLower().Contains("female") && character.gender == 1)
+                        if (categoryoutfit == "n/A")
+                        {
+                            Helper.SendNotificationWithoutButton(player, "Bitte wähle ein Outfit aus der EUP Outfitliste!", "error", "top-end");
+                            return;
+                        }
+                        if (categoryoutfit.ToLower().Contains("female") && character.gender == 1)
                         {
                             Helper.SendNotificationWithoutButton(player, "Du kannst dir nur männliche Outfits setzen!", "error", "top-end");
                             return;
                         }
-                        if (!outfitname.ToLower().Contains("female") && character.gender != 1)
+                        if (!categoryoutfit.ToLower().Contains("female") && character.gender != 1)
                         {
                             Helper.SendNotificationWithoutButton(player, "Du kannst dir nur weibliche Outfits setzen!", "error", "top-end");
                             return;
                         }
-                    }
-                    if (outfitname != "Auswahlmenü")
-                    {
                         MySqlCommand command = General.Connection.CreateCommand();
                         command.CommandText = "SELECT id FROM outfits WHERE name = @name LIMIT 1";
-                        command.Parameters.AddWithValue("@name", outfitname);
+                        command.Parameters.AddWithValue("@name", categoryoutfit);
                         using (MySqlDataReader reader = command.ExecuteReader())
                         {
                             if (!reader.HasRows)
@@ -206,7 +203,7 @@ namespace NemesusWorld
                         }
                         PetaPoco.Database db = new PetaPoco.Database(General.Connection);
                         Outfits outfit = null;
-                        outfit = db.Single<Outfits>("WHERE name = @0", outfitname);
+                        outfit = db.Single<Outfits>("WHERE name = @0", categoryoutfit);
                         if (outfit == null)
                         {
                             Helper.SendNotificationWithoutButton(player, "Ungültiges Outfit!", "error", "top-end");
@@ -271,15 +268,14 @@ namespace NemesusWorld
                         NAPI.Player.SetPlayerClothes(player, 9, Convert.ToInt32(json1Array[12]) - 1, Convert.ToInt32(json2Array[12]) - 1);
                         Helper.SendNotificationWithoutButton(player, "EUP Testoutfit ausgewählt!", "success");
                     }
-                    else
+                    else if (usecase == "Auswahlmenü")
                     {
-                        if(category == "n/A")
+                        if(categoryoutfit == "n/A")
                         {
                             Helper.SendNotificationWithoutButton(player, "Bitte wähle eine Kategorien (category1)!", "error");
                             Helper.SendChatMessage(player, "~y~Verfügbare Kategorien: ~w~LSPD, LSSD, SAHP, SASP, BCSO, FIB, DOA, USMS, NOOSE, IAA, USAF Secruity Forces, SAPA, LSIA, LSPP, RHPD, DPPD, NYSP, LSDRP, SADFW, U.S NPS, USFWD, NOAA, BLM, BIA Tribal Police, LSFD, LSCoFD, BCFD, SanFire, Lifeguard, Medical Services, United Stats Armed Forces, Parking Enforcement, Private Security, General Services");
                             return;
                         }
-                        player.SetData<bool>("Player:InShop", true);
                         player.TriggerEvent("Client:PlayerFreeze", true);
                         JObject obj = null;
                         obj = JObject.Parse(character.json);
@@ -287,14 +283,14 @@ namespace NemesusWorld
                         List<Outfits> outfitList = new List<Outfits>();
                         if (character.gender == 1)
                         {
-                            foreach (Outfits outfit in db.Fetch<Outfits>($"SELECT * FROM outfits WHERE owner = 'EUP' AND name LIKE 'Male%' AND category1 = '{category.Trim()}' LIMIT 215"))
+                            foreach (Outfits outfit in db.Fetch<Outfits>($"SELECT * FROM outfits WHERE owner = 'EUP' AND name LIKE 'Male%' AND category1 = '{categoryoutfit.Trim()}' LIMIT 215"))
                             {
                                 outfitList.Add(outfit);
                             }
                         }
                         else
                         {
-                            foreach (Outfits outfit in db.Fetch<Outfits>($"SELECT * FROM outfits WHERE owner = 'EUP' AND name LIKE 'Female%' AND category1 = '{category.Trim()}' LIMIT 215"))
+                            foreach (Outfits outfit in db.Fetch<Outfits>($"SELECT * FROM outfits WHERE owner = 'EUP' AND name LIKE 'Female%' AND category1 = '{categoryoutfit.Trim()}' LIMIT 215"))
                             {
                                 outfitList.Add(outfit);
                             }
@@ -306,7 +302,6 @@ namespace NemesusWorld
                             {
                                 player.TriggerEvent("Client:CharacterCameraOn");
                             }, delayTime: 500);
-                            player.SetData<bool>("Player:InShop", true);
                             if (character.gender == 1)
                             {
                                 foreach (Outfits outfits in outfitList)
@@ -321,6 +316,7 @@ namespace NemesusWorld
                                     outfits.name = outfits.name.Substring(6);
                                 }
                             }
+                            player.SetData<bool>("Player:InShop", true);
                             player.TriggerEvent("Client:ShowFactionClothing", NAPI.Util.ToJson(obj["clothing"]), NAPI.Util.ToJson(obj["clothingColor"]), character.gender, 1337, NAPI.Util.ToJson(outfitList));
                         }
                         else
@@ -328,6 +324,10 @@ namespace NemesusWorld
                             Helper.SendNotificationWithoutButton(player, "Keine Outfits gefunden!", "error");
                         }
                         return;
+                    }
+                    else
+                    {
+                        Helper.SendNotificationWithoutButton(player, "Bitte wähle einen Use-Case: Outfit/Auswahlmenü!", "error");
                     }
                 }
                 catch (Exception e)

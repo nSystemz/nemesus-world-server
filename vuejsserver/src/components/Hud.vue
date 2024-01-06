@@ -1415,7 +1415,7 @@
                         @click="endCloth(true)">Dienst beenden</button>
                       <button type="button" class="btn btn-secondary" @click="endCloth(false)">Abbrechen</button>
                     </div>
-                    <div style="display: flex; justify-content: center; align-items: center;" class="mt-1" v-if="outfitaduty == 1337">
+                    <div style="display: flex; justify-content: center; align-items: center;" class="mt-1" v-if="faction == 1337">
                       <button type="button" class="btn btn-success mr-1"
                         @click="buyCloth('dutyCloths')">Outfit testen</button>
                       <button type="button" class="btn btn-secondary" @click="endCloth(false)">Abbrechen</button>

@@ -1010,12 +1010,15 @@ namespace NemesusWorld.Database
         [RemoteEvent("Server:HideClothMenu")]
         public static void OnHideClothMenu(Player player, bool setcloth = true, bool faction = false)
         {
-            if (player.GetData<bool>("Player:InShop") == false) return;
+            Character character = Helper.GetCharacterData(player);
+            TempData tempData = Helper.GetCharacterTempData(player);
+            if (tempData.adminduty == false)
+            {
+                if (player.GetData<bool>("Player:InShop") == false) return;
+            }
             try
             {
                 bool unset = false;
-                Character character = Helper.GetCharacterData(player);
-                TempData tempData = Helper.GetCharacterTempData(player);
 
                 string[] clothingArray = new string[8];
                 clothingArray = character.clothing.Split(",");
@@ -1114,15 +1117,18 @@ namespace NemesusWorld.Database
         [RemoteEvent("Server:BuyNewCloths")]
         public static void OnBuyNewCloths(Player player, string json1, string json2, int value, bool faction = false)
         {
-            if (player.GetData<bool>("Player:InShop") == false) return;
+            Character character = Helper.GetCharacterData(player);
+            TempData tempData = Helper.GetCharacterTempData(player);
+            if (tempData.adminduty == false)
+            {
+                if (player.GetData<bool>("Player:InShop") == false) return;
+            }
             try
             {
-                Character character = Helper.GetCharacterData(player);
-                TempData tempData = Helper.GetCharacterTempData(player);
 
-                if(faction == true && (character.faction == 1 || character.faction == 2 || character.faction == 3))
+                if(faction == true && (character.faction == 1 || character.faction == 2 || character.faction == 3 || tempData.adminduty == true))
                 {
-                    if (character.factionduty == false)
+                    if (character.factionduty == false && tempData.adminduty == false)
                     {
                         Helper.SendNotificationWithoutButton(player, $"Dienst begonnen!", "success");
                         character.factionduty = true;
@@ -1138,9 +1144,19 @@ namespace NemesusWorld.Database
                     }
                     else
                     {
-                        Helper.SendNotificationWithoutButton(player, $"Dienstoutfit gewechselt!", "success");
+                        if (tempData.adminduty == false)
+                        {
+                            Helper.SendNotificationWithoutButton(player, $"Dienstoutfit gewechselt!", "success");
+                        }
+                        else
+                        {
+                            Helper.SendNotificationWithoutButton(player, $"Testoutfit gesetzt!", "success");
+                        }
                     }
-                    CharacterController.SaveCharacter(player);
+                    if (tempData.adminduty == false)
+                    {
+                        CharacterController.SaveCharacter(player);
+                    }
                     OnHideClothMenu(player, false);
                     return;
                 }
@@ -1238,7 +1254,14 @@ namespace NemesusWorld.Database
                         }
                         else
                         {
-                            Helper.SendNotificationWithoutButton(player, $"Dienstoutfit gewechselt!", "success");
+                            if (tempData.adminduty == false)
+                            {
+                                Helper.SendNotificationWithoutButton(player, $"Dienstoutfit gewechselt!", "success");
+                            }
+                            else
+                            {
+                                Helper.SendNotificationWithoutButton(player, $"Testoutfit gesetzt!", "success");
+                            }
                         }
                     }
                 }
@@ -1247,7 +1270,10 @@ namespace NemesusWorld.Database
 
                 if (faction == true)
                 {
-                    character.dutyjson = NAPI.Util.ToJson(obj);
+                    if (tempData.adminduty == false)
+                    {
+                        character.dutyjson = NAPI.Util.ToJson(obj);
+                    }
 
                     CharacterController.SetCharacterCloths(player, obj, character.clothing);
                 }
@@ -1262,18 +1288,24 @@ namespace NemesusWorld.Database
                         ManageBizzCash(bizz, value);
                     }
 
-                    if (character.factionduty == false)
+                    if (tempData.adminduty == false)
                     {
-                        character.json = NAPI.Util.ToJson(obj);
-                    }
-                    else
-                    {
-                        character.dutyjson = NAPI.Util.ToJson(obj);
+                        if (character.factionduty == false)
+                        {
+                            character.json = NAPI.Util.ToJson(obj);
+                        }
+                        else
+                        {
+                            character.dutyjson = NAPI.Util.ToJson(obj);
+                        }
                     }
 
                     CharacterController.SetCharacterCloths(player, obj, character.clothing);
                 }
-                CharacterController.SaveCharacter(player);
+                if (tempData.adminduty == false)
+                {
+                    CharacterController.SaveCharacter(player);
+                }
                 OnHideClothMenu(player, false);
             }
             catch (Exception e)

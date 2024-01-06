@@ -1781,9 +1781,7 @@
                                                                     v-if="car.tuev > 5 && car.tuev >= (Date.now() / 1000)"
                                                                     class="float-right"
                                                                     style="color:green">{{timeConverter(car.tuev)}}</a>
-                                                                <b
-                                                                    v-if="car.tuev > 5 && car.tuev < (Date.now() / 1000)">TÜV
-                                                                </b> <a
+                                                                    <a
                                                                     v-if="car.tuev > 5 && car.tuev < (Date.now() / 1000)"
                                                                     class="float-right" style="color:red">Kein TÜV</a>
                                                                 <a v-if="car.tuev == 2"

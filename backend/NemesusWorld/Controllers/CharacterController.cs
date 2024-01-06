@@ -800,6 +800,8 @@ namespace NemesusWorld.Controllers
                         NAPI.Player.SetPlayerClothes(player, 3, 0, 0);
                         NAPI.Player.SetPlayerClothes(player, 4, 4, 0);
                         NAPI.Player.SetPlayerClothes(player, 6, 57, 9);
+                        NAPI.Player.SetPlayerClothes(player, 9, 0, 0);
+                        NAPI.Player.SetPlayerAccessory(player, 1, 255, 0);
                     }
                     else
                     {
@@ -808,6 +810,8 @@ namespace NemesusWorld.Controllers
                         NAPI.Player.SetPlayerClothes(player, 3, 14, 0);
                         NAPI.Player.SetPlayerClothes(player, 4, 75, 0);
                         NAPI.Player.SetPlayerClothes(player, 6, 103, 0);
+                        NAPI.Player.SetPlayerClothes(player, 9, 0, 0);
+                        NAPI.Player.SetPlayerAccessory(player, 1, 255, 0);
                     }
                     if((character.faction == 1 || character.faction == 2 || character.faction == 3) && character.factionduty == true)
                     {

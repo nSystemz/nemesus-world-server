@@ -573,7 +573,11 @@ namespace NemesusWorld.Database
                             }
                             bool movingFur = false;
                             furniture = GetFurnitureById(tempData.furnitureID, house.id);
-                            Doors door2 = DoorsController.GetDoorByPosition(tempData.doorPosition);
+                            Doors door2 = null;
+                            if (furniture.extra == 5)
+                            {
+                                door2 = DoorsController.GetDoorByPosition(tempData.doorPosition);
+                            }
                             if (furniture.position == "0.0|0.0|0.0|0.0|0.0|0.0|0")
                             {
                                 movingFur = true;

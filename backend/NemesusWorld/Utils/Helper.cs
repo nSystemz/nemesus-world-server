@@ -10622,6 +10622,23 @@ namespace NemesusWorld.Utils
                             }
                         }
 
+                        if (SmartphoneController.smartphoneList.Count > 0)
+                        {
+                            foreach (Smartphone smartphone in SmartphoneController.smartphoneList)
+                            {
+                                if (smartphone.owner == character.name && smartphone.prepaid == -1)
+                                {
+                                    Payday smartphonemoney = new Payday();
+                                    smartphonemoney.modus = "Handyvertrag";
+                                    smartphonemoney.setting = "Vertragskosten für das Handy " + smartphone.phonenumber;
+                                    smartphonemoney.value = -415;
+                                    charbank.bankvalue -= 415;
+                                    paydayList.Add(smartphonemoney);
+                                    total += smartphonemoney.value;
+                                }
+                            }
+                        }
+
                         if (cash > 0)
                         {
                             Payday lohnsteuer = new Payday();
@@ -11215,6 +11232,26 @@ namespace NemesusWorld.Utils
                                 Helper.GetCharacterTattoos(player, character.id);
                             }, delayTime: 550);
                         }
+                        if(Convert.ToInt32(obj["headOverlays"][2]) >= 255)
+                        {
+                            obj["headOverlays"][2] = -1;
+                            obj["headOverlaysColors"][2] = 0;
+                        }
+                        if (Convert.ToInt32(obj["headOverlays"][4]) >= 255)
+                        {
+                            obj["headOverlays"][4] = -1;
+                            obj["headOverlaysColors"][4] = 0;
+                        }
+                        if (Convert.ToInt32(obj["headOverlays"][8]) >= 255)
+                        {
+                            obj["headOverlays"][8] = -1;
+                            obj["headOverlaysColors"][8] = 0;
+                        }
+                        if (Convert.ToInt32(obj["beard"][0]) >= 255)
+                        {
+                            obj["beard"][0] = -1;
+                            obj["beard"][1] = 0;
+                        }
                         player.TriggerEvent("Client:ShowBarberShop",
                         obj["hair"][0], obj["hair"][1], obj["beard"][0], obj["beard"][1], obj["hair"][2], character.gender, bizz.multiplier, bizz.id, obj["headOverlays"][2], obj["headOverlaysColors"][2], obj["headOverlays"][4], obj["headOverlaysColors"][4], obj["headOverlays"][8], obj["headOverlaysColors"][8]);
                     }
@@ -11247,6 +11284,26 @@ namespace NemesusWorld.Utils
                             player.Heading = 149.0038f;
                             player.Dimension = 0;
                             CharacterController.SetCharacterCloths(player, obj, character.clothing);
+                        }
+                        if (Convert.ToInt32(obj["headOverlays"][2]) >= 255)
+                        {
+                            obj["headOverlays"][2] = -1;
+                            obj["headOverlaysColors"][2] = 0;
+                        }
+                        if (Convert.ToInt32(obj["headOverlays"][4]) >= 255)
+                        {
+                            obj["headOverlays"][4] = -1;
+                            obj["headOverlaysColors"][4] = 0;
+                        }
+                        if (Convert.ToInt32(obj["headOverlays"][8]) >= 255)
+                        {
+                            obj["headOverlays"][8] = -1;
+                            obj["headOverlaysColors"][8] = 0;
+                        }
+                        if (Convert.ToInt32(obj["beard"][0]) >= 255)
+                        {
+                            obj["beard"][0] = -1;
+                            obj["beard"][1] = 0;
                         }
                         player.TriggerEvent("Client:ShowBarberShop",
                         obj["hair"][0], obj["hair"][1], obj["beard"][0], obj["beard"][1], obj["hair"][2], character.gender, bizz.multiplier, bizz.id, obj["headOverlays"][2], obj["headOverlaysColors"][2], obj["headOverlays"][4], obj["headOverlaysColors"][4], obj["headOverlays"][8], obj["headOverlaysColors"][8]);
@@ -11881,7 +11938,9 @@ namespace NemesusWorld.Utils
                             }
                             else
                             {
+                                player.TriggerEvent("Client:HideStadthalle");
                                 Helper.SendNotificationWithoutButton(player, $"Ungültige Eingabe!", "error", "top-left", 2500);
+                                return;
                             }
                             break;
                         }

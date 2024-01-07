@@ -5801,6 +5801,7 @@
                                             <p style="color:white">Discord: https://discord.nemesus-world.de</p>
                                             <p style="color:white">Teamspeak: https://ts3.nemesus-world.de</p>
                                             <p style="color:white">Nemesus.de: https://nemesus.de</p>
+                                            <p style="color:white">Trinkgeld: https://trinkgeld.nemesus.de</p>
                                         </div>
                                     </div>
                                 </div>
@@ -5837,6 +5838,8 @@
                                             <p style="color:white">UCP: https://ucp.nemesus-world.de</p>
                                             <p style="color:white">Discord: https://discord.nemesus-world.de</p>
                                             <p style="color:white">Teamspeak: https://ts3.nemesus-world.de</p>
+                                            <p style="color:white">Nemesus.de: https://nemesus.de</p>
+                                            <p style="color:white">Trinkgeld: https://trinkgeld.nemesus.de</p>
                                         </div>
                                     </div>
                                 </div>

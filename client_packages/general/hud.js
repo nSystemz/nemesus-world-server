@@ -4092,10 +4092,12 @@ mp.keys.bind(0x4D, true, function () {
         if (showSaltyError == true || triggerAntiCheat == true || localPlayer.isTypingInTextChat || !spawned || nokeys == true || death == true || cuffed == true || showMenu == true || showHandy == true) return;
         if (localPlayer.vehicle && showTuning == false) {
             mp.events.callRemote('Server:VehicleEngine');
+            return;
         }
         if (moebelModus == true && showMenu == false && !localPlayer.vehicle) {
             if (showWheel == true || showInventory == true || showMenu == true || InteriorSwitch == true || showFurniture == true || prisonCount > 0 || showCenterMenu == true || showBank == true || showCarSetting == true || showSped == true || showCityhall == true || showFuel == true || showAmmu == true || showShop == true || showShop2 == true || startRange == true || showDealer == true || showTab == true || showHandy == true || showTuning == true || barberMenu == true || tattooShop == true) return;
             mp.events.callRemote('Server:FurnitureSettings', 'showmenu', 0, false);
+            return;
         }
         let faction = localPlayer.getVariable('Player:Faction');
         if (showWheel == false && !localPlayer.isInAnyVehicle(true) && (faction == 1 || faction == 2 || faction == 3)) {
@@ -6587,7 +6589,7 @@ mp.events.add('entityStreamIn', (entity) => {
                         const object = {
                             name: attachment.name,
                             entityid: entity.remoteId,
-                            object: createObject(attachment.prop, new mp.Vector3(entity.position.x, entity.position.y, entity.position.z - 12.5), localPlayer.dimension),
+                            object: createObject(attachment.prop, new mp.Vector3(entity.position.x, entity.position.y, entity.position.z - 12.5), new mp.Vector3(0.0, 0.0, 0.0), localPlayer.dimension),
                             delete: false
                         }
 
@@ -9631,7 +9633,7 @@ mp.events.addDataHandler("Player:Attachments", (entity, value) => {
     let spawned = localPlayer.getVariable('Player:Spawned');
     var attachment = null;
     if (!spawned) return;
-    if (mp.players.exists(entity) && 0 !== entity.handle && entity.type === "player" && entity.dimension == localPlayer.dimension) {
+    if (mp.players.exists(entity) && 0 !== entity.handle && entity.type === "player") {
         let newAttachments = null;
         if (value.length > 1) {
             newAttachments = value.split(',');
@@ -9669,7 +9671,7 @@ mp.events.addDataHandler("Player:Attachments", (entity, value) => {
                     const object = {
                         name: attachment.name,
                         entityid: entity.remoteId,
-                        object: createObject(attachment.prop, new mp.Vector3(entity.position.x, entity.position.y, entity.position.z - 12.5, localPlayer.dimension), new mp.Vector3(0.0, 0.0, 0.0)),
+                        object: createObject(attachment.prop, new mp.Vector3(entity.position.x, entity.position.y, entity.position.z - 12.5), new mp.Vector3(0.0, 0.0, 0.0), localPlayer.dimension),
                         delete: false
                     }
 

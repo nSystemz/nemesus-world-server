@@ -1015,7 +1015,7 @@
                     Tattooladen
                   </div>
                   <div class="card-body" style="max-height:50vh; width: 28.7vw; overflow-x: auto">
-                    <h5>Dienstleistung auswählen:</h5>
+                    <h5>Tattoo auswählen:</h5>
                     <div class="row mt-3">
                       <div class="col-md-12">
                         <div style="display: flex; justify-content: center; align-items: center;">
@@ -1101,7 +1101,7 @@
                           <img src="../assets/images/haare.png"
                             :class="[(selectedBarber == 'Haare2') ? 'clothiconactive mr-2':'clothicon mr-2']"
                             @click="selectedBarber = 'Haare2'">
-                          <img src="../assets/images/kamm.png"
+                          <img src="../assets/images/kamm.png" v-if="gender == 1"
                             :class="[(selectedBarber == 'Bart') ? 'clothiconactive mr-2':'clothicon mr-2']"
                             @click="selectedBarber = 'Bart'">
                           <img v-if="bizzid == 38" src="../assets/images/makeup.png"
@@ -2636,18 +2636,8 @@ export default {
       for (let i = 0; i <= this.tattooJson.length; i++) {
         {
           if (this.tattooJson[i]) {
-            if (this.gender == 1) {
-              if (this.tattooJson[i].ZoneID == check || check == -1) {
-                if (this.tattooJson[i].HashNameMale && this.tattooJson[i].HashNameMale.length > 5) {
-                  tempTattos.push(this.tattooJson[i]);
-                }
-              }
-            } else {
-              if (this.tattooJson[i].ZoneID == check || check == -1) {
-                if (this.tattooJson[i].HashNameFemale && this.tattooJson[i].HashNameFemale.length > 5) {
-                  tempTattos.push(this.tattooJson[i]);
-                }
-              }
+            if (this.tattooJson[i].ZoneID == check || check == -1) {
+              tempTattos.push(this.tattooJson[i]);
             }
           }
         }
@@ -2720,7 +2710,7 @@ export default {
       }
       else
       {
-        tattooName = this.tattooJson[this.selectedclothid].HashNameFemaleMale;
+        tattooName = this.tattooJson[this.selectedclothid].HashNameFemale;
       }
       // eslint-disable-next-line no-undef
       mp.trigger('Client:ChangeTattoo', JSON.stringify(this.tattoos), tattooName, this.getTattooDlc(tattooName, this.tattooJson[this.selectedclothid].LocalizedName));
@@ -2733,17 +2723,7 @@ export default {
       json = require('./helper/externals/tattoos.json');
       this.tattooJson = json;
       for (let i = 0; i <= this.tattooJson.length; i++) {
-        {
-          if (this.gender == 1) {
-            if (this.tattooJson[i].HashNameMale && this.tattooJson[i].HashNameMale.length > 5) {
-              tempTattos.push(this.tattooJson[i]);
-            }
-          } else {
-            if (this.tattooJson[i].HashNameFemale && this.tattooJson[i].HashNameFemale.length > 5) {
-              tempTattos.push(this.tattooJson[i]);
-            }
-          }
-        }
+        tempTattos.push(this.tattooJson[i]);
       }
       this.tattooJson = tempTattos;
     },

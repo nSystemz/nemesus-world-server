@@ -27,7 +27,7 @@ let pressedI = 0;
 let pressedP = 0;
 let pressedB = 0;
 let pressedE = 0;
-let pressedH = 0;
+let pressedO = 0;
 let pressedM = 0;
 let pressed0 = 0;
 let pressed1 = 0;
@@ -1108,6 +1108,15 @@ mp.events.add("Client:SyncThings", (pricesCsv, animationhotkeys, chair, gprices,
         mp.voiceChat.muted = voiceChatOff;
     }
 })
+
+//Chat
+mp.events.add("Client:ClearChat", () =>
+{
+    if(chat)
+    {
+        chat.execute(`chatAPI.clear();`);
+    }
+});
 
 //Livestream
 mp.events.add("Client:ToggleFilmCamera", (player, onoff) => {
@@ -4125,25 +4134,23 @@ mp.keys.bind(0x4D, true, function () {
     }
 });
 
-//Key H
-mp.keys.bind(0x48, true, function () {
-    if (pressedH == 0 || (Date.now() / 1000) > pressedH) {
+//Key O
+mp.keys.bind(0x4F, true, function () {
+    if (pressedO == 0 || (Date.now() / 1000) > pressedO) {
         let spawned = localPlayer.getVariable('Player:Spawned');
         if (showSaltyError == true || triggerAntiCheat == true || localPlayer.isTypingInTextChat || !spawned || nokeys == true || death == true || cuffed == true) return;
         if (showWheel == true || showInventory == true || showMenu == true || InteriorSwitch == true || showCenterMenu == true || showBank == true || showAmmu == true || showShop == true || showShop2 == true || startRange == true || showDealer == true || showTab == true || showHandy == true || showTuning == true || barberMenu == true || tattooShop == true || showHandy == true) return;
-        if (!localPlayer.vehicle) {
-            if (checkChat == 1) {
-                checkChat = 0;
-                showHideChat(false);
-                mp.storage.data.showChat = 0;
-            } else {
-                checkChat = 1;
-                showHideChat(true);
-                mp.storage.data.showChat = 1;
-            }
-            mp.storage.flush();
+        if (checkChat == 1) {
+            checkChat = 0;
+            showHideChat(false);
+            mp.storage.data.showChat = 0;
+        } else {
+            checkChat = 1;
+            showHideChat(true);
+            mp.storage.data.showChat = 1;
         }
-        pressedH = (Date.now() / 1000) + (1);
+        mp.storage.flush();
+        pressedO = (Date.now() / 1000) + (1);
     }
 });
 
@@ -4983,7 +4990,7 @@ mp.events.add("Client:PressedEscape", () => {
         }
         if (tattooShop == true) {
             setTimeout(function () {
-                hudWindow.execute(`gui.hud.abortTattoo();`)
+                mp.events.callRemote('Server:BuyTattooAfter');
             }, 150);
         }
         if (showWheel == true) {
@@ -5471,8 +5478,8 @@ setInterval(() => {
     //Update health/armor
     updateHealthArmor();
     //Damage effect
-    if (death == false) {
-        if ((getPlayerHealth(localPlayer) - 100) <= 15 && (getPlayerHealth(localPlayer) - 100) > 1) {
+    if (localPlayer.getVariable('Player:Death') == false) {
+        if ((player.getVariable('Player:HealthSync')-100) <= 15 && (player.getVariable('Player:HealthSync')-100) > 1) {
             if (damageEffect == false) {
                 damageEffect = true;
                 mp.game.graphics.startScreenEffect("DeathFailMPDark", -1, false);
@@ -6281,12 +6288,18 @@ mp.events.add('entityStreamIn', (entity) => {
                         entity.startAlarm();
                     }
                     if (syncComponents[3] == '1') {
-                        entity.setTyreBurst(0, false, 1000);
-                        entity.setTyreBurst(1, false, 1000);
-                        entity.setTyreBurst(4, false, 1000);
-                        entity.setTyreBurst(5, false, 1000);
-                        entity.setBurnout(false);
-                    } else {
+                        entity.setTyreBurst(0, true, 1000);
+                        entity.setTyreBurst(1, true, 1000);
+                        entity.setTyreBurst(2, true, 1000);
+                        entity.setTyreBurst(3, true, 1000);
+                        entity.setTyreBurst(4, true, 1000);
+                        entity.setTyreBurst(5, true, 1000);
+                        entity.setTyreBurst(45, true, 1000);
+                        entity.setTyreBurst(47, true, 1000);
+                        entity.setBurnout(true);
+                    }
+                    else
+                    {
                         entity.setBurnout(false);
                     }
                     if (syncComponents[4] == '1') {
@@ -7337,6 +7350,21 @@ mp.events.addDataHandler("Vehicle:Tuning", (entity, value, oldValue) => {
     }
 });
 
+mp.events.add("Client:VehicleTyreBurst", () => {
+    if(localPlayer.vehicle)
+    {
+        localPlayer.vehicle.setTyreBurst(0, true, 1000);
+        localPlayer.vehicle.setTyreBurst(1, true, 1000);
+        localPlayer.vehicle.setTyreBurst(2, true, 1000);
+        localPlayer.vehicle.setTyreBurst(3, true, 1000);
+        localPlayer.vehicle.setTyreBurst(4, true, 1000);
+        localPlayer.vehicle.setTyreBurst(5, true, 1000);
+        localPlayer.vehicle.setTyreBurst(45, true, 1000);
+        localPlayer.vehicle.setTyreBurst(47, true, 1000);
+        localPlayer.vehicle.setBurnout(true);
+    }
+});
+
 mp.events.addDataHandler("Vehicle:Sync", (entity, value, oldValue) => {
     if (mp.vehicles.exists(entity) && 0 !== entity.handle && entity.typ == 'vehicle') {
         setTimeout(() => {
@@ -7350,12 +7378,18 @@ mp.events.addDataHandler("Vehicle:Sync", (entity, value, oldValue) => {
                     entity.startAlarm();
                 }
                 if (syncComponents[3] == '1') {
-                    entity.setTyreBurst(0, false, 1000);
-                    entity.setTyreBurst(1, false, 1000);
-                    entity.setTyreBurst(4, false, 1000);
-                    entity.setTyreBurst(5, false, 1000);
-                    entity.setBurnout(false);
-                } else {
+                    entity.setTyreBurst(0, true, 1000);
+                    entity.setTyreBurst(1, true, 1000);
+                    entity.setTyreBurst(2, true, 1000);
+                    entity.setTyreBurst(3, true, 1000);
+                    entity.setTyreBurst(4, true, 1000);
+                    entity.setTyreBurst(5, true, 1000);
+                    entity.setTyreBurst(45, true, 1000);
+                    entity.setTyreBurst(47, true, 1000);
+                    entity.setBurnout(true);
+                }
+                else
+                {
                     entity.setBurnout(false);
                 }
                 if (syncComponents[4] == '1') {
@@ -8149,6 +8183,8 @@ function UpdateNameTags1(nametags) {
                     foundDrone = true;
                 }
 
+                let death = player.getVariable('Player:Death');
+
                 if (!foundDrone) {
                     if (admindutynt == 0 && player.getAlpha() == 255) {
                         let admindutytemp = 0;
@@ -8166,12 +8202,24 @@ function UpdateNameTags1(nametags) {
                                 outline: true
                             });
                         }
+                        else
+                        {
+                            if(death == true)
+                            {
+                                graphics.drawText('~r~Außer Gefecht', [x, y], {
+                                    font: 4,
+                                    color: color,
+                                    scale: [0.45, 0.45],
+                                    outline: true
+                                });
+                            }
+                        }
                     } else {
                         let admindutytemp = 0;
                         if (player.hasVariable('Player:AdminLogin')) {
                             admindutytemp = parseInt(player.getVariable('Player:AdminLogin'));
                         }
-                        var healthplayer = player.getVariable('Player:HealthSync');
+                        var healthplayer = player.getVariable('Player:HealthSync')-100;
                         if (healthplayer > 100) {
                             healthplayer = healthplayer - 100;
                         }
@@ -8184,12 +8232,24 @@ function UpdateNameTags1(nametags) {
 
                         if (player.getAlpha() == 255) {
                             if (admindutytemp == 0) {
-                                graphics.drawText(player.name + ' [' + player.remoteId + ']\nLeben: ' + healthplayer + '%, Rüstung: ' + armourplayer + '%\n', [x, y], {
-                                    font: 4,
-                                    color: color,
-                                    scale: [0.45, 0.45],
-                                    outline: true
-                                });
+                                if(death == false)
+                                {
+                                    graphics.drawText(player.name + ' [' + player.remoteId + ']\nLeben: ' + healthplayer + '%, Rüstung: ' + armourplayer + '%\n', [x, y], {
+                                        font: 4,
+                                        color: color,
+                                        scale: [0.45, 0.45],
+                                        outline: true
+                                    });
+                                }
+                                else
+                                {
+                                    graphics.drawText(player.name + ' [' + player.remoteId + ']\n~r~Außer Gefecht\n', [x, y], {
+                                        font: 4,
+                                        color: color,
+                                        scale: [0.45, 0.45],
+                                        outline: true
+                                    });
+                                }
                             } else {
                                 graphics.drawText(realname + ' [' + player.remoteId + ']\n~r~' + GetAdminRang(player, adminlevel) + '\n', [x, y], {
                                     font: 4,
@@ -8238,6 +8298,8 @@ function UpdateNameTags2(nametags) {
                     foundDrone = true;
                 }
 
+                let death = player.getVariable('Player:Death');
+
                 if (!foundDrone) {
                     if (admindutynt == 0 && player.getAlpha() == 255) {
                         let admindutytemp = 0;
@@ -8248,12 +8310,24 @@ function UpdateNameTags2(nametags) {
                         let adminlevel = parseInt(player.getVariable('Player:Adminlevel'));
 
                         if (admindutytemp == 0) {
-                            graphics.drawText(nname + ' [' + player.remoteId + ']\n', [x, y], {
-                                font: 4,
-                                color: color,
-                                scale: [0.45, 0.45],
-                                outline: true
-                            });
+                            if(death == false)
+                            {
+                                graphics.drawText(nname + ' [' + player.remoteId + ']\n', [x, y], {
+                                    font: 4,
+                                    color: color,
+                                    scale: [0.45, 0.45],
+                                    outline: true
+                                });
+                            }
+                            else
+                            {
+                                graphics.drawText(player.name + ' [' + player.remoteId + ']\n~r~Außer Gefecht\n', [x, y], {
+                                    font: 4,
+                                    color: color,
+                                    scale: [0.45, 0.45],
+                                    outline: true
+                                });
+                            }
                         } else {
                             graphics.drawText(realname + ' [' + player.remoteId + ']\n~r~' + GetAdminRang(player, adminlevel) + '\n', [x, y], {
                                 font: 4,
@@ -8267,10 +8341,7 @@ function UpdateNameTags2(nametags) {
                         if (player.hasVariable('Player:AdminLogin')) {
                             admindutytemp = parseInt(player.getVariable('Player:AdminLogin'));
                         }
-                        var healthplayer = player.getVariable('Player:HealthSync');
-                        if (healthplayer > 100) {
-                            healthplayer = healthplayer - 100;
-                        }
+                        var healthplayer = player.getVariable('Player:HealthSync')-100;
                         var armourplayer = player.getArmour();
                         let realname = player.getVariable('Player:Name');
                         let adminlevel = parseInt(player.getVariable('Player:Adminlevel'));
@@ -8280,12 +8351,24 @@ function UpdateNameTags2(nametags) {
 
                         if (player.getAlpha() == 255) {
                             if (admindutytemp == 0) {
-                                graphics.drawText(player.name + ' [' + player.remoteId + ']\nLeben: ' + healthplayer + '%, Rüstung: ' + armourplayer + '%\n', [x, y], {
-                                    font: 4,
-                                    color: color,
-                                    scale: [0.45, 0.45],
-                                    outline: true
-                                });
+                                if(death == false)
+                                {
+                                    graphics.drawText(player.name + ' [' + player.remoteId + ']\nLeben: ' + healthplayer + '%, Rüstung: ' + armourplayer + '%\n', [x, y], {
+                                        font: 4,
+                                        color: color,
+                                        scale: [0.45, 0.45],
+                                        outline: true
+                                    });
+                                }
+                                else
+                                {
+                                    graphics.drawText(player.name + ' [' + player.remoteId + ']\n~r~Außer Gefecht\n', [x, y], {
+                                        font: 4,
+                                        color: color,
+                                        scale: [0.45, 0.45],
+                                        outline: true
+                                    });
+                                }
                             } else {
                                 graphics.drawText(realname + ' [' + player.remoteId + ']\n~r~' + GetAdminRang(player, adminlevel) + '\n', [x, y], {
                                     font: 4,
@@ -9097,6 +9180,10 @@ function showHideChat(setChat) {
         return;
     }
     mp.gui.chat.show(setChat);
+    if(setChat)
+    {
+        chat.execute(`chatAPI.highlight();`);
+    }
 }
 
 //Weaponsystem

@@ -94,6 +94,10 @@ namespace NemesusWorld.Controllers
                             {
                                 phoneCallList.Add(phoneCalls);
                             }
+                            if(smartphone.phonenumber != player.GetData<string>("Player:LastNumber"))
+                            {
+                                tempData.speaker = false;
+                            }
                             player.TriggerEvent("Client:ShowSmartphone", smartphone.phoneprops, smartphone.contacts, NAPI.Util.ToJson(messageList), NAPI.Util.ToJson(phoneCallList), smartphone.akku, hide, smartphone.prepaid, account.premium);
                         }
                         else
@@ -348,7 +352,7 @@ namespace NemesusWorld.Controllers
                     int taxiDriver = 0;
                     foreach (Player p in NAPI.Pools.GetAllPlayers())
                     {
-                        if (p != null && p.GetOwnSharedData<bool>("Player:Spawned") == true && p.GetOwnSharedData<bool>("Player:Death") == false && p.HasData("Player:Fare") && Helper.IsATaxiDriver(p) > -1)
+                        if (p != null && p.GetOwnSharedData<bool>("Player:Spawned") == true && p.GetSharedData<bool>("Player:Death") == false && p.HasData("Player:Fare") && Helper.IsATaxiDriver(p) > -1)
                         {
                             taxiDriver++;
                         }
@@ -385,7 +389,7 @@ namespace NemesusWorld.Controllers
 
                 foreach (Player p in NAPI.Pools.GetAllPlayers())
                 {
-                    if (p != null && p.GetOwnSharedData<bool>("Player:Spawned") == true && p.GetOwnSharedData<bool>("Player:Death") == false && p.HasData("Player:Fare") && Helper.IsATaxiDriver(p) > -1)
+                    if (p != null && p.GetOwnSharedData<bool>("Player:Spawned") == true && p.GetSharedData<bool>("Player:Death") == false && p.HasData("Player:Fare") && Helper.IsATaxiDriver(p) > -1)
                     {
                         Helper.SendNotificationWithoutButton(p, "Neuer Taxiauftrag verfügbar!", "info", "top-left", 4750);
                         p.TriggerEvent("Client:PlaySoundPeep2");
@@ -793,7 +797,10 @@ namespace NemesusWorld.Controllers
                         Player target = GetPlayerFromSmartPhone(player.GetData<string>("Player:InCall"));
                         if (target != null)
                         {
+                            TempData tempData2 = Helper.GetCharacterTempData(target);
+                            Character character2 = Helper.GetCharacterData(target);
                             tempData.inCall2 = true;
+                            tempData2.inCall2 = true;
                             if (Helper.adminSettings.voicerp == 1)
                             {
                                 player.TriggerEvent("SaltyChat_EstablishedCall", target.Id);
@@ -808,8 +815,12 @@ namespace NemesusWorld.Controllers
                             if(Helper.adminSettings.voicerp == 0)
                             {
                                 player.SetData<bool>("Player:AcceptCall", true);
-                                Helper.SendNotificationWithoutButton(target, "~w~Dein Gesprächspartner hat das Telefonat angenommen!");
+                                target.SetData<bool>("Player:AcceptCall", true);
                             }
+                            Helper.SendNotificationWithoutButton(player, "Du hast das Telefonat angenommen!");
+                            Helper.SendNotificationWithoutButton(target, "Dein Gesprächspartner hat das Telefonat angenommen!");
+                            SmartphoneController.ShowSmartphone(player, null, character.lastsmartphone);
+                            SmartphoneController.ShowSmartphone(target, null, character2.lastsmartphone);
                         }
                     }
                 }
@@ -837,7 +848,6 @@ namespace NemesusWorld.Controllers
                         player.SetData<string>("Player:InCall", "0");
                         player.SetData<string>("Player:LastNumber", "0");
                         Helper.PlayPhoneAnim(player);
-                        player.SetData<bool>("Player:AcceptCall", false);
                         if (target != null)
                         {
                             target.TriggerEvent("Client:EndCall");
@@ -852,6 +862,7 @@ namespace NemesusWorld.Controllers
                             }
                             if (Helper.adminSettings.voicerp == 0)
                             {
+                                player.SetData<bool>("Player:AcceptCall", false);
                                 target.SetData<bool>("Player:AcceptCall", false);
                                 Helper.SendNotificationWithoutButton(target, "~w~Dein Gesprächspartner hat das Telefonat abgelehnt!", "error");
                             }
@@ -872,18 +883,36 @@ namespace NemesusWorld.Controllers
             {
                 Player target = GetPlayerFromSmartPhone(player.GetData<string>("Player:InCall"));
                 if (target == null) return;
-                if (state == true)
+                if (Helper.adminSettings.voicerp == 1)
                 {
-                    target.TriggerEvent("SaltyChat_EndCall", player.Id);
+                    if (state == true)
+                    {
+                        target.TriggerEvent("SaltyChat_EndCall", player.Id);
+                    }
+                    else
+                    {
+                        target.TriggerEvent("SaltyChat_EstablishedCall", player.Id);
+                    }
                 }
-                else
+                if (Helper.adminSettings.voicerp == 2)
                 {
-                    target.TriggerEvent("SaltyChat_EstablishedCall", player.Id);
+                    if (state == true)
+                    {
+                        Helper.OnRemove_Voice_Listener(target, player);
+                    }
+                    else
+                    {
+                        Helper.OnAdd_Voice_Listener(target, player);
+                    }
+                }
+                else if (Helper.adminSettings.voicerp == 0)
+                {
+                    Commands.cmd_speaker(player);
                 }
             }
             catch (Exception e)
             {
-                Helper.ConsoleLog("error", $"[OnDeclineCall]: " + e.ToString());
+                Helper.ConsoleLog("error", $"[OnMuteMicro]: " + e.ToString());
             }
         }
 

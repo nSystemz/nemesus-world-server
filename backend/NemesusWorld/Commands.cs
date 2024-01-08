@@ -1285,7 +1285,7 @@ namespace NemesusWorld
                         }
                     case "leben":
                         {
-                            if (number < 0 || number > 275)
+                            if (number < 0 || number > 100)
                             {
                                 Helper.SendNotificationWithoutButton(player, "Ungültier Wert!", "error", "top-end");
                                 return;
@@ -3782,7 +3782,7 @@ namespace NemesusWorld
                 {
                     case "interior":
                         {
-                            if (wert < 0 || wert > House.houseListInteriors.Count)
+                            if (wert < -1 || wert > House.houseListInteriors.Count)
                             {
                                 Helper.SendNotificationWithoutButton(player, "Ungültiges Interior!", "error", "top-end");
                                 return;
@@ -4962,7 +4962,7 @@ namespace NemesusWorld
                 }, delayTime: 55);
                 ntarget.TriggerEvent("Client:UnsetDeath");
                 character2.death = false;
-                ntarget.SetOwnSharedData("Player:Death", false);
+                ntarget.SetSharedData("Player:Death", false);
                 ntarget.SetSharedData("Player:Adminsettings", "0,0,0");
                 Helper.SendNotificationWithoutButton(player, $"Du hast { account2.name } wiederbelebt!", "success", "top-end", 3500);
                 Helper.SendNotificationWithoutButton(ntarget, $"{ account.name } hat dich wiederbelebt", "success", "top-end", 3500);
@@ -7755,7 +7755,7 @@ namespace NemesusWorld
                     return;
                 }
                 Helper.PlayShortAnimation(player, "amb@world_human_gardener_plant@male@idle_a", "idle_b", 2250);
-                Vector3 newPosition = Helper.GetPositionInFrontOfPlayer(player, 0.85f);
+                Vector3 newPosition = Helper.GetPositionInFrontOfPlayer(player, 1.35f);
                 Blitzer blitzer = new Blitzer();
                 blitzer.maxspeed = maxspeed;
                 blitzer.who = who;
@@ -7858,7 +7858,7 @@ namespace NemesusWorld
                 {
                     foreach (SpikeStrip spikestrips in Helper.spikeStripList.ToList())
                     {
-                        if (player.Position.DistanceTo(spikestrips.spikeobject.Position) <= 1.75)
+                        if (player.Position.DistanceTo(spikestrips.spikeobject.Position) <= 2.85)
                         {
                             Helper.PlayShortAnimation(player, "amb@world_human_gardener_plant@male@idle_a", "idle_b", 2250);
                             spikestrips.colshape.Delete();
@@ -7886,8 +7886,8 @@ namespace NemesusWorld
                 Vector3 newPosition = Helper.GetPositionInFrontOfPlayer(player, 0.65f);
                 SpikeStrip spikeStrip = new SpikeStrip();
                 spikeStrip.id = rand.Next(1, 99999);
-                spikeStrip.colshape = NAPI.ColShape.CreateSphereColShape(new Vector3(newPosition.X, newPosition.Y, newPosition.Z - 0.973), 2.85f, player.Dimension);
-                spikeStrip.spikeobject = NAPI.Object.CreateObject(NAPI.Util.GetHashKey("p_stinger_03"), new Vector3(newPosition.X, newPosition.Y, newPosition.Z - 0.960), new Vector3(0.0f, 0.0f, player.Heading + 90), 255, 0);
+                spikeStrip.colshape = NAPI.ColShape.CreatCircleColShape(newPosition.X, newPosition.Y, 2.85f, player.Dimension);
+                spikeStrip.spikeobject = NAPI.Object.CreateObject(NAPI.Util.GetHashKey("p_stinger_03"), new Vector3(newPosition.X, newPosition.Y, newPosition.Z - 0.9653), new Vector3(0.0f, 0.0f, player.Heading + 90), 255, 0);
                 Helper.spikeStripList.Add(spikeStrip);
                 Helper.SendNotificationWithoutButton(player, "Das Nagelband wurde erfolgreich aufgestellt!", "success", "top-left", 2500);
             }
@@ -8125,6 +8125,7 @@ namespace NemesusWorld
                 TempData tempData = Helper.GetCharacterTempData(player);
                 Character character = Helper.GetCharacterData(player);
                 if (account == null || tempData == null) return;
+                if (player.GetSharedData<bool>("Player:Death") == true) return;
                 if (tempData.freezed == true || player.Vehicle != null)
                 {
                     Helper.SendNotificationWithoutButton(player, "Du kannst dich jetzt nicht ausloggen!", "error", "top-end");
@@ -8221,7 +8222,8 @@ namespace NemesusWorld
             try
             {
                 if (!Account.IsPlayerLoggedIn(player)) return;
-                if(Helper.adminSettings.voicerp == 1)
+                if (player.GetSharedData<bool>("Player:Death") == true) return;
+                if (Helper.adminSettings.voicerp == 1)
                 {
                     Helper.SendNotificationWithoutButton(player, "Der Text-RP Modus muss zuerst aktiviert werden!", "error", "top-end");
                     return;
@@ -8243,6 +8245,7 @@ namespace NemesusWorld
         public void CMD_do(Player player, string nachricht)
         {
             if (!Account.IsPlayerLoggedIn(player)) return;
+            if (player.GetSharedData<bool>("Player:Death") == true) return;
             if (Helper.adminSettings.voicerp == 1)
             {
                 Helper.SendNotificationWithoutButton(player, "Der Text-RP Modus muss zuerst aktiviert werden!", "error", "top-end");
@@ -8279,6 +8282,7 @@ namespace NemesusWorld
         {
             TempData tempData = Helper.GetCharacterTempData(player);
             if (!Account.IsPlayerLoggedIn(player) || tempData == null) return;
+            if (player.GetSharedData<bool>("Player:Death") == true) return;
             if (Helper.adminSettings.voicerp == 1)
             {
                 Helper.SendNotificationWithoutButton(player, "Der Text-RP Modus muss zuerst aktiviert werden!", "error", "top-end");
@@ -8294,12 +8298,40 @@ namespace NemesusWorld
                 Helper.SendNotificationWithoutButton(player, "Ungültige Nachricht!", "error", "top-end");
                 return;
             }
-            Helper.SendRadioMessage("!{#6fbbd3}[Funk-(FREQ-" + tempData.radio + ")] " + player.Name + ": " + nachricht, tempData.radio);
-            Helper.SendRadiusMessage("!{#EE82EE}* " + player.Name + " [Funk]: " + nachricht, 8, player);
+            Helper.SendRadioMessage("!{#6fbbd3}[Funk-(FREQ-" + tempData.radio + ")] " + player.Name + ": " + nachricht, tempData.radio, tempData.radiols);
+            Helper.SendRadiusMessage("!{#EE82EE}* " + player.Name + " [Funk]: " + nachricht, 8, player, true);
             if (!player.IsInVehicle)
             {
                 Helper.PlayShortAnimation(player, "random@arrests", "generic_radio_enter", 2500);
             }
+            return;
+        }
+
+        [Command("speaker", "Befehl: /speaker")]
+        public static void cmd_speaker(Player player)
+        {
+            TempData tempData = Helper.GetCharacterTempData(player);
+            if (!Account.IsPlayerLoggedIn(player) || tempData == null) return;
+            if (player.GetSharedData<bool>("Player:Death") == true) return;
+            if (Helper.adminSettings.voicerp == 1)
+            {
+                Helper.SendNotificationWithoutButton(player, "Der Text-RP Modus muss zuerst aktiviert werden!", "error", "top-end");
+                return;
+            }
+            if (ItemsController.GetItemByItemName(player, "Smartphone") == null)
+            {
+                Helper.SendNotificationWithoutButton2(player, "Du besitzt kein Smartphone!", "error", "center");
+                return;
+            }
+            if (tempData.speaker == false)
+            {
+                Helper.SendNotificationWithoutButton(player, "Handy Lautsprecher eingeschaltet!", "success");
+            }
+            else
+            {
+                Helper.SendNotificationWithoutButton(player, "Handy Lautsprecher ausgeschaltet!", "success");
+            }
+            tempData.speaker = !tempData.speaker;
             return;
         }
 

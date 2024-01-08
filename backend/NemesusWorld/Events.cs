@@ -271,7 +271,7 @@ namespace NemesusWorld
                         //Essen/Trinken/Leben abziehen
                         foreach (Player player in NAPI.Pools.GetAllPlayers())
                         {
-                            if (player != null && player.GetOwnSharedData<bool>("Player:Spawned") == true && player.GetOwnSharedData<bool>("Player:Death") == false)
+                            if (player != null && player.GetOwnSharedData<bool>("Player:Spawned") == true && player.GetSharedData<bool>("Player:Death") == false)
                             {
                                 Character character = Helper.GetCharacterData(player);
                                 Account account = Helper.GetAccountData(player);
@@ -400,14 +400,14 @@ namespace NemesusWorld
                                 foreach (Groups groups in GroupsController.groupList)
                                 {
                                     kfzsteuer = 0;
-                                    if (groups.banknumber != "n/A")
+                                    if (groups != null && groups.banknumber != "n/A")
                                     {
                                         Bank bank = BankController.GetBankByBankNumber(groups.banknumber);
                                         if (bank != null)
                                         {
                                             foreach (Cars car in Cars.carList)
                                             {
-                                                if (car.vehicleData.plate.Length > 0 && car.vehicleData.owner == "group-" + groups.id)
+                                                if (car != null && car.vehicleData != null && car.vehicleData.plate.Length > 0 && car.vehicleData.owner == "group-" + groups.id)
                                                 {
                                                     VehicleShop vehicleShop = DealerShipController.GetVehicleShopByVehicleName(car.vehicleData.vehiclename);
                                                     kfzsteuer += (int)(vehicleShop.price / 100 * Helper.adminSettings.ksteuer);
@@ -510,7 +510,6 @@ namespace NemesusWorld
                                         player.TriggerEvent("Client:UpdateKilometreTaxi", 0);
                                     }
                                 }
-                                player.SetSharedData("Player:HealthSync", (NAPI.Player.GetPlayerHealth(player) + 100));
                             }
                         }
                         if (halfMinuteCounter >= 2)
@@ -532,16 +531,16 @@ namespace NemesusWorld
                                     if (character != null && account != null && tempData != null)
                                     {
                                         //Hunger Thirst
-                                        if ((character.hunger <= 0 || character.thirst <= 0) && character.afk == 0 && character.death == false && tempData.adminduty == false)
+                                        if ((character.hunger <= 0 || character.thirst <= 0) && Helper.GetRandomPercentage(65) && character.afk == 0 && character.death == false && tempData.adminduty == false)
                                         {
-                                            Helper.SetPlayerHealth(player, NAPI.Player.GetPlayerHealth(player) - 3);
+                                            Helper.SetPlayerHealth(player, (player.GetOwnSharedData<int>("Player:Health")-100) - 3);
                                         }
                                         //Crystal-Meth
-                                        if (player.HasData("Player:HealBonus"))
+                                        if (player.HasData("Player:HealBonus") && player.GetData<int>("Player:HealBonus") > -1)
                                         {
                                             if (NAPI.Player.GetPlayerHealth(player) < 105)
                                             {
-                                                Helper.SetPlayerHealth(player, NAPI.Player.GetPlayerHealth(player) + 15);
+                                                Helper.SetPlayerHealth(player, (player.GetOwnSharedData<int>("Player:Health") - 100) + 15);
                                             }
                                             if (NAPI.Player.GetPlayerHealth(player) > 105)
                                             {
@@ -550,6 +549,7 @@ namespace NemesusWorld
                                             player.SetData("Player:HealBonus", player.GetData<int>("Player:HealBonus") - 1);
                                             if (player.GetData<int>("Player:HealBonus") <= 0)
                                             {
+                                                player.SetData("Player:HealBonus", -1);
                                                 player.ResetData("Player:HealBonus");
                                             }
                                         }
@@ -1153,7 +1153,8 @@ namespace NemesusWorld
                 player.SetData("Player:ConnectName", player.Name);
                 player.Dimension = 50;
                 player.Name = "Spieler-" + player.Id;
-                Helper.SetPlayerPosition(player, new Vector3(147.22339, -1044.3805, 29.368017 + 0.2));
+                Helper.SetPlayerPosition(player, new Vector3(226.29927, 7452.966, 22.658815 + 0.1));
+                player.Rotation = new Vector3(0, 0, 6.1539865);
                 player.TriggerEvent("Client:HideHud");
                 player.SetData("Player:AdminDuty", false);
                 NAPI.Data.SetEntitySharedData(player, "Player:AdminLogin", 0);
@@ -1164,7 +1165,7 @@ namespace NemesusWorld
                 player.SetOwnSharedData("Player:FactionRang", 0);
                 NAPI.Data.SetEntitySharedData(player, "Player:Adminlevel", 0);
                 player.SetOwnSharedData("Player:Spawned", false);
-                player.SetOwnSharedData("Player:Death", false);
+                player.SetSharedData("Player:Death", false);
                 player.SetOwnSharedData("Player:Money", -1);
                 player.SetData("Client:WrongPW", 0);
                 player.TriggerEvent("Client:ShowLoading");
@@ -1188,6 +1189,7 @@ namespace NemesusWorld
                 player.SetSharedData("Player:Attachments", "0");
                 player.SetSharedData("Player:HealthSync", 100);
                 player.SetData<bool>("Player:AcceptCall", false);
+                player.ResetData("Player:HealBonus");
                 Helper.SetPlayerHealth(player, 100);
                 Helper.SetPlayerArmor(player, 0);
                 NAPI.Task.Run(() =>
@@ -1695,7 +1697,7 @@ namespace NemesusWorld
                 player.TriggerEvent("Client:StopSound");
                 player.SetData("Client:WrongPW", 0);
                 player.SetOwnSharedData("Player:Spawned", false);
-                player.SetOwnSharedData("Player:Death", false);
+                player.SetSharedData("Player:Death", false);
                 player.SetOwnSharedData("Player:Money", -1);
                 NAPI.Data.SetEntitySharedData(player, "Player:AdminLogin", 0);
                 player.SetOwnSharedData("Player:Job", 0);
@@ -1830,7 +1832,7 @@ namespace NemesusWorld
                     //Deathsystem
                     if (tempData.adminduty == false)
                     {
-                        player.SetOwnSharedData("Player:Death", true);
+                        player.SetSharedData("Player:Death", true);
                         character.death = true;
                         if (Helper.GetFactionCountDuty(2) <= 1)
                         {
@@ -1855,7 +1857,7 @@ namespace NemesusWorld
                     {
                         if (character.death == false)
                         {
-                            player.SetOwnSharedData("Player:Death", false);
+                            player.SetSharedData("Player:Death", false);
                             character.death = false;
                             Helper.SetPlayerPosition(player, player.Position);
                         }
@@ -3060,10 +3062,50 @@ namespace NemesusWorld
         {
             try
             {
-                if (player.GetOwnSharedData<bool>("Player:Spawned") == true && player.GetOwnSharedData<bool>("Player:Death") == false)
+                if (player.GetOwnSharedData<bool>("Player:Spawned") == true && player.GetSharedData<bool>("Player:Death") == false)
                 {
                     TempData tempData = Helper.GetCharacterTempData(player);
                     Character character = Helper.GetCharacterData(player);
+                    //Blitzer
+                    if (player.IsInVehicle && player.VehicleSeat == (int)VehicleSeat.Driver && Helper.blitzerList.Count > 0 && tempData.adminduty == false)
+                    {
+                        if (player.HasData("Player:WireCooldown"))
+                        {
+                            if (Helper.UnixTimestamp() < player.GetData<int>("Player:WireCooldown"))
+                            {
+                                return;
+                            }
+                            player.ResetData("Player:Wirecooldown");
+                        }
+                        VehicleData vehicleData = DealerShipController.GetVehicleDataByVehicle(player.Vehicle);
+                        if (vehicleData != null && vehicleData.owner != "faction-1")
+                        {
+                            foreach (Blitzer blitzer in Helper.blitzerList)
+                            {
+                                if (blitzer != null && blitzer.colshape != null && blitzer.colshape == shape)
+                                {
+                                    player.SetData<int>("Player:WireCooldown", Helper.UnixTimestamp() + (10));
+                                    player.TriggerEvent("Client:CheckSpeed", blitzer.maxspeed);
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                    //Spikestrips
+                    if (player.IsInVehicle && Helper.spikeStripList.Count > 0)
+                    {
+                        foreach (SpikeStrip spikeStrip in Helper.spikeStripList)
+                        {
+                            if (spikeStrip != null && spikeStrip.colshape != null && spikeStrip.colshape == shape)
+                            {
+                                string[] vehicleArray = new string[7];
+                                vehicleArray = player.Vehicle.GetSharedData<string>("Vehicle:Sync").Split(",");
+                                player.Vehicle.SetSharedData("Vehicle:Sync", $"{vehicleArray[0]},{vehicleArray[1]},{vehicleArray[2]},1,{vehicleArray[4]},{vehicleArray[5]},{vehicleArray[6]}");
+                                player.TriggerEvent("Client:VehicleTyreBurst");
+                                return;
+                            }
+                        }
+                    }
                     //Feuersystem
                     if (FireController.startFire == true && FireController.fireColshape != null && shape == FireController.fireColshape && player.GetData<bool>("Player:Fire") == false)
                     {
@@ -3328,45 +3370,6 @@ namespace NemesusWorld
                             return;
                         }
                     }
-                    //Blitzer
-                    if (player.IsInVehicle && player.VehicleSeat == (int)VehicleSeat.Driver && Helper.blitzerList.Count > 0 && tempData.adminduty == false)
-                    {
-                        if (player.HasData("Player:WireCooldown"))
-                        {
-                            if (Helper.UnixTimestamp() < player.GetData<int>("Player:WireCooldown"))
-                            {
-                                return;
-                            }
-                            player.ResetData("Player:Wirecooldown");
-                        }
-                        VehicleData vehicleData = DealerShipController.GetVehicleDataByVehicle(player.Vehicle);
-                        if (vehicleData != null && vehicleData.owner != "faction-1")
-                        {
-                            foreach (Blitzer blitzer in Helper.blitzerList)
-                            {
-                                if (blitzer != null && blitzer.colshape != null && blitzer.colshape == shape)
-                                {
-                                    player.SetData<int>("Player:WireCooldown", Helper.UnixTimestamp() + (10));
-                                    player.TriggerEvent("Client:CheckSpeed", blitzer.maxspeed);
-                                    return;
-                                }
-                            }
-                        }
-                    }
-                    //Spikestrips
-                    if (player.IsInVehicle && Helper.spikeStripList.Count > 0)
-                    {
-                        foreach (SpikeStrip spikeStrip in Helper.spikeStripList)
-                        {
-                            if (spikeStrip != null && spikeStrip.colshape != null && spikeStrip.colshape == shape)
-                            {
-                                string[] vehicleArray = new string[7];
-                                vehicleArray = player.Vehicle.GetSharedData<string>("Vehicle:Sync").Split(",");
-                                player.Vehicle.SetSharedData("Vehicle:Sync", $"{vehicleArray[0]},{vehicleArray[1]},{vehicleArray[2]},1,{vehicleArray[4]},{vehicleArray[5]},{vehicleArray[6]}");
-                                return;
-                            }
-                        }
-                    }
                     //Doorsystem
                     foreach (DoorsColshapes doorShapes in DoorsController.doorsColshapesList)
                     {
@@ -3501,13 +3504,6 @@ namespace NemesusWorld
                 if (account == null || character == null) return;
                 //Prison
                 if (account.prison > 0) return;
-                //Schreien
-                if (message.StartsWith("!"))
-                {
-                    if (message.Length <= 1) return;
-                    Helper.SendRadiusMessage("!{#FFFFFF}* " + player.Name + " sagt (schreit): " + message.Remove(0, 1), 22, player);
-                    return;
-                }
                 //Adminchat
                 if (message.StartsWith("@"))
                 {
@@ -3528,6 +3524,15 @@ namespace NemesusWorld
                         return;
                     }
                 }
+                //Tod
+                if (player.GetSharedData<bool>("Player:Death") == true) return;
+                //Schreien
+                if (message.StartsWith("!"))
+                {
+                    if (message.Length <= 1) return;
+                    Helper.SendRadiusMessage("!{#FFFFFF}* " + player.Name + " sagt (schreit): " + message.Remove(0, 1), 22, player);
+                    return;
+                }
                 //Premiumchat
                 if (message.StartsWith("$"))
                 {
@@ -3547,10 +3552,18 @@ namespace NemesusWorld
                         if (handyPlayer != null)
                         {
                             TempData tempData2 = Helper.GetCharacterTempData(handyPlayer);
-                            if (tempData2 != null && tempData2.inCall2 == true && handyPlayer.GetData<bool>("Player:AcceptCall") == true)
+                            if (tempData2 != null && tempData2.inCall2 == true && handyPlayer.GetData<bool>("Player:AcceptCall") == true && player.GetData<bool>("Player:AcceptCall") == true)
                             {
+                                Helper.SendRadiusMessage("!{#FFFFFF}* " + character.name + " sagt (Handy): " + message, 13, player, true);
                                 Helper.SendChatMessage(player, "!{#EE82EE}* " + character.name + " sagt (Handy): " + message);
-                                Helper.SendChatMessage(handyPlayer, "!{#EE82EE}* " + character.name + " sagt (Handy): " + message);
+                                if (tempData2.speaker == false)
+                                {
+                                    Helper.SendChatMessage(handyPlayer, "!{#EE82EE}* " + character.name + " sagt (Handy): " + message);
+                                }
+                                else
+                                {
+                                    Helper.SendRadiusMessage("!{#EE82EE}* " + character.name + " sagt (Handylautsprecher): " + message, 13, handyPlayer);
+                                }
                                 player.TriggerEvent("Client:SpeakAnim");
                                 return;
                             }

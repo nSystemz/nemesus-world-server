@@ -1,3 +1,5 @@
+🎮 Nemesus World Roleplay Gamemode für RageMP (GTA 5) 🎮
+
 Nemesus World Gamemode v1.0 (Erstellt durch https://nemesus.de!)
 
 Weitere Credits gehen an Hrred für die Erstellung von vielen Maps und sonstigen Aktivitäten sowie an YunaLable.
@@ -7,7 +9,7 @@ Weitere Credits gehen an Hrred für die Erstellung von vielen Maps und sonstigen
 Info Vorab: Dieser Gamemode kann als Voice-RP (Salty-Chat oder RageMP Voice) oder Text-RP Gamemode verwendet werden.
 
 Bei RageMP Voice bitte folgende Einstellungen zu deiner conf.json hinzufügen:
-- "voice-chat": true,
+- "voice-chat": true
 - "voice-chat-sample-rate": 48000 
 
 Bei diesem Gamemode handelt es sich um einen Gamemode für die Multiplayer Modifikation GTA 5/RageMP, Credits sind im Gamemode vermerkt oder bei der jeweiligen Funktion/MLO etc.
@@ -30,7 +32,7 @@ SaltyChat: https://github.com/v10networkscom/saltychat-ragemp
 
 Nemesus World ist ein RageMP/GTA5 Roleplay Gamemode und beinhaltet sehr viele Features, nur um mal einige zu nennen:
 
-    Ein Fimensystem mit der Möglichkeit verschiedenen Lizenzen zu besitzen wie z.B: Speditionslizenz, Mechatronikerlizenz etc.
+    Ein Firmensystem mit der Möglichkeit verschiedenen Lizenzen zu besitzen wie z.B: Speditionslizenz, Mechatronikerlizenz etc.
     Die Möglichkeit zwischen Voice/Text-RP zu switchen.
     Einzigartige NPC Interaktionen
     Ein vollwertiges Haus und Businessystem.

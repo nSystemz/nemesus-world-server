@@ -1848,7 +1848,7 @@ export default {
                 if ((Date.now() / 1000) > this.docLoaded) {
                     // eslint-disable-next-line no-undef
                     mp.trigger('Client:MDCSettings', 'getdocuments');
-                    this.docLoaded = (Date.now() / 1000) + (300);
+                    this.docLoaded = (Date.now() / 1000) + (60);
                 }
                 this.fahndungText = '';
                 this.fahndungCreator = '';
@@ -1868,7 +1868,7 @@ export default {
                 if ((Date.now() / 1000) > this.weaponsLoaded) {
                     // eslint-disable-next-line no-undef
                     mp.trigger('Client:MDCSettings', 'getweapons');
-                    this.weaponsLoaded = (Date.now() / 1000) + (60);
+                    this.weaponsLoaded = (Date.now() / 1000) + (10);
                 }
                 this.selectMDC = 11;
                 this.clicked = (Date.now() / 1000) + (1);
@@ -2025,7 +2025,7 @@ export default {
                 if ((Date.now() / 1000) > this.dispatchesLoaded) {
                     // eslint-disable-next-line no-undef
                     mp.trigger('Client:MDCSettings', 'loaddispatches', '');
-                    this.dispatchesLoaded = (Date.now() / 1000) + (60);
+                    this.dispatchesLoaded = (Date.now() / 1000) + (5);
                     this.dispatchKommentareLoaded = (Date.now() / 1000);
                 }
                 this.clicked = (Date.now() / 1000) + (1);
@@ -2051,7 +2051,7 @@ export default {
                 if ((Date.now() / 1000) > this.firmenLoaded) {
                     // eslint-disable-next-line no-undef
                     mp.trigger('Client:MDCSettings', 'selectfirmen', '');
-                    this.firmenLoaded = (Date.now() / 1000) + (180);
+                    this.firmenLoaded = (Date.now() / 1000) + (60);
                 }
                 this.clicked = (Date.now() / 1000) + (1);
             }
@@ -2069,7 +2069,7 @@ export default {
                 if ((Date.now() / 1000) > this.arrestedLoaded) {
                     // eslint-disable-next-line no-undef
                     mp.trigger('Client:MDCSettings', 'selectarrested', '');
-                    this.arrestedLoaded = (Date.now() / 1000) + (120);
+                    this.arrestedLoaded = (Date.now() / 1000) + (30);
                 }
                 this.clicked = (Date.now() / 1000) + (1);
             }
@@ -2087,7 +2087,7 @@ export default {
                 if ((Date.now() / 1000) > this.carsLoaded) {
                     // eslint-disable-next-line no-undef
                     mp.trigger('Client:MDCSettings', 'selectcars', '' + id);
-                    this.carsLoaded = (Date.now() / 1000) + (180);
+                    this.carsLoaded = (Date.now() / 1000) + (60);
                 }
                 this.clicked = (Date.now() / 1000) + (1);
             }
@@ -2105,7 +2105,7 @@ export default {
                 if ((Date.now() / 1000) > this.housesLoaded) {
                     // eslint-disable-next-line no-undef
                     mp.trigger('Client:MDCSettings', 'selecthouses', name);
-                    this.housesLoaded = (Date.now() / 1000) + (180);
+                    this.housesLoaded = (Date.now() / 1000) + (60);
                 }
                 this.clicked = (Date.now() / 1000) + (1);
             }
@@ -2123,7 +2123,7 @@ export default {
                 if ((Date.now() / 1000) > this.bizzLoaded) {
                     // eslint-disable-next-line no-undef
                     mp.trigger('Client:MDCSettings', 'selectbizz', name);
-                    this.bizzLoaded = (Date.now() / 1000) + (180);
+                    this.bizzLoaded = (Date.now() / 1000) + (60);
                 }
                 this.clicked = (Date.now() / 1000) + (1);
             }
@@ -2141,7 +2141,7 @@ export default {
                 if ((Date.now() / 1000) > this.weaponLoaded) {
                     // eslint-disable-next-line no-undef
                     mp.trigger('Client:MDCSettings', 'selectweapon', name);
-                    this.weaponLoaded = (Date.now() / 1000) + (180);
+                    this.weaponLoaded = (Date.now() / 1000) + (30);
                 }
                 this.clicked = (Date.now() / 1000) + (1);
             }
@@ -2159,7 +2159,7 @@ export default {
                 if ((Date.now() / 1000) > this.invoiceLoaded) {
                     // eslint-disable-next-line no-undef
                     mp.trigger('Client:MDCSettings', 'selectinvoice', name);
-                    this.invoiceLoaded = (Date.now() / 1000) + (180);
+                    this.invoiceLoaded = (Date.now() / 1000) + (60);
                 }
                 this.clicked = (Date.now() / 1000) + (1);
             }
@@ -2177,7 +2177,7 @@ export default {
                 if ((Date.now() / 1000) > this.blitzerLoaded) {
                     // eslint-disable-next-line no-undef
                     mp.trigger('Client:MDCSettings', 'selectblitzer', 'n/A');
-                    this.blitzerLoaded = (Date.now() / 1000) + (300);
+                    this.blitzerLoaded = (Date.now() / 1000) + (60);
                 }
                 this.selectMDC = 13;
                 this.clicked = (Date.now() / 1000) + (1);
@@ -2195,7 +2195,7 @@ export default {
                 if ((Date.now() / 1000) > this.cctvLoaded) {
                     // eslint-disable-next-line no-undef
                     mp.trigger('Client:MDCSettings', 'selectcctv', 'n/A');
-                    this.cctvLoaded = (Date.now() / 1000) + (300);
+                    this.cctvLoaded = (Date.now() / 1000) + (60);
                 }
                 this.selectMDC = 15;
                 this.clicked = (Date.now() / 1000) + (1);
@@ -2214,7 +2214,7 @@ export default {
                 if ((Date.now() / 1000) > this.usersLoaded) {
                     // eslint-disable-next-line no-undef
                     mp.trigger('Client:MDCSettings', 'selectusers', 'n/A');
-                    this.usersLoaded = (Date.now() / 1000) + (25);
+                    this.usersLoaded = (Date.now() / 1000) + (15);
                     if (check == 1) {
                         // eslint-disable-next-line no-undef
                         mp.trigger('Client:SendNotificationWithoutButton', 'Ansicht aktualisiert!', 'success', 'top-left', 2750);
@@ -2440,12 +2440,12 @@ export default {
             this.factionRang = factionRang;
             if ((Date.now() / 1000) > this.fahndungenLoaded && this.faction == 1) {
                 this.loadfahndungen();
-                this.fahndungenLoaded = (Date.now() / 1000) + (60);
+                this.fahndungenLoaded = (Date.now() / 1000) + (5);
             }
             if ((Date.now() / 1000) > this.dispatchesLoaded && (this.faction == 2 || this.faction == 3)) {
                 // eslint-disable-next-line no-undef
                 mp.trigger('Client:MDCSettings', 'loaddispatches', '');
-                this.dispatchesLoaded = (Date.now() / 1000) + (60);
+                this.dispatchesLoaded = (Date.now() / 1000) + (5);
                 this.dispatchKommentareLoaded = (Date.now() / 1000);
             }
             if (data && data.length > 3) {
@@ -2566,7 +2566,7 @@ export default {
                 } else if (navi == 'showFahndungen') {
                     if ((Date.now() / 1000) > this.fahndungenLoaded) {
                         this.loadfahndungen();
-                        this.fahndungenLoaded = (Date.now() / 1000) + (60);
+                        this.fahndungenLoaded = (Date.now() / 1000) + (5);
                     }
                     this.searchelement = '';
                     this.selectMDC = 1;

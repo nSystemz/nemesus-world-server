@@ -548,7 +548,7 @@ namespace NemesusWorld.Controllers
                             }
                             if (character.death == true)
                             {
-                                player.SetOwnSharedData("Player:Death", true);
+                                player.SetSharedData("Player:Death", true);
                                 character.death = true;
                                 if (Helper.GetFactionCountDuty(2) <= 1)
                                 {
@@ -622,7 +622,9 @@ namespace NemesusWorld.Controllers
                                         account.login_bonus_before = today;
                                     }
                                 }
+                                player.TriggerEvent("Client:ClearChat");
                                 Helper.SendNotificationWithoutButton(player, "Willkommen zurück " + account.name + "!", "info", "top-left", 1850);
+                                Helper.SendChatMessage(player, $"~b~Willkommen zurück ~w~{account.name}~b~, du hast Fragen zum Nemesus World Gamemode? Dann besuche gerne unseren Discord: ~w~https://discord.nemesus.de");
                                 account.online = 1;
                                 Account.SaveAccount(player);
                             }

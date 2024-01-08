@@ -764,7 +764,7 @@ namespace NemesusWorld.Controllers
                         {
                             foreach (Player player in NAPI.Pools.GetAllPlayers())
                             {
-                                if (player != null && player.GetOwnSharedData<bool>("Player:Spawned") == true && player.GetOwnSharedData<bool>("Player:Death") == false)
+                                if (player != null && player.GetOwnSharedData<bool>("Player:Spawned") == true && player.GetSharedData<bool>("Player:Death") == false)
                                 {
                                     Character character = Helper.GetCharacterData(player);
                                     if(character != null && character.mygroup == gangzoneProps.groupid)
@@ -897,7 +897,7 @@ namespace NemesusWorld.Controllers
                         {
                             foreach (Player player in NAPI.Pools.GetAllPlayers())
                             {
-                                if (player != null && player.GetOwnSharedData<bool>("Player:Spawned") == true && player.GetOwnSharedData<bool>("Player:Death") == false)
+                                if (player != null && player.GetOwnSharedData<bool>("Player:Spawned") == true && player.GetSharedData<bool>("Player:Death") == false)
                                 {
                                     Character character = Helper.GetCharacterData(player);
                                     if (character != null && character.mygroup == gangzoneProps.groupid)

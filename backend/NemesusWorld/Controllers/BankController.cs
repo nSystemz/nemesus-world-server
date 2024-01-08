@@ -559,7 +559,7 @@ namespace NemesusWorld.Controllers
                                 return;
                             }
                             player.SetData<Bank>("Player:Bank", bank);
-                            player.TriggerEvent("Client:CallInput", "Neuer Pin", "Bitte gebe deinen neuen Pin ein:", "password", "****", 15, "NewPin");
+                            player.TriggerEvent("Client:CallInput", "Neuer Pin", "Bitte gebe deinen neuen Pin ein:", "password", "****", 4, "NewPin");
                             break;
                         }
                     case "defaultkonto":

@@ -69,6 +69,7 @@ namespace NemesusWorld.Database
         public int killsintime { get; set; }
         public bool isping { get; set; }
         public int pingcheck { get; set; }
+        public bool speaker { get; set; }
 
         public TempData()
         {
@@ -133,6 +134,7 @@ namespace NemesusWorld.Database
             killsintime = 1609462861;
             isping = false;
             pingcheck = 0;
+            speaker = false;
         }
     }
 }

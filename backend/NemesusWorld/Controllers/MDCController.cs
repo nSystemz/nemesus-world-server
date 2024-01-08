@@ -148,7 +148,7 @@ namespace NemesusWorld.Controllers
             {
                 foreach (Player p in NAPI.Pools.GetAllPlayers())
                 {
-                    if (p != null && p.GetOwnSharedData<bool>("Player:Spawned") == true && p.GetOwnSharedData<bool>("Player:Death") == false)
+                    if (p != null && p.GetOwnSharedData<bool>("Player:Spawned") == true && p.GetSharedData<bool>("Player:Death") == false)
                     {
                         Character character = Helper.GetCharacterData(p);
                         if (character != null && character.faction == 1 && character.factionduty == true && character.arrested == 0)
@@ -174,7 +174,7 @@ namespace NemesusWorld.Controllers
             {
                 foreach (Player p in NAPI.Pools.GetAllPlayers())
                 {
-                    if (p != null && player.Exists && Account.IsPlayerLoggedIn(player) && p.GetOwnSharedData<bool>("Player:Spawned") == true && p.GetOwnSharedData<bool>("Player:Death") == false)
+                    if (p != null && player.Exists && Account.IsPlayerLoggedIn(player) && p.GetOwnSharedData<bool>("Player:Spawned") == true && p.GetSharedData<bool>("Player:Death") == false)
                     {
                         Character character = Helper.GetCharacterData(p);
                         if (character != null && character.faction == 2 && character.factionduty == true && character.arrested == 0)
@@ -200,7 +200,7 @@ namespace NemesusWorld.Controllers
             {
                 foreach (Player p in NAPI.Pools.GetAllPlayers())
                 {
-                    if (p != null && player.Exists && Account.IsPlayerLoggedIn(player) && p.GetOwnSharedData<bool>("Player:Spawned") == true && p.GetOwnSharedData<bool>("Player:Death") == false)
+                    if (p != null && player.Exists && Account.IsPlayerLoggedIn(player) && p.GetOwnSharedData<bool>("Player:Spawned") == true && p.GetSharedData<bool>("Player:Death") == false)
                     {
                         Character character = Helper.GetCharacterData(p);
                         if (character != null && character.faction == 3 && character.factionduty == true && character.arrested == 0)
@@ -659,7 +659,7 @@ namespace NemesusWorld.Controllers
 
                             foreach (Player p in NAPI.Pools.GetAllPlayers())
                             {
-                                if (p != null && p.GetOwnSharedData<bool>("Player:Spawned") == true && p.GetOwnSharedData<bool>("Player:Death") == false)
+                                if (p != null && p.GetOwnSharedData<bool>("Player:Spawned") == true && p.GetSharedData<bool>("Player:Death") == false)
                                 {
                                     Character getCharacter2 = Helper.GetCharacterData(p);
                                     if (getCharacter2 != null && getCharacter2.name == mdcArray[2])
@@ -1267,7 +1267,7 @@ namespace NemesusWorld.Controllers
                             string[] adminSettings = new string[3];
                             adminSettings = player.GetSharedData<string>("Player:Adminsettings").Split(",");
                             player.SetSharedData("Player:Adminsettings", $"{adminSettings[0]},0,{adminSettings[2]}");
-                            if (player.GetOwnSharedData<bool>("Player:Death") == false)
+                            if (player.GetSharedData<bool>("Player:Death") == false)
                             {
                                 Helper.SendNotificationWithoutButton(player, $"CCTV Überwachung beendet!", "success", "top-left", 2500);
                                 Helper.PlayPhoneAnim(player, true);
@@ -1489,7 +1489,7 @@ namespace NemesusWorld.Controllers
                             List<LoadCharactersModel> loadedCharactersList = new List<LoadCharactersModel>();
                             foreach (Player p in NAPI.Pools.GetAllPlayers())
                             {
-                                if (p != null && p.GetOwnSharedData<bool>("Player:Spawned") == true && p.GetOwnSharedData<bool>("Player:Death") == false)
+                                if (p != null && p.GetOwnSharedData<bool>("Player:Spawned") == true && p.GetSharedData<bool>("Player:Death") == false)
                                 {
                                     Character character2 = Helper.GetCharacterData(p);
                                     if (character2 != null && character2.cell > 0)

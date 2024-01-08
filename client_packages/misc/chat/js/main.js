@@ -1,5 +1,5 @@
 const settings = {
-    timeStamp: false,
+    timeStamp: true,
     removeInputColors: true,
     characterCount: true,
     lowerCaseCommand: true,
@@ -19,6 +19,11 @@ let inputCache = "";
 const chatAPI = {
     clear: () => {
         MESSAGE_LIST.innerHTML = "";
+    },
+
+    highlight: () => {
+        if(chatActive)
+	        MESSAGE_LIST.scrollTop = MESSAGE_LIST.scrollHeight;
     },
 
     push: (text) => {

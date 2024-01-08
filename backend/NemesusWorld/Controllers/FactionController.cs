@@ -570,7 +570,8 @@ namespace NemesusWorld.Controllers
                                 }
                                 else if(character.faction == 2)
                                 {
-                                    if (character.factionduty == false)
+                                    Items item = ItemsController.GetItemByItemName(player, "Stethoskop");
+                                    if (item == null)
                                     {
                                         Helper.SendNotificationWithoutButton(player, "Du hast kein Stethoskop dabei!", "error");
                                         return;
@@ -602,7 +603,7 @@ namespace NemesusWorld.Controllers
                                     if (getPlayer != null)
                                     {
                                         TempData tempData2 = Helper.GetCharacterTempData(getPlayer);
-                                        if (getPlayer.GetOwnSharedData<bool>("Player:Death") == false)
+                                        if (getPlayer.GetSharedData<bool>("Player:Death") == false)
                                         {
                                             if (tempData2.cuffed != 1)
                                             {
@@ -652,7 +653,7 @@ namespace NemesusWorld.Controllers
                                     if (getPlayer != null)
                                     {
                                         TempData tempData2 = Helper.GetCharacterTempData(getPlayer);
-                                        if (getPlayer.GetOwnSharedData<bool>("Player:Death") == false)
+                                        if (getPlayer.GetSharedData<bool>("Player:Death") == false)
                                         {
                                             if(getPlayer.Health < 100)
                                             {
@@ -1495,7 +1496,7 @@ namespace NemesusWorld.Controllers
             {
                 foreach (Player p in NAPI.Pools.GetAllPlayers())
                 {
-                    if (p != null && p.GetOwnSharedData<bool>("Player:Spawned") == true && p.GetOwnSharedData<bool>("Player:Death") == false)
+                    if (p != null && p.GetOwnSharedData<bool>("Player:Spawned") == true && p.GetSharedData<bool>("Player:Death") == false)
                     {
                         Character character = Helper.GetCharacterData(p);
                         if (character != null && character.faction == faction && character.factionduty == true && character.arrested == 0)

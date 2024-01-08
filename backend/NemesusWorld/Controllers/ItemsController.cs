@@ -3588,7 +3588,7 @@ namespace NemesusWorld.Controllers
             {
                 if (name.ToLower().Contains("ec-karte") || name.ToLower().Contains("hausschlüssel") || name.ToLower().Contains("mietschlüssel") || name.ToLower().Contains("fahrzeugschlüssel") || name.ToLower().Contains("bizzschlüssel") || name.ToLower().Contains("benzinkanister") || name.ToLower().Contains("smartphone") || name.ToLower().Contains("f-zeugnis") || name.ToLower().Contains("feuerzeug") || name.ToLower().Contains("angel")
                 || name.ToLower().Contains("schweissgerät") || name.ToLower().Contains("drohne") || name.ToLower().Contains("kleines-messer") || name.ToLower().Contains("funkgerät") || name.ToLower().Contains("rezept") || name.ToLower().Contains("glowstick") || name.ToLower().Contains("horsestick") || name.ToLower().Contains("gehstock") || name.ToLower().Contains("l-schein") || name.ToLower().Contains("parkkralle") || name.ToLower().Contains("schwefelsäure") 
-                || name.ToLower().Contains("frostschutzmittel") || name.ToLower().Contains("backmischung") || name.ToLower().Contains("spitzhacke") || name.ToLower().Contains("kleine-schaufel") || name.ToLower().Contains("busticket") || name.ToLower().Contains("Filmkamera") || name.ToLower().Contains("Mikrofon"))
+                || name.ToLower().Contains("frostschutzmittel") || name.ToLower().Contains("backmischung") || name.ToLower().Contains("spitzhacke") || name.ToLower().Contains("kleine-schaufel") || name.ToLower().Contains("busticket") || name.ToLower().Contains("filmkamera") || name.ToLower().Contains("mikrofon") || name.ToLower().Contains("defribrilator") || name.ToLower().Contains("stethoskop"))
                 {
                     return true;
                 }

@@ -630,9 +630,9 @@ namespace NemesusWorld.Database
             float govvalue = 1;
             if (noproducts == false || bizz.id == 50 || bizz.id == 51)
             {
-                if(bizz.id == 50 || bizz.id == 51)
+                if (bizz.id == 50 || bizz.id == 51)
                 {
-                    bizz.govcash += Convert.ToInt32(govvalue/2);
+                    bizz.govcash += Convert.ToInt32(govvalue / 2);
                 }
                 else
                 {
@@ -1019,7 +1019,7 @@ namespace NemesusWorld.Database
                 string[] clothingArray = new string[8];
                 clothingArray = character.clothing.Split(",");
 
-                if(faction == true && character.factionduty == false)
+                if (faction == true && character.factionduty == false)
                 {
                     Helper.SendNotificationWithoutButton(player, $"Du bist nicht im Dienst!", "error", "top-left", 2500);
                     return;
@@ -1118,11 +1118,11 @@ namespace NemesusWorld.Database
             try
             {
 
-                if(faction == true && (character.faction == 1 || character.faction == 2 || character.faction == 3 || tempData.adminduty == true))
+                if (faction == true && (character.faction == 1 || character.faction == 2 || character.faction == 3 || tempData.adminduty == true))
                 {
                     if (character.factionduty == false && tempData.adminduty == false)
                     {
-                        Helper.SendNotificationWithoutButton(player, $"Dienst begonnen!", "success");
+                        Helper.SendNotificationWithoutButton(player, $"Dienst begonnen, vergesse nicht wichtige Fraktionsutensilien auszurüsten!", "success");
                         character.factionduty = true;
                         Items radio = ItemsController.GetItemByItemName(player, "Funkgerät");
                         if (radio == null)
@@ -1397,6 +1397,29 @@ namespace NemesusWorld.Database
             }
         }
 
+        [RemoteEvent("Server:BuyTattooAfter")]
+        public static void OnBuyTattooAfter(Player player)
+        {
+            TempData tempData = Helper.GetCharacterTempData(player);
+            Character character = Helper.GetCharacterData(player);
+            if (tempData == null || character == null) return;
+            JObject obj;
+            obj = JObject.Parse(character.json);
+            player.Dimension = 0;
+            NAPI.Player.SetPlayerClothes(player, 2, (int)obj["hair"][0], 0);
+            NAPI.Player.SetPlayerHairColor(player, (byte)obj["hair"][1], (byte)obj["hair"][2]);
+            player.TriggerEvent("hairOverlay::update", player, (int)obj["hair"][0]);
+            player.TriggerEvent("Client:HideTattoShop");
+            NAPI.Task.Run(() =>
+            {
+                Helper.GetCharacterTattoos(player, character.id);
+                NAPI.Task.Run(() =>
+                {
+                    CharacterController.SetCharacterCloths(player, obj, character.clothing);
+                }, delayTime: 155);
+            }, delayTime: 155);
+        }
+
         [RemoteEvent("Server:BuyTattoo")]
         public static void OnBuyTattoo(Player player, string name, string dlcName, int zoneid)
         {
@@ -1496,7 +1519,7 @@ namespace NemesusWorld.Database
                     player.TriggerEvent("Client:BuyTattooAfter", NAPI.Util.ToJson(tempData.tattoos));
                 }
 
-                if(zoneid == -2)
+                if (zoneid == -2)
                 {
                     JObject obj;
                     obj = JObject.Parse(character.json);

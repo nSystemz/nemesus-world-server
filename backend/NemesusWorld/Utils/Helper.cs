@@ -1124,7 +1124,7 @@ namespace NemesusWorld.Utils
                 player.TriggerEvent("Client:UnsetDeath");
                 player.TriggerEvent("Client:HideCursor");
                 character.death = false;
-                player.SetOwnSharedData("Player:Death", false);
+                player.SetSharedData("Player:Death", false);
                 Helper.SpawnPlayer(player, spawnDeath[index], spawnDeathRot[index]);
                 int cash = rand.Next(375) + 125;
                 if (character.faction == 1 || character.faction == 2 || character.faction == 3 || character.faction == 4)
@@ -1226,7 +1226,7 @@ namespace NemesusWorld.Utils
                             if (p.IsInVehicle && p.Vehicle == player.Vehicle && player != p)
                             {
                                 p.TriggerEvent("Client:CreateWaypoint", x, y);
-                                Helper.SendNotificationWithoutButton(p, "Es wurde ein neuer Waypoint geshared!", "success", "top-left", 1850);
+                                Helper.SendNotificationWithoutButton(p, "Es wurde eine neue Kartenmarkierung geteilt!", "success", "top-left", 1850);
                             }
                         }
                     }
@@ -2185,7 +2185,7 @@ namespace NemesusWorld.Utils
                                             {
                                                 foreach (Player p in NAPI.Pools.GetAllPlayers())
                                                 {
-                                                    if (p != null && p.GetOwnSharedData<bool>("Player:Spawned") == true && p.GetOwnSharedData<bool>("Player:Death") == false && p.Vehicle == player.Vehicle)
+                                                    if (p != null && p.GetOwnSharedData<bool>("Player:Spawned") == true && p.GetSharedData<bool>("Player:Death") == false && p.Vehicle == player.Vehicle)
                                                     {
                                                         p.TriggerEvent("Client:TextToSpeech", $"Nächste Haltestelle: {positionsArray[3]}");
                                                     }
@@ -2624,25 +2624,33 @@ namespace NemesusWorld.Utils
             return rangname;
         }
 
-        public static void SendRadiusMessage(string message, int radius, Player player)
+        public static void SendRadiusMessage(string message, int radius, Player player, bool cancelOwnPlayer = false)
         {
             foreach (Player p in NAPI.Pools.GetAllPlayers())
             {
                 if (Account.IsPlayerLoggedIn(p) && IsInRangeOfPoint(p.Position, player.Position, radius))
                 {
+                    if (cancelOwnPlayer == true && p == player) continue;
                     SendChatMessage(p, message);
                 }
             }
         }
 
-        public static void SendRadioMessage(string message, string freq)
+        public static void SendRadioMessage(string message, string freq, bool radiols)
         {
             foreach (Player p in NAPI.Pools.GetAllPlayers())
             {
                 TempData tempData = Helper.GetCharacterTempData(p);
                 if (Account.IsPlayerLoggedIn(p) && tempData.radio == freq)
                 {
-                    SendChatMessage(p, message);
+                    if (radiols)
+                    {
+                        SendRadiusMessage(message, 13, p);
+                    }
+                    else
+                    {
+                        SendChatMessage(p, message);
+                    }
                 }
             }
         }
@@ -2762,7 +2770,7 @@ namespace NemesusWorld.Utils
 
             foreach (Player player in NAPI.Pools.GetAllPlayers())
             {
-                if (player != null && player.Exists && player.GetOwnSharedData<bool>("Player:Spawned") == true)
+                if (player != null && player.Exists && Account.IsPlayerLoggedIn(player))
                 {
                     player.TriggerEvent("Client:AdminInfoMessage", message, time);
                 }
@@ -4664,7 +4672,7 @@ namespace NemesusWorld.Utils
                                     player.TriggerEvent("Client:ShowCursor");
                                     return;
                                 }
-                                if (input.Length < 4)
+                                if (input.Length < 4 || input.Length > 4)
                                 {
                                     Helper.SendNotificationWithoutButton(player, "Ungültiger Pin!", "error");
                                     player.TriggerEvent("Client:ShowCursor");
@@ -5830,7 +5838,7 @@ namespace NemesusWorld.Utils
                 TempData tempData = Helper.GetCharacterTempData(player);
                 if (account == null || character == null || tempData.freezed == true || player.GetOwnSharedData<bool>("Player:Spawned") == false) return;
                 //Animationen
-                if (player.GetOwnSharedData<bool>("Player:Death") == false && !player.HasData("Player:PlayCustomAnimation"))
+                if (player.GetSharedData<bool>("Player:Death") == false && !player.HasData("Player:PlayCustomAnimation"))
                 {
                     if (player.HasData("Player:Mikrofon") || player.HasData("Player:Filmkamera"))
                     {
@@ -6520,7 +6528,7 @@ namespace NemesusWorld.Utils
                         }
                         foreach (Player p in NAPI.Pools.GetAllPlayers())
                         {
-                            if (p != null && p.GetOwnSharedData<bool>("Player:Spawned") == true && p.GetOwnSharedData<bool>("Player:Death") == false && p == player.Vehicle && p.VehicleSeat == 1)
+                            if (p != null && p.GetOwnSharedData<bool>("Player:Spawned") == true && p.GetSharedData<bool>("Player:Death") == false && p == player.Vehicle && p.VehicleSeat == 1)
                             {
                                 SendNotificationWithoutButton(player, "Der Beifahrersitz muss frei sein!", "error");
                                 return;
@@ -6793,7 +6801,7 @@ namespace NemesusWorld.Utils
                         int busDriver = 0;
                         foreach (Player p in NAPI.Pools.GetAllPlayers())
                         {
-                            if (p != null && p.GetOwnSharedData<bool>("Player:Spawned") == true && p.GetOwnSharedData<bool>("Player:Death") == false && p.GetData<String>("Player:BusRoute") == routeName)
+                            if (p != null && p.GetOwnSharedData<bool>("Player:Spawned") == true && p.GetSharedData<bool>("Player:Death") == false && p.GetData<String>("Player:BusRoute") == routeName)
                             {
                                 busDriver++;
                             }
@@ -6852,7 +6860,7 @@ namespace NemesusWorld.Utils
                     Helper.SendNotificationWithoutButton(player, $"Du hast die Klingel betätigt!", "success", "top-left", 1250);
                     foreach (Player p in NAPI.Pools.GetAllPlayers())
                     {
-                        if (p != null && p.GetOwnSharedData<bool>("Player:Spawned") == true && p.GetOwnSharedData<bool>("Player:Death") == false && p.Position.DistanceTo(player.Position) <= 25.5 && !p.IsInVehicle)
+                        if (p != null && p.GetOwnSharedData<bool>("Player:Spawned") == true && p.GetSharedData<bool>("Player:Death") == false && p.Position.DistanceTo(player.Position) <= 25.5 && !p.IsInVehicle)
                         {
                             p.TriggerEvent("Client:PlaySound", "klingel.wav", 0);
                         }
@@ -7243,7 +7251,7 @@ namespace NemesusWorld.Utils
                                     player.Dimension = Convert.ToUInt32(house.id);
                                     foreach (Player p in NAPI.Pools.GetAllPlayers())
                                     {
-                                        if (p != null && p.GetOwnSharedData<bool>("Player:Spawned") == true && p.GetOwnSharedData<bool>("Player:Death") == false && p.Vehicle == player.Vehicle && p != player)
+                                        if (p != null && p.GetOwnSharedData<bool>("Player:Spawned") == true && p.GetSharedData<bool>("Player:Death") == false && p.Vehicle == player.Vehicle && p != player)
                                         {
                                             p.Dimension = Convert.ToUInt32(house.id);
                                             Character character2 = GetCharacterData(p);
@@ -7288,7 +7296,7 @@ namespace NemesusWorld.Utils
                                     player.Dimension = (uint)house.dimension;
                                     foreach (Player p in NAPI.Pools.GetAllPlayers())
                                     {
-                                        if (p != null && p.GetOwnSharedData<bool>("Player:Spawned") == true && p.GetOwnSharedData<bool>("Player:Death") == false && p.Vehicle == player.Vehicle && p != player)
+                                        if (p != null && p.GetOwnSharedData<bool>("Player:Spawned") == true && p.GetSharedData<bool>("Player:Death") == false && p.Vehicle == player.Vehicle && p != player)
                                         {
                                             p.Dimension = (uint)house.dimension;
                                             Character character2 = GetCharacterData(p);
@@ -8532,7 +8540,7 @@ namespace NemesusWorld.Utils
                     }
                     else if (id == 3)
                     {
-                        tempData.jobVehicle = Cars.createNewCar("pounder", new Vector3(-774.3099, -1308.4923, 5.073449), -40.524742f, 28, 28, "LS-S-155" + player.Id, "Fahrschule", true, true, false);
+                        tempData.jobVehicle = Cars.createNewCar("pounder", new Vector3(-755.50574, -1283.695, 5.1676626), 119.32717f, 28, 28, "LS-S-155" + player.Id, "Fahrschule", true, true, false);
                         tempData.jobVehicle.Dimension = 0;
                         player.SetIntoVehicle(tempData.jobVehicle, (int)VehicleSeat.Driver);
                         tempData.jobVehicle.SetSharedData("Vehicle:Text3D", "~r~Fahrschule");
@@ -11136,7 +11144,7 @@ namespace NemesusWorld.Utils
             {
                 Character character = Helper.GetCharacterData(player);
                 TempData tempData = Helper.GetCharacterTempData(player);
-                if (character == null || tempData == null || player.GetOwnSharedData<bool>("Player:Death") == true) return;
+                if (character == null || tempData == null || player.GetSharedData<bool>("Player:Death") == true) return;
                 Business bizz = Business.GetClosestBusiness(player, 40.5f);
                 JObject obj = JObject.Parse(character.json);
                 if (bizz != null)
@@ -11187,7 +11195,7 @@ namespace NemesusWorld.Utils
             try
             {
                 Character character = Helper.GetCharacterData(player);
-                if (character == null || player.GetOwnSharedData<bool>("Player:Death") == true) return;
+                if (character == null || player.GetSharedData<bool>("Player:Death") == true) return;
                 Business bizz = Business.GetClosestBusiness(player, 40.5f);
                 if (bizz != null)
                 {
@@ -15773,7 +15781,7 @@ namespace NemesusWorld.Utils
                                 getPlayer.SetSharedData("Player:Adminsettings", "0,0,0");
                                 getPlayer.TriggerEvent("Client:UnsetDeath");
                                 character2.death = false;
-                                getPlayer.SetOwnSharedData("Player:Death", false);
+                                getPlayer.SetSharedData("Player:Death", false);
                                 Helper.SendNotificationWithoutButton(getPlayer, $"Du wurdest reanimiert!", "success", "top-end", 3500);
                                 Helper.SendNotificationWithoutButton(player, $"Du hast die Person erfolgreich reanimiert!", "success", "top-end", 3500);
                                 SpawnPlayer(getPlayer, getPlayer.Position, getPlayer.Heading);
@@ -15792,56 +15800,74 @@ namespace NemesusWorld.Utils
                     }
                     else if (action == "check")
                     {
-                        Player getPlayer = Helper.GetClosestPlayer(player, 2.5f);
-                        if (getPlayer == null)
+                        try
+                        {
+                            Player getPlayer = Helper.GetClosestPlayer(player, 2.5f);
+                            if (getPlayer == null)
+                            {
+                                Helper.SendNotificationWithoutButton(player, $"Untersuchung abgebrochen!", "error", "top-end", 3500);
+                                return;
+                            }
+                            Character character2 = Helper.GetCharacterData(getPlayer);
+                            TempData tempData2 = Helper.GetCharacterTempData(getPlayer);
+                            if (character2 != null && character2.death == false)
+                            {
+                                SendNotificationWithoutButton(player, "Untersuchung erfolgreich durchgeführt!", "success", "top-left", 3500);
+                                player.SetSharedData("Player:AnimData", "WORLD_HUMAN_CLIPBOARD");
+                                List<CenterMenu> centerMenuList = new List<CenterMenu>();
+                                CenterMenu centerMenu = new CenterMenu();
+                                centerMenu.var1 = "Keine";
+                                if (character2.disease == 1)
+                                {
+                                    centerMenu.var1 = "Erkältung";
+                                }
+                                else if (character2.disease == 2)
+                                {
+                                    centerMenu.var1 = "Lebensmittelvergiftung";
+                                }
+                                if ((getPlayer.GetSharedData<int>("Player:HealthSync") - 100) >= 100)
+                                {
+                                    centerMenu.var2 = "Keine Schmerzen";
+                                }
+                                else if ((getPlayer.GetSharedData<int>("Player:HealthSync") - 100) < 100 && (getPlayer.GetSharedData<int>("Player:HealthSync") - 100) >= 75)
+                                {
+                                    centerMenu.var2 = "Leichte Schmerzen";
+                                }
+                                else if ((getPlayer.GetSharedData<int>("Player:HealthSync") - 100) < 75 && (getPlayer.GetSharedData<int>("Player:HealthSync") - 100) >= 45)
+                                {
+                                    centerMenu.var2 = "Mittlere Schmerzen";
+                                }
+                                else
+                                {
+                                    centerMenu.var2 = "Starke Schmerzen";
+                                }
+                                centerMenu.var3 = $"{getPlayer.GetSharedData<int>("Player:HealthSync") - 100}%";
+                                if (tempData2.tempValue <= 1)
+                                {
+                                    if (tempData2.tempValue == 1)
+                                    {
+                                        centerMenu.var4 = "" + tempData2.tempValue + " Schusswunde";
+                                    }
+                                    else
+                                    {
+                                        centerMenu.var4 = "Keine Schusswunden";
+                                    }
+                                }
+                                else
+                                {
+                                    centerMenu.var4 = "" + tempData2.tempValue + " Schusswunden";
+                                }
+                                String rules = "Krankheit,Schmerzzustand,Allgemeiner Zustand,Schussverletzungen";
+                                centerMenuList.Add(centerMenu);
+                                player.TriggerEvent("Client:ShowCenterMenu", rules, NAPI.Util.ToJson(centerMenuList), "Untersuchung");
+                                return;
+                            }
+                            Helper.SendNotificationWithoutButton(player, $"Untersuchung abgebrochen!", "error", "top-end", 3500);
+                        }
+                        catch(Exception)
                         {
                             Helper.SendNotificationWithoutButton(player, $"Untersuchung abgebrochen!", "error", "top-end", 3500);
-                            return;
                         }
-                        Character character2 = Helper.GetCharacterData(getPlayer);
-                        TempData tempData2 = Helper.GetCharacterTempData(getPlayer);
-                        if (character2 != null && character2.death == false)
-                        {
-                            SendNotificationWithoutButton(player, "Untersuchung erfolgreich durchgeführt!", "success", "top-left", 3500);
-                            player.SetSharedData("Player:AnimData", "WORLD_HUMAN_CLIPBOARD");
-                            List<CenterMenu> centerMenuList = new List<CenterMenu>();
-                            CenterMenu centerMenu = new CenterMenu();
-                            if (character2.disease == 0)
-                            {
-                                centerMenu.var1 = "Keine";
-                            }
-                            else if (character2.disease == 1)
-                            {
-                                centerMenu.var1 = "Erkältung";
-                            }
-                            else if (character2.disease == 1)
-                            {
-                                centerMenu.var1 = "Lebensmittelvergiftung";
-                            }
-                            if (NAPI.Player.GetPlayerHealth(getPlayer) >= 100)
-                            {
-                                centerMenu.var1 = "Keine Schmerzen";
-                            }
-                            else if (NAPI.Player.GetPlayerHealth(getPlayer) < 100 && NAPI.Player.GetPlayerHealth(getPlayer) >= 75)
-                            {
-                                centerMenu.var2 = "Leichte Schmerzen";
-                            }
-                            else if (NAPI.Player.GetPlayerHealth(getPlayer) < 75 && NAPI.Player.GetPlayerHealth(getPlayer) >= 45)
-                            {
-                                centerMenu.var2 = "Mittlere Schmerzen";
-                            }
-                            else if (NAPI.Player.GetPlayerHealth(getPlayer) < 45)
-                            {
-                                centerMenu.var2 = "Starke Schmerzen";
-                            }
-                            centerMenu.var3 = $"{NAPI.Player.GetPlayerHealth(getPlayer)}%";
-                            centerMenu.var4 = "" + tempData2.tempValue + "/Stck";
-                            String rules = "Krankheit,Schmerzzustand,Allgemeiner Zustand,Schussverletzungen";
-                            centerMenuList.Add(centerMenu);
-                            player.TriggerEvent("Client:ShowCenterMenu", rules, NAPI.Util.ToJson(centerMenuList), "Untersuchung");
-                            return;
-                        }
-                        Helper.SendNotificationWithoutButton(player, $"Untersuchung abgebrochen!", "error", "top-end", 3500);
                     }
                     else if (action == "crafting")
                     {
@@ -18049,9 +18075,12 @@ namespace NemesusWorld.Utils
         public static void SetPlayerHealth(Player player, int health)
         {
             int setHealth = health;
-            if (setHealth > 100) setHealth = 100;
-            player.SetOwnSharedData("Player:Health", (setHealth + 100));
+            if (setHealth > 100)
+            {
+                setHealth = 100;
+            }
             player.SetSharedData("Player:HealthSync", (setHealth + 100));
+            player.SetOwnSharedData("Player:Health", (setHealth + 100));
             NAPI.Player.SetPlayerHealth(player, setHealth);
         }
 

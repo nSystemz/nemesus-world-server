@@ -1720,7 +1720,7 @@
                                                         <ul class="list-group list-group-bordered mb-3">
                                                             <li class="list-group-item">
                                                                 <b>Zustand</b> <a class="float-right"
-                                                                    id="health">{{parseInt(car.health.split('|')[2])/1000*100}}%</a>
+                                                                    id="health">{{(parseInt(car.health.split('|')[2])/1000*100).toFixed(0)}}%</a>
                                                                 <div class="progress">
                                                                     <div class="progress-bar progress-bar-error progress-bar-striped progress-bar1"
                                                                         role="progressbar" aria-valuenow="40"
@@ -1735,7 +1735,7 @@
                                                             </li>
                                                             <li class="list-group-item">
                                                                 <b>Öl </b> <a class="float-right"
-                                                                    id="oel">{{car.oel/100*100}}%</a>
+                                                                    id="oel">{{(parseInt(car.oel/100*100)).toFixed(0)}}%</a>
                                                                 <div class="progress">
                                                                     <div class="progress-bar progress-bar-warning progress-bar-striped progress-bar3"
                                                                         role="progressbar" aria-valuenow="40"
@@ -1746,7 +1746,7 @@
                                                             </li>
                                                             <li class="list-group-item">
                                                                 <b>Batterie</b> <a class="float-right"
-                                                                    id="battery">{{car.battery/100*100}}%</a>
+                                                                    id="battery">{{(parseInt(car.battery/100*100)).toFixed(0)}}%</a>
                                                                 <div class="progress">
                                                                     <div class="progress-bar progress-bar-warning progress-bar-striped progress-bar2"
                                                                         role="progressbar" aria-valuenow="40"
@@ -4811,7 +4811,7 @@
                                                                         <td>Motor starten/stoppen</td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td>H</td>
+                                                                        <td>O</td>
                                                                         <td>Chat an/ausmachen</td>
                                                                     </tr>
                                                                     <tr>
@@ -4954,6 +4954,10 @@
                                                                 <tr v-if="voicerp == 0">
                                                                     <td>/radio</td>
                                                                     <td>Funk</td>
+                                                                </tr>
+                                                                <tr v-if="voicerp == 0">
+                                                                    <td>/speaker</td>
+                                                                    <td>Handy Lautsprecher an/ausschalten</td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
@@ -5766,6 +5770,8 @@
                                             <p style="color:white">Discord: https://discord.nemesus-world.de</p>
                                             <p style="color:white">Teamspeak: https://ts3.nemesus-world.de</p>
                                             <p style="color:white">Download: https://saltychat.nemesus-world.de</p>
+                                            <p style="color:white">Nemesus.de: https://nemesus.de</p>
+                                            <p style="color:white">Trinkgeld: https://trinkgeld.nemesus.de</p>
                                         </div>
                                     </div>
                                 </div>
@@ -7005,7 +7011,7 @@
             },
             startPaydays: function() {
                 if (this.lastcheck18 == 0 || (Date.now() / 1000) > this.lastcheck18) {
-                    this.lastcheck18 = (Date.now() / 1000) + (300);
+                    this.lastcheck18 = (Date.now() / 1000) + (30);
                     // eslint-disable-next-line no-undef
                     mp.trigger('Client:StartPaydays');
                     return;

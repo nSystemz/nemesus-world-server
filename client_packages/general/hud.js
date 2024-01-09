@@ -5479,7 +5479,7 @@ setInterval(() => {
     updateHealthArmor();
     //Damage effect
     if (localPlayer.getVariable('Player:Death') == false) {
-        if ((player.getVariable('Player:HealthSync')-100) <= 15 && (player.getVariable('Player:HealthSync')-100) > 1) {
+        if ((localPlayer.getVariable('Player:HealthSync')-100) <= 15 && (localPlayer.getVariable('Player:HealthSync')-100) > 1) {
             if (damageEffect == false) {
                 damageEffect = true;
                 mp.game.graphics.startScreenEffect("DeathFailMPDark", -1, false);

@@ -1190,6 +1190,7 @@ namespace NemesusWorld
                 player.SetSharedData("Player:HealthSync", 100);
                 player.SetData<bool>("Player:AcceptCall", false);
                 player.ResetData("Player:HealBonus");
+                player.SetOwnSharedData("Player:Spawned", false);
                 Helper.SetPlayerHealth(player, 100);
                 Helper.SetPlayerArmor(player, 0);
                 NAPI.Task.Run(() =>

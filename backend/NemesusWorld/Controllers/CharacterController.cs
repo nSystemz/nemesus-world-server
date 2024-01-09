@@ -538,7 +538,6 @@ namespace NemesusWorld.Controllers
                         }
                         NAPI.Task.Run(() =>
                         {
-                            player.SetOwnSharedData("Player:Spawned", true);
                             player.TriggerEvent("Client:Waiting", 0);
                             player.TriggerEvent("Client:PlayerFreeze", false);
                             Helper.OnPlayerPressF5(player, 1);
@@ -622,6 +621,7 @@ namespace NemesusWorld.Controllers
                                         account.login_bonus_before = today;
                                     }
                                 }
+                                player.SetOwnSharedData("Player:Spawned", true);
                                 player.TriggerEvent("Client:ClearChat");
                                 Helper.SendNotificationWithoutButton(player, "Willkommen zurück " + account.name + "!", "info", "top-left", 1850);
                                 Helper.SendChatMessage(player, $"~b~Willkommen zurück ~w~{account.name}~b~, du hast Fragen zum Nemesus World Gamemode? Dann besuche gerne unseren Discord: ~w~https://discord.nemesus.de");

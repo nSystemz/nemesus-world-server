@@ -5938,14 +5938,14 @@ namespace NemesusWorld
                 Helper.SendNotificationWithoutButton(player, "Du sitzt in keinem Fahrzeug!", "error", "top-end");
                 return;
             }
-            NAPI.Vehicle.RepairVehicle(NAPI.Player.GetPlayerVehicle(player));
-            player.TriggerEvent("Client:RepairVehicleClientside", NAPI.Player.GetPlayerVehicle(player));
+            Vehicle vehicle = player.Vehicle;
+            player.TriggerEvent("Client:RepairVehicleClientside", vehicle);
             string[] vehicleArray = new string[7];
-            vehicleArray = NAPI.Player.GetPlayerVehicle(player).GetSharedData<string>("Vehicle:Sync").Split(",");
-            NAPI.Player.GetPlayerVehicle(player).SetSharedData("Vehicle:Sync", $"{vehicleArray[0]},{vehicleArray[1]},0,0,0,{vehicleArray[5]},{vehicleArray[6]}");
-            if (player.Vehicle.GetSharedData<int>("Vehicle:Oel") <= 0)
+            vehicleArray = vehicle.GetSharedData<string>("Vehicle:Sync").Split(",");
+            vehicle.SetSharedData("Vehicle:Sync", $"{vehicleArray[0]},{vehicleArray[1]},0,0,0,{vehicleArray[5]},{vehicleArray[6]}");
+            if (vehicle.GetSharedData<int>("Vehicle:Oel") <= 0)
             {
-                player.Vehicle.SetSharedData("Vehicle:Oel", 100);
+                vehicle.SetSharedData("Vehicle:Oel", 100);
             }
             Helper.SendNotificationWithoutButton(player, "Das Fahrzeug wurde repariert!", "success", "top-end");
             return;
@@ -7888,7 +7888,7 @@ namespace NemesusWorld
                 SpikeStrip spikeStrip = new SpikeStrip();
                 spikeStrip.id = rand.Next(1, 99999);
                 spikeStrip.colshape = NAPI.ColShape.CreatCircleColShape(newPosition.X, newPosition.Y, 2.85f, player.Dimension);
-                spikeStrip.spikeobject = NAPI.Object.CreateObject(NAPI.Util.GetHashKey("p_stinger_03"), new Vector3(newPosition.X, newPosition.Y, newPosition.Z - 0.9653), new Vector3(0.0f, 0.0f, player.Heading + 90), 255, 0);
+                spikeStrip.spikeobject = NAPI.Object.CreateObject(NAPI.Util.GetHashKey("p_stinger_03"), new Vector3(newPosition.X, newPosition.Y, newPosition.Z - 0.9753), new Vector3(0.0f, 0.0f, player.Heading + 90), 255, 0);
                 Helper.spikeStripList.Add(spikeStrip);
                 Helper.SendNotificationWithoutButton(player, "Das Nagelband wurde erfolgreich aufgestellt!", "success", "top-left", 2500);
             }

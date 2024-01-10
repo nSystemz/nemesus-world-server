@@ -2208,6 +2208,12 @@ namespace NemesusWorld.Controllers
                                             Helper.AddRemoveAttachments(player, "handCiga", true);
                                         }
                                         Helper.SendNotificationWithoutButton(player, $"Du hast dir eine Zigarette angezündet!", "success", "top-left", 3500);
+                                        if (tempData.showinventory == true)
+                                        {
+                                            tempData.inventoysetting = "nothing";
+                                            tempData.showinventory = false;
+                                            player.TriggerEvent("Client:ShowInventory", NAPI.Util.ToJson(tempData.itemlist), ItemsController.MAX_INVENTORY_PLAYER, false, null, null, null);
+                                        }
                                         item.amount -= 1;
                                         try
                                         {

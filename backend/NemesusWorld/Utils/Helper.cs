@@ -1614,7 +1614,7 @@ namespace NemesusWorld.Utils
                 foreach (Player p in NAPI.Pools.GetAllPlayers())
                 {
                     Account account = Helper.GetAccountData(p);
-                    if (p.Handle.ToString() == nameorid || account.name.ToLower().Contains(nameorid.ToLower()))
+                    if (p.Id.ToString() == nameorid || account.name.ToLower().Contains(nameorid.ToLower()))
                     {
                         return p;
                     }

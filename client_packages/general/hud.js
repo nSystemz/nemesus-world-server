@@ -7375,7 +7375,7 @@ mp.events.add("Client:VehicleTyreBurst", () => {
 mp.events.add("Client:RepairVehicleClientside", (vehicle) => {
     if(vehicle)
     {
-        vehicle.setBurnout(true);
+        vehicle.setBurnout(false);
     }
 });
 

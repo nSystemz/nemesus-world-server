@@ -102,6 +102,7 @@ let tabJson;
 let specTarget = null;
 let specName = '';
 let specWaiting = 0;
+let spectateInterval = null;
 //Inventory
 let inventory = [];
 let showInventory = false;
@@ -1190,7 +1191,7 @@ mp.events.add('Client:StartSpectate', (targetId, targetName) => {
 
     localPlayer.freezePosition(true);
 
-    var interval = setInterval(() => {
+    spectateInterval = setInterval(() => {
         mp.players.forEach(p => {
             if (p.remoteId === targetId) {
                 specTarget = p;
@@ -1198,13 +1199,13 @@ mp.events.add('Client:StartSpectate', (targetId, targetName) => {
                 specWaiting = 0;
             }
         });
-        if (specTarget && interval) {
-            clearInterval(interval);
+        if (specTarget && spectateInterval) {
+            clearInterval(spectateInterval);
         }
     }, 15);
 
     setTimeout(() => {
-        if (interval) clearInterval(interval);
+        if (spectateInterval) clearInterval(spectateInterval);
     }, 4721);
 })
 
@@ -4226,7 +4227,7 @@ mp.keys.bind(0x34, true, function () {
 //Key Tab
 mp.keys.bind(0x09, true, function () {
     let spawned = localPlayer.getVariable('Player:Spawned');
-    if (showSaltyError == true || triggerAntiCheat == true || localPlayer.isTypingInTextChat || !spawned || nokeys == true || death == true || prisonCount > 0 || showCenterMenu == true == true || showFuel == true || showAmmu == true || showShop == true || showShop2 == true || showCarSetting == true || showCityhall == true || showSped == true || showHandy == true || showTuning == true || InteriorSwitch == true || editFurniture == true || showFurniture == true || showBank == true || showWheel == true || showMenu == true || afk == true || ping == true || hack == true) return;
+    if (localPlayer.getVariable('Player:Death') == true || showSaltyError == true || triggerAntiCheat == true || localPlayer.isTypingInTextChat || !spawned || nokeys == true || death == true || prisonCount > 0 || showCenterMenu == true || showFuel == true || showAmmu == true || showShop == true || showShop2 == true || showCarSetting == true || showCityhall == true || showSped == true || showHandy == true || showTuning == true || InteriorSwitch == true || editFurniture == true || showFurniture == true || showBank == true || showWheel == true || showMenu == true || afk == true || ping == true || hack == true) return;
     if (pressedTab == 0 || (Date.now() / 1000) > pressedTab) {
         mp.events.callRemote('Server:ShowTabMenu');
         pressedTab = (Date.now() / 1000) + (20);
@@ -6297,6 +6298,9 @@ mp.events.add('entityStreamIn', (entity) => {
                         entity.setTyreBurst(45, true, 1000);
                         entity.setTyreBurst(47, true, 1000);
                         entity.setBurnout(true);
+                        setTimeout(_ => {
+                            entity.setBurnout(false);
+                        }, 2000)
                     }
                     else
                     {
@@ -7362,6 +7366,16 @@ mp.events.add("Client:VehicleTyreBurst", () => {
         localPlayer.vehicle.setTyreBurst(45, true, 1000);
         localPlayer.vehicle.setTyreBurst(47, true, 1000);
         localPlayer.vehicle.setBurnout(true);
+        setTimeout(_ => {
+            localPlayer.vehicle.setBurnout(false);
+        }, 2000)
+    }
+});
+
+mp.events.add("Client:RepairVehicleClientside", (vehicle) => {
+    if(vehicle)
+    {
+        vehicle.setBurnout(true);
     }
 });
 
@@ -7386,7 +7400,10 @@ mp.events.addDataHandler("Vehicle:Sync", (entity, value, oldValue) => {
                     entity.setTyreBurst(5, true, 1000);
                     entity.setTyreBurst(45, true, 1000);
                     entity.setTyreBurst(47, true, 1000);
-                    entity.setBurnout(true);
+                    vehicle.setBurnout(true);
+                    setTimeout(_ => {
+                        vehicle.setBurnout(false);
+                    }, 2000)
                 }
                 else
                 {
@@ -8165,6 +8182,7 @@ function UpdateNameTags1(nametags) {
             let [player, x, y, distance] = nametag;
 
             let adminSettings = player.getVariable('Player:Adminsettings');
+            let realname = player.getVariable('Player:Name');
 
             if (distance <= maxDistance && adminSettings.split(',')[1] == '0') {
                 let scale = (distance / maxDistance);
@@ -8191,7 +8209,6 @@ function UpdateNameTags1(nametags) {
                         if (player.hasVariable('Player:AdminLogin')) {
                             admindutytemp = parseInt(player.getVariable('Player:AdminLogin'));
                         }
-                        let realname = player.getVariable('Player:Name');
                         let adminlevel = parseInt(player.getVariable('Player:Adminlevel'));
 
                         if (admindutytemp == 1) {
@@ -8224,7 +8241,6 @@ function UpdateNameTags1(nametags) {
                             healthplayer = healthplayer - 100;
                         }
                         var armourplayer = player.getArmour();
-                        let realname = player.getVariable('Player:Name');
                         let adminlevel = parseInt(player.getVariable('Player:Adminlevel'));
                         if (!adminlevel) {
                             adminlevel = 0;
@@ -8278,8 +8294,8 @@ function UpdateNameTags2(nametags) {
 
         nametags.forEach(nametag => {
             let [player, x, y, distance] = nametag;
-
             let adminSettings = player.getVariable('Player:Adminsettings');
+            let realname = player.getVariable('Player:Name');
 
             if (distance <= maxDistance && adminSettings.split(',')[1] == '0') {
                 let scale = (distance / maxDistance);
@@ -8306,7 +8322,6 @@ function UpdateNameTags2(nametags) {
                         if (player.hasVariable('Player:AdminLogin')) {
                             admindutytemp = parseInt(player.getVariable('Player:AdminLogin'));
                         }
-                        let realname = player.getVariable('Player:Name');
                         let adminlevel = parseInt(player.getVariable('Player:Adminlevel'));
 
                         if (admindutytemp == 0) {
@@ -8343,7 +8358,6 @@ function UpdateNameTags2(nametags) {
                         }
                         var healthplayer = player.getVariable('Player:HealthSync')-100;
                         var armourplayer = player.getArmour();
-                        let realname = player.getVariable('Player:Name');
                         let adminlevel = parseInt(player.getVariable('Player:Adminlevel'));
                         if (!adminlevel) {
                             adminlevel = 0;

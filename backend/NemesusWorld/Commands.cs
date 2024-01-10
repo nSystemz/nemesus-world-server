@@ -436,7 +436,6 @@ namespace NemesusWorld
                             itemsGlobal.textHandle.Delete();
                             itemsGlobal.textHandle = null;
                         }
-                        itemsGlobal = null;
                         Helper.SendNotificationWithoutButton(player, "Das Item wurde gelöscht!", "success", "top-end");
                     }
                     else
@@ -445,6 +444,7 @@ namespace NemesusWorld
                         return;
                     }
                     Helper.CreateAdminLog($"adminlog", account.name + " hat das Item " + itemsGlobal.description + " gelöscht!");
+                    itemsGlobal = null;
                     return;
                 }
                 else
@@ -5939,6 +5939,7 @@ namespace NemesusWorld
                 return;
             }
             NAPI.Vehicle.RepairVehicle(NAPI.Player.GetPlayerVehicle(player));
+            player.TriggerEvent("Client:RepairVehicleClientside", NAPI.Player.GetPlayerVehicle(player));
             string[] vehicleArray = new string[7];
             vehicleArray = NAPI.Player.GetPlayerVehicle(player).GetSharedData<string>("Vehicle:Sync").Split(",");
             NAPI.Player.GetPlayerVehicle(player).SetSharedData("Vehicle:Sync", $"{vehicleArray[0]},{vehicleArray[1]},0,0,0,{vehicleArray[5]},{vehicleArray[6]}");

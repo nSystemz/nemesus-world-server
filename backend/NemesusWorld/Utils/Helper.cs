@@ -3857,6 +3857,11 @@ namespace NemesusWorld.Utils
                                         SendNotificationWithoutButton(player, "Dieses Haus kann direkt über den Hauseingang besichtigt werden!", "error");
                                         return;
                                     }
+                                    if (Helper.CheckForAttachment(player, "handCiga") || Helper.CheckForAttachment(player, "vehicleCiga"))
+                                    {
+                                        Helper.SendNotificationWithoutButton(player, "Du musst zuerst die Zigarette wegwerfen!", "error");
+                                        return;
+                                    }
                                     player.TriggerEvent("Client:LoadIPL", House.GetInteriorIPL(house.interior));
                                     SetPlayerPosition(player, House.GetHouseExitPoint(house.interior));
                                     player.Dimension = Convert.ToUInt32(house.id);
@@ -8259,6 +8264,11 @@ namespace NemesusWorld.Utils
                                     SendNotificationWithoutButton(player, "Dieses Haus kann direkt über den Hauseingang besichtigt werden!", "error");
                                     return;
                                 }
+                                if (Helper.CheckForAttachment(player, "handCiga") || Helper.CheckForAttachment(player, "vehicleCiga"))
+                                {
+                                    Helper.SendNotificationWithoutButton(player, "Du musst zuerst die Zigarette wegwerfen!", "error");
+                                    return;
+                                }
                                 player.TriggerEvent("Client:LoadIPL", House.GetInteriorIPL(house.interior));
                                 SetPlayerPosition(player, House.GetHouseExitPoint(house.interior));
                                 player.Dimension = Convert.ToUInt32(house.id);
@@ -8283,6 +8293,11 @@ namespace NemesusWorld.Utils
                             }
                             else
                             {
+                                if (Helper.CheckForAttachment(player, "handCiga") || Helper.CheckForAttachment(player, "vehicleCiga"))
+                                {
+                                    Helper.SendNotificationWithoutButton(player, "Du musst zuerst die Zigarette wegwerfen!", "error");
+                                    return;
+                                }
                                 SetPlayerPosition(player, house.position);
                                 player.Dimension = (uint)house.dimension;
                                 character.inhouse = -1;
@@ -16877,6 +16892,7 @@ namespace NemesusWorld.Utils
                             Helper.CreateGroupMoneyLog(character.mygroup, $"{character.name} hat ein Fahrzeug für {tempData.tempValue} Utensilien repariert!");
                         }
                         NAPI.Vehicle.RepairVehicle(vehicle);
+                        player.TriggerEvent("Client:RepairVehicleClientside", vehicle);
                         SendNotificationWithoutButton(player, $"Fahrzeug erfolgreich mit {tempData.tempValue} Utensilien repariert!", "success", "top-left", 3500);
                         vehicleArray = vehicle.GetSharedData<string>("Vehicle:Sync").Split(",");
                         vehicle.SetSharedData("Vehicle:Sync", $"{vehicleArray[0]},{vehicleArray[1]},0,0,0,{vehicleArray[5]},{vehicleArray[6]}");

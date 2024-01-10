@@ -2122,10 +2122,18 @@ namespace NemesusWorld.Controllers
                                         NAPI.Task.Run(() =>
                                         {
                                             NAPI.Vehicle.RepairVehicle(vehicle);
+                                            player.TriggerEvent("Client:RepairVehicleClientside", vehicle);
                                             Helper.SendNotificationWithoutButton(player, $"Das Fahrzeug wurde erfolgreich repariert!", "success", "top-left", 3500);
                                             Helper.OnStopAnimation2(player);
                                             player.TriggerEvent("Client:PlayerFreeze", false);
                                             player.ResetData("Player:Use");
+                                            vehicle.Dimension = player.Dimension+1;
+                                            NAPI.Task.Run(() =>
+                                            {
+                                                vehicle.Position = vehicle.Position;
+                                                vehicle.Rotation.Z = vehicle.Rotation.Z;
+                                                vehicle.Dimension = player.Dimension;
+                                            }, delayTime: 215);
                                         }, delayTime: 7750);
                                         return;
                                     }
@@ -2201,10 +2209,17 @@ namespace NemesusWorld.Controllers
                                         }
                                         Helper.SendNotificationWithoutButton(player, $"Du hast dir eine Zigarette angezündet!", "success", "top-left", 3500);
                                         item.amount -= 1;
-                                        fire.props = "" + (Convert.ToInt32(fire.props) - 1);
-                                        if (Convert.ToInt32(fire.props) <= 0)
+                                        try
                                         {
-                                            ItemsController.RemoveItem(player, fire.itemid);
+                                            fire.props = "" + (Convert.ToInt32(fire.props) - 1);
+                                            if (Convert.ToInt32(fire.props) <= 0)
+                                            {
+                                                ItemsController.RemoveItem(player, fire.itemid);
+                                            }
+                                        }
+                                        catch(Exception)
+                                        {
+                                            fire.props = "1";
                                         }
                                         return;
                                     }

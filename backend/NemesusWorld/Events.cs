@@ -461,11 +461,14 @@ namespace NemesusWorld
                         //Vehicle Health System
                         foreach (Vehicle vehicle in NAPI.Pools.GetAllVehicles())
                         {
-                            Player driver = (Player)NAPI.Vehicle.GetVehicleDriver(vehicle);
-                            if (vehicle.GetSharedData<String>("Vehicle:Name") == "iak_wheelchair") continue;
                             if (vehicle != null)
                             {
-                                if ((NAPI.Vehicle.GetVehicleEngineHealth(vehicle) <= 215 || NAPI.Vehicle.GetVehicleHealth(vehicle) <= 215) && vehicle.EngineStatus == true)
+                                if (vehicle.GetSharedData<String>("Vehicle:Name") == "iak_wheelchair") continue;
+                                Player driver = (Player)NAPI.Vehicle.GetVehicleDriver(vehicle);
+                                vehicle.SetSharedData("Vehicle:EngineHealth", NAPI.Vehicle.GetVehicleEngineHealth(vehicle));
+                                vehicle.SetSharedData("Vehicle:BodyHealth", NAPI.Vehicle.GetVehicleBodyHealth(vehicle));
+                                vehicle.SetSharedData("Vehicle:Health", NAPI.Vehicle.GetVehicleHealth(vehicle));
+                                if (NAPI.Vehicle.GetVehicleEngineHealth(vehicle) <= 215 || NAPI.Vehicle.GetVehicleHealth(vehicle) <= 215)
                                 {
                                     Helper.SetVehicleEngine(vehicle, false);
                                     NAPI.Vehicle.SetVehicleEngineHealth(vehicle, 125);
@@ -474,7 +477,6 @@ namespace NemesusWorld
                                     {
                                         Helper.SendNotificationWithoutButton(driver, "Der Motor ist ausgefallen!", "error");
                                         driver.SetOwnSharedData("Player:VehicleEngine", false);
-                                        continue;
                                     }
                                 }
                             }
@@ -533,7 +535,7 @@ namespace NemesusWorld
                                         //Hunger Thirst
                                         if ((character.hunger <= 0 || character.thirst <= 0) && Helper.GetRandomPercentage(65) && character.afk == 0 && character.death == false && tempData.adminduty == false)
                                         {
-                                            Helper.SetPlayerHealth(player, (player.GetOwnSharedData<int>("Player:Health")-100) - 3);
+                                            Helper.SetPlayerHealth(player, (player.GetOwnSharedData<int>("Player:Health") - 100) - 3);
                                         }
                                         //Crystal-Meth
                                         if (player.HasData("Player:HealBonus") && player.GetData<int>("Player:HealBonus") > -1)
@@ -3098,7 +3100,7 @@ namespace NemesusWorld
                     {
                         foreach (SpikeStrip spikeStrip in Helper.spikeStripList)
                         {
-                            if (spikeStrip != null && spikeStrip.colshape != null && spikeStrip.colshape == shape)
+                            if (spikeStrip != null && spikeStrip.colshape != null && spikeStrip.colshape == shape && tempData.adminduty == false)
                             {
                                 string[] vehicleArray = new string[7];
                                 vehicleArray = player.Vehicle.GetSharedData<string>("Vehicle:Sync").Split(",");
@@ -3421,7 +3423,7 @@ namespace NemesusWorld
                     PetaPoco.Database db = new PetaPoco.Database(General.Connection);
                     StreamReader sr = new StreamReader(@"./serverdata/outfits/eup.txt");
                     line = sr.ReadLine();
-                    if(sr != null && line != null && line != "//EUP Menu by PieRGud | Edit by Nemesus.de")
+                    if (sr != null && line != null && line != "//EUP Menu by PieRGud | Edit by Nemesus.de")
                     {
                         Helper.ConsoleLog("error", $"[LoadEUPOutfits]: Ungültige EUP Liste gefunden oder keine EUP Liste gefunden!");
                         return;
@@ -3608,7 +3610,7 @@ namespace NemesusWorld
                     }
                 }
             }
-            catch(Exception) { }
+            catch (Exception) { }
         }
     }
 }

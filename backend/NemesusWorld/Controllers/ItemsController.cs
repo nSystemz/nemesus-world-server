@@ -2121,9 +2121,7 @@ namespace NemesusWorld.Controllers
                                         player.SetData<bool>("Player:Use", true);
                                         NAPI.Task.Run(() =>
                                         {
-                                            NAPI.Vehicle.RepairVehicle(vehicle);
-                                            player.TriggerEvent("Client:RepairVehicleClientside", vehicle);
-                                            Helper.SendNotificationWithoutButton(player, $"Das Fahrzeug wurde erfolgreich repariert!", "success", "top-left", 3500);
+                                            player.TriggerEvent("Client:RepairVehicleClientside", vehicle);                                           
                                             Helper.OnStopAnimation2(player);
                                             player.TriggerEvent("Client:PlayerFreeze", false);
                                             player.ResetData("Player:Use");
@@ -2133,6 +2131,8 @@ namespace NemesusWorld.Controllers
                                                 vehicle.Position = vehicle.Position;
                                                 vehicle.Rotation.Z = vehicle.Rotation.Z;
                                                 vehicle.Dimension = player.Dimension;
+                                                NAPI.Vehicle.RepairVehicle(vehicle);
+                                                Helper.SendNotificationWithoutButton(player, $"Das Fahrzeug wurde erfolgreich repariert!", "success", "top-left", 3500);
                                             }, delayTime: 215);
                                         }, delayTime: 7750);
                                         return;

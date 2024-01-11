@@ -103,6 +103,9 @@ namespace NemesusWorld.Database
                         car.vehicleHandle.SetSharedData("Vehicle:Sync", "0,0,0,1,1,1,0");
                     }
                     car.vehicleHandle.SetSharedData("Vehicle:Windows", "[false,false,false,false]");
+                    car.vehicleHandle.SetSharedData("Vehicle:EngineHealth", 1000.0);
+                    car.vehicleHandle.SetSharedData("Vehicle:BodyHealth", 1000.0);
+                    car.vehicleHandle.SetSharedData("Vehicle:Health", 1000.0);
                     if (addlist == true)
                     {
                         carList.Add(car);
@@ -144,12 +147,18 @@ namespace NemesusWorld.Database
                                 NAPI.Vehicle.SetVehicleBodyHealth(car.vehicleHandle, float.Parse(vehicleHealth[0]));
                                 NAPI.Vehicle.SetVehicleEngineHealth(car.vehicleHandle, float.Parse(vehicleHealth[1]));
                                 NAPI.Vehicle.SetVehicleHealth(car.vehicleHandle, float.Parse(vehicleHealth[2]));
+                                car.vehicleHandle.SetSharedData("Vehicle:EngineHealth", float.Parse(vehicleHealth[1]));
+                                car.vehicleHandle.SetSharedData("Vehicle:BodyHealth", float.Parse(vehicleHealth[0]));
+                                car.vehicleHandle.SetSharedData("Vehicle:Health", float.Parse(vehicleHealth[2]));
                             }
                             else
                             {
                                 NAPI.Vehicle.SetVehicleBodyHealth(car.vehicleHandle, 1000f);
                                 NAPI.Vehicle.SetVehicleEngineHealth(car.vehicleHandle, 1000f);
                                 NAPI.Vehicle.SetVehicleHealth(car.vehicleHandle, 1000f);
+                                car.vehicleHandle.SetSharedData("Vehicle:EngineHealth", 1000.0);
+                                car.vehicleHandle.SetSharedData("Vehicle:BodyHealth", 1000.0);
+                                car.vehicleHandle.SetSharedData("Vehicle:Health", 1000.0);
                             }
                             car.vehicleHandle.Dimension = dimension;
                             if (vehicleData.plate != "n/A" && vehicleData.plate.Length > 0)

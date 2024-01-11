@@ -1251,20 +1251,23 @@ namespace NemesusWorld.Database
                                             }
                                         }
 
-                                        Helper.SetVehicleEngine(getCar.vehicleHandle, false);
-                                        DealerShipController.SaveOneVehicleData(getCar);
-                                        getCar.vehicleHandle.Dimension = 150;
-                                        if (getCar.vehicleHandle != null)
+                                        NAPI.Task.Run(() =>
                                         {
-                                            if (getCar.vehicleHandle.HasSharedData("Vehicle:Text3D"))
+                                            Helper.SetVehicleEngine(getCar.vehicleHandle, false);
+                                            DealerShipController.SaveOneVehicleData(getCar);
+                                            getCar.vehicleHandle.Dimension = 150;
+                                            if (getCar.vehicleHandle != null)
                                             {
-                                                getCar.vehicleHandle.ResetSharedData("Vehicle:Text3D");
+                                                if (getCar.vehicleHandle.HasSharedData("Vehicle:Text3D"))
+                                                {
+                                                    getCar.vehicleHandle.ResetSharedData("Vehicle:Text3D");
+                                                }
+                                                getCar.vehicleHandle.Delete();
+                                                getCar.vehicleHandle = null;
                                             }
-                                            getCar.vehicleHandle.Delete();
-                                            getCar.vehicleHandle = null;
-                                        }
-                                        player.Dimension = 0;
-                                        Helper.SendNotificationWithoutButton(player, "Das Fahrzeug wurde erfolgreich eingeparkt!", "success", "center");
+                                            player.Dimension = 0;
+                                            Helper.SendNotificationWithoutButton(player, "Das Fahrzeug wurde erfolgreich eingeparkt!", "success", "center");
+                                        }, delayTime: 315);
                                     }, delayTime: 425);
                                 }
                                 else

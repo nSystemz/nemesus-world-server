@@ -1593,7 +1593,7 @@ namespace NemesusWorld.Utils
             {
                 foreach (Player p in NAPI.Pools.GetAllPlayers())
                 {
-                    if (p.Handle.ToString() == nameorid || p.Name.ToLower().Contains(nameorid.ToLower()))
+                    if (p.Id.ToString() == nameorid || p.Name.ToLower().Contains(nameorid.ToLower()))
                     {
                         return p;
                     }
@@ -5922,7 +5922,6 @@ namespace NemesusWorld.Utils
                 Character character = GetCharacterData(player);
                 TempData tempData = Helper.GetCharacterTempData(player);
                 if (account == null || character == null || tempData.freezed == true || player.GetOwnSharedData<bool>("Player:Spawned") == false) return;
-                //Garagensystem
                 //Shovel
                 if (ItemsController.PlayerHasItem(player, "Kleine-Schaufel") && player.Position.DistanceTo(new Vector3(1406.4316, 3730.3584, 33.2187)) <= 35)
                 {

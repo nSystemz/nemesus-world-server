@@ -1791,12 +1791,12 @@ namespace NemesusWorld
             try
             {
                 if (!Account.IsPlayerLoggedIn(player)) return;
-                Player ntarget = Helper.GetPlayerByNameOrID(target);
                 if (!Account.IsAdminOnDuty(player, (int)Account.AdminRanks.ProbeModerator))
                 {
                     Helper.SendNotificationWithoutButton(player, "Unzureichende Adminrechte!", "error", "top-end");
                     return;
                 }
+                Player ntarget = Helper.GetPlayerByNameOrID(target);
                 if (ntarget == null || !Account.IsPlayerLoggedIn(ntarget))
                 {
                     Helper.SendNotificationWithoutButton(player, "Ungültiger Spieler!", "error", "top-end");
@@ -5263,25 +5263,28 @@ namespace NemesusWorld
                             }
                         }
 
-                        car.vehicleData.garage = garage;
-                        if (car.vehicleData.garage == "towed-1")
+                        NAPI.Task.Run(() =>
                         {
-                            car.vehicleData.towed = Helper.adminSettings.towedcash;
-                        }
-                        Helper.SetVehicleEngine(car.vehicleHandle, false);
-                        DealerShipController.SaveOneVehicleData(car);
-                        car.vehicleHandle.Dimension = 150;
-                        if (car.vehicleHandle != null)
-                        {
-                            if (car.vehicleHandle.HasSharedData("Vehicle:Text3D"))
+                            car.vehicleData.garage = garage;
+                            if (car.vehicleData.garage == "towed-1")
                             {
-                                car.vehicleHandle.ResetSharedData("Vehicle:Text3D");
+                                car.vehicleData.towed = Helper.adminSettings.towedcash;
                             }
-                            car.vehicleHandle.Delete();
-                            car.vehicleHandle = null;
-                        }
-                        player.Dimension = 0;
-                        Helper.SendNotificationWithoutButton(player, "Das Fahrzeug wurde erfolgreich eingeparkt!", "success", "center");
+                            Helper.SetVehicleEngine(car.vehicleHandle, false);
+                            DealerShipController.SaveOneVehicleData(car);
+                            car.vehicleHandle.Dimension = 150;
+                            if (car.vehicleHandle != null)
+                            {
+                                if (car.vehicleHandle.HasSharedData("Vehicle:Text3D"))
+                                {
+                                    car.vehicleHandle.ResetSharedData("Vehicle:Text3D");
+                                }
+                                car.vehicleHandle.Delete();
+                                car.vehicleHandle = null;
+                            }
+                            player.Dimension = 0;
+                            Helper.SendNotificationWithoutButton(player, "Das Fahrzeug wurde erfolgreich eingeparkt!", "success", "center");
+                        }, delayTime: 315);
                         return;
                     }
                 }
@@ -5947,6 +5950,7 @@ namespace NemesusWorld
             {
                 vehicle.SetSharedData("Vehicle:Oel", 100);
             }
+            NAPI.Vehicle.RepairVehicle(vehicle);
             Helper.SendNotificationWithoutButton(player, "Das Fahrzeug wurde repariert!", "success", "top-end");
             return;
         }

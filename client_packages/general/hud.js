@@ -904,7 +904,7 @@ mp.events.add('render', (nametags) => {
                 if (distance <= 22.5) {
                     vehiclename = vehicle.getVariable('Vehicle:Name');
                     vehiclename = vehiclename.charAt(0).toUpperCase() + vehiclename.slice(1).toLowerCase();
-                    let engineHealth = vehicle.getEngineHealth();
+                    let engineHealth = vehicle.getVariable("Vehicle:EngineHealth");
                     if(engineHealth <= 0)
                     {
                         engineHealth = 0;
@@ -1193,19 +1193,16 @@ mp.events.add('Client:StartSpectate', (targetId, targetName) => {
 
     spectateInterval = setInterval(() => {
         mp.players.forEach(p => {
-            if (p.remoteId === targetId) {
+            if (specTarget == null && p.remoteId === targetId) {
                 specTarget = p;
                 specName = targetName;
                 specWaiting = 0;
             }
         });
-        if (specTarget && spectateInterval) {
-            clearInterval(spectateInterval);
-        }
     }, 15);
 
     setTimeout(() => {
-        if (spectateInterval) clearInterval(spectateInterval);
+        if (spectateInterval != null) clearInterval(spectateInterval);
     }, 4721);
 })
 
@@ -6247,6 +6244,10 @@ mp.events.add('playerWeaponShot', (targetPosition, targetEntity) => {
 mp.events.add('entityStreamIn', (entity) => {
     try {
         if (mp.vehicles.exists(entity) && 0 !== entity.handle && entity.type == 'vehicle') {
+            //Health
+            entity.setHealth(entity.getVariable("Vehicle:Health"));
+            entity.setEngineHealth(entity.getVariable("Vehicle:EngineHealth"));
+            entity.setBodyHealth(entity.getVariable("Vehicle:BodyHealth"));
             //DL
             if (vehicleListDl) {
                 vehicleListDl.push(entity);
@@ -7444,6 +7445,24 @@ mp.events.addDataHandler("Vehicle:Sync", (entity, value, oldValue) => {
     }
 })
 
+mp.events.addDataHandler("Vehicle:Health", (entity, value, oldValue) => {
+    if (mp.vehicles.exists(entity) && 0 !== entity.handle && entity.typ == 'vehicle') {
+        entity.setHealth(entity.getVariable("Vehicle:Health"));    
+    }
+})
+
+mp.events.addDataHandler("Vehicle:EngineHealth", (entity, value, oldValue) => {
+    if (mp.vehicles.exists(entity) && 0 !== entity.handle && entity.typ == 'vehicle') {
+        entity.setHealth(entity.getVariable("Vehicle:EngineHealth"));    
+    }
+})
+
+mp.events.addDataHandler("Vehicle:BodyHealth", (entity, value, oldValue) => {
+    if (mp.vehicles.exists(entity) && 0 !== entity.handle && entity.typ == 'vehicle') {
+        entity.setHealth(entity.getVariable("Vehicle:BodyHealth"));    
+    }
+})
+
 mp.events.addDataHandler("Vehicle:NitroStatus", (entity, value, oldValue) => {
     try {
         let spawned = localPlayer.getVariable('Player:Spawned');
@@ -8081,7 +8100,7 @@ function GetAdminRang(entity, rang) {
 function updateSpeedometer() {
     if (localPlayer.vehicle && showSpeedo == true) {
         if (hudWindow != null) {
-            let engineHealth = localPlayer.vehicle.getEngineHealth();
+            let engineHealth = localPlayer.vehicle.getVariable("Vehicle:EngineHealth");
             if (engineHealth < 0) engineHealth = 0;
             if (engineHealth > 1000) engineHealth = 1000;
             let speed = localPlayer.vehicle.getSpeed() * 3.6;

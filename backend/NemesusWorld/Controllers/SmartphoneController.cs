@@ -810,6 +810,8 @@ namespace NemesusWorld.Controllers
                             {
                                 Helper.OnAdd_Voice_Listener(player, target);
                                 Helper.OnAdd_Voice_Listener(target, player);
+                                player.SetSharedData("Player:LocalVoiceHandyPlayer", target.Id);
+                                target.SetSharedData("Player:LocalVoiceHandyPlayer", player.Id);
                             }
                             Helper.PlayPhoneAnim(player);
                             if(Helper.adminSettings.voicerp == 0)
@@ -864,6 +866,11 @@ namespace NemesusWorld.Controllers
                             {
                                 player.SetData<bool>("Player:AcceptCall", false);
                                 target.SetData<bool>("Player:AcceptCall", false);
+                                if (Helper.adminSettings.voicerp == 2)
+                                {
+                                    player.SetSharedData("Player:LocalVoiceHandyPlayer", -1);
+                                    target.SetSharedData("Player:LocalVoiceHandyPlayer", -1);
+                                }
                                 Helper.SendNotificationWithoutButton(target, "~w~Dein Gesprächspartner hat das Telefonat abgelehnt!", "error");
                             }
                         }
@@ -1035,6 +1042,8 @@ namespace NemesusWorld.Controllers
                             else if (Helper.adminSettings.voicerp == 2)
                             {
                                 Helper.OnRemove_Voice_Listener(player, target);
+                                player.SetSharedData("Player:LocalVoiceHandyPlayer", -1);
+                                player.SetData<bool>("Player:AcceptCall", false);
                             }
                             target.TriggerEvent("Client:EndCall");
                             target.SetData<string>("Player:LastNumber", "0");
@@ -1051,9 +1060,11 @@ namespace NemesusWorld.Controllers
                                 else if (Helper.adminSettings.voicerp == 2)
                                 {
                                     Helper.OnRemove_Voice_Listener(target, player);
+                                    target.SetSharedData("Player:LocalVoiceHandyPlayer", -1);
                                 }
                             }
                             target.SetData<string>("Player:InCall", "0");
+                            target.SetData<bool>("Player:AcceptCall", false);
                         }
                         player.SetData<string>("Player:InCall", "0");
                         player.SetData<string>("Player:LastNumber", "0");

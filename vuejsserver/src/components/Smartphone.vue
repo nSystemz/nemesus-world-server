@@ -757,7 +757,7 @@
                             <div v-for="bank in bankaccounts" :key="bank.id">
                                 <button v-if="bank.banknumber == defaultbank" type="submit" class="btn btn-block btn-primary" style="margin-top:0.5vw;border-radius: 1vw" id="banknumber" name="banknumber" @click="selectBank(bank)">{{bank.banknumber}}
                                     -
-                                    {{bank.bankvalue}}$ <span class="badge badge-primary" style="border-radius: 1vw">Standard</span></button>
+                                    {{bank.bankvalue}}$ <span class="badge badge-primary" style="border-radius: 1vw">S</span></button>
                                 <button v-else type="submit" class="btn btn-block btn-secondary" id="banknumber" name="banknumber" style="margin-top:0.5vw;border-radius: 1vw" @click="selectBank(bank)">{{bank.banknumber}}
                                     -
                                     {{bank.bankvalue}}$</button>

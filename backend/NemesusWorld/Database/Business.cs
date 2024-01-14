@@ -1481,9 +1481,9 @@ namespace NemesusWorld.Database
                     }
                     else
                     {
-                        if (tempData.tattoos.Count >= 12)
+                        if (tempData.tattoos.Count >= 10)
                         {
-                            Helper.SendNotificationWithoutButton(player, $"Du kannst nur max. 12 Tattoos besitzen!", "error", "top-left", 3750);
+                            Helper.SendNotificationWithoutButton(player, $"Du kannst nur max. 10 Tattoos besitzen!", "error", "top-left", 3750);
                             return;
                         }
 
@@ -1646,7 +1646,7 @@ namespace NemesusWorld.Database
                             {
                                 decoration.Collection = NAPI.Util.GetHashKey(tattooTemp.dlcname);
                                 decoration.Overlay = NAPI.Util.GetHashKey(tattooTemp.name);
-                                NAPI.Player.SetPlayerDecoration(player, decoration);
+                                player.SetDecoration(decoration);
                             }
                         }
                     }

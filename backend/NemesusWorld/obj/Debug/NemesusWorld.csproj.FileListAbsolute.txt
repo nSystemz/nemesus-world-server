@@ -31,8 +31,8 @@ E:\GTA 5 Development\Nemesus-World\dotnet\resources\NemesusWorld.deps.json
 E:\GTA 5 Development\Nemesus-World\dotnet\resources\NemesusWorld.dll
 E:\GTA 5 Development\Nemesus-World\dotnet\resources\NemesusWorld.pdb
 E:\GTA 5 Development\Nemesus-World\backend\NemesusWorld\obj\Debug\NemesusWorld.csproj.AssemblyReference.cache
-J:\Tutorials\nemesus-world-server\dotnet\resources\NemesusWorld\NemesusWorld.dll
 J:\Tutorials\nemesus-world-server\dotnet\resources\NemesusWorld\NemesusWorld.deps.json
+J:\Tutorials\nemesus-world-server\dotnet\resources\NemesusWorld\NemesusWorld.dll
 J:\Tutorials\nemesus-world-server\dotnet\resources\NemesusWorld\NemesusWorld.pdb
 J:\Tutorials\nemesus-world-server\backend\NemesusWorld\obj\Debug\NemesusWorld.AssemblyInfoInputs.cache
 J:\Tutorials\nemesus-world-server\backend\NemesusWorld\obj\Debug\NemesusWorld.AssemblyInfo.cs
@@ -40,4 +40,3 @@ J:\Tutorials\nemesus-world-server\backend\NemesusWorld\obj\Debug\NemesusWorld.cs
 J:\Tutorials\nemesus-world-server\backend\NemesusWorld\obj\Debug\NemesusWorld.csproj.CopyComplete
 J:\Tutorials\nemesus-world-server\backend\NemesusWorld\obj\Debug\NemesusWorld.dll
 J:\Tutorials\nemesus-world-server\backend\NemesusWorld\obj\Debug\NemesusWorld.pdb
-J:\Tutorials\nemesus-world-server\backend\NemesusWorld\obj\Debug\NemesusWorld.csproj.AssemblyReference.cache

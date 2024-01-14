@@ -1194,6 +1194,12 @@ namespace NemesusWorld
                 player.ResetData("Player:HealBonus");
                 player.SetOwnSharedData("Player:Spawned", false);
                 player.SetSharedData("Player:Death", false);
+                player.SetSharedData("Player:Tattoos", "n/A");
+                if (Helper.adminSettings.voicerp == 2)
+                {
+                    player.SetSharedData("Player:VoiceRangeLocal", 25.0);
+                    player.SetSharedData("Player:LocalVoiceHandyPlayer", -1);
+                }
                 Helper.SetPlayerHealth(player, 100);
                 Helper.SetPlayerArmor(player, 0);
                 NAPI.Task.Run(() =>
@@ -1725,6 +1731,12 @@ namespace NemesusWorld
                 player.SetOwnSharedData("Player:InHouse", -1);
                 player.SetSharedData("Player:Attachments", "0");
                 player.SetSharedData("Player:HealthSync", 100);
+                player.SetSharedData("Player:Tattoos", "n/A");
+                player.SetSharedData("Player:LocalVoiceHandyPlayer", -1);
+                if (Helper.adminSettings.voicerp == 2)
+                {
+                    player.SetSharedData("Player:VoiceRangeLocal", 25.0);
+                }
             }
             catch (Exception e)
             {
@@ -2262,6 +2274,11 @@ namespace NemesusWorld
                 }
                 //Accept Call
                 player.SetData<bool>("Player:AcceptCall", false);
+                //Local Voice RP HandyPlayer
+                if (Helper.adminSettings.voicerp == 2)
+                {
+                    player.SetSharedData("Player:LocalVoiceHandyPlayer", -1);
+                }
                 //Crystal-Meth
                 player.ResetData("Player:HealBonus");
                 //Crouching

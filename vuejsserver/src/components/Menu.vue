@@ -4790,6 +4790,10 @@
                                                                         <td>^</td>
                                                                         <td>Voice-Range ändern</td>
                                                                     </tr>
+                                                                    <tr v-if="voicerp == 2">
+                                                                        <td>ROLLEN</td>
+                                                                        <td>Voice-Range ändern</td>
+                                                                    </tr>
                                                                     <tr v-if="voicerp == 1">
                                                                         <td>N (GTA 5 Push to Talk Taste)</td>
                                                                         <td>Funk (gedrückt halten)</td>

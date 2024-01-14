@@ -2,7 +2,7 @@
 	"Servername": "Nemesus World",
 	"Servertag":  "[NW]",
 	"Host":       "localhost",
-	"Username":   "nworld",
-	"Password":   "nworld",
-	"Database":   "nworld"
+	"Username":   "nworldtest",
+	"Password":   "nworldtest",
+	"Database":   "nworldtest"
 }

@@ -1556,8 +1556,14 @@ namespace NemesusWorld
                                 }
                                 if (character.factionduty == true)
                                 {
-                                    Helper.SendNotificationWithoutButton(player, "Der Spieler muss zuerst seinen aktuellen Dienst beenden!", "error", "top-end");
-                                    return;
+                                    character.factionduty = false;
+                                    Items radio = ItemsController.GetItemByItemName(ntarget, "Funkgerät");
+                                    if (radio != null)
+                                    {
+                                        ItemsController.RemoveItem(ntarget, radio.itemid);
+                                    }
+                                    var obj = JObject.Parse(character.json);
+                                    CharacterController.SetCharacterCloths(ntarget, obj, character.clothing);
                                 }
                                 faction.members++;
                                 character.faction = faction.id;
@@ -1622,8 +1628,14 @@ namespace NemesusWorld
                                 }
                                 if (character.factionduty == true)
                                 {
-                                    Helper.SendNotificationWithoutButton(player, "Der Spieler muss zuerst seinen Dienst beenden!", "error", "top-end");
-                                    return;
+                                    character.factionduty = false;
+                                    Items radio = ItemsController.GetItemByItemName(ntarget, "Funkgerät");
+                                    if (radio != null)
+                                    {
+                                        ItemsController.RemoveItem(ntarget, radio.itemid);
+                                    }
+                                    var obj = JObject.Parse(character.json);
+                                    CharacterController.SetCharacterCloths(ntarget, obj, character.clothing);
                                 }
                                 faction.members++;
                                 faction.leader = accounttarget.id;
@@ -1719,8 +1731,14 @@ namespace NemesusWorld
                             }
                             if (character.factionduty == true)
                             {
-                                Helper.SendNotificationWithoutButton(player, "Der Spieler muss zuerst seinen Dienst beenden!", "error", "top-end");
-                                return;
+                                character.factionduty = false;
+                                Items radio = ItemsController.GetItemByItemName(ntarget, "Funkgerät");
+                                if (radio != null)
+                                {
+                                    ItemsController.RemoveItem(ntarget, radio.itemid);
+                                }
+                                var obj = JObject.Parse(character.json);
+                                CharacterController.SetCharacterCloths(ntarget, obj, character.clothing);
                             }
                             FactionsModel faction = FactionController.GetFactionById(character.faction);
                             if (faction != null)

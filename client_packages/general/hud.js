@@ -102,7 +102,6 @@ let tabJson;
 let specTarget = null;
 let specName = '';
 let specWaiting = 0;
-let spectateInterval = null;
 //Inventory
 let inventory = [];
 let showInventory = false;
@@ -661,6 +660,9 @@ mp.game.audio.setStaticEmitterEnabled('SE_ba_dlc_club_exterior', false);
 //Trailersync
 mp.game.vehicle.setExperimentalAttachmentSyncEnabled(true);
 
+//UseDefaultVehicleEntering
+mp.game.controls.useDefaultVehicleEntering = true;
+
 //Hud
 mp.browsers.new("package://web/index.html")
 //Chat
@@ -805,6 +807,11 @@ mp.events.add('render', (nametags) => {
         mp.game.controls.disableControlAction(32, 2, true);
         mp.game.controls.disableControlAction(32, 4, true);
         mp.game.controls.disableControlAction(32, 6, true);
+    }
+
+    //Seatbelt
+    if(!localPlayer.getConfigFlag(32, true) && localPlayer.vehicle) {
+        mp.game.controls.disableControlAction(32, 75, true);
     }
 
     //Menüs (ESC to abort)
@@ -1119,6 +1126,13 @@ mp.events.add("Client:ClearChat", () =>
     }
 });
 
+//GetNearestSeat
+mp.events.add("Client:GetNearestSeat", (flag) => {
+    if (hudWindow != null) {
+        mp.events.callRemote('Server:NearestSeat', flag, nearestSeat());
+    }
+});
+
 //Livestream
 mp.events.add("Client:ToggleFilmCamera", (player, onoff) => {
     mp.game.audio.playSoundFrontend(-1, "SELECT", "HUD_FRONTEND_DEFAULT_SOUNDSET", false);
@@ -1191,19 +1205,15 @@ mp.events.add('Client:StartSpectate', (targetId, targetName) => {
 
     localPlayer.freezePosition(true);
 
-    spectateInterval = setInterval(() => {
+    setTimeout(() => {
         mp.players.forEach(p => {
-            if (specTarget == null && p.remoteId === targetId) {
+            if (specTarget == null && specName != '' && p.remoteId === targetId) {
                 specTarget = p;
                 specName = targetName;
                 specWaiting = 0;
             }
         });
-    }, 15);
-
-    setTimeout(() => {
-        if (spectateInterval != null) clearInterval(spectateInterval);
-    }, 4721);
+    }, 315);
 })
 
 mp.events.add('Client:StopSpectate', (modus) => {
@@ -1719,12 +1729,10 @@ mp.events.add("Client:ShowSmartphone", (json, json2, json3, json4, capacity, hid
             if (hide == 0) {
                 mp.events.call("Client:SetSmartphoneObj");
                 mp.gui.cursor.show(true, true);
-                showHideChat(false);
             }
         } else {
             mp.gui.cursor.show(false, false);
             mp.events.callRemote('Server:HideSmartphone');
-            showHideChat(true);
         }
     }
 })
@@ -3987,7 +3995,7 @@ mp.keys.bind(0xA2, true, function () {
 mp.keys.bind(0x79, true, function () {
     if (pressedF10 == 0 || (Date.now() / 1000) > pressedF10) {
         let spawned = localPlayer.getVariable('Player:Spawned');
-        if (showSaltyError == true || triggerAntiCheat == true || localPlayer.isTypingInTextChat || !spawned || nokeys == true) return;
+        if (showSaltyError == true || triggerAntiCheat == true || localPlayer.isTypingInTextChat || !spawned || death || nokeys == true) return;
         if (mp.gui.cursor.visible) {
             mp.gui.cursor.show(false, false);
         } else {
@@ -4708,6 +4716,19 @@ mp.keys.bind(0x47, true, function () {
     pressedG = (Date.now() / 1000) + (1);
 });
 
+//Passenger
+mp.keys.bind(71, false, () => {
+    let spawned = mp.players.local.getVariable('Player:Spawned');
+    if (!spawned || mp.players.local.isTypingInTextChat || showHandy == true) return;
+    let seat = nearestSeat();
+    let playerPos = mp.players.local.position;
+    let closestVeh = getClosestVehicle(playerPos);
+    let vehicle = closestVeh.vehicle;
+    if (vehicle != null && seat != -1 && vehicle.isSeatFree(seat)) {
+        mp.players.local.taskEnterVehicle(closestVeh.vehicle.handle, 5000, seat, 2.0, 1, 0);
+    }
+});
+
 //ESC Taste
 mp.keys.bind(0x1B, true, function () {
     mp.events.call("Client:PressedEscape");
@@ -5204,6 +5225,24 @@ mp.events.addDataHandler("Player:Funmodus", (entity, value, oldValue) => {
     }
 });
 
+mp.events.addDataHandler("Player:Tattoos", (entity, value, oldValue) => {
+    if(entity != localPlayer)
+    {
+        if(entity.hasVariable("Player:Tattoos") && entity.getVariable("Player:Tattoos") != 'n/A')
+        {
+            var tattoos = entity.getVariable("Player:Tattoos");
+            entity.clearDecorations();
+            for (let i = 0; i < tattoos.length; i++) {
+                entity.setDecoration(mp.game.joaat(tattoos[i].dlcname), mp.game.joaat(tattoos[i].name));
+            }
+        }
+        else
+        {
+            entity.clearDecorations();
+        }
+    }
+});
+
 mp.events.addDataHandler("Player:FollowStatus", (entity, value, oldValue) => {
     let entity2 = null;
     if (mp.players.exists(entity) && 0 !== entity.handle) {
@@ -5236,11 +5275,9 @@ mp.events.addDataHandler("Player:FollowStatus", (entity, value, oldValue) => {
 mp.events.add("Client:ShowInventory", (json, maxweight, toggle, json2, weight2, text2) => {
     if (hudWindow != null) {
         if (toggle == true) {
-            showHideChat(false);
             enableDisableRadar(false);
             mp.gui.cursor.show(true, true);
         } else {
-            showHideChat(true);
             enableDisableRadar(true);
             mp.gui.cursor.show(false, false);
         }
@@ -6465,6 +6502,19 @@ mp.events.add('entityStreamIn', (entity) => {
             }
         }
         if (mp.players.exists(entity) && 0 !== entity.handle && entity.type == 'player' && entity.remoteId != localPlayer.remoteId) {
+            //Tattoos
+            if(entity.hasVariable("Player:Tattoos") && entity.getVariable("Player:Tattoos") != 'n/A')
+            {
+                var tattoos = entity.getVariable("Player:Tattoos");
+                entity.clearDecorations();
+                for (let i = 0; i < tattoos.length; i++) {
+                    entity.setDecoration(mp.game.joaat(tattoos[i].dlcname), mp.game.joaat(tattoos[i].name));
+                }
+            }
+            else
+            {
+                entity.clearDecorations();
+            }
             //Grabbing
             if (entity.hasVariable("Player:Adminsettings") && entity.getVariable("Player:FollowStatus" > 0)) {
                 var entity2 = null;
@@ -7081,7 +7131,7 @@ mp.events.addDataHandler("Vehicle:Windows", (entity, value, oldValue) => {
     }
 });
 
-/*mp.events.add('Client:EnableSaltyError', () => {
+mp.events.add('Client:EnableSaltyError', () => {
     if (hudWindow != null) {
         if (showSaltyError == false && afk == false && ping == false) {
             mp.events.call('Client:ShowHud');
@@ -7112,7 +7162,7 @@ mp.events.add('Client:DisableSaltyError', () => {
             mp.events.call('Client:ShowHud');
         }
     }
-})*/
+})
 
 mp.events.add('Client:SetTalkstate', (gettalkstate) => {
     if (hudWindow != null) {
@@ -9953,6 +10003,83 @@ function CheckInputRotation(cam, zoomvalue) {
         new_x = Math.max(Math.min(20.0, rotation.x + rightAxisY * -1.0 * (livestreamspeed_lr) * (zoomvalue + 0.1)), -89.5);
         livestreamCam.setRot(new_x, 0.0, new_z, 2);
     }
+}
+
+function nearestSeat() {
+    let seat = -1;
+    if (mp.players.local.vehicle === null) {
+        let playerPos = mp.players.local.position;
+        let closestVeh = getClosestVehicle(playerPos);
+        let vehicle = closestVeh.vehicle;
+        if (vehicle != null) {
+            let seat_pside_r = vehicle.getWorldPositionOfBone(vehicle.getBoneIndexByName("seat_pside_r"));
+            let seat_pside_f = vehicle.getWorldPositionOfBone(vehicle.getBoneIndexByName("seat_pside_f"));
+            let seat_dside_r = vehicle.getWorldPositionOfBone(vehicle.getBoneIndexByName("seat_dside_r"));
+            let seat_r = vehicle.getWorldPositionOfBone(vehicle.getBoneIndexByName("seat_r"));
+            let platelight = vehicle.getWorldPositionOfBone(vehicle.getBoneIndexByName("platelight"));
+            let vehiclename = vehicle.getVariable('Vehicle:Name');
+            let distance = 9999;
+            if (vehiclename.toLowerCase() == "trash") {
+                if (calcDist(playerPos, platelight) < distance) {
+                    distance = calcDist(playerPos, platelight);
+                    if (vehicle.isSeatFree(2)) {
+                        seat = 2;
+                    } else {
+                        seat = 3;
+                    }
+                }
+            }
+            if (vehicle.isSeatFree(0) && calcDist(playerPos, seat_pside_f) < distance) {
+                distance = calcDist(playerPos, seat_pside_f);
+                seat = 0;
+            }
+            if (vehicle.isSeatFree(1) && calcDist(playerPos, seat_dside_r) < distance) {
+                distance = calcDist(playerPos, seat_dside_r);
+                seat = 1;
+            }
+            if (vehicle.isSeatFree(2) && calcDist(playerPos, seat_pside_r) < distance) {
+                distance = calcDist(playerPos, seat_pside_r);
+                seat = 2;
+            }
+            if (vehicle.isSeatFree(3) && calcDist(playerPos, seat_r) < distance) {
+                distance = calcDist(playerPos, seat_r);
+                seat = 3;
+            }
+        }
+    }
+    return seat;
+}
+
+function getClosestVehicle(position) {
+    try {
+        let closest = 6.5;
+        let closestVeh = null;
+
+        mp.vehicles.forEachInStreamRange(v => {
+            let dist = mp.game.system.vdist(position.x, position.y, position.z, v.position.x, v.position.y, v.position.z);
+
+            if (dist < closest) {
+                closest = dist;
+                closestVeh = v;
+            }
+        });
+
+        return {
+            distance: closest,
+            vehicle: closestVeh
+        };
+    } catch {}
+}
+
+function calcDist(v1, v2) {
+    return mp.game.system.vdist(
+        v1.x,
+        v1.y,
+        v1.z,
+        v2.x,
+        v2.y,
+        v2.z
+    );
 }
 
 const getClosestBone = (raycast) => {

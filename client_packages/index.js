@@ -22,7 +22,6 @@ require('./dev/devmodus');
 require('./general/hud');
 require('./general/shops');
 require('./general/screenshot');
-require('./general/passenger');
 require('./general/fire');
 require('./general/misc');
 

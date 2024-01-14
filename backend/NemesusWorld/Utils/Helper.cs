@@ -673,6 +673,8 @@ namespace NemesusWorld.Utils
             TempData tempData = Helper.GetCharacterTempData(player);
             if (tempData == null) return;
 
+            tempData.tattoos.Clear();
+
             PetaPoco.Database db = new PetaPoco.Database(General.Connection);
             foreach (Tattoos tattoo in db.Fetch<Tattoos>("SELECT * FROM tattoos WHERE characterid = @0", characterid))
             {
@@ -680,7 +682,8 @@ namespace NemesusWorld.Utils
                 Decoration decoration = new Decoration();
                 decoration.Collection = NAPI.Util.GetHashKey(tattoo.dlcname);
                 decoration.Overlay = NAPI.Util.GetHashKey(tattoo.name);
-                NAPI.Player.SetPlayerDecoration(player, decoration);
+                player.SetDecoration(decoration);
+                player.SetSharedData("Player:Tattoos", tempData.tattoos);
             }
         }
 
@@ -776,6 +779,22 @@ namespace NemesusWorld.Utils
                 {
                     player.SetSharedData("Player:Crouching", 1);
                 }
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[OnPlayerCrouch]: " + e.ToString());
+            }
+        }
+
+        [RemoteEvent("Server:SetVoiceRangeLocal")]
+        public static void OnSetVoiceRangeLocal(Player player, float maxRange)
+        {
+            try
+            {
+                Character character = Helper.GetCharacterData(player);
+                if (character == null) return;
+
+                player.SetSharedData("Player:VoiceRangeLocal", maxRange);
             }
             catch (Exception e)
             {
@@ -7087,7 +7106,7 @@ namespace NemesusWorld.Utils
                     Business bizz = Business.GetClosestBusiness(player);
                     if (bizz != null)
                     {
-                        if (bizz.getmoney > 0 && bizz.cash > 0 && bizz.cash >= bizz.getmoney)
+                        if (bizz.getmoney > 0 && bizz.cash > 0 && bizz.cash >= bizz.getmoney && bizz.owner != "n/A")
                         {
                             Helper.PlayShortAnimation(player, "mp_common", "givetake1_a", 1850);
                             NAPI.Task.Run(() =>

@@ -317,6 +317,7 @@ namespace NemesusWorld.Database
                         account.crosshair = reader.GetInt16("crosshair");
                         account.shootingrange = reader.GetInt32("shootingrange");
                         account.faq = reader.GetString("faq");
+                        account.faqarray = account.faq.Split(',');
                         account.givepremium = reader.GetInt16("givepremium");
                         account.houseslots = reader.GetInt16("houseslots");
                         account.vehicleslots = reader.GetInt16("vehicleslots");

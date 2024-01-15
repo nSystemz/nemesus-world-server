@@ -757,67 +757,44 @@ namespace NemesusWorld.Controllers
                 }
                 else
                 {
-                    NAPI.Player.SetPlayerClothes(player, 9, 0, 0);
-                    NAPI.Player.SetPlayerAccessory(player, 2, (int)obj["clothing"][9], (int)obj["clothingColor"][9]);
-                    if (clothingArray[0] == "1")
-                    {
-                            NAPI.Player.SetPlayerAccessory(player, 0, (int)obj["clothing"][7], (int)obj["clothingColor"][7]);
-                    }
-                    else
-                    {
-                        NAPI.Player.ClearPlayerAccessory(player, 0);
-                    }
-
-                    if (clothingArray[7] == "1")
-                    {
-                        NAPI.Player.SetPlayerClothes(player, 1, (int)obj["clothing"][8], (int)obj["clothingColor"][8]);
-                    }
-                    else
-                    {
-                        NAPI.Player.SetPlayerClothes(player, 1, 0, 0);
-                    }
-
-                    NAPI.Player.SetPlayerAccessory(player, 2, (int)obj["clothing"][9], (int)obj["clothingColor"][9]);
-                    if (clothingArray[6] == "1")
-                    {
-                        NAPI.Player.SetPlayerAccessory(player, 6, (int)obj["clothing"][10], (int)obj["clothingColor"][10]);
-                        NAPI.Player.SetPlayerAccessory(player, 7, (int)obj["clothing"][11], (int)obj["clothingColor"][11]);
-                    }
-                    else
-                    {
-                        NAPI.Player.ClearPlayerAccessory(player, 2);
-                        NAPI.Player.ClearPlayerAccessory(player, 6);
-                        NAPI.Player.ClearPlayerAccessory(player, 7);
-                    }
-
-                    NAPI.Player.SetPlayerClothes(player, 5, 0, 0);
-                    NAPI.Player.SetPlayerClothes(player, 7, 0, 0);
-                    NAPI.Player.SetPlayerClothes(player, 10, 0, 0);
-                    NAPI.Player.SetPlayerClothes(player, 1, 0, 0);
                     //ToDo: Adminkleidung setzen
                     if (character.gender == 1)
                     {
+                        NAPI.Player.ClearPlayerAccessory(player, 0);
+                        NAPI.Player.ClearPlayerAccessory(player, 1);
+                        NAPI.Player.ClearPlayerAccessory(player, 2);
+                        NAPI.Player.ClearPlayerAccessory(player, 6);
+                        NAPI.Player.ClearPlayerAccessory(player, 7);
+                        NAPI.Player.SetPlayerClothes(player, 1, 0, 0);
+                        NAPI.Player.SetPlayerClothes(player, 5, 0, 0);
+                        NAPI.Player.SetPlayerClothes(player, 7, 0, 0);
                         NAPI.Player.SetPlayerClothes(player, 8, 15, 0);
                         NAPI.Player.SetPlayerClothes(player, 11, 131, 0);
                         NAPI.Player.SetPlayerClothes(player, 3, 0, 0);
                         NAPI.Player.SetPlayerClothes(player, 4, 4, 0);
                         NAPI.Player.SetPlayerClothes(player, 6, 57, 9);
                         NAPI.Player.SetPlayerClothes(player, 9, 0, 0);
+                        NAPI.Player.SetPlayerClothes(player, 10, 0, 0);
                         NAPI.Player.SetPlayerAccessory(player, 1, 255, 0);
                     }
                     else
                     {
+                        NAPI.Player.ClearPlayerAccessory(player, 0);
+                        NAPI.Player.ClearPlayerAccessory(player, 1);
+                        NAPI.Player.ClearPlayerAccessory(player, 2);
+                        NAPI.Player.ClearPlayerAccessory(player, 6);
+                        NAPI.Player.ClearPlayerAccessory(player, 7);
+                        NAPI.Player.SetPlayerClothes(player, 1, 0, 0);
+                        NAPI.Player.SetPlayerClothes(player, 5, 0, 0);
+                        NAPI.Player.SetPlayerClothes(player, 7, 0, 0);
                         NAPI.Player.SetPlayerClothes(player, 8, 1, 0);
                         NAPI.Player.SetPlayerClothes(player, 11, 129, 0);
                         NAPI.Player.SetPlayerClothes(player, 3, 14, 0);
                         NAPI.Player.SetPlayerClothes(player, 4, 75, 0);
                         NAPI.Player.SetPlayerClothes(player, 6, 103, 0);
                         NAPI.Player.SetPlayerClothes(player, 9, 0, 0);
+                        NAPI.Player.SetPlayerClothes(player, 10, 0, 0);
                         NAPI.Player.SetPlayerAccessory(player, 1, 255, 0);
-                    }
-                    if((character.faction == 1 || character.faction == 2 || character.faction == 3) && character.factionduty == true)
-                    {
-                        NAPI.Player.SetPlayerClothes(player, 9, character.armor, character.armorcolor);
                     }
                 }
             }

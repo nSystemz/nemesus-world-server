@@ -6988,10 +6988,6 @@ mp.events.add('Client:CreatePed', (posx, posy, posz, create) => {
             ped.destroy();
             ped = null;
         }
-        if (pedTimer != null) {
-            clearTimeout(pedTimer);
-            pedTimer = null;
-        }
         mp.events.call("Client:CreateMarker", posx, posy, posz + 1.25, 3);
         mp.events.call("Client:CreateWaypoint", posx, posy);
         var models = ['ig_abigail', 'csb_anton', 'g_m_m_armgoon_01', 'csb_anton', 'ig_money', 'a_m_y_beachvesp_01', 'u_f_y_bikerchic', 's_m_o_busker_01', 's_m_y_construct_02', 'ig_dale', 'ig_fabien', 'a_f_y_fitness_02', 'a_f_o_genstreet_01', 'cs_gurk', 'a_m_m_indian_01'];
@@ -7015,10 +7011,11 @@ mp.events.add('Client:CreatePed', (posx, posy, posz, create) => {
         setTimeout(() => {
             ped.taskWanderInArea(posx, posy, posz, 95, 0, 1.25);
         }, 955);
-        pedTimer = setTimeout(() => {
-            if (ped != null) {
-                ped.destroy();
-                ped = null;
+        oldPed = ped;
+        setTimeout(() => {
+            if (oldPed != null) {
+                oldPed.destroy();
+                oldPed = null;
             }
         }, 8500);
     }

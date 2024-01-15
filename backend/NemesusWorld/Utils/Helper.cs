@@ -7271,23 +7271,35 @@ namespace NemesusWorld.Utils
                                             player.Vehicle.Rotation = new Vector3(rotation.X, rotation.Y, 132.20403f);
                                         }
                                     }, delayTime: 155);
+                                    int tempVehicleId = player.Vehicle.Id;
+                                    Vehicle lastVehicle = player.Vehicle;
+                                    player.Vehicle.Dimension = Convert.ToUInt32(house.id);
                                     player.Dimension = Convert.ToUInt32(house.id);
+                                    character.inhouse = house.id;
+                                    player.SetOwnSharedData("Player:InHouse", house.id);
                                     foreach (Player p in NAPI.Pools.GetAllPlayers())
                                     {
-                                        if (p != null && p.GetOwnSharedData<bool>("Player:Spawned") == true && p.GetSharedData<bool>("Player:Death") == false && p.Vehicle == player.Vehicle && p != player)
+                                        TempData tempData2 = Helper.GetCharacterTempData(p);
+                                        if (p != null && p != player && Account.IsPlayerLoggedIn(p) && tempData2.lastvehicle == tempVehicleId)
                                         {
-                                            p.Dimension = Convert.ToUInt32(house.id);
+                                            int oldSeat = tempData2.lastSeat;
                                             Character character2 = GetCharacterData(p);
-                                            if (character2 != null)
+                                            if (character2 != null && character2.inhouse == -1)
                                             {
+                                                NAPI.Player.WarpPlayerOutOfVehicle(p);
                                                 character2.inhouse = house.id;
+                                                p.Dimension = Convert.ToUInt32(house.id);
+                                                SetPlayerPosition(p, House.GetHouseExitPoint(house.interior));
                                                 p.SetOwnSharedData("Player:InHouse", house.id);
+                                                p.TriggerEvent("Client:LoadIPL", House.GetInteriorIPL(house.interior));
+                                                NAPI.Task.Run(() =>
+                                                {
+                                                    NAPI.Player.SetPlayerIntoVehicle(p, lastVehicle, oldSeat);
+                                                    Furniture.UpdateMöbelList(p, House.GetFurnitureForHouse(house.id));
+                                                }, delayTime: 515);
                                             }
                                         }
                                     }
-                                    player.Vehicle.Dimension = Convert.ToUInt32(house.id);
-                                    character.inhouse = house.id;
-                                    player.SetOwnSharedData("Player:InHouse", house.id);
                                     Furniture.UpdateMöbelList(player, House.GetFurnitureForHouse(house.id));
                                     return;
                                 }
@@ -7313,20 +7325,31 @@ namespace NemesusWorld.Utils
                                         Vector3 rotation = player.Vehicle.GetData<Vector3>("Vehicle:Rotation");
                                         player.Vehicle.Rotation = new Vector3(rotation.X, rotation.Y, rotation.Z + 180);
                                     }
+                                    int tempVehicleId = player.Vehicle.Id;
+                                    Vehicle lastVehicle = player.Vehicle;
                                     player.Vehicle.Dimension = (uint)house.dimension;
                                     character.inhouse = -1;
                                     player.SetOwnSharedData("Player:InHouse", -1);
                                     player.Dimension = (uint)house.dimension;
                                     foreach (Player p in NAPI.Pools.GetAllPlayers())
                                     {
-                                        if (p != null && p.GetOwnSharedData<bool>("Player:Spawned") == true && p.GetSharedData<bool>("Player:Death") == false && p.Vehicle == player.Vehicle && p != player)
+                                        TempData tempData2 = Helper.GetCharacterTempData(p);
+                                        if (p != null && p != player && Account.IsPlayerLoggedIn(p) && tempData2.lastvehicle == tempVehicleId)
                                         {
-                                            p.Dimension = (uint)house.dimension;
+                                            int oldSeat = tempData2.lastSeat;
                                             Character character2 = GetCharacterData(p);
-                                            if (character2 != null)
+                                            if (character2 != null && character2.inhouse != -1)
                                             {
+                                                NAPI.Player.WarpPlayerOutOfVehicle(p);
+                                                p.Dimension = (uint)house.dimension;
+                                                SetPlayerPosition(p, house.position);
                                                 character2.inhouse = -1;
                                                 p.SetOwnSharedData("Player:InHouse", -1);
+                                                NAPI.Task.Run(() =>
+                                                {
+                                                    NAPI.Player.SetPlayerIntoVehicle(p, lastVehicle, oldSeat);
+                                                    Furniture.UpdateMöbelList(p, House.GetFurnitureForHouse(house.id));
+                                                }, delayTime: 515);
                                             }
                                         }
                                     }

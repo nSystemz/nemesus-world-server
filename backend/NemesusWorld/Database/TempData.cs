@@ -33,6 +33,8 @@ namespace NemesusWorld.Database
         public Vector3 furnitureOldRotation { get; set; }
         public GTANetworkAPI.Object furnitureObject { get; set; }
         public int lastvehicle { get; set; }
+
+        public int lastSeat { get; set; }
         public Vehicle jobVehicle { get; set; }
         public Vehicle jobVehicle2 { get; set; }
         public bool jobduty { get; set; }
@@ -98,6 +100,7 @@ namespace NemesusWorld.Database
             furnitureOldRotation = null;
             furnitureObject = null;
             lastvehicle = 0;
+            lastSeat = -1;
             jobVehicle = null;
             jobVehicle2 = null;
             jobduty = false;

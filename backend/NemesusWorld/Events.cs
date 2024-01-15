@@ -1069,11 +1069,11 @@ namespace NemesusWorld
                             {
                                 Character character = Helper.GetCharacterData(p);
                                 Account account2 = Helper.GetAccountData(p);
-                                if (character != null)
+                                if (character != null && character.name.Length > 3)
                                 {
                                     CharacterController.SaveCharacter(p);
                                 }
-                                if (account2 != null)
+                                if (account2 != null && account2.name.Length > 3)
                                 {
                                     Account.SaveAccount(p);
                                 }
@@ -2425,6 +2425,7 @@ namespace NemesusWorld
                     {
                         //Lastvehicle
                         tempData.lastvehicle = vehicle.Id;
+                        tempData.lastSeat = seatId;
                         //Speedometer
                         if (vehicle.GetSharedData<string>("Vehicle:Name") != "iak_wheelchair" && (seatId == 0 || (seatId == 1 && (vehicle.GetSharedData<string>("Vehicle:Name") != "bus") && vehicle.GetSharedData<string>("Vehicle:Name") != "coach" && vehicle.GetSharedData<string>("Vehicle:Name") != "rentalbus")) && vehicle.Class != 13)
                         {
@@ -3218,6 +3219,7 @@ namespace NemesusWorld
                                     tempData.jobColshape = null;
                                 }
                                 tempData.jobstatus = 0;
+                                tempData.order2 = null;
                                 player.TriggerEvent("Client:CreatePed", tempData.order2.v1.X, tempData.order2.v1.Y, tempData.order2.v1.Z, 3);
                                 if (Helper.IsATaxiDriver(player) == 2)
                                 {

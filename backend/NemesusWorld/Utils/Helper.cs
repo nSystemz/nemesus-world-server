@@ -10087,7 +10087,7 @@ namespace NemesusWorld.Utils
                                 }
                                 else
                                 {
-                                    SendNotificationWithoutButton(player, $"{furniture.name} t!", "success");
+                                    SendNotificationWithoutButton(player, $"{furniture.name} aufgeschlossen!", "success");
                                 }
                                 House.SaveFurniture(furniture);
                                 return;

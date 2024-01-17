@@ -4980,12 +4980,14 @@ namespace NemesusWorld
                 }, delayTime: 55);
                 ntarget.TriggerEvent("Client:UnsetDeath");
                 character2.death = false;
+                character2.hunger = 50;
+                character2.thirst = 50;
                 ntarget.SetSharedData("Player:Death", false);
                 ntarget.SetSharedData("Player:Adminsettings", "0,0,0");
                 Helper.SendNotificationWithoutButton(player, $"Du hast { account2.name } wiederbelebt!", "success", "top-end", 3500);
                 Helper.SendNotificationWithoutButton(ntarget, $"{ account.name } hat dich wiederbelebt", "success", "top-end", 3500);
                 Helper.SendAdminMessage2($"{account.name} hat {account2.name} wiederbelebt!", 1, false);
-                Helper.SetPlayerHealth(ntarget, 100);
+                Helper.SetPlayerHealth(ntarget, 50);
                 Helper.SpawnPlayer(ntarget, ntarget.Position, ntarget.Heading);
                 Helper.OnStopAnimation2(ntarget);
                 if (tempData2.cuffed > 0)
@@ -6281,7 +6283,7 @@ namespace NemesusWorld
                         tempData.adminduty = true;
                         Helper.SendNotificationWithoutButton(player, "Der Adminlogin war erfolgreich!", "success", "top-end");
                         NAPI.Data.SetEntitySharedData(player, "Player:AdminLogin", 1);
-                        player.SetData<int>("Player:OldHealth", NAPI.Player.GetPlayerHealth(player));
+                        player.SetData<int>("Player:OldHealth", player.GetSharedData<int>("Player:HealthSync") - 100);
                         Helper.SetPlayerHealth(player, 100);
                         player.SetSharedData("Player:Adminsettings", "1,0,0");
                         JObject obj = JObject.Parse(character.json);

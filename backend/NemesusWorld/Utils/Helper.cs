@@ -3039,7 +3039,7 @@ namespace NemesusWorld.Utils
                                     int maxVehicles = DealerShipController.MaxVehicles(player, 1);
                                     if (DealerShipController.CountVehicles("character-" + character.id) > maxVehicles)
                                     {
-                                        Helper.SendNotificationWithoutButton2(player, $"Du kannst max. {maxVehicles} Fahrzeuge besitzen!", "error", "center");
+                                        Helper.SendNotificationWithoutButton2(player, $"Du kannst keine weiteren Fahrzeuge mehr besitzen!", "error", "center");
                                         return;
                                     }
                                 }
@@ -3771,6 +3771,11 @@ namespace NemesusWorld.Utils
                             {
                                 if (number == 1)
                                 {
+                                    if (tempData.followed == true)
+                                    {
+                                        SendNotificationWithoutButton(player, "Du kannst das Haus jetzt nicht kaufen!", "error");
+                                        return;
+                                    }
                                     if (character.cash < house.price)
                                     {
                                         SendNotificationWithoutButton(player, "Du hast nicht genügend Geld dabei!", "error", "top-end");
@@ -3871,6 +3876,11 @@ namespace NemesusWorld.Utils
                                 }
                                 else
                                 {
+                                    if (tempData.followed == true)
+                                    {
+                                        SendNotificationWithoutButton(player, "Du kannst das Haus jetzt nicht betreten!", "error");
+                                        return;
+                                    }
                                     if (house.interior == 0)
                                     {
                                         SendNotificationWithoutButton(player, "Dieses Haus kann direkt über den Hauseingang besichtigt werden!", "error");
@@ -4713,7 +4723,7 @@ namespace NemesusWorld.Utils
                                     Helper.SendNotificationWithoutButton(player, $"Pin resetet, neuer Pin: {bank.pincode}!", "success", "top-left", 6500);
                                 }
                             }
-                            player.TriggerEvent("Client:ShowCursor");
+                            player.TriggerEvent("Client:HideBankMenu");
                             break;
                         }
                     case "exitarrest":
@@ -4760,7 +4770,7 @@ namespace NemesusWorld.Utils
                                         NAPI.Data.SetEntitySharedData(player, "Player:AdminLogin", 1);
                                         player.SetData("Client:WrongPW", 0);
                                         player.SetData("Player:AdminDuty", true);
-                                        player.SetData<int>("Player:OldHealth", NAPI.Player.GetPlayerHealth(player));
+                                        player.SetData<int>("Player:OldHealth", player.GetSharedData<int>("Player:HealthSync") - 100);
                                         Helper.SetPlayerHealth(player, 100);
                                         player.SetSharedData("Player:Adminsettings", "1,0,0");
                                         JObject obj = JObject.Parse(character.json);
@@ -8292,6 +8302,11 @@ namespace NemesusWorld.Utils
                         }
                         else
                         {
+                            if (tempData.followed == true)
+                            {
+                                SendNotificationWithoutButton(player, "Du kannst das Haus jetzt nicht betreten!", "error");
+                                return;
+                            }
                             if (house.status == 0)
                             {
                                 player.TriggerEvent("Client:PlayerFreeze", true);
@@ -8300,7 +8315,12 @@ namespace NemesusWorld.Utils
                             }
                             else
                             {
-                                if(house.interior == 0)
+                                if (tempData.followed == true)
+                                {
+                                    SendNotificationWithoutButton(player, "Du kannst das Haus jetzt nicht betreten!", "error");
+                                    return;
+                                }
+                                if (house.interior == 0)
                                 {
                                     SendNotificationWithoutButton(player, "Dieses Haus kann direkt über den Hauseingang besichtigt werden!", "error");
                                     return;
@@ -8334,6 +8354,11 @@ namespace NemesusWorld.Utils
                             }
                             else
                             {
+                                if (tempData.followed == true)
+                                {
+                                    SendNotificationWithoutButton(player, "Du kannst das Haus jetzt nicht verlassen!", "error");
+                                    return;
+                                }
                                 if (Helper.CheckForAttachment(player, "handCiga") || Helper.CheckForAttachment(player, "vehicleCiga"))
                                 {
                                     Helper.SendNotificationWithoutButton(player, "Du musst zuerst die Zigarette wegwerfen!", "error");
@@ -10062,7 +10087,7 @@ namespace NemesusWorld.Utils
                                 }
                                 else
                                 {
-                                    SendNotificationWithoutButton(player, $"{furniture.name} aufgeschlossen!", "success");
+                                    SendNotificationWithoutButton(player, $"{furniture.name} t!", "success");
                                 }
                                 House.SaveFurniture(furniture);
                                 return;
@@ -15391,9 +15416,9 @@ namespace NemesusWorld.Utils
                                 SendNotificationWithoutButton(player, $"Du hast noch eine Motorradscheinsperre, bis zum {Helper.UnixTimeStampToDateTime(Convert.ToInt32(SetAndGetCharacterLicense(player, 2, 1337)))} Uhr!", "error", "top-end", 2250);
                                 return;
                             }
-                            if (character.cash < 2250)
+                            if (character.cash < 2500)
                             {
-                                SendNotificationWithoutButton(player, $"Du hast nicht genügend Geld dabei - 2250$!", "error", "top-end", 2250);
+                                SendNotificationWithoutButton(player, $"Du hast nicht genügend Geld dabei - 2500$!", "error", "top-end", 2250);
                                 return;
                             }
                             player.TriggerEvent("Client:PressedEscape");
@@ -15432,9 +15457,9 @@ namespace NemesusWorld.Utils
                                 SendNotificationWithoutButton(player, $"Du hast noch eine Truckerscheinsperre, bis zum {Helper.UnixTimeStampToDateTime(Convert.ToInt32(SetAndGetCharacterLicense(player, 3, 1337)))} Uhr!", "error", "top-end", 2250);
                                 return;
                             }
-                            if (character.cash < 3500)
+                            if (character.cash < 4750)
                             {
-                                SendNotificationWithoutButton(player, $"Du hast nicht genügend Geld dabei - 3500$!", "error", "top-end", 2250);
+                                SendNotificationWithoutButton(player, $"Du hast nicht genügend Geld dabei - 4750$!", "error", "top-end", 2250);
                                 return;
                             }
                             player.TriggerEvent("Client:PressedEscape");
@@ -15473,9 +15498,9 @@ namespace NemesusWorld.Utils
                                 SendNotificationWithoutButton(player, $"Du hast noch eine Bootsscheinsperre, bis zum {Helper.UnixTimeStampToDateTime(Convert.ToInt32(SetAndGetCharacterLicense(player, 4, 1337)))} Uhr!", "error", "top-end", 2250);
                                 return;
                             }
-                            if (character.cash < 5000)
+                            if (character.cash < 7500)
                             {
-                                SendNotificationWithoutButton(player, $"Du hast nicht genügend Geld dabei - 5000$!", "error", "top-end", 2250);
+                                SendNotificationWithoutButton(player, $"Du hast nicht genügend Geld dabei - 7500$!", "error", "top-end", 2250);
                                 return;
                             }
                             player.TriggerEvent("Client:PressedEscape");
@@ -15514,9 +15539,9 @@ namespace NemesusWorld.Utils
                                 SendNotificationWithoutButton(player, $"Du hast noch eine Flugscheinsperre, bis zum {Helper.UnixTimeStampToDateTime(Convert.ToInt32(SetAndGetCharacterLicense(player, 4, 1337)))} Uhr!", "error", "top-end", 2250);
                                 return;
                             }
-                            if (character.cash < 7500)
+                            if (character.cash < 10500)
                             {
-                                SendNotificationWithoutButton(player, $"Du hast nicht genügend Geld dabei - 7500$!", "error", "top-end", 2250);
+                                SendNotificationWithoutButton(player, $"Du hast nicht genügend Geld dabei - 10500$!", "error", "top-end", 2250);
                                 return;
                             }
                             player.TriggerEvent("Client:PressedEscape");

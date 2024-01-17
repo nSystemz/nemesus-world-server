@@ -1730,9 +1730,11 @@ mp.events.add("Client:ShowSmartphone", (json, json2, json3, json4, capacity, hid
                 mp.events.call("Client:SetSmartphoneObj");
                 mp.gui.cursor.show(true, true);
             }
+            chat.execute(`chatAPI.activate(false);`);
         } else {
             mp.gui.cursor.show(false, false);
             mp.events.callRemote('Server:HideSmartphone');
+            chat.execute(`chatAPI.activate(true);`);
         }
     }
 })
@@ -3995,7 +3997,7 @@ mp.keys.bind(0xA2, true, function () {
 mp.keys.bind(0x79, true, function () {
     if (pressedF10 == 0 || (Date.now() / 1000) > pressedF10) {
         let spawned = localPlayer.getVariable('Player:Spawned');
-        if (showSaltyError == true || triggerAntiCheat == true || localPlayer.isTypingInTextChat || !spawned || death || nokeys == true) return;
+        if (showSaltyError == true || triggerAntiCheat == true || localPlayer.isTypingInTextChat || !spawned || nokeys == true) return;
         if (mp.gui.cursor.visible) {
             mp.gui.cursor.show(false, false);
         } else {
@@ -7009,15 +7011,14 @@ mp.events.add('Client:CreatePed', (posx, posy, posz, create) => {
         mp.events.call("Client:DeleteMarker");
         ped.taskLeaveVehicle(mp.players.local.vehicle.handle, 0);
         setTimeout(() => {
-            ped.taskWanderInArea(posx, posy, posz, 95, 0, 1.25);
-        }, 955);
-        oldPed = ped;
+            ped.taskWanderInArea(ped.position.x, ped.position.y, ped.position.z, 95, 0, 1.25);
+        }, 55);
         setTimeout(() => {
-            if (oldPed != null) {
-                oldPed.destroy();
-                oldPed = null;
+            if (ped != null) {
+                ped.destroy();
+                ped = null;
             }
-        }, 8500);
+        }, 4500);
     }
 });
 

@@ -559,6 +559,25 @@ namespace NemesusWorld
                                         if (character.arrested > 0)
                                         {
                                             character.arrested--;
+                                            if (character.arrested == 0 && Helper.GetFactionCountDuty(1) <= 0)
+                                            {
+                                                character.arrested = 0;
+                                                character.cell = 0;
+                                                MySqlCommand command = General.Connection.CreateCommand();
+                                                command.CommandText = "INSERT INTO policefile (name, police, text, timestamp, commentary) VALUES (@name, @police, @text, @timestamp, @commentary)";
+                                                command.Parameters.AddWithValue("@name", character.name);
+                                                command.Parameters.AddWithValue("@police", "System");
+                                                command.Parameters.AddWithValue("@text", $"Aus Inhaftierung freigelassen, Grund: Haftzeit abgelaufen");
+                                                command.Parameters.AddWithValue("@timestamp", Helper.UnixTimestamp());
+                                                command.Parameters.AddWithValue("@commentary", 0);
+                                                command.ExecuteNonQuery();
+                                                Helper.SendNotificationWithoutButton(player, $"Du wurdest aus der Inhaftierung automatisch freigelassen!", "success", "top-left", 7500);
+                                                Helper.CreateFactionLog(character.faction, $"{character.name} wurde automatisch aus der Inhaftierung freigelassen, Grund: Haftzeit abgelaufen");
+                                                player.TriggerEvent("Client:SetArrested", false);
+                                                player.Dimension = 0;
+                                                Helper.SetPlayerPosition(player, new Vector3(639.8409, -3.0207262, 82.788246));
+                                                player.Heading = -163.85979f;
+                                            }
                                         }
                                         //Fuelsystem
                                         if (player.HasData("Player:FuelCooldown") && player.GetData<int>("Player:FuelCooldown") > 0)
@@ -1815,6 +1834,10 @@ namespace NemesusWorld
                     {
                         AntiCheatController.OnCallAntiCheat(player, $"Masskill Cheat", $"{accountkiller.kills}/Kills", true);
                     }
+                }
+                if (player.IsInVehicle)
+                {
+                    player.WarpOutOfVehicle();
                 }
                 if (account != null)
                 {
@@ -3219,14 +3242,12 @@ namespace NemesusWorld
                                     tempData.jobColshape = null;
                                 }
                                 tempData.jobstatus = 0;
-                                tempData.order2 = null;
                                 player.TriggerEvent("Client:CreatePed", tempData.order2.v1.X, tempData.order2.v1.Y, tempData.order2.v1.Z, 3);
                                 if (Helper.IsATaxiDriver(player) == 2)
                                 {
                                     int money = tempData.order2.money;
                                     character.nextpayday += money;
                                     Helper.SendNotificationWithoutButton(player, $"Fahrgast abgeliefert, du bekommst für deinen nächsten Gehaltscheck {money}$ gutgeschrieben!", "success", "top-left", 5500);
-                                    return;
                                 }
                                 else
                                 {

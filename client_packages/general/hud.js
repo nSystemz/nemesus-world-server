@@ -2588,13 +2588,11 @@ mp.events.add("Client:MDCSettings", (flag, data) => {
                 showHandy = false;
                 nokeys = true;
                 mp.game.ui.displayHud(false);
-                showHideChat(false);
                 enableDisableRadar(false);
             } else {
                 showHandy = true;
                 nokeys = false;
                 mp.game.ui.displayHud(true);
-                showHideChat(false);
                 enableDisableRadar(true);
             }
         } else if (flag == "closedzone") {
@@ -3809,6 +3807,7 @@ mp.keys.bind(0x46, true, function () {
     if (pressedF == 0 || (Date.now() / 1000) > pressedF) {
         let spawned = localPlayer.getVariable('Player:Spawned');
         if (showSaltyError == true || triggerAntiCheat == true || triggerAntiCheat == true || localPlayer.isTypingInTextChat || !spawned || nokeys == true || death == true || cuffed == true || showMenu == true || showInventory == true || showWheel == true || showFurniture == true || InteriorSwitch == true || prisonCount > 0 || showCenterMenu == true || showBank == true || showCarSetting == true || showCityhall == true || showSped == true || showFuel == true || startRange == true || showDealer == true || showTab == true || showHandy == true || showInventory == true || barberMenu == true || tattooShop == true) return;
+        lastclick = (Date.now() / 1000);
         pressedF = (Date.now() / 1000) + (2);
         let sodaCheck = CheckForSoda();
         let trashCheck = CheckForTrash();
@@ -3840,6 +3839,7 @@ mp.keys.bind(0x2D, true, function () {
     if (pressedEinf == 0 || (Date.now() / 1000) > pressedEinf) {
         let spawned = localPlayer.getVariable('Player:Spawned');
         if (showSaltyError == true || triggerAntiCheat == true || localPlayer.isTypingInTextChat || nokeys == true || death == true || cuffed == true || !spawned || showHandy == true || pointing.active == true || editFurniture == true || startRange == true || showDealer == true || showTab == true || localPlayer.isInAnyVehicle(true) || barberMenu == true || tattooShop == true) return;
+        lastclick = (Date.now() / 1000);
         pressedEinf = (Date.now() / 1000) + (1);
         handsUp = !handsUp;
         mp.events.callRemote('Server:SetHandsUp');
@@ -7011,7 +7011,7 @@ mp.events.add('Client:CreatePed', (posx, posy, posz, create) => {
         mp.events.call("Client:DeleteMarker");
         ped.taskLeaveVehicle(mp.players.local.vehicle.handle, 0);
         setTimeout(() => {
-            ped.taskWanderInArea(ped.position.x, ped.position.y, ped.position.z, 95, 0, 1.25);
+            ped.taskWanderInArea(ped.position.x, ped.position.y, ped.position.z, 95, 5.0, 1.25);
         }, 55);
         setTimeout(() => {
             if (ped != null) {

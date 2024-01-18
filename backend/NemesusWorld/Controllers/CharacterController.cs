@@ -463,9 +463,16 @@ namespace NemesusWorld.Controllers
                             player.TriggerEvent("Client:ShowBlackFadeIn", "Du bist in Los-Santos angekommen und fährst mit dem Taxi zum Rathaus, um dich um deine neuen Papiere zu kümmern ...", character.tutorialstep);
                             NAPI.Task.Run(() =>
                             {
-                                Helper.SetPlayerPosition(player, new Vector3(-554.9115, -186.94072, 38.22092 + 0.1));
-                                player.Heading = 31.438608f;
-                                player.Rotation = new Vector3(0.0, 0.0, 24.786564);
+                                if (Helper.adminSettings.mlosloaded == true)
+                                {
+                                    Helper.SetPlayerPosition(player, new Vector3(-554.9115, -186.94072, 38.22092 + 0.1));
+                                    player.Rotation = new Vector3(0.0, 0.0, 24.786564);
+                                }
+                                else
+                                {
+                                    Helper.SetPlayerPosition(player, new Vector3(-545.3484, -205.04977, 38.215366 + 0.1));
+                                    player.Rotation = new Vector3(0.0, 0.0, 72.3077);
+                                }
                                 player.TriggerEvent("Client:ShowBlackFadeOut", character.tutorialstep);
                             }, delayTime: 15500);
                         }

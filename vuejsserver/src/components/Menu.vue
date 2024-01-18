@@ -7217,7 +7217,7 @@
             startFaction: function() {
                 if (this.faction <= 0) return;
                 if (this.lastcheck10 == 0 || (Date.now() / 1000) > this.lastcheck10) {
-                    this.lastcheck10 = (Date.now() / 1000) + (180);
+                    this.lastcheck10 = (Date.now() / 1000) + (30);
                     // eslint-disable-next-line no-undef
                     mp.trigger('Client:StartFaction');
                     return;

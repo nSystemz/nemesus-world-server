@@ -96,9 +96,9 @@ namespace NemesusWorld.Controllers
                         Tickets ticket = new Tickets();
                         ticket.id = reader.GetInt32("id");
                         ticket.user = "" + reader.GetInt32("userid");
-                        ticket.title = reader.GetString("title");
+                        ticket.title = Helper.ReplaceUmlauts(reader.GetString("title"));
                         ticket.prio = reader.GetString("prio");
-                        ticket.text = Helper.Base64Encode(reader.GetString("text"));
+                        ticket.text = Helper.Base64Encode(Helper.ReplaceUmlauts(reader.GetString("text")));
                         ticket.timestamp = reader.GetInt32("timestamp");
                         ticket.admin = "" + reader.GetInt32("admin");
                         ticket.status = reader.GetInt32("status");
@@ -149,7 +149,7 @@ namespace NemesusWorld.Controllers
                         ticketAnswer.id = reader.GetInt32("id");
                         ticketAnswer.ticketid = reader.GetInt32("ticketid");
                         ticketAnswer.user = "" + reader.GetInt32("userid");
-                        ticketAnswer.text = Helper.Base64Encode(reader.GetString("text"));
+                        ticketAnswer.text = Helper.Base64Encode(Helper.ReplaceUmlauts(reader.GetString("text")));
                         ticketAnswer.timestamp = reader.GetInt32("timestamp");
                         ticketAnswers.Add(ticketAnswer);
                     }

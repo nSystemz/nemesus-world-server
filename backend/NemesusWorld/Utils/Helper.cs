@@ -50,6 +50,7 @@ namespace NemesusWorld.Utils
         public static List<CCTV> cctvList = new List<CCTV>();
         public static List<SpikeStrip> spikeStripList = new List<SpikeStrip>();
         public static List<PoliceProps> policePropList = new List<PoliceProps>();
+        public static Vector3 RathausPosition = null;
         //ToDo: Discord Webhooks setzen
         public static string AdminNotificationWebHook = "TODO";
         public static string ErrorWebhook = "TODO";
@@ -451,9 +452,9 @@ namespace NemesusWorld.Utils
         public static void ForumUpdate(Player player, string action, int forumid = -1, string grund = "n/A", int zeit = -1)
         {
             return;
-            #pragma warning disable CS0162 // Unerreichbarer Code wurde entdeckt - löschen wenn ToDo oben erledigt
+#pragma warning disable CS0162 // Unerreichbarer Code wurde entdeckt - löschen wenn ToDo oben erledigt
             Character character = Helper.GetCharacterData(player);
-            #pragma warning restore CS0162 // Unerreichbarer Code wurde entdeckt - löschen wenn ToDo oben erledigt
+#pragma warning restore CS0162 // Unerreichbarer Code wurde entdeckt - löschen wenn ToDo oben erledigt
             Account account = Helper.GetAccountData(player);
             TempData tempData = Helper.GetCharacterTempData(player);
 
@@ -1771,9 +1772,9 @@ namespace NemesusWorld.Utils
             TimeZoneInfo str_Berlin = TimeZoneInfo.CreateCustomTimeZone("Berlin Time", new TimeSpan(01, 00, 00), timeZoneBerlin, "Berlin Time");
             string data_Berlin = TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.Local, str_Berlin).ToString();
             DateTime dt = DateTime.Parse(s: data_Berlin);
-            #pragma warning disable CS0618 // Typ oder Element ist veraltet
+#pragma warning disable CS0618 // Typ oder Element ist veraltet
             bool winterSummerTime = dt.Equals(TimeZone.CurrentTimeZone.GetDaylightChanges(dt.Year).Start);
-            #pragma warning restore CS0618 // Typ oder Element ist veraltet
+#pragma warning restore CS0618 // Typ oder Element ist veraltet
             Int32 unixTimestamp;
             if (winterSummerTime == true) //Sommerzeit
             {
@@ -2242,9 +2243,9 @@ namespace NemesusWorld.Utils
                             if (busRoutes.routes.Length > 0)
                             {
                                 routesArray = busRoutes.routes.Split("|");
-                                if(routesArray != null)
+                                if (routesArray != null)
                                 {
-                                    #pragma warning disable CS0162
+#pragma warning disable CS0162
                                     for (int j = 0; j < routesArray.Length; j++)
                                     {
                                         if (routesArray.Length == player.GetData<int>("Player:BusStation"))
@@ -2314,7 +2315,7 @@ namespace NemesusWorld.Utils
                                             return;
                                         }
                                     }
-                                    #pragma warning restore CS0162 
+#pragma warning restore CS0162
                                 }
                             }
                         }
@@ -5061,7 +5062,7 @@ namespace NemesusWorld.Utils
                                     Helper.SendNotificationWithoutButton(player, "Du hast diesen Job bereits!", "error", "top-end");
                                     return;
                                 }
-                                if (character.job > 0)
+                                if (character.job > 0 || tempData.jobduty == true)
                                 {
                                     Helper.SendNotificationWithoutButton(player, "Du musst zuerst deinen alten Job kündigen!", "error", "top-end");
                                     return;
@@ -5099,6 +5100,11 @@ namespace NemesusWorld.Utils
                                     if (character.job == 0)
                                     {
                                         Helper.SendNotificationWithoutButton(player, "Du hast keinen Job!", "error", "top-end");
+                                        return;
+                                    }
+                                    if (tempData.jobduty == true)
+                                    {
+                                        Helper.SendNotificationWithoutButton(player, "Du musst zuerst deinen alten Job kündigen!", "error", "top-end");
                                         return;
                                     }
                                     player.SetOwnSharedData("Player:Job", 0);
@@ -5172,6 +5178,11 @@ namespace NemesusWorld.Utils
                                 Helper.SendNotificationWithoutButton2(player, "Du bist kein Taxifahrer!", "error", "center");
                                 return;
                             }
+                            if (player.Vehicle.Locked == false)
+                            {
+                                Helper.SendNotificationWithoutButton2(player, "Du musst zuerst dein Fahrzeug aufschließen!", "error", "center");
+                                return;
+                            }
                             if (player.IsInVehicle && (player.Vehicle.GetSharedData<String>("Vehicle:Name") == "taxi" || player.Vehicle.GetSharedData<String>("Vehicle:Name") == "tourbus"))
                             {
                                 foreach (TaxiBots taxiBot in Helper.taxiBotList)
@@ -5188,7 +5199,7 @@ namespace NemesusWorld.Utils
                                 Helper.taxiBotList.Remove(tempData.order2);
                                 Helper.SendNotificationWithoutButton(player, $"Taxiauftrag angenommen, bitte hol deinen Fahrgast jetzt bei/m {tempData.order2.from} ab!", "success", "top-left", 4000);
                                 player.TriggerEvent("Client:CreatePed", tempData.order2.v1.X, tempData.order2.v1.Y, tempData.order2.v1.Z, 1);
-                                tempData.jobColshape = NAPI.ColShape.CreatCircleColShape(tempData.order2.v1.X, tempData.order2.v1.Y, 3.85f, player.Dimension);
+                                tempData.jobColshape = NAPI.ColShape.CreatCircleColShape(tempData.order2.v1.X, tempData.order2.v1.Y, 4.25f, player.Dimension);
                             }
                             else
                             {
@@ -5408,6 +5419,11 @@ namespace NemesusWorld.Utils
                                     Helper.SendNotificationWithoutButton(player, "Du wirst schon getragen!", "error");
                                     return;
                                 }
+                                if (character2.death == false && tempData2.freezed == true)
+                                {
+                                    Helper.SendNotificationWithoutButton(player, "Der Spieler kann jetzt nicht getragen werden!", "error");
+                                    return;
+                                }
                                 getPlayer.TriggerEvent("Client:HideMenus");
                                 NAPI.Player.SetPlayerCurrentWeapon(player, WeaponHash.Unarmed);
                                 NAPI.Player.SetPlayerCurrentWeapon(getPlayer, WeaponHash.Unarmed);
@@ -5564,15 +5580,10 @@ namespace NemesusWorld.Utils
                     }
                 }
                 //Strafzettel
-                if (!player.GetOwnSharedData<bool>("Player:DevModus"))
+                if (!player.GetOwnSharedData<bool>("Player:DevModus") && !player.IsInVehicle)
                 {
                     if (character.faction == 3 && character.factionduty == true)
                     {
-                        if (player.IsInVehicle)
-                        {
-                            Helper.SendNotificationWithoutButton(player, "Du musst zuerst aus deinem Fahrzeug aussteigen!", "error");
-                            return;
-                        }
                         Vehicle vehicle = Helper.GetClosestVehicle(player, 2.55f);
                         if (vehicle == null)
                         {
@@ -7426,7 +7437,7 @@ namespace NemesusWorld.Utils
                 }
                 if (player.IsInVehicle) return;
                 //Rathaus
-                if (IsInRangeOfPoint(player.Position, new Vector3(-555.7711, -185.85564, 38.22111), 3.75f) && player.Dimension == 0)
+                if (IsInRangeOfPoint(player.Position, Helper.RathausPosition, 3.75f) && player.Dimension == 0)
                 {
                     player.TriggerEvent("Client:ShowStadthalle");
                     return;
@@ -7845,9 +7856,9 @@ namespace NemesusWorld.Utils
                     {
                         player.TriggerEvent("Client:CharacterCameraOn");
                     }, delayTime: 500);
-                    if(character.gender == 1)
+                    if (character.gender == 1)
                     {
-                        foreach(Outfits outfits in outfitList)
+                        foreach (Outfits outfits in outfitList)
                         {
                             outfits.name = outfits.name.Substring(4);
                         }
@@ -9677,6 +9688,7 @@ namespace NemesusWorld.Utils
                                         }
                                     }
                                 }
+                                SendNotificationWithoutButton(player, "Du ziehst keinen mehr vor dir her/trägst keinen mehr!", "error");
                                 break;
                             }
                     }
@@ -9863,7 +9875,7 @@ namespace NemesusWorld.Utils
                     Helper.SendNotificationWithoutButton(player, "Du sitzt in keinem Einsatzfahrzeug!", "error");
                     return;
                 }
-                if(!player.Vehicle.GetSharedData<string>("Vehicle:Name").ToLower().Contains("firetruk"))
+                if (!player.Vehicle.GetSharedData<string>("Vehicle:Name").ToLower().Contains("firetruk"))
                 {
                     Helper.SendNotificationWithoutButton(player, "Du sitzt in keinem Einsatzfahrzeug!", "error");
                     return;
@@ -11321,7 +11333,7 @@ namespace NemesusWorld.Utils
                                 Helper.GetCharacterTattoos(player, character.id);
                             }, delayTime: 550);
                         }
-                        if(Convert.ToInt32(obj["headOverlays"][2]) >= 255)
+                        if (Convert.ToInt32(obj["headOverlays"][2]) >= 255)
                         {
                             obj["headOverlays"][2] = -1;
                             obj["headOverlaysColors"][2] = 0;
@@ -12399,7 +12411,7 @@ namespace NemesusWorld.Utils
                                     if (weaponItem != null)
                                     {
                                         weaponArray = weaponItem.props.Split(",");
-                                        if (weaponItem.type != 5 || (weaponItem.type == 5 && weaponArray[1] == "0" && weaponArray[4] == "LSC-Waffenkammer"))
+                                        if (weaponItem.type != 5 || (weaponItem.type == 5 && weaponArray[1] == "0" && weaponArray[4].ToLower().Contains("waffenkammer")))
                                         {
                                             shopItemTemp.itemprice += weaponItem.amount;
                                             SendNotificationWithoutButton(player, $"Du hast {size}x {itemname} in die Waffenkammer zurückgelegt!", "success", "top-left", 1750);
@@ -12519,7 +12531,7 @@ namespace NemesusWorld.Utils
                                     if (weaponItem != null)
                                     {
                                         weaponArray = weaponItem.props.Split(",");
-                                        if (weaponItem.type != 5 || (weaponItem.type == 5 && weaponArray[1] == "0" && weaponArray[4] == "LSRC-Waffenkammer"))
+                                        if (weaponItem.type != 5 || (weaponItem.type == 5 && weaponArray[1] == "0" && weaponArray[4].ToLower().Contains("waffenkammer")))
                                         {
                                             shopItemTemp.itemprice += weaponItem.amount;
                                             SendNotificationWithoutButton(player, $"Du hast {size}x {itemname} in die Waffenkammer zurückgelegt!", "success", "top-left", 1750);
@@ -12644,7 +12656,7 @@ namespace NemesusWorld.Utils
                                     if (weaponItem != null)
                                     {
                                         weaponArray = weaponItem.props.Split(",");
-                                        if (weaponItem.type != 5 || (weaponItem.type == 5 && weaponArray[1] == "0" && weaponArray[4] == "LSPD-Waffenkammer"))
+                                        if (weaponItem.type != 5 || (weaponItem.type == 5 && weaponArray[1] == "0" && weaponArray[4].ToLower().Contains("waffenkammer")))
                                         {
                                             shopItemTemp.itemprice += weaponItem.amount;
                                             SendNotificationWithoutButton(player, $"Du hast {size}x {itemname} in die Waffenkammer zurückgelegt!", "success", "top-left", 1750);
@@ -14283,8 +14295,9 @@ namespace NemesusWorld.Utils
                             if (tempData.jobVehicle2 == null)
                             {
                                 SendNotificationWithoutButton(player, "Hier der Anhänger, bring mir den aber wieder im Ganzen zurück!", "success", "top-end", 2500);
-                                tempData.jobVehicle2 = Cars.createNewCar("raketrailer", new Vector3(2237.197, 5135.213, 55.639217), 115.81946f, 53, 53, "LS-S-155" + player.Id, "Landwirt", true, true, false);
+                                tempData.jobVehicle2 = Cars.createNewCar("raketrailer", new Vector3(2237.197, 5135.213, 55.639217+0.05), 115.81946f, 53, 53, "LS-S-155" + player.Id, "Landwirt", true, true, false);
                                 tempData.jobVehicle2.Dimension = 0;
+                                player.TriggerEvent("Client:CreateMarker", 2237.197, 5135.213, 55.639217 + 0.75, 3);
                             }
                             else
                             {
@@ -15945,7 +15958,7 @@ namespace NemesusWorld.Utils
                             }
                             Helper.SendNotificationWithoutButton(player, $"Untersuchung abgebrochen!", "error", "top-end", 3500);
                         }
-                        catch(Exception)
+                        catch (Exception)
                         {
                             Helper.SendNotificationWithoutButton(player, $"Untersuchung abgebrochen!", "error", "top-end", 3500);
                         }
@@ -17329,7 +17342,7 @@ namespace NemesusWorld.Utils
                     }
                 }
 
-                if(bonus == "EUP")
+                if (bonus == "EUP")
                 {
                     foreach (Outfits outfit in db.Fetch<Outfits>("SELECT * FROM outfits WHERE owner = 'EUP' LIMIT 1000"))
                     {
@@ -17453,7 +17466,7 @@ namespace NemesusWorld.Utils
                                 obj["clothing"][12] = Convert.ToInt32(json1Array[11]) - 1;
                                 obj["clothingColor"][12] = Convert.ToInt32(json2Array[11]) - 1;
                                 //Armor
-                                NAPI.Player.SetPlayerClothes(player, 9, Convert.ToInt32(json1Array[12])-1, Convert.ToInt32(json2Array[12]) - 1);
+                                NAPI.Player.SetPlayerClothes(player, 9, Convert.ToInt32(json1Array[12]) - 1, Convert.ToInt32(json2Array[12]) - 1);
                                 if (tempData.adminduty == false)
                                 {
                                     character.armor = Convert.ToInt32(json1Array[12]) - 1;
@@ -17738,13 +17751,13 @@ namespace NemesusWorld.Utils
                                 string tempstring2;
                                 content = sr.ReadToEnd();
                                 Weather weather = new Weather();
-                                try 
+                                try
                                 {
                                     weatherObj = JObject.Parse(content);
                                     tempstring2 = weatherObj["current"].ToString();
-                                    weatherObjTemp2 = JObject.Parse(tempstring2); 
-                                } 
-                                catch (Exception) 
+                                    weatherObjTemp2 = JObject.Parse(tempstring2);
+                                }
+                                catch (Exception)
                                 {
                                     if (weatherErrors <= 3)
                                     {
@@ -18222,6 +18235,19 @@ namespace NemesusWorld.Utils
         {
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
             return System.Convert.ToBase64String(plainTextBytes);
+        }
+
+        public static string ReplaceUmlauts(string text)
+        {
+            String retString;
+            retString = text.Replace("ä", "&auml;");
+            retString = retString.Replace("ö", "&ouml;");
+            retString = retString.Replace("ü", "&uuml;");
+            retString = retString.Replace("ß", "&szlig;");
+            retString = retString.Replace("Ä", "&Auml;");
+            retString = retString.Replace("Ö", "&Ouml;");
+            retString = retString.Replace("Ü", "&Uuml;");
+            return retString;
         }
     }
 }

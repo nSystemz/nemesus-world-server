@@ -14,14 +14,6 @@ let npc1 = mp.peds.new(
 	0
 );
 
-//Rathaus
-let npc2 = mp.peds.new(
-	mp.game.joaat('ig_jewelass'),
-	new mp.Vector3(-555.7711, -185.85564, 38.22111),
-	-151.82767,
-	4294967295
-);
-
 //Kontaktperson Tutorial (Illegal)
 let npc3 = mp.peds.new(
 	mp.game.joaat('u_m_m_aldinapoli'),

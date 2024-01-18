@@ -312,6 +312,10 @@ namespace NemesusWorld.Database
                     house.blip = houseModel.blip;
                     house.housegroup = houseModel.housegroup;
                     house.stock = houseModel.stock;
+                    if(house.stock > 3500)
+                    {
+                        house.stock = 3500;
+                    }
                     house.stockprice = houseModel.stockprice;
                     house.classify = houseModel.classify;
                     house.elec = houseModel.elec;

@@ -31,6 +31,8 @@ namespace NemesusWorld.Database
         //Nicht speichern
         [PetaPoco.ResultColumn]
         public bool rpquiz { get; set; }
+        [PetaPoco.ResultColumn]
+        public bool mlosloaded { get; set; }
 
         public AdminSettings()
         {
@@ -53,6 +55,7 @@ namespace NemesusWorld.Database
             dailyguesslimit = 0;
             nametag = 0;
             rpquiz = true; //True = Roleplay Quiz - False = Kein Roleplay Quiz
+            mlosloaded = false; //True = Restliche MLOs geladen - False = MLOs nicht geladen
         }
     }
 }

@@ -3905,7 +3905,7 @@ namespace NemesusWorld
                     case "gruppierung":
                         {
                             Groups group = GroupsController.GetGroupById(wert);
-                            if (group == null)
+                            if (wert != -1 && group == null)
                             {
                                 Helper.SendNotificationWithoutButton(player, "Ungültiger Gruppierungswert!", "error", "top-end");
                                 return;
@@ -3932,7 +3932,7 @@ namespace NemesusWorld
                                 Helper.SendNotificationWithoutButton(player, "Ungültiger Produktpreis!", "error", "top-end");
                                 return;
                             }
-                            house.housegroup = wert;
+                            house.stockprice = wert;
                             House.SetHouseHandle(house);
                             break;
                         }

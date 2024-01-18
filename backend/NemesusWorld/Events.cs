@@ -81,6 +81,18 @@ namespace NemesusWorld
                             Helper.GetAllGarbageRoutes();
                             //Get all taxi routes
                             Helper.GetAllTaxiRoutes();
+                            //Rathaus Position
+                            if (Helper.adminSettings.mlosloaded == true)
+                            {
+                                Helper.RathausPosition = new Vector3(-555.7711, -185.85564, 38.22111);
+                                NAPI.Ped.CreatePed(NAPI.Util.GetHashKey("ig_jewelass"), new Vector3(-555.7711, -185.85564, 38.22111), -151.82767f, true, true, true, false, 4294967295);
+                            }
+                            else
+                            {
+                                Helper.RathausPosition = new Vector3(-546.38464, -204.60997, 38.214985);
+                                NAPI.TextLabel.CreateTextLabel("~y~Hinweis: Bitte füge noch die restlichen MLOs ein (s. Github Readme.md)\n~w~Setze anschließend den 'mlosloaded' Wert in der Adminsettings.cs auf 'true'!", new Vector3(-541.3104, -204.3746, 38.026764 + 0.3), 7.5f, 0.5f, 4, new Color(255, 255, 255), true, 0);
+                                NAPI.Ped.CreatePed(NAPI.Util.GetHashKey("ig_jewelass"), new Vector3(-546.38464, -204.60997, 38.214985), -109.52619f, true, true, true, false, 4294967295);
+                            }
                             //Load stuff like blips,textlabel
                             LoadStuff();
                             if (!labelCheck.Text.Contains("Nem"))
@@ -278,7 +290,7 @@ namespace NemesusWorld
                                 TempData tempData = Helper.GetCharacterTempData(player);
                                 if (character != null && account != null && tempData != null)
                                 {
-                                    if (account.prison == 0)
+                                    if (account.prison == 0 && character.afk == 0)
                                     {
                                         if (character.thirst >= 0 || character.hunger >= 0)
                                         {
@@ -2609,7 +2621,7 @@ namespace NemesusWorld
             {
                 //Blips
                 //Rathaus
-                Blip Rathaus = NAPI.Blip.CreateBlip(498, new Vector3(-555.7711, -185.85564, 38.22111), 0.7f, 4);
+                Blip Rathaus = NAPI.Blip.CreateBlip(498, Helper.RathausPosition, 0.7f, 4);
                 NAPI.Blip.SetBlipShortRange(Rathaus, true);
                 NAPI.Blip.SetBlipScale(Rathaus, 0.8f);
                 NAPI.Blip.SetBlipName(Rathaus, "Rathaus");
@@ -2820,7 +2832,7 @@ namespace NemesusWorld
                 //RIP
                 NAPI.TextLabel.CreateTextLabel("~y~Rest in Peace\n~w~J.W.S", new Vector3(-1765.8063, -259.54675, 49.32865 + 0.35), 10.0f, 0.5f, 4, new Color(255, 255, 255), true, 0);
                 //Rathaus
-                NAPI.TextLabel.CreateTextLabel("~b~Los Santos Rathaus\n~w~Benutze Taste ~b~[F]~w~ um mit der Sekretärin zu interagieren!", new Vector3(-555.7711, -185.85564, 38.22111 + 1.3), 7.5f, 0.5f, 4, new Color(255, 255, 255), true, 0);
+                NAPI.TextLabel.CreateTextLabel("~b~Los Santos Rathaus\n~w~Benutze Taste ~b~[F]~w~ um mit der Sekretärin zu interagieren!", new Vector3(Helper.RathausPosition.X, Helper.RathausPosition.Y, Helper.RathausPosition.Z + 1.3), 7.5f, 0.5f, 4, new Color(255, 255, 255), true, 0);
                 //Kleidungsläden
                 NAPI.TextLabel.CreateTextLabel("~b~Kleidungsladen\n~w~Benutze Taste ~b~[F]~w~ um mit der Verkäuferin zu interagieren!", new Vector3(77.48367, -1387.6338, 29.376139 + 1.2), 10.0f, 0.5f, 4, new Color(255, 255, 255), false, 0);
                 NAPI.TextLabel.CreateTextLabel("~b~Kleidungsladen\n~w~Benutze Taste ~b~[F]~w~ um mit der Verkäuferin zu interagieren!", new Vector3(-1194.0197, -767.0693, 17.316254 + 1.2), 10.0f, 0.5f, 4, new Color(255, 255, 255), false, 0);
@@ -3224,7 +3236,7 @@ namespace NemesusWorld
                                     tempData.jobColshape.Delete();
                                     tempData.jobColshape = null;
                                 }
-                                tempData.jobColshape = NAPI.ColShape.CreatCircleColShape(tempData.order2.v2.X, tempData.order2.v2.Y, 3.5f, player.Dimension);
+                                tempData.jobColshape = NAPI.ColShape.CreatCircleColShape(tempData.order2.v2.X, tempData.order2.v2.Y, 4.25f, player.Dimension);
                                 tempData.jobstatus = 2;
                                 return;
                             }

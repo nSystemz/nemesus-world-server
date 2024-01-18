@@ -3133,6 +3133,7 @@ INSERT INTO `itemmodels` (`id`, `hash`, `description`, `type`, `weight`) VALUES
 (136, '-1158162337', 'Mikrofon', 4, 500),
 (137, '-1158162337', 'Filmkamera', 4, 2350),
 (138, '-1158162337', 'Snowball', 5, 125);
+(139, '-1158162337', 'Haustier', 4, 3500);
 
 -- --------------------------------------------------------
 
@@ -3448,7 +3449,8 @@ INSERT INTO `shopitems` (`id`, `shoplabel`, `itemname`, `itemprice`) VALUES
 (124, '24/7', 'Frostschutzmittel', 315),
 (125, 'Waffenkammer-D', 'Marihuanasamen', 275),
 (126, 'Waffenkammer-D', 'Kokainsamen', 300),
-(127, '24/7', 'Backmischung', 215);
+(127, '24/7', 'Backmischung', 215),
+(128, 'Waffenkammer-1', 'Haustier', 3);
 
 -- --------------------------------------------------------
 
@@ -3457,7 +3459,7 @@ INSERT INTO `shopitems` (`id`, `shoplabel`, `itemname`, `itemprice`) VALUES
 --
 
 CREATE TABLE `smartphonecalls` (
-  `1` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
   `tonumber` varchar(15) NOT NULL,
   `fromnumber` varchar(15) NOT NULL,
   `timestamp` int(11) NOT NULL
@@ -4594,7 +4596,7 @@ ALTER TABLE `shopitems`
 -- Indizes für die Tabelle `smartphonecalls`
 --
 ALTER TABLE `smartphonecalls`
-  ADD PRIMARY KEY (`1`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indizes für die Tabelle `smartphonemessages`
@@ -5012,7 +5014,7 @@ ALTER TABLE `shopitems`
 -- AUTO_INCREMENT für Tabelle `smartphonecalls`
 --
 ALTER TABLE `smartphonecalls`
-  MODIFY `1` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT für Tabelle `smartphonemessages`

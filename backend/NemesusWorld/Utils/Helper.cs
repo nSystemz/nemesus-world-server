@@ -12680,6 +12680,12 @@ namespace NemesusWorld.Utils
                                         SendNotificationWithoutButton(player, "Keine Berechtigung!", "error", "top-end");
                                         return;
                                     }
+                                    Items petItem = ItemsController.GetItemByItemName(player, "Haustier");
+                                    if (item.description == "Haustier" && petItem != null)
+                                    {
+                                        Helper.SendNotificationWithoutButton(player, "Du besitzt bereits ein Haustier!", "error", "top-end");
+                                        return;
+                                    }
                                     Items newitem = null;
                                     if (itemname == "Haustier")
                                     {

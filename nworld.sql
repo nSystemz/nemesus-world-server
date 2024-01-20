@@ -4938,7 +4938,7 @@ ALTER TABLE `invoices`
 -- AUTO_INCREMENT für Tabelle `itemmodels`
 --
 ALTER TABLE `itemmodels`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=139;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=140;
 
 --
 -- AUTO_INCREMENT für Tabelle `lifeinvaderads`

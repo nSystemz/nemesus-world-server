@@ -50,7 +50,7 @@ Nemesus World ist ein RageMP/GTA5 Roleplay Gamemode und beinhaltet sehr viele Fe
     EUP Kleidung von alex_ashfold
     und vieles mehr ...
 
-game_resources (MLOs etc...) Download: https://bit.ly/3TApxCf
+game_resources (MLOs etc...) Download: https://bit.ly/3U5DlFa
 
 Fehlende MLOs (Diese könnt Ihr euch bei dem jeweiligen Ersteller kaufen/downloaden):
 - MD: ShmannWorks - Eclipse Medical Tower

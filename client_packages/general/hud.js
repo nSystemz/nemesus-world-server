@@ -814,10 +814,13 @@ mp.events.add('render', (nametags) => {
     }
 
     //Seatbelt + Locked
-    if(localPlayer.vehicle)
+    if(localPlayer.vehicle && localPlayer.vehicle.getClass() != 8 && localPlayer.vehicle.getClass() != 13 && localPlayer.vehicle.getClass() != 14)
     {
         let locked = localPlayer.vehicle.getDoorLockStatus();
-        if((!localPlayer.getConfigFlag(32, true) || locked == true) && localPlayer.vehicle.getVariable('Vehicle:Name').toLowerCase() != "rcmavic") {
+        if(locked != 1 && localPlayer.vehicle.getVariable('Vehicle:Name').toLowerCase() != "rcmavic") {
+            mp.game.controls.disableControlAction(32, 75, true);
+        }
+        if(!localPlayer.getConfigFlag(32, true) && localPlayer.vehicle.getVariable('Vehicle:Name').toLowerCase() != "rcmavic") {
             mp.game.controls.disableControlAction(32, 75, true);
         }
     }

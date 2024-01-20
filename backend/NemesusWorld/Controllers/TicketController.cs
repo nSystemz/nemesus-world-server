@@ -222,7 +222,7 @@ namespace NemesusWorld.Controllers
                         ticketAnswer.id = reader.GetInt32("id");
                         ticketAnswer.ticketid = reader.GetInt32("ticketid");
                         ticketAnswer.user = "" + reader.GetInt32("userid");
-                        ticketAnswer.text = Helper.Base64Encode(reader.GetString("text"));
+                        ticketAnswer.text = Helper.Base64Encode(Helper.ReplaceUmlauts(reader.GetString("text")));
                         ticketAnswer.timestamp = reader.GetInt32("timestamp");
                         ticketAnswers.Add(ticketAnswer);
                     }
@@ -503,7 +503,7 @@ namespace NemesusWorld.Controllers
                     }
                 case "create":
                     {
-                        if (account.adminlevel > 0 && account.name != "Nemesus")
+                        if (account.adminlevel > 0)
                         {
                             Helper.SendNotificationWithoutButton2(player, "Du kannst als Admin kein Ticket eröffnen!", "error", "center");
                             return;

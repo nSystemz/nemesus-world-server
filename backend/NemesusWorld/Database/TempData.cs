@@ -72,6 +72,8 @@ namespace NemesusWorld.Database
         public bool isping { get; set; }
         public int pingcheck { get; set; }
         public bool speaker { get; set; }
+        public Ped pet { get; set; }
+        public int petTask { get; set; }
 
         public TempData()
         {
@@ -138,6 +140,8 @@ namespace NemesusWorld.Database
             isping = false;
             pingcheck = 0;
             speaker = false;
+            pet = null;
+            petTask = 0;
         }
     }
 }

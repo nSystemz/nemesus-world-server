@@ -187,7 +187,15 @@ namespace NemesusWorld
                             NAPI.Server.SetCommandErrorMessage("~r~Ungültiger Befehl!");
                             NAPI.Server.SetDefaultSpawnLocation(new Vector3(-542.2647, -208.96895, 37.6498), -154.3716f);
                             //Weather
-                            Helper.SetAndGetWeather("https://nemesus-world.de/WetterInfo.php", true);
+                            try
+                            {
+                                Helper.SetAndGetWeather("https://nemesus-world.de/WetterInfo.php", true);
+                            }
+                            catch(Exception)
+                            {
+                                Helper.weatherstring = "clear sky";
+                                Helper.SetWeather();
+                            }
                             //Set time
                             var time = DateTime.Now;
                             NAPI.World.SetTime(time.Hour, time.Minute, 0);
@@ -245,8 +253,16 @@ namespace NemesusWorld
                         halfHourCounter++;
                         //Onlinebanking transfer
                         BankController.RunTransfer();
-                        //Set weather
-                        Helper.SetAndGetWeather("https://nemesus-world.de/WetterInfo.php");
+                        //Weather
+                        try
+                        {
+                            Helper.SetAndGetWeather("https://nemesus-world.de/WetterInfo.php", true);
+                        }
+                        catch (Exception)
+                        {
+                            Helper.weatherstring = "clear sky";
+                            Helper.SetWeather();
+                        }
                         //Smartphone capacity
                         foreach (Smartphone smartphone in SmartphoneController.smartphoneList)
                         {
@@ -480,15 +496,18 @@ namespace NemesusWorld
                                 vehicle.SetSharedData("Vehicle:EngineHealth", NAPI.Vehicle.GetVehicleEngineHealth(vehicle));
                                 vehicle.SetSharedData("Vehicle:BodyHealth", NAPI.Vehicle.GetVehicleBodyHealth(vehicle));
                                 vehicle.SetSharedData("Vehicle:Health", NAPI.Vehicle.GetVehicleHealth(vehicle));
-                                if (NAPI.Vehicle.GetVehicleEngineHealth(vehicle) <= 215 || NAPI.Vehicle.GetVehicleHealth(vehicle) <= 215)
+                                if (vehicle.EngineStatus == true)
                                 {
-                                    Helper.SetVehicleEngine(vehicle, false);
-                                    NAPI.Vehicle.SetVehicleEngineHealth(vehicle, 125);
-                                    NAPI.Vehicle.SetVehicleHealth(vehicle, 125);
-                                    if (driver != null)
+                                    if (NAPI.Vehicle.GetVehicleEngineHealth(vehicle) <= 215 || NAPI.Vehicle.GetVehicleHealth(vehicle) <= 215)
                                     {
-                                        Helper.SendNotificationWithoutButton(driver, "Der Motor ist ausgefallen!", "error");
-                                        driver.SetOwnSharedData("Player:VehicleEngine", false);
+                                        Helper.SetVehicleEngine(vehicle, false);
+                                        NAPI.Vehicle.SetVehicleEngineHealth(vehicle, 125);
+                                        NAPI.Vehicle.SetVehicleHealth(vehicle, 125);
+                                        if (driver != null && driver.Vehicle != null)
+                                        {
+                                            Helper.SendNotificationWithoutButton(driver, "Der Motor ist ausgefallen!", "error");
+                                            driver.SetOwnSharedData("Player:VehicleEngine", false);
+                                        }
                                     }
                                 }
                             }
@@ -652,6 +671,14 @@ namespace NemesusWorld
                                                 }
                                             }
                                         }
+                                        //Pet
+                                        if(tempData.pet != null)
+                                        {
+                                            if (!Helper.IsInRangeOfPoint(player.Position, tempData.pet.Position, 25.5f) || player.Dimension != tempData.pet.Dimension)
+                                            {
+                                                Helper.PetRefresh(player);
+                                            }
+                                        }
                                         //Drunk
                                         if (tempData.drunk > 0)
                                         {
@@ -739,7 +766,7 @@ namespace NemesusWorld
                                             {
                                                 vehicle.SetSharedData("Vehicle:Battery", 0);
                                                 Helper.SetVehicleEngine(vehicle, false);
-                                                if (driver != null)
+                                                if (driver != null && driver.Vehicle != null)
                                                 {
                                                     Helper.SendNotificationWithoutButton(driver, "Der Motor ist ausgefallen!", "error");
                                                     driver.SetOwnSharedData("Player:VehicleEngine", false);
@@ -754,7 +781,7 @@ namespace NemesusWorld
                                             {
                                                 vehicle.SetSharedData("Vehicle:Oel", 0);
                                                 Helper.SetVehicleEngine(vehicle, false);
-                                                if (driver != null)
+                                                if (driver != null && driver.Vehicle != null)
                                                 {
                                                     Helper.SendNotificationWithoutButton(driver, "Der Motor ist ausgefallen!", "error");
                                                     driver.SetOwnSharedData("Player:VehicleEngine", false);
@@ -806,11 +833,14 @@ namespace NemesusWorld
                                         {
                                             if (character.disease > 0 && Helper.GetRandomPercentage(45) && character.death == false)
                                             {
-                                                if (!player.IsInVehicle)
+                                                NAPI.Task.Run(() =>
                                                 {
-                                                    Helper.PlayShortAnimation(player, "timetable@gardener@smoking_joint", "idle_cough", 4500);
-                                                }
-                                                Helper.SendNotificationWithoutButton(player, "Du fühlst dich nicht gut ...", "info");
+                                                    if (!player.IsInVehicle)
+                                                    {
+                                                        Helper.PlayShortAnimation(player, "timetable@gardener@smoking_joint", "idle_cough", 4500);
+                                                    }
+                                                    Helper.SendNotificationWithoutButton(player, "Du fühlst dich nicht gut ...", "info");
+                                                }, delayTime: 60000);
                                             }
                                             //Gangzones
                                             if (character.afk == 0 && tempData.ingangzone != -1 && character.mygroup != -1)
@@ -1284,6 +1314,14 @@ namespace NemesusWorld
                         //Crouching
                         tempData.crouching = false;
                         player.ResetSharedData("Player:Crouching");
+                        //Pet
+                        if (tempData.pet != null)
+                        {
+                            player.TriggerEvent("Client:DeletePet");
+                            tempData.pet.Delete();
+                            tempData.pet = null;
+                            tempData.petTask = 0;
+                        }
                         //Drunk
                         if (tempData.drunked == true)
                         {
@@ -1448,7 +1486,7 @@ namespace NemesusWorld
                                     }
                                     else if (character2.death == true)
                                     {
-                                        Helper.PlayerDeathAnim(getPlayer);
+                                        Helper.OnPlayDeathAnim(getPlayer);
                                     }
                                     else
                                     {
@@ -1479,7 +1517,7 @@ namespace NemesusWorld
                                     }
                                     else if (character2.death == true)
                                     {
-                                        Helper.PlayerDeathAnim(getPlayer);
+                                        Helper.OnPlayDeathAnim(getPlayer);
                                     }
                                     else
                                     {
@@ -1795,7 +1833,7 @@ namespace NemesusWorld
                     player.SetSharedData("Player:Adminsettings", "1,0,0");
                     NAPI.Task.Run(() =>
                     {
-                        Helper.PlayerDeathAnim(player);
+                        Helper.OnPlayDeathAnim(player);
                     }, delayTime: 5);
                     return;
                 }
@@ -1857,6 +1895,14 @@ namespace NemesusWorld
                 }
                 if (tempData != null)
                 {
+                    //Pet
+                    player.TriggerEvent("Client:DeletePet");
+                    if (tempData.pet != null)
+                    {
+                        tempData.pet.Delete();
+                        tempData.pet = null;
+                        tempData.petTask = 0;
+                    }
                     //Filmkamera
                     if (player.HasData("Player:Filmkamera"))
                     {
@@ -2131,7 +2177,7 @@ namespace NemesusWorld
                                 }
                                 else if (character2.death == true)
                                 {
-                                    Helper.PlayerDeathAnim(getPlayer);
+                                    Helper.OnPlayDeathAnim(getPlayer);
                                 }
                                 else
                                 {
@@ -2162,7 +2208,7 @@ namespace NemesusWorld
                                 }
                                 else if (character2.death == true)
                                 {
-                                    Helper.PlayerDeathAnim(getPlayer);
+                                    Helper.OnPlayDeathAnim(getPlayer);
                                 }
                                 else
                                 {
@@ -2458,6 +2504,13 @@ namespace NemesusWorld
                     TempData tempData = Helper.GetCharacterTempData(player);
                     if (tempData != null)
                     {
+                        //Pet
+                        if (tempData.pet != null)
+                        {
+                            tempData.pet.Delete();
+                            tempData.pet = null;
+                            tempData.petTask = 0;
+                        }
                         //Lastvehicle
                         tempData.lastvehicle = vehicle.Id;
                         tempData.lastSeat = seatId;
@@ -2527,7 +2580,7 @@ namespace NemesusWorld
                                 }
                                 else if (character2.death == true)
                                 {
-                                    Helper.PlayerDeathAnim(getPlayer);
+                                    Helper.OnPlayDeathAnim(getPlayer);
                                 }
                                 else
                                 {
@@ -2780,7 +2833,7 @@ namespace NemesusWorld
                 NAPI.Blip.SetBlipName(job6, "Yellow Cab Co."); NAPI.Blip.SetBlipShortRange(job6, true);
                 Blip job7 = NAPI.Blip.CreateBlip(479, new Vector3(415.26788, -2072.553, 21.47752), 0.7f, 54);
                 NAPI.Blip.SetBlipName(job7, "Kanalreiniger Job"); NAPI.Blip.SetBlipShortRange(job7, true);
-                Blip job8 = NAPI.Blip.CreateBlip(141, new Vector3(2243.3335, 5154.16, 57.88714), 0.7f, 2);
+                Blip job8 = NAPI.Blip.CreateBlip(140, new Vector3(2243.3335, 5154.16, 57.88714), 0.7f, 2);
                 NAPI.Blip.SetBlipName(job8, "Landwirt Job"); NAPI.Blip.SetBlipShortRange(job8, true);
                 Blip job9 = NAPI.Blip.CreateBlip(431, new Vector3(-1376.8951, -1424.4462, 3.5720022), 0.7f, 82);
                 NAPI.Blip.SetBlipName(job9, "Müll sammeln"); NAPI.Blip.SetBlipShortRange(job9, true);
@@ -2855,6 +2908,7 @@ namespace NemesusWorld
                 NAPI.TextLabel.CreateTextLabel("~b~Barkeeper Lukas Koch\n~w~Benutze Taste ~b~[F]~w~ um mit Ihm zu interagieren!", new Vector3(836.1573, -115.343544, 79.77466 + 1.2), 10.0f, 0.5f, 4, new Color(255, 255, 255), false, 0);
                 NAPI.TextLabel.CreateTextLabel("~b~Barkeeper\n~w~Benutze Taste ~b~[F]~w~ um mit Ihm zu interagieren!", new Vector3(-434.2632, 273.92822, 83.42211 + 1.2), 10.0f, 0.5f, 4, new Color(255, 255, 255), false, 0);
                 NAPI.TextLabel.CreateTextLabel("~b~Barkeeper\n~w~Benutze Taste ~b~[F]~w~ um mit Ihm zu interagieren!", new Vector3(-1391.7916, -605.65985, 30.319567 + 1.2), 10.0f, 0.5f, 4, new Color(255, 255, 255), false, 0);
+                NAPI.TextLabel.CreateTextLabel("~b~Barkeeper\n~w~Benutze Taste ~b~[F]~w~ um mit Ihm zu interagieren!", new Vector3(-1377.5298, -629.2274, 30.819584 + 1.2), 10.0f, 0.5f, 4, new Color(255, 255, 255), false, 0);
                 //Shovel
                 NAPI.TextLabel.CreateTextLabel("~b~Schatzsucher Billy\n~w~Benutze Taste ~b~[F]~w~ um mit Ihm zu interagieren!", new Vector3(1441.0588, 3749.4375, 32.193043 + 1.2), 10.0f, 0.5f, 4, new Color(255, 255, 255), false, 0);
                 //Hall of Fame
@@ -3003,6 +3057,8 @@ namespace NemesusWorld
                 NAPI.TextLabel.CreateTextLabel("~b~Achmed der Fahrzeugexporteur\n~w~Benutze Taste ~b~[E]~w~ um mit Achmed interagieren!", new Vector3(801.72723, -2924.453, 5.9188385 + 1.2), 10.0f, 0.5f, 4, new Color(255, 255, 255), false, 0);
                 //Materialversteck
                 NAPI.TextLabel.CreateTextLabel("~b~Materialenversteck\n~w~Benutze Taste ~b~[F]~w~ um Materialien rauszunehmen!", new Vector3(-2070.9304, -1020.88715, 5.884131 + 1.2), 10.0f, 0.5f, 4, new Color(255, 255, 255), false, 0);
+                //Haustierverkauf
+                NAPI.TextLabel.CreateTextLabel("~b~Haustierverkäuferin Julia\n~w~Benutze Taste ~b~[F]~w~ um mit Ihr zu interagieren!", new Vector3(-1326.8887, -268.52347, 41.652397 + 1.2), 10.0f, 0.5f, 4, new Color(255, 255, 255), false, 0);
                 //Colshapes
                 ammuCol = NAPI.ColShape.CreatCircleColShape(7.2232156f, -1098.8546f, 0.85f, 0);
                 //Timer
@@ -3105,6 +3161,8 @@ namespace NemesusWorld
                 NAPI.Ped.CreatePed(NAPI.Util.GetHashKey("ig_janet"), new Vector3(149.40121, -1042.143, 29.367987), -25.037832f, true, true, true, false, 0);
                 NAPI.Ped.CreatePed(NAPI.Util.GetHashKey("ig_manuel"), new Vector3(-2961.169, 482.9263, 15.697004), 84.36845f, true, true, true, false, 0);
                 NAPI.Ped.CreatePed(NAPI.Util.GetHashKey("cs_gurk"), new Vector3(1175.0502, 2708.2053, 38.087936), 175.24529f, true, true, true, false, 0);
+                //Haustierverkauf
+                NAPI.Ped.CreatePed(NAPI.Util.GetHashKey("g_m_m_chigoon_02"), new Vector3(-1326.8887, -268.52347, 41.652397), 116.49419f, true, true, true, false, 0);
 
             }
             catch (Exception e)

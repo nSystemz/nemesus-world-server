@@ -76,6 +76,7 @@ namespace NemesusWorld.Database
         public int guessvalue { get; set; }
         public int jobless { get; set; }
         public string friends { get; set; }
+        public string petname { get; set; }
 
         public Character()
         {
@@ -146,6 +147,7 @@ namespace NemesusWorld.Database
             guessvalue = 0;
             jobless = 0;
             friends = "";
+            petname = "n/A";
         }
     }
 }

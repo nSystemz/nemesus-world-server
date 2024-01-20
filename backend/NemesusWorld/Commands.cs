@@ -86,13 +86,13 @@ namespace NemesusWorld
                         Helper.SendNotificationWithoutButton(player, "Ungültige Interaktion!", "error", "top-end");
                         return;
                     }
-                    if (!ItemsController.CanPlayerHoldItem(player, (ItemsController.GetItemWeight(itemname) * menge)))
+                    if (!ItemsController.CanPlayerHoldItem(ntarget, (ItemsController.GetItemWeight(itemname) * menge)))
                     {
                         Helper.SendNotificationWithoutButton(player, "Der Spieler kann das Item nichtmehr tragen!", "error", "top-end");
                         return;
                     }
-                    Items snowBallItem = ItemsController.GetItemByItemName(player, "Snowball");
-                    if(itemname.ToLower() == "snowball" && snowBallItem != null && snowBallItem.amount + menge > 10)
+                    Items snowBallItem = ItemsController.GetItemByItemName(ntarget, "Snowball");
+                    if (itemname.ToLower() == "snowball" && snowBallItem != null && snowBallItem.amount + menge > 10)
                     {
                         Helper.SendNotificationWithoutButton(player, "Der Spieler kann nur max. 10 Snowballs tragen!", "error", "top-end");
                         return;
@@ -101,6 +101,23 @@ namespace NemesusWorld
                     {
                         Helper.SendNotificationWithoutButton(player, "Der Spieler kann nur max. 10 Snowballs tragen!", "error", "top-end");
                         return;
+                    }
+                    if (itemname.ToLower() == "haustier")
+                    {
+                        Items petItem = ItemsController.GetItemByItemName(ntarget, "Haustier");
+                        if(petItem != null)
+                        {
+                            Helper.SendNotificationWithoutButton(player, "Der Spieler hat bereits ein Haustier!", "error", "top-end");
+                            return;
+                        }
+                        uint pedHash = Helper.GetPetHashFromName(props);
+                        if (pedHash == 0xAAAAAAAA)
+                        {
+                            Helper.SendNotificationWithoutButton(player, "Ungültiges Haustier!", "error", "top-end");
+                            Helper.SendChatMessage(player, "~y~Verfügbare Haustiere: ~w~Husky, Pudel, Mops, Retriever, Rottweiler, Shepherd, Westy, Katze");
+                            return;
+                        }
+                        props = props[0].ToString().ToUpper() + props.Substring(1);
                     }
                     Items newitem = ItemsController.CreateNewItem(ntarget, charactertarget.id, itemname, "Player", menge, ItemsController.GetFreeItemID(ntarget), "n/A", "Administrativ", charactertarget.name);
                     if (newitem != null)
@@ -270,7 +287,7 @@ namespace NemesusWorld
                     }
                     else if (usecase == "Auswahlmenü")
                     {
-                        if(categoryoutfit == "n/A")
+                        if (categoryoutfit == "n/A")
                         {
                             Helper.SendNotificationWithoutButton(player, "Bitte wähle eine Kategorien (category1)!", "error");
                             Helper.SendChatMessage(player, "~y~Verfügbare Kategorien: ~w~LSPD, LSSD, SAHP, SASP, BCSO, FIB, DOA, USMS, NOOSE, IAA, USAF Secruity Forces, SAPA, LSIA, LSPP, RHPD, DPPD, NYSP, LSDRP, SADFW, U.S NPS, USFWD, NOAA, BLM, BIA Tribal Police, LSFD, LSCoFD, BCFD, SanFire, Lifeguard, Medical Services, United Stats Armed Forces, Parking Enforcement, Private Security, General Services");
@@ -1166,7 +1183,7 @@ namespace NemesusWorld
                         {
                             player.SendChatMessage("~w~Befehl: /agl [Spieler/ID] [Lizenz]");
                             player.SendChatMessage("~y~Verfügbare Lizenzen: Führerschein, Motorradschein, Truckerschein, Bootsschein, Flugschein, Waffenschein");
-                            break;
+                            return;
                         }
                 }
                 if (error == true)
@@ -1562,6 +1579,11 @@ namespace NemesusWorld
                                     {
                                         ItemsController.RemoveItem(ntarget, radio.itemid);
                                     }
+                                    Items shepherd = ItemsController.GetItemByItemName(ntarget, "Haustier");
+                                    if (shepherd != null && shepherd.props == "Shepherd")
+                                    {
+                                        ItemsController.RemoveItem(ntarget, radio.itemid);
+                                    }
                                     var obj = JObject.Parse(character.json);
                                     CharacterController.SetCharacterCloths(ntarget, obj, character.clothing);
                                 }
@@ -1631,6 +1653,11 @@ namespace NemesusWorld
                                     character.factionduty = false;
                                     Items radio = ItemsController.GetItemByItemName(ntarget, "Funkgerät");
                                     if (radio != null)
+                                    {
+                                        ItemsController.RemoveItem(ntarget, radio.itemid);
+                                    }
+                                    Items shepherd = ItemsController.GetItemByItemName(ntarget, "Haustier");
+                                    if (shepherd != null && shepherd.props == "Shepherd")
                                     {
                                         ItemsController.RemoveItem(ntarget, radio.itemid);
                                     }
@@ -1734,6 +1761,11 @@ namespace NemesusWorld
                                 character.factionduty = false;
                                 Items radio = ItemsController.GetItemByItemName(ntarget, "Funkgerät");
                                 if (radio != null)
+                                {
+                                    ItemsController.RemoveItem(ntarget, radio.itemid);
+                                }
+                                Items shepherd = ItemsController.GetItemByItemName(ntarget, "Haustier");
+                                if (shepherd != null && shepherd.props == "Shepherd")
                                 {
                                     ItemsController.RemoveItem(ntarget, radio.itemid);
                                 }
@@ -1843,7 +1875,7 @@ namespace NemesusWorld
                     Helper.SendNotificationWithoutButton(player, "Ungültiger Spieler!", "error");
                     return;
                 }
-                if (ntarget == player || account.name == "Nemesus")
+                if (ntarget == player)
                 {
                     Helper.SendNotificationWithoutButton(player, "Ungültiger Spieler!", "error");
                     return;
@@ -2053,6 +2085,7 @@ namespace NemesusWorld
                 player.Dimension = Convert.ToUInt32(spawnCharAfterReconnect[4]);
                 Helper.SetPlayerPosition(player, new Vector3(float.Parse(spawnCharAfterReconnect[0]), float.Parse(spawnCharAfterReconnect[1]), float.Parse(spawnCharAfterReconnect[2]) + 0.15));
                 player.Dimension = Convert.ToUInt32(spawnCharAfterReconnect[4]);
+                player.TriggerEvent("Client:PlayerFreeze", false);
                 Helper.SendNotificationWithoutButton(player, $"Beobachtung abgebrochen!", "success", "top-end", 3500);
             }
             catch (Exception e)
@@ -2504,6 +2537,7 @@ namespace NemesusWorld
                     NAPI.Player.SetPlayerCurrentWeapon(ntarget, WeaponHash.Unarmed);
                 }
                 ntarget.TriggerEvent("Client:BlockPlayer", tempData.freezed);
+                ntarget.TriggerEvent("Client:PlayerFreeze", tempData.freezed);
             }
             catch (Exception e)
             {
@@ -2617,7 +2651,15 @@ namespace NemesusWorld
                     case "normal":
                         {
                             Helper.weatherTimestamp = 0;
-                            Helper.SetAndGetWeather("https://nemesus-world.de/WetterInfo.php");
+                            try
+                            {
+                                Helper.SetAndGetWeather("https://nemesus-world.de/WetterInfo.php", true);
+                            }
+                            catch (Exception)
+                            {
+                                Helper.weatherstring = "clear sky";
+                                Helper.SetWeather();
+                            }
                             break;
                         }
                     default:
@@ -4976,7 +5018,7 @@ namespace NemesusWorld
                 }
                 NAPI.Task.Run(() =>
                 {
-                    Helper.SetPlayerPosition(ntarget, new Vector3(ntarget.Position.X, ntarget.Position.Y, ntarget.Position.Z + 0.15f));
+                    Helper.SetPlayerPosition(ntarget, new Vector3(ntarget.Position.X, ntarget.Position.Y, ntarget.Position.Z + 0.05f));
                 }, delayTime: 55);
                 ntarget.TriggerEvent("Client:UnsetDeath");
                 character2.death = false;
@@ -6089,7 +6131,8 @@ namespace NemesusWorld
                         Helper.SendNotificationWithoutButton(player, "Ungültiges Fahrzeug!", "error", "top-end");
                         return;
                     }
-                    tempData.adminvehicle = Cars.createNewCar(vehname, new Vector3(player.Position.X, player.Position.Y, player.Position.Z - 0.1), player.Heading, color1, color2, "Admin", "Admin", false, true, false, player.Dimension);
+                    Vector3 vehPosition = Helper.GetPositionInFrontOfPlayer(player, 2.55f);
+                    tempData.adminvehicle = Cars.createNewCar(vehname, new Vector3(vehPosition.X, vehPosition.Y, vehPosition.Z - 0.1), player.Heading, color1, color2, "Admin", "Admin", false, true, false, player.Dimension);
                     NAPI.Task.Run(() =>
                     {
                         if (tempData.adminvehicle != null)
@@ -6172,7 +6215,8 @@ namespace NemesusWorld
                     return;
                 }
                 Vehicle tempVehicle = null;
-                tempVehicle = Cars.createNewCar(vehname, new Vector3(player.Position.X + 2.15, player.Position.Y + 2.15, player.Position.Z - 0.1), player.Heading, color1, color2, placeholder, placeholder, false, true, false, player.Dimension);
+                Vector3 vehPosition = Helper.GetPositionInFrontOfPlayer(player, 2.55f);
+                tempVehicle = Cars.createNewCar(vehname, new Vector3(vehPosition.X, vehPosition.Y, vehPosition.Z - 0.1), player.Heading, color1, color2, placeholder, placeholder, false, true, false, player.Dimension);
                 tempVehicle.Dimension = player.Dimension;
                 adminVehicles.Add(tempVehicle);
                 Helper.CreateAdminLog($"vehlog", account.name + " hat ein/e " + vehname + " gespawned!");
@@ -7091,6 +7135,126 @@ namespace NemesusWorld
             catch (Exception e)
             {
                 Helper.ConsoleLog("error", $"[cmd_credits]: " + e.ToString());
+            }
+        }
+
+        [Command("pipe", "Befehl: /pipe")]
+        public static void CMD_pipe(Player player)
+        {
+            try
+            {
+                if (!Account.IsPlayerLoggedIn(player)) return;
+                TempData tempData = Helper.GetCharacterTempData(player);
+                Character character = Helper.GetCharacterData(player);
+                if (tempData == null) return;
+                if (tempData.pet == null)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Dir folgt kein Haustier!", "error", "top-end");
+                    return;
+                }
+                Items petItem = ItemsController.GetItemByItemName(player, "Haustier");
+                if (petItem == null)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Du hast kein Haustier im Inventar!", "error", "top-end");
+                    return;
+                }
+                if (player.HasData("Player:TuneCooldown") && player.GetData<int>("Player:TuneCooldown") > 0)
+                {
+                    if (Helper.UnixTimestamp() < player.GetData<int>("Player:TuneCooldown"))
+                    {
+                        Helper.SendNotificationWithoutButton(player, "Du kannst diese Aktion nur alle 5 Sekunden ausführen!", "error", "top-end");
+                        return;
+                    }
+                }
+                player.SetData<int>("Player:TuneCooldown", Helper.UnixTimestamp() + (5));
+                Commands.cmd_animation(player, "whistle2", true);
+                if (tempData.petTask == 0)
+                {
+                    Helper.SendNotificationWithoutButton(player, $"Du hast dein Haustier {character.petname} gerufen!", "success", "top-end");
+                    NAPI.Task.Run(() =>
+                    {
+                        foreach (Ped ped in NAPI.Pools.GetAllPeds())
+                        {
+                            if (ped == tempData.pet)
+                            {
+                                if (ped.Controller == null)
+                                {
+                                    ped.Controller = player;
+                                }
+                                if (ped.GetSharedData<int>("Ped:Death") == 0)
+                                {
+                                    player.TriggerEvent("Client:FollowPet", ped);
+                                    tempData.petTask = 1;
+                                }
+                                break;
+                            }
+                        }
+                    }, delayTime: 215);
+                }
+                else
+                {
+                    Helper.SendNotificationWithoutButton(player, $"Dein Haustier {character.petname} wartet jetzt hier!", "success", "top-end");
+                    NAPI.Task.Run(() =>
+                    {
+                        foreach (Ped ped in NAPI.Pools.GetAllPeds())
+                        {
+                            if (ped == tempData.pet)
+                            {
+                                if (ped.Controller == null)
+                                {
+                                    ped.Controller = player;
+                                }
+                                if (ped.GetSharedData<int>("Ped:Death") == 0)
+                                {
+                                    player.TriggerEvent("Client:FollowPetStop", ped);
+                                    tempData.petTask = 0;
+                                }
+                                break;
+                            }
+                        }
+                    }, delayTime: 215);
+                }
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[CMD_pipe]: " + e.ToString());
+            }
+        }
+
+        [Command("petname", "Befehl: /petname")]
+        public static void CMD_petname(Player player, string name)
+        {
+            try
+            {
+                if (!Account.IsPlayerLoggedIn(player)) return;
+                TempData tempData = Helper.GetCharacterTempData(player);
+                Character character = Helper.GetCharacterData(player);
+                if (tempData == null) return;
+                if(name.Length < 3 || name.Length > 35)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Ungültiger Name!", "error", "top-end");
+                    return;
+                }
+                character.petname = name;
+                Helper.SendNotificationWithoutButton(player, $"Der Haustiername {character.petname} wurde erfolgreich gesetzt!", "success", "top-end");
+                if (tempData.pet != null)
+                {
+                    NAPI.Task.Run(() =>
+                    {
+                        foreach (Ped ped in NAPI.Pools.GetAllPeds())
+                        {
+                            if (ped == tempData.pet)
+                            {
+                                tempData.pet.SetSharedData("Ped:Name", character.petname);
+                                break;
+                            }
+                        }
+                    }, delayTime: 215);
+                }
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[CMD_petname]: " + e.ToString());
             }
         }
 
@@ -8156,7 +8320,7 @@ namespace NemesusWorld
                     Helper.SendNotificationWithoutButton(player, "Du kannst dich jetzt nicht ausloggen!", "error", "top-end");
                     return;
                 }
-                if(tempData.adminduty == true)
+                if (tempData.adminduty == true)
                 {
                     Helper.SendNotificationWithoutButton(player, "Du musst zuerst deinen Admindienst beenden!", "error", "top-end");
                     return;
@@ -8220,7 +8384,7 @@ namespace NemesusWorld
                 if (!Account.IsPlayerLoggedIn(player)) return;
                 Character character = Helper.GetCharacterData(player);
                 Player tempPlayer = Helper.GetPlayerByCharacterName(name);
-                if(Helper.adminSettings.nametag != 1)
+                if (Helper.adminSettings.nametag != 1)
                 {
                     Helper.SendNotificationWithoutButton(player, "Das Nametagsystem steht nicht auf 1!", "error", "top-left", 2500);
                     return;
@@ -8313,7 +8477,7 @@ namespace NemesusWorld
                 Helper.SendNotificationWithoutButton(player, "Der Text-RP Modus muss zuerst aktiviert werden!", "error", "top-end");
                 return;
             }
-            if(tempData.radio == "-1" || tempData.radio.Length <= 0)
+            if (tempData.radio == "-1" || tempData.radio.Length <= 0)
             {
                 Helper.SendNotificationWithoutButton(player, "Du musst zuerst dein Funkgerät anschalten und eine Frequenz auswählen!", "error", "top-end");
                 return;
@@ -8368,7 +8532,7 @@ namespace NemesusWorld
                 if (!Account.IsPlayerLoggedIn(player)) return;
                 Account account = Helper.GetAccountData(player);
                 Character character = Helper.GetCharacterData(player);
-                if(!player.IsInVehicle)
+                if (!player.IsInVehicle)
                 {
                     Helper.SendNotificationWithoutButton(player, "Du sitzt in keinem Einsatzfahrzeug!", "error");
                     return;
@@ -8395,7 +8559,7 @@ namespace NemesusWorld
                     return;
                 }
                 player.TriggerEvent("Client:CheckIfEntityIsInWater", vehicle, vehicleid);
-                
+
             }
             catch (Exception e)
             {

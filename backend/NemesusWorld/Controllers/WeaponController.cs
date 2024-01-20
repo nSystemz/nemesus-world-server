@@ -440,7 +440,7 @@ namespace NemesusWorld.Controllers
             try
             {
                 TempData tempData = Helper.GetCharacterTempData(player);
-                if(tempData != null)
+                if (tempData != null)
                 {
                     tempData.tempValue = damage;
                 }
@@ -451,7 +451,7 @@ namespace NemesusWorld.Controllers
             }
         }
 
-            [RemoteEvent("Server:LastDamage")]
+        [RemoteEvent("Server:LastDamage")]
         public static void GetActualWeaponID(Player ownPlayer, int remoteId)
         {
             try

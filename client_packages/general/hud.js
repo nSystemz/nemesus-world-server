@@ -48,6 +48,10 @@ let pressedESC = 0;
 let pressedNum = 0;
 //Crosshair
 let crosshair = 17;
+//Pet
+let ownPet = null;
+let oldRunning = false;
+let noFollow = false;
 //Anticheat
 let triggerAntiCheat = false;
 let calledAntiCheat = 0;
@@ -809,9 +813,13 @@ mp.events.add('render', (nametags) => {
         mp.game.controls.disableControlAction(32, 6, true);
     }
 
-    //Seatbelt
-    if(!localPlayer.getConfigFlag(32, true) && localPlayer.vehicle) {
-        mp.game.controls.disableControlAction(32, 75, true);
+    //Seatbelt + Locked
+    if(localPlayer.vehicle)
+    {
+        let locked = localPlayer.vehicle.getDoorLockStatus();
+        if((!localPlayer.getConfigFlag(32, true) || locked == true) && localPlayer.vehicle.getVariable('Vehicle:Name').toLowerCase() != "rcmavic") {
+            mp.game.controls.disableControlAction(32, 75, true);
+        }
     }
 
     //Menüs (ESC to abort)
@@ -933,7 +941,14 @@ mp.events.add('render', (nametags) => {
     let spawned = localPlayer.getVariable('Player:Spawned');
     if (!death && spawned && (getPlayerHealth(localPlayer) - 100) < 10) {
         hideMenus();
-        mp.events.callRemote('Server:SetDeath', null, 7);
+        const getGroundZ = mp.game.gameplay.getGroundZFor3dCoord(localPlayer.position.x, localPlayer.position.y, localPlayer.position.z, parseFloat(0), false);
+        if(!localPlayer.vehicle)
+        {
+            localPlayer.position = new mp.Vector3(localPlayer.position.x, localPlayer.position.y, getGroundZ+0.1);
+        }
+        setTimeout(function () {
+            mp.events.callRemote('Server:SetDeath', null, 7);
+        }, 355);
     }
 
     //Möbelmodus
@@ -1213,7 +1228,7 @@ mp.events.add('Client:StartSpectate', (targetId, targetName) => {
                 specWaiting = 0;
             }
         });
-    }, 315);
+    }, 2215);
 })
 
 mp.events.add('Client:StopSpectate', (modus) => {
@@ -4692,7 +4707,7 @@ mp.keys.bind(0x47, true, function () {
         }
         if (localPlayer.isInAnyVehicle(true) && localPlayer.vehicle.getClass() != 13 && localPlayer.vehicle.getClass() != 8 && localPlayer.vehicle.getClass() != 14 && localPlayer.vehicle.getClass() != 21) {
             var vehiclename = localPlayer.vehicle.getVariable('Vehicle:Name');
-            if (vehiclename.toLowerCase() == "trash") return;
+            if (vehiclename.toLowerCase() == "trash" || vehiclename.toLowerCase() == "rcmavic") return;
             let belt = localPlayer.getConfigFlag(32, true);
             localPlayer.setConfigFlag(32, !belt);
             let title = "Erfolgreich angeschnallt!";
@@ -5276,6 +5291,7 @@ mp.events.addDataHandler("Player:FollowStatus", (entity, value, oldValue) => {
 //Inventory
 mp.events.add("Client:ShowInventory", (json, maxweight, toggle, json2, weight2, text2) => {
     if (hudWindow != null) {
+        if(showInventory == false && localPlayer.isFalling()) return;
         if (toggle == true) {
             enableDisableRadar(false);
             mp.gui.cursor.show(true, true);
@@ -5384,7 +5400,14 @@ mp.events.add("Client:SetArrested", (status) => {
 //Second timer
 setInterval(() => {
     let spawned = localPlayer.getVariable('Player:Spawned');
-    if (!spawned || showSaltyError == true || triggerAntiCheat == true) return;
+    if (!spawned) return;
+    //Deathanim
+    if ((localPlayer.getVariable('Player:Death') == true || death == true) && !localPlayer.vehicle) {
+        if (!localPlayer.isPlayingAnim('dead', 'dead_a', 3) && !localPlayer.isPlayingAnim('dead', 'dead_f', 3)) {
+            mp.events.callRemote('Server:PlayDeathAnim');
+         }
+    }
+    if (showSaltyError == true || triggerAntiCheat == true) return;
     //Kilometre
     if (localPlayer.vehicle && vehiclePos) {
         vehicleKilometre += parseFloat(distanceVector(vehiclePos, localPlayer.vehicle.position) / 1500);
@@ -5397,12 +5420,6 @@ setInterval(() => {
     }
     if (hudWindow != null) {
         hudWindow.execute(`gui.speedometer.updateHud2('${zone}');`)
-    }
-    //Deathanim
-    if (death == true && !localPlayer.vehicle) {
-        if (!localPlayer.isPlayingAnim('dead', 'dead_a', 3) && !localPlayer.isPlayingAnim('dead', 'dead_f', 3)) {
-            mp.events.callRemote('Server:PlayDeathAnim', true);
-        }
     }
     //Handyanim
     if (showHandy && !localPlayer.vehicle) {
@@ -5483,7 +5500,21 @@ setInterval(() => {
     if (lastclick > 0 && (Date.now() / 1000) > (lastclick + (60 * 25)) && !death && spawned && afk == false && ping == false && editFurniture == false && showSaltyError == false) {
         mp.events.call('Client:SetAFK');
     }
-    //Five Seconds
+    //Pet
+    let running = localPlayer.isSprinting();
+    if(ownPet != null && oldRunning != running && noFollow == false)
+    {
+        oldRunning = running;
+        if(oldRunning)
+        {
+            ownPet.taskFollowToOffsetOf(localPlayer.handle, 1.5, 1.5, 1.5, 4, -1, 10, true);
+        }
+        else
+        {
+            ownPet.taskFollowToOffsetOf(localPlayer.handle, 1.5, 1.5, 1.5, 2, -1, 10, true);
+        }
+    }
+    //Five/Ten Seconds
     secondTimer++;
     if (secondTimer >= 5) {
         if (localPlayer.weapon && mp.game.player.isFreeAiming()) {
@@ -5567,6 +5598,9 @@ function playerQuitHandler(player, exitType, reason) {
             mp.game.invoke("0x0F07E7745A236711");
             mp.game.invoke("0x31B73D1EA9F01DA2");
         }
+
+        //Pet
+        ownPet = null;
 
         //Damage effect
         mp.game.graphics.stopScreenEffect("DeathFailMPDark");
@@ -6025,6 +6059,7 @@ mp.events.add('Client:GetWeaponDamage', () => {
 
 //IncomingDamage
 mp.events.add('incomingDamage', (sourceEntity, sourcePlayer, targetEntity, weapon, boneIndex, damage) => {
+    if(targetEntity.type != 'player' || sourceEntity.type != 'player') return;
     if (damage > 0) {
         mp.events.callRemote('Server:SyncHealth');
         if (death == true) {
@@ -6048,8 +6083,16 @@ mp.events.add('incomingDamage', (sourceEntity, sourcePlayer, targetEntity, weapo
         }
         if (getPlayerHealth(localPlayer) - damage < 100 && death == false) {
             death = true;
+            ownPet = null;
             hideMenus();
-            mp.events.callRemote('Server:SetDeath', null, 7);
+            const getGroundZ = mp.game.gameplay.getGroundZFor3dCoord(localPlayer.position.x, localPlayer.position.y, localPlayer.position.z, parseFloat(0), false);
+            if(!localPlayer.vehicle)
+            {
+                localPlayer.position = new mp.Vector3(localPlayer.position.x, localPlayer.position.y, getGroundZ+0.1);
+            }
+            setTimeout(function () {
+                mp.events.callRemote('Server:SetDeath', null, 7);
+            }, 355);
             return true;
         }
         if (death == false) {
@@ -6064,6 +6107,7 @@ mp.events.add('incomingDamage', (sourceEntity, sourcePlayer, targetEntity, weapo
 
 //OutgamingDamage
 mp.events.add('outgoingDamage', (sourceEntity, sourcePlayer, targetEntity, weapon, boneIndex, damage) => {
+    if(targetEntity.type != 'player' || sourceEntity.type != 'player') return;
     if (targetEntity && targetEntity.type == 'player') {
         let death = targetEntity.getVariable('Player:Death');
         if (death == true) {
@@ -6076,6 +6120,7 @@ mp.events.add('outgoingDamage', (sourceEntity, sourcePlayer, targetEntity, weapo
 mp.events.add("Client:SetDeath", (time) => {
     hideMenus();
     death = true;
+    ownPet = null;
     localPlayer.freezePosition(true);
     mp.game.ui.displayHud(false);
     enableDisableRadar(false);
@@ -6123,6 +6168,9 @@ mp.events.add("playerSpawn", (player) => {
 //Playerdeath
 mp.events.add("playerDeath", (player, reason, killer) => {
     if (player == localPlayer) {
+
+        //Pet
+        ownPet = null;
 
         //Damage effect
         mp.game.graphics.stopScreenEffect("DeathFailMPDark");
@@ -7012,6 +7060,7 @@ mp.events.add('Client:CreatePed', (posx, posy, posz, create) => {
         ped.taskLeaveVehicle(mp.players.local.vehicle.handle, 0);
         setTimeout(() => {
             ped.taskWanderInArea(ped.position.x, ped.position.y, ped.position.z, 95, 5.0, 1.25);
+            ped.setKeepTask(true);
         }, 55);
         setTimeout(() => {
             if (ped != null) {
@@ -9249,9 +9298,44 @@ mp.events.add("Client:UpdateAnimals", (ped) => {
         ped.setCombatAttributes(5, true);
         ped.setFleeAttributes(0.0, false);
         ped.setProofs(false, false, false, false, false, false, false, false);
-        ped.taskWanderInArea(1714.7175, -571.90814, 144.50644, 95, 0, 1.25);
+        ped.taskWanderInArea(1714.7175, -571.90814, 144.50644, 95, 5.0, 1.25);
         ped.setKeepTask(true);
     }
+});
+
+//Pet
+mp.events.add("Client:FollowPet", (ped) => {
+    ownPet = ped;
+    ped.setAsEnemy(false);
+    ped.freezePosition(false);
+    ped.setCanBeDamaged(true);
+    ped.setInvincible(true);
+    ped.setHealth(100);
+    ped.setOnlyDamagedByPlayer(true);
+    ped.setCombatAbility(100);
+    ped.setCombatRange(1);
+    ped.setCombatMovement(2);
+    ped.setCombatAttributes(46, true);
+    ped.setCombatAttributes(17, true);
+    ped.setCombatAttributes(5, true);
+    ped.setFleeAttributes(0.0, false);
+    ped.setProofs(false, false, false, false, false, false, false, false);
+    oldRunning = false;
+    noFollow = false;
+    ped.taskFollowToOffsetOf(localPlayer.handle, 1.5, 1.5, 1.5, 1.5, -1, 10, true);
+});
+
+mp.events.add("Client:FollowPetStop", (ped) => {
+    oldRunning = false;
+    noFollow = true;
+    ped.clearTasks();
+    ped.freezePosition(true);
+});
+
+mp.events.add("Client:DeletePet", () => {
+    noFollow = false;
+    ownPet = null;
+    oldRunning = false;
 });
 
 //Chat

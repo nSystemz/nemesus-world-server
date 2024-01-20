@@ -1287,6 +1287,12 @@ namespace NemesusWorld.Controllers
                                     Helper.SendNotificationWithoutButton(player, "Soviele Snowballs kannst du nicht mehr tragen!", "error", "top-end");
                                     return;
                                 }
+                                Items petItem = ItemsController.GetItemByItemName(player, "Haustier");
+                                if (globalitem.description == "Haustier" && petItem != null)
+                                {
+                                    Helper.SendNotificationWithoutButton(player, "Du hast bereits ein Haustier!", "error", "top-end");
+                                    return;
+                                }
                                 itemListGlobal.Remove(globalitem);
                                 if (globalitem.objectHandle != null)
                                 {
@@ -1665,6 +1671,12 @@ namespace NemesusWorld.Controllers
                                     if (!CanPlayerHoldItem(player, (getItem.weight * getItem.amount)))
                                     {
                                         Helper.SendNotificationWithoutButton(player, "Du kannst das Item nichtmehr tragen!", "error", "top-end");
+                                        return;
+                                    }
+                                    Items petItem = ItemsController.GetItemByItemName(player, "Haustier");
+                                    if (getItem.description == "Haustier" && petItem != null)
+                                    {
+                                        Helper.SendNotificationWithoutButton(player, "Du hast bereits ein Haustier!", "error", "top-end");
                                         return;
                                     }
                                     bool setdouble = false;
@@ -3060,6 +3072,49 @@ namespace NemesusWorld.Controllers
                                         OnShowInventory(player, 1);
                                         return;
                                     }
+                                    else if(item.description == "Haustier")
+                                    {
+                                        if (player.IsInVehicle)
+                                        {
+                                            Helper.SendNotificationWithoutButton(player, "Du musst zuerst aus deinem Fahrzeug aussteigen!", "error");
+                                            return;
+                                        }
+                                        if (tempData.pet == null)
+                                        {
+                                            uint pedHash = Helper.GetPetHashFromName(item.props);
+                                            if(pedHash == 0xAAAAAAAA)
+                                            {
+                                                Helper.SendNotificationWithoutButton(player, "Ungültiges Haustier!", "error");
+                                                return;
+                                            }
+                                            Vector3 pedPosition = Helper.GetPositionInFrontOfPlayer(player, 1.75f);
+
+                                            Ped ped = NAPI.Ped.CreatePed(pedHash, pedPosition, player.Heading+180, true, true, false, false, player.Dimension);
+                                            tempData.pet = ped;
+                                            tempData.pet.Controller = player;
+                                            tempData.pet.SetSharedData("Ped:Death", 0);
+                                            tempData.pet.SetSharedData("Ped:Name", character.petname);
+                                            tempData.petTask = 0;
+                                            Commands.cmd_animation(player, "whistle2", true);
+                                            Helper.SendNotificationWithoutButton(player, $"Du hast dein Haustier {character.petname} gerufen, benutze /pipe um es zu rufen!", "success");
+                                        }
+                                        else
+                                        {
+                                            if (!Helper.IsInRangeOfPoint(player.Position, tempData.pet.Position, 7.5f))
+                                            {
+                                                Helper.SendNotificationWithoutButton(player, "Du bist nicht in der Nähe von deinem Haustier!", "error");
+                                                return;
+                                            }
+                                            player.TriggerEvent("Client:DeletePet");
+                                            if(tempData.pet != null)
+                                            {
+                                                tempData.pet.Delete();
+                                                tempData.pet = null;
+                                            }
+                                            Commands.cmd_animation(player, "whistle2", true);
+                                            Helper.SendNotificationWithoutButton(player, "Du hast dein Haustier zurückgerufen!", "success");
+                                        }
+                                    }
                                     else if (item.description == "Horsestick")
                                     {
                                         if (player.IsInVehicle)
@@ -3319,6 +3374,11 @@ namespace NemesusWorld.Controllers
                                     }
                                 }
                             }
+                            if(item.description == "Haustier" && tempData.pet != null)
+                            {
+                                Helper.SendNotificationWithoutButton(player, "Du musst zuerst dein Haustier zurückrufen!", "error");
+                                return;
+                            }
                             ItemsGlobal itemglobal = new ItemsGlobal();
                             itemglobal.itemid = GetFreeItemIDGlobal();
                             itemglobal.description = item.description;
@@ -3372,6 +3432,12 @@ namespace NemesusWorld.Controllers
                             if (target == null)
                             {
                                 Helper.SendNotificationWithoutButton(player, "Ungültiger Spieler!", "error", "top-end");
+                                return;
+                            }
+                            Items petItem = ItemsController.GetItemByItemName(target, "Haustier");
+                            if (item.description == "Haustier" && petItem != null)
+                            {
+                                Helper.SendNotificationWithoutButton(player, "Der Spieler hat schon ein Haustier!", "error", "top-end");
                                 return;
                             }
                             if (!CanPlayerHoldItem(target, (item.weight * amount)))
@@ -3548,7 +3614,7 @@ namespace NemesusWorld.Controllers
                         if (globalitem != null)
                         {
                             globalitem.itemid = GetFreeItemIDGlobal();
-                            if (globalitem.owneridentifier == "Ground")
+                            if (globalitem.owneridentifier == "Ground" && globalitem.amount > 0)
                             {
                                 globalitem.objectHandle = NAPI.Object.CreateObject((int)Convert.ToInt64(globalitem.hash), new Vector3(globalitem.posx, globalitem.posy, globalitem.posz), new Vector3(0.0f, 0.0f, 0.0f), 255, globalitem.dimension);
                                 globalitem.textHandle = NAPI.TextLabel.CreateTextLabel("" + globalitem.amount + "x " + globalitem.description + "", new Vector3(globalitem.posx, globalitem.posy, globalitem.posz + 0.3f), 10.0f, 0.5f, 4, new Color(255, 255, 255), false, globalitem.dimension);
@@ -3609,7 +3675,7 @@ namespace NemesusWorld.Controllers
             {
                 if (name.ToLower().Contains("ec-karte") || name.ToLower().Contains("hausschlüssel") || name.ToLower().Contains("mietschlüssel") || name.ToLower().Contains("fahrzeugschlüssel") || name.ToLower().Contains("bizzschlüssel") || name.ToLower().Contains("benzinkanister") || name.ToLower().Contains("smartphone") || name.ToLower().Contains("f-zeugnis") || name.ToLower().Contains("feuerzeug") || name.ToLower().Contains("angel")
                 || name.ToLower().Contains("schweissgerät") || name.ToLower().Contains("drohne") || name.ToLower().Contains("kleines-messer") || name.ToLower().Contains("funkgerät") || name.ToLower().Contains("rezept") || name.ToLower().Contains("glowstick") || name.ToLower().Contains("horsestick") || name.ToLower().Contains("gehstock") || name.ToLower().Contains("l-schein") || name.ToLower().Contains("parkkralle") || name.ToLower().Contains("schwefelsäure") 
-                || name.ToLower().Contains("frostschutzmittel") || name.ToLower().Contains("backmischung") || name.ToLower().Contains("spitzhacke") || name.ToLower().Contains("kleine-schaufel") || name.ToLower().Contains("busticket") || name.ToLower().Contains("filmkamera") || name.ToLower().Contains("mikrofon") || name.ToLower().Contains("defribrilator") || name.ToLower().Contains("stethoskop"))
+                || name.ToLower().Contains("frostschutzmittel") || name.ToLower().Contains("backmischung") || name.ToLower().Contains("spitzhacke") || name.ToLower().Contains("kleine-schaufel") || name.ToLower().Contains("busticket") || name.ToLower().Contains("filmkamera") || name.ToLower().Contains("mikrofon") || name.ToLower().Contains("defribrilator") || name.ToLower().Contains("stethoskop") || name.ToLower().Contains("haustier"))
                 {
                     return true;
                 }

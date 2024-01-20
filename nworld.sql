@@ -591,7 +591,8 @@ INSERT INTO `business` (`id`, `posx`, `posy`, `posz`, `price`, `name`, `name2`, 
 (48, 1989.69, 3055.46, 47.2151, 85000, 'Yellow Jack Bar', 'Yellow Jack Bar', 'n/A', 0, 2000, 1, 0, 0, 30, 93, 0, 0, 10000, 50),
 (49, -1392.54, -588.187, 30.257, 98500, 'Bahama Mamas', 'Bahama Mamas', 'n/A', 0, 2000, 1, 0, 0, 30, 93, 0, 0, 10000, 50),
 (50, 2854.04, 1502.15, 24.7244, 500000, 'Kraftwerk Palmer-Taylor', 'Kraftwerk Palmer-Taylor', 'n/A', 0, 2000, 1, 0, 0, 30, 767, 0, 0, 10000, 50),
-(51, 528.381, -1603.14, 29.2993, 500000, 'Kraftwerk Rancho', 'Kraftwerk Rancho', 'n/A', 0, 2000, 1, 0, 0, 30, 767, 0, 0, 10000, 51);
+(51, 528.381, -1603.14, 29.2993, 500000, 'Kraftwerk Rancho', 'Kraftwerk Rancho', 'n/A', 0, 2000, 1, 0, 0, 30, 767, 0, 0, 10000, 51),
+(52, -1330.1088, -266.6768, 41.954575, 255000, 'Haustierverkauf', 'Haustierverkauf', 'n/A', 0, 2000, 1, 0, 0, 30, 141, 0, 0, 10000, 51);
 
 -- --------------------------------------------------------
 
@@ -707,7 +708,8 @@ CREATE TABLE `characters` (
   `adcount` int(5) NOT NULL DEFAULT 0,
   `guessvalue` int(5) NOT NULL DEFAULT 0,
   `jobless` int(1) NOT NULL DEFAULT 0,
-  `friends` varchar(500) NOT NULL DEFAULT ''
+  `friends` varchar(500) NOT NULL DEFAULT '',
+  `petname` varchar(500) NOT NULL DEFAULT 'n/A'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -715,7 +717,7 @@ CREATE TABLE `characters` (
 --
 
 INSERT INTO `characters` (`id`, `userid`, `name`, `json`, `cash`, `birth`, `bank`, `size`, `eyecolor`, `job`, `minijob`, `lastonline`, `licenses`, `education`, `origin`, `skills`, `appearance`, `gender`, `faction`, `rang`, `faction_dutytime`, `faction_since`, `last_spawn`, `ucp_privat`, `ck`, `mygroup`, `closed`, `tutorialstep`, `health`, `armor`, `thirst`, `hunger`, `screen`, `lastpos`, `items`, `inhouse`, `defaultbank`, `online`, `truckerskill`, `nextpayday`, `payday_points`, `sellprods`, `abusemoney`, `lastsmartphone`, `thiefskill`, `fishingskill`, `busskill`, `farmingskill`, `animations`, `walkingstyle`, `clothing`, `factionduty`, `sapoints`, `swat`, `arrested`, `cell`, `dutyjson`, `death`, `disease`, `craftingskill`, `robcooldown`, `adcount`, `guessvalue`, `jobless`, `friends`) VALUES
-(1, 1, 'Test Char', '{\"birth\":\"22.10.1991\",\"origin\":\"Los Santos\",\"hair\":[1,16,0],\"beard\":[255,0],\"blendData\":[12,0,0,0,0,0],\"faceFeatures\":[0.9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"clothing\":[15,15,14,34,15,0,255,255,0,255,255,255,0,0,0],\"clothingColor\":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"headOverlays\":[23,14,255,-1,255,-1,-1,-1,255,-1,-1,-1],\"headOverlaysColors\":[0,0,0,0,0,0,0,0,0,0,0,0],\"eyeColor\":0,\"gender\":true}', 1104983, '12.12.1980', 0, '01m - 20cm', 'Blau', 1, 0, 1682942061, '0|0|1|0|0|0|0', 'Test', 'Los Santos', 'High School Abschluss', 'Test', 1, 0, 0, 0, 1682115269, 'Los-Santos', 1, 1634304377, 19, 0, 4, 100, 7, 0, 0, 'https://i.imgur.com/RdI0oWK.jpg', '-541,6512|-210,75754|37,649796|-153,134|0', '[]', -1, 'SA3701-459250', 1, 225, 0, 20, 144, 0, '0189771044', 32, 47, 36, 150, '[\"n/A\",\"n/A\",\"n/A\",\"n/A\",\"n/A\",\"n/A\",\"n/A\",\"n/A\",\"n/A\"]', 'move_m@multiplayer', '1,1,1,1,1,1,1,1', 1, 2, 0, 0, 0, '{\"clothing\":[452,0,121,0,179,0,56,149,0,0,0,0,155,0,0,0],\"clothingColor\":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}', 0, 2, 27, 1672071991, 0, 375, 0, '');
+(1, 1, 'Test Char', '{\"birth\":\"22.10.1991\",\"origin\":\"Los Santos\",\"hair\":[1,16,0],\"beard\":[255,0],\"blendData\":[12,0,0,0,0,0],\"faceFeatures\":[0.9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"clothing\":[15,15,14,34,15,0,255,255,0,255,255,255,0,0,0],\"clothingColor\":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"headOverlays\":[23,14,255,-1,255,-1,-1,-1,255,-1,-1,-1],\"headOverlaysColors\":[0,0,0,0,0,0,0,0,0,0,0,0],\"eyeColor\":0,\"gender\":true}', 1104983, '12.12.1980', 0, '01m - 20cm', 'Blau', 1, 0, 1682942061, '0|0|1|0|0|0|0', 'Test', 'Los Santos', 'High School Abschluss', 'Test', 1, 0, 0, 0, 1682115269, 'Los-Santos', 1, 1634304377, 19, 0, 4, 100, 7, 0, 0, 'https://i.imgur.com/RdI0oWK.jpg', '-541,6512|-210,75754|37,649796|-153,134|0', '[]', -1, 'SA3701-459250', 1, 225, 0, 20, 144, 0, '0189771044', 32, 47, 36, 150, '[\"n/A\",\"n/A\",\"n/A\",\"n/A\",\"n/A\",\"n/A\",\"n/A\",\"n/A\",\"n/A\"]', 'move_m@multiplayer', '1,1,1,1,1,1,1,1', 1, 2, 0, 0, 0, '{\"clothing\":[452,0,121,0,179,0,56,149,0,0,0,0,155,0,0,0],\"clothingColor\":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}', 0, 2, 27, 1672071991, 0, 375, 0, '', 'n/A');
 
 -- --------------------------------------------------------
 
@@ -4768,7 +4770,7 @@ ALTER TABLE `bans`
 -- AUTO_INCREMENT für Tabelle `business`
 --
 ALTER TABLE `business`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT für Tabelle `busroutes`
@@ -4888,7 +4890,7 @@ ALTER TABLE `gangzones`
 -- AUTO_INCREMENT für Tabelle `garbageroutes`
 --
 ALTER TABLE `garbageroutes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT für Tabelle `groups`
@@ -4936,7 +4938,7 @@ ALTER TABLE `invoices`
 -- AUTO_INCREMENT für Tabelle `itemmodels`
 --
 ALTER TABLE `itemmodels`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=138;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=139;
 
 --
 -- AUTO_INCREMENT für Tabelle `lifeinvaderads`

@@ -1399,7 +1399,7 @@ namespace NemesusWorld.Utils
         }
 
         [RemoteEvent("Server:PlayDeathAnim")]
-        public static void PlayerDeathAnim(Player player, bool ignore = false)
+        public static void OnPlayDeathAnim(Player player)
         {
             try
             {
@@ -1421,7 +1421,7 @@ namespace NemesusWorld.Utils
             }
             catch (Exception e)
             {
-                Helper.ConsoleLog("error", $"[PlayerDeathAnim]: " + e.ToString());
+                Helper.ConsoleLog("error", $"[OnPlayDeathAnim]: " + e.ToString());
             }
         }
 
@@ -2007,6 +2007,7 @@ namespace NemesusWorld.Utils
             {
                 try
                 {
+                    if (garbageList.Count <= 0) return;
                     while (garbageCount < 150)
                     {
                         Random random = new Random();
@@ -3895,6 +3896,10 @@ namespace NemesusWorld.Utils
                                     player.TriggerEvent("Client:LoadIPL", House.GetInteriorIPL(house.interior));
                                     SetPlayerPosition(player, House.GetHouseExitPoint(house.interior));
                                     player.Dimension = Convert.ToUInt32(house.id);
+                                    if (tempData.pet != null)
+                                    {
+                                        Helper.PetRefresh(player, true);
+                                    }
                                     character.inhouse = house.id;
                                     Furniture.UpdateMöbelList(player, House.GetFurnitureForHouse(house.id));
                                     player.SetOwnSharedData("Player:InHouse", house.id);
@@ -5480,7 +5485,7 @@ namespace NemesusWorld.Utils
                                     }
                                     else if (character2.death == true)
                                     {
-                                        PlayerDeathAnim(getPlayer);
+                                        OnPlayDeathAnim(getPlayer);
                                     }
                                     else
                                     {
@@ -6161,7 +6166,7 @@ namespace NemesusWorld.Utils
                             }
                         }
                         String rules = "ID,Fahrzeugname,Nummernschild,Aktion";
-                        player.TriggerEvent("Client:ShowCenterMenu", rules, NAPI.Util.ToJson(centerMenu), "Hausgarage");
+                        player.TriggerEvent("Client:ShowCenterMenu", rules, NAPI.Util.ToJson(centerMenu.Select(x => x.var4).Distinct()), "Hausgarage");
                         return;
                     }
                     else
@@ -6201,7 +6206,7 @@ namespace NemesusWorld.Utils
                     }
                     String rules = "ID,Fahrzeugname,Nummernschild,Aktion";
                     string name = $"{bizz.name} - {Convert.ToInt32(315 * bizz.multiplier)}$ pro Payday Garagenkosten!";
-                    player.TriggerEvent("Client:ShowCenterMenu", rules, NAPI.Util.ToJson(centerMenu), bizz.name);
+                    player.TriggerEvent("Client:ShowCenterMenu", rules, NAPI.Util.ToJson(centerMenu.Select(x => x.var4).Distinct()), bizz.name);
                     return;
                 }
                 //Secruity
@@ -7675,6 +7680,11 @@ namespace NemesusWorld.Utils
                     }
                     ShowTattooShop(player);
                 }
+                //Haustier Shop
+                if (IsInRangeOfPoint(player.Position, new Vector3(-1326.8887, -268.52347, 41.652397), 2.15f) && player.Dimension == 0 && !player.IsInVehicle)
+                {
+                    Helper.ShowPreShop(player, "Haustierverkauf", 0, 1, 1);
+                }
                 //Ammunation
                 if (IsAtAmmunation(player))
                 {
@@ -8344,6 +8354,10 @@ namespace NemesusWorld.Utils
                                 player.TriggerEvent("Client:LoadIPL", House.GetInteriorIPL(house.interior));
                                 SetPlayerPosition(player, House.GetHouseExitPoint(house.interior));
                                 player.Dimension = Convert.ToUInt32(house.id);
+                                if (tempData.pet != null)
+                                {
+                                    Helper.PetRefresh(player, true);
+                                }
                                 character.inhouse = house.id;
                                 player.SetOwnSharedData("Player:InHouse", house.id);
                                 Furniture.UpdateMöbelList(player, House.GetFurnitureForHouse(house.id));
@@ -8377,6 +8391,10 @@ namespace NemesusWorld.Utils
                                 }
                                 SetPlayerPosition(player, house.position);
                                 player.Dimension = (uint)house.dimension;
+                                if (tempData.pet != null)
+                                {
+                                    Helper.PetRefresh(player, true);
+                                }
                                 character.inhouse = -1;
                                 player.SetOwnSharedData("Player:InHouse", -1);
                                 Furniture.UpdateMöbelList(player, House.GetFurnitureForHouse(house.id));
@@ -9500,7 +9518,7 @@ namespace NemesusWorld.Utils
             {
                 TempData tempData = Helper.GetCharacterTempData(player);
                 player.TriggerEvent("Client:HideWheel2");
-                if (use.Length > 3)
+                if (use.Length >= 3)
                 {
                     switch (use)
                     {
@@ -9669,7 +9687,7 @@ namespace NemesusWorld.Utils
                                                 }
                                                 else if (character2.death == true)
                                                 {
-                                                    PlayerDeathAnim(getPlayer);
+                                                    OnPlayDeathAnim(getPlayer);
                                                 }
                                                 else
                                                 {
@@ -9689,6 +9707,11 @@ namespace NemesusWorld.Utils
                                     }
                                 }
                                 SendNotificationWithoutButton(player, "Du ziehst keinen mehr vor dir her/trägst keinen mehr!", "error");
+                                break;
+                            }
+                        case "dog":
+                            {
+                                Commands.CMD_pipe(player);
                                 break;
                             }
                     }
@@ -11222,6 +11245,10 @@ namespace NemesusWorld.Utils
                 PetaPoco.Database db = new PetaPoco.Database(General.Connection);
                 foreach (ShopItems shopItem in db.Fetch<ShopItems>("SELECT * FROM shopitems"))
                 {
+                    if(shopItem.shoplabel.ToLower().Contains("waffenkammer") && shopItem.itemname == "Haustier")
+                    {
+                        shopItem.itemprice = 3;
+                    }
                     shopItemList.Add(shopItem);
                 }
             }
@@ -11677,11 +11704,16 @@ namespace NemesusWorld.Utils
                 if (tempData == null || character == null) return;
                 Business bizz = Business.GetClosestBusiness(player, 40.5f);
                 if ((bizz != null && shopname != "n/A") || shopname.ToLower() == "mechatronikermenü" || shopname.ToLower() == "jägermenü" || shopname.ToLower() == "angelmenü" || shopname.ToLower() == "schatzsuchermenü" || shopname.ToLower() == "busfahrermenü" || shopname.ToLower() == "müllmannmenü" || shopname.ToLower() == "routenauswahl" || shopname.ToLower() == "müllroutenauswahl" || shopname.ToLower() == "ticketverkauf" || shopname.ToLower() == "taxifahrermenü" || shopname.ToLower() == "kanalreinigermenü"
-                || shopname.ToLower() == "landwirtmenü" || shopname.ToLower() == "animationsmenü" || shopname.ToLower() == "animationsauswahl" || shopname.ToLower() == "laufstilauswahl" || shopname.ToLower() == "geldlieferantmenü" || shopname.ToLower() == "fahrschule" || shopname.ToLower() == "police-department" || shopname.ToLower() == "waffenkammer lspd" || shopname.ToLower() == "lager lsrc" || shopname.ToLower() == "lsrc dach" || shopname.ToLower() == "lager acls" || shopname.ToLower() == "gutschein erstellen")
+                || shopname.ToLower() == "landwirtmenü" || shopname.ToLower() == "animationsmenü" || shopname.ToLower() == "animationsauswahl" || shopname.ToLower() == "laufstilauswahl" || shopname.ToLower() == "geldlieferantmenü" || shopname.ToLower() == "fahrschule" || shopname.ToLower() == "police-department" || shopname.ToLower() == "waffenkammer lspd" || shopname.ToLower() == "lager lsrc" || shopname.ToLower() == "lsrc dach" || shopname.ToLower() == "lager acls" || shopname.ToLower() == "gutschein erstellen" || shopname.ToLower() == "haustierverkauf")
                 {
                     string text1 = "n/A";
                     string text2 = "n/A";
                     tempData.lastShop = shopname;
+                    if (shopname.ToLower() == "haustierverkauf")
+                    {
+                        text1 = "Husky,Pudel,Mops,Retriever,Rottweiler,Westy,Katze,Abbrechen";
+                        text2 = "8500,8500,8500,8500,8500,8500,8500,0";
+                    }
                     if (shopname.ToLower() == "waffenkammer lspd")
                     {
                         if (Helper.IsInRangeOfPoint(player.Position, new Vector3(484.85513, -1003.6393, 25.734646), 2.75f))
@@ -12305,6 +12337,10 @@ namespace NemesusWorld.Utils
                 TempData tempData = GetCharacterTempData(player);
                 Account account = GetAccountData(player);
                 Business bizz = Business.GetClosestBusiness(player, 40.5f);
+                if (IsInRangeOfPoint(player.Position, new Vector3(-1377.5298, -629.2274, 30.819584), 4.15f))
+                {
+                    bizz = Business.GetClosestBusiness(player, 85.5f);
+                }
                 Bank bank = BankController.GetDefaultBank(player, character.defaultbank);
                 if (itemname.Length > 0)
                 {
@@ -12639,7 +12675,16 @@ namespace NemesusWorld.Utils
                                         SendNotificationWithoutButton(player, "Keine Berechtigung!", "error", "top-end");
                                         return;
                                     }
+                                    if (character.rang < 6 && item.description == "Haustier")
+                                    {
+                                        SendNotificationWithoutButton(player, "Keine Berechtigung!", "error", "top-end");
+                                        return;
+                                    }
                                     Items newitem = null;
+                                    if (itemname == "Haustier")
+                                    {
+                                        props = "Shepherd";
+                                    }
                                     newitem = ItemsController.CreateNewItem(player, character.id, itemname, "Player", size, ItemsController.GetFreeItemID(player), props, "LSPD-Waffenkammer", character.name);
                                     if (newitem != null)
                                     {
@@ -13340,7 +13385,7 @@ namespace NemesusWorld.Utils
                 if (text1.Length > 0)
                 {
                     if ((bizz == null || tempData.lastShop == "n/A") && tempData.lastShop.ToLower() != "mechatronikermenü" && tempData.lastShop.ToLower() != "jägermenü" && tempData.lastShop.ToLower() != "angelmenü" && tempData.lastShop.ToLower() != "schatzsuchermenü" && tempData.lastShop.ToLower() != "müllmannmenü" && tempData.lastShop.ToLower() != "busfahrermenü" && tempData.lastShop.ToLower() != "routenauswahl" && tempData.lastShop.ToLower() != "müllroutenauswahl" && tempData.lastShop.ToLower() != "ticketverkauf" && tempData.lastShop.ToLower() != "taxifahrermenü" && tempData.lastShop.ToLower() != "kanalreinigermenü" && tempData.lastShop.ToLower() != "landwirtmenü"
-                    && tempData.lastShop.ToLower() != "animationsmenü" && tempData.lastShop.ToLower() != "animationsauswahl" && tempData.lastShop.ToLower() != "laufstilauswahl" && tempData.lastShop.ToLower() != "geldlieferantmenü" && tempData.lastShop.ToLower() != "fahrschule" && tempData.lastShop.ToLower() != "police-department" && tempData.lastShop.ToLower() != "waffenkammer lspd" && tempData.lastShop.ToLower() != "lager lsrc" && tempData.lastShop.ToLower() != "lsrc dach" && tempData.lastShop.ToLower() != "lager acls" && tempData.lastShop.ToLower() != "gutschein erstellen")
+                    && tempData.lastShop.ToLower() != "animationsmenü" && tempData.lastShop.ToLower() != "animationsauswahl" && tempData.lastShop.ToLower() != "laufstilauswahl" && tempData.lastShop.ToLower() != "geldlieferantmenü" && tempData.lastShop.ToLower() != "fahrschule" && tempData.lastShop.ToLower() != "police-department" && tempData.lastShop.ToLower() != "waffenkammer lspd" && tempData.lastShop.ToLower() != "lager lsrc" && tempData.lastShop.ToLower() != "lsrc dach" && tempData.lastShop.ToLower() != "lager acls" && tempData.lastShop.ToLower() != "gutschein erstellen" && tempData.lastShop.ToLower() != "haustierverkauf")
                     {
                         SendNotificationWithoutButton(player, $"Ungültige Interaktion!", "error");
                         return;
@@ -14235,7 +14280,7 @@ namespace NemesusWorld.Utils
                                                      155.97096f};
 
                                 Random rand = new Random();
-                                int index = rand.Next(5);
+                                int index = rand.Next(4);
                                 SendNotificationWithoutButton(player, "Hier das Fahrzeug, bring mir das aber wieder im Ganzen zurück!", "success", "top-end", 2500);
                                 tempData.jobVehicle = Cars.createNewCar("tractor2", spawnTractor[index], spawnTractorRot[index], 53, 53, "LS-S-155" + player.Id, "Landwirt", true, true, false);
                                 tempData.jobVehicle.Dimension = 0;
@@ -14295,7 +14340,7 @@ namespace NemesusWorld.Utils
                             if (tempData.jobVehicle2 == null)
                             {
                                 SendNotificationWithoutButton(player, "Hier der Anhänger, bring mir den aber wieder im Ganzen zurück!", "success", "top-end", 2500);
-                                tempData.jobVehicle2 = Cars.createNewCar("raketrailer", new Vector3(2237.197, 5135.213, 55.639217+0.05), 115.81946f, 53, 53, "LS-S-155" + player.Id, "Landwirt", true, true, false);
+                                tempData.jobVehicle2 = Cars.createNewCar("raketrailer", new Vector3(2237.197, 5135.213, 55.639217 + 0.05), 115.81946f, 53, 53, "LS-S-155" + player.Id, "Landwirt", true, true, false);
                                 tempData.jobVehicle2.Dimension = 0;
                                 player.TriggerEvent("Client:CreateMarker", 2237.197, 5135.213, 55.639217 + 0.75, 3);
                             }
@@ -15258,6 +15303,42 @@ namespace NemesusWorld.Utils
                             CreateAdminLog("gutscheinlog", $"{account.name} hat einen {text1} Gutschein ({coupon}) mit {tempData.tempValue} Anwendungen erstellt!");
                             SendNotificationWithoutButton(player, $"Gutschein erstellt: {coupon} - (Zwischenablage)!", "info", "top-left", 6250);
                             player.TriggerEvent("Client:CopyToClipboard", coupon);
+                        }
+                    }
+                    else if (tempData.lastShop == "Haustierverkauf")
+                    {
+                        if (text1 == "Abbrechen")
+                        {
+                            player.TriggerEvent("Client:PressedEscape");
+                        }
+                        else
+                        {
+                            string props = text1;
+                            if(bizz == null || bizz.products <= 75)
+                            {
+                                bizz.products = 0;
+                                Helper.SendNotificationWithoutButton(player, "Die Haustiere sind leider ausverkauft!", "error", "top-end");
+                                return;
+                            }
+                            Items petItem = ItemsController.GetItemByItemName(player, "Haustier");
+                            if (petItem != null)
+                            {
+                                Helper.SendNotificationWithoutButton(player, "Du besitzt bereits ein Haustier!", "error", "top-end");
+                                return;
+                            }
+                            if (!ItemsController.CanPlayerHoldItem(player, 3500))
+                            {
+                                SendNotificationWithoutButton(player, "Du hast keinen Platz mehr für das Haustier!", "error", "top-end");
+                                return;
+                            }
+                            Items newitem = ItemsController.CreateNewItem(player, character.id, "Haustier", "Player", 1, ItemsController.GetFreeItemID(player), props);
+                            if (newitem != null)
+                            {
+                                tempData.itemlist.Add(newitem);
+                            }
+                            CharacterController.SetMoney(player, -8500);
+                            Business.ManageBizzCash(bizz, 8500);
+                            SendNotificationWithoutButton(player, $"Du hast dir ein neues Haustier ({props}) erworben, rufe dieses über dein Inventar zu dir!", "success", "top-left", 4250);
                         }
                     }
                     else if (tempData.lastShop == "LSRC Dach")
@@ -18248,6 +18329,107 @@ namespace NemesusWorld.Utils
             retString = retString.Replace("Ö", "&Ouml;");
             retString = retString.Replace("Ü", "&Uuml;");
             return retString;
+        }
+
+        //Pet
+        public static void PetRefresh(Player player, bool inFront = false)
+        {
+            try
+            {
+                TempData tempData = Helper.GetCharacterTempData(player);
+                Character character = Helper.GetCharacterData(player);
+
+                if (tempData == null || tempData.pet == null) return;
+
+                Vector3 pedPosition = null;
+
+                NAPI.Task.Run(() =>
+                {
+                    foreach (Ped ped in NAPI.Pools.GetAllPeds())
+                    {
+                        if (ped == tempData.pet)
+                        {
+                            if (ped.Controller == null)
+                            {
+                                ped.Controller = player;
+                            }
+                            if (ped.GetSharedData<int>("Ped:Death") == 0)
+                            {
+                                if (inFront == false && character.inhouse == -1)
+                                {
+                                    pedPosition = Helper.GetPositionBehindOfPlayer(player, 1.75f);
+                                }
+                                else
+                                {
+                                    pedPosition = Helper.GetPositionInFrontOfPlayer(player, 1.75f);
+                                }
+                                tempData.pet.Position = pedPosition;
+                                tempData.pet.Rotation.Z = player.Rotation.Z + 180;
+                                tempData.pet.Dimension = player.Dimension;
+                                tempData.pet.Controller = player;
+                                player.TriggerEvent("Client:FollowPet", ped);
+                            }
+                            break;
+                        }
+                    }
+                }, delayTime: 1500);
+            }
+            catch(Exception e)
+            {
+                Helper.ConsoleLog("error", $"[PetRefresh]: " + e.ToString());
+            }
+        }
+
+        public static uint GetPetHashFromName(string petName)
+        {
+            try
+            {
+                switch (petName.ToLower())
+                {
+                    case "husky":
+                        {
+                            return 0x4E8F95A2;
+                        }
+                    case "pudel":
+                        {
+                            return 0x431D501C;
+                        }
+                    case "mops":
+                        {
+                            return 0x6D362854;
+                        }
+                    case "retriever":
+                        {
+                            return 0x349F33E1;
+                        }
+                    case "rottweiler":
+                        {
+                            return 0x9563221D;
+                        }
+                    case "shepherd":
+                        {
+                            return 0x431FC24C;
+                        }
+                    case "westy":
+                        {
+                            return 0xAD7844BB;
+                        }
+                    case "katze":
+                        {
+                            return 0x573201B8;
+                        }
+                    default:
+                        {
+                            return 0xAAAAAAAA;
+                        }
+
+                }
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[GetPetHashFromName]: " + e.ToString());
+            }
+            return 0xAAAAAAAA;
         }
     }
 }

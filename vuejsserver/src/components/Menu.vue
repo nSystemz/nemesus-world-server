@@ -3894,8 +3894,8 @@
                                                                 </thead>
                                                                 <tbody>
                                                                     <tr>
-                                                                        <td>Der Jobstandort ist auf der Karte mit einem
-                                                                            grünen Reh
+                                                                        <td>Der Jobstandort ist auf der Karte mit einer
+                                                                            grünen Pflanze
                                                                             markiert.</td>
                                                                     </tr>
                                                                 </tbody>
@@ -4938,6 +4938,14 @@
                                                                 <tr>
                                                                     <td>/addfriend & /deletefriend</td>
                                                                     <td>Freund hinzufügen/löschen</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>/pipe</td>
+                                                                    <td>Haustier rufen</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>/petname</td>
+                                                                    <td>Haustiernamen festlegen</td>
                                                                 </tr>
                                                                 <tr v-if="voicerp == 0">
                                                                     <td>/me - /do</td>

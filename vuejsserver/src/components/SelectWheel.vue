@@ -8,7 +8,7 @@
         <div class="arc"><i @click="setWheel(5,whichwheel)" class="fas fa-id-card-alt" style="color:#3F6791;text-shadow: 0 0 2px #000;"></i></div>
         <div class="arc"><i @click="setWheel(6,whichwheel)" class="fa-solid fa-passport" style="color:#3F6791;text-shadow: 0 0 2px #000;"></i></div>
         <div class="arc"><i @click="setWheel(7,whichwheel)" class="fas fa-user" style="color:#3F6791;text-shadow: 0 0 2px #000;"></i></div>
-        <div class="arc"><i @click="setWheel(8,whichwheel)" class="" style="color:#3F6791;text-shadow: 0 0 2px #000;"></i></div>
+        <div class="arc"><i @click="setWheel(8,whichwheel)" class="fa-solid fa-dog" style="color:#3F6791;text-shadow: 0 0 2px #000;"></i></div>
     </div>
     <div class="wheel" ref="wheel" v-if="whichwheel == 2">
         <div class="arc"><img @click="setWheel(1,whichwheel)" src="../assets/images/clothshop/kopfbedeckung.png"></div>
@@ -176,6 +176,10 @@ export default {
                             this.showswal = false;
                             // eslint-disable-next-line no-undef
                             mp.trigger("Client:UseWheel", "invehicle", 1);
+                        } else if (index == 8) {
+                            this.showswal = false;
+                            // eslint-disable-next-line no-undef
+                            mp.trigger("Client:UseWheel", "dog", 1);
                         } else {
                             this.showswal = false;
                             // eslint-disable-next-line no-undef

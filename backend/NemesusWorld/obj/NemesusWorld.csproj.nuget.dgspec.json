@@ -44,10 +44,6 @@
               "target": "Package",
               "version": "[4.0.3, )"
             },
-            "Discord.Net": {
-              "target": "Package",
-              "version": "[3.7.2, )"
-            },
             "Microsoft.Extensions.DependencyInjection": {
               "target": "Package",
               "version": "[6.0.0, )"
@@ -58,7 +54,7 @@
             },
             "Newtonsoft.Json": {
               "target": "Package",
-              "version": "[13.0.3, )"
+              "version": "[12.0.3, )"
             },
             "PetaPoco.Compiled": {
               "target": "Package",

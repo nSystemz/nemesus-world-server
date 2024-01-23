@@ -51,8 +51,8 @@ mp.events.add('Client:StopFireById', () => {
     mp.game.fire.stopFireInRange(mp.players.local.position.x, mp.players.local.position.y, mp.players.local.position.z, 3500);
 
     if (FireEntityIdArray.length !== 0) {
-        if (updatetimer) {
-            updatetimer = clearInterval(0);
+        if (updatetimer && updatetimer !== undefined) {
+            clearInterval(updatetimer);
             updatetimer = undefined;
         }
         let arrayLength = FireEntityIdArray.length;
@@ -79,7 +79,10 @@ function fireTimer() {
         if (firemod == 1) {
             firesAlive = mp.game.fire.getNumberOfFiresInRange(xPos, yPos, zPos, 25);
             if (firesAlive < 1) {
-                updatetimer = clearInterval(0);
+                if (updatetimer && updatetimer !== undefined) {
+                    clearInterval(updatetimer);
+                    updatetimer = undefined;
+                }
                 mp.events.callRemote('Server:FireComplete');
             }
         } else {
@@ -97,8 +100,8 @@ mp.events.add("playerDeath", (player, reason, killer) => {
             FireLocationBlip.destroy();
             FireLocationBlip = null;
         }
-        if (updatetimer) {
-            updatetimer = clearInterval(0);
+        if (updatetimer && updatetimer !== undefined) {
+            clearInterval(updatetimer);
             updatetimer = undefined;
         }
         FireEntityIdArray = [];
@@ -117,8 +120,8 @@ function playerQuitHandler(player, exitType, reason) {
             FireLocationBlip.destroy();
             FireLocationBlip = null;
         }
-        if (updatetimer) {
-            updatetimer = clearInterval(0);
+        if (updatetimer && updatetimer !== undefined) {
+            clearInterval(updatetimer);
             updatetimer = undefined;
         }
         FireEntityIdArray = [];

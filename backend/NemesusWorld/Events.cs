@@ -225,8 +225,6 @@ namespace NemesusWorld
                             {
                                 Helper.ConsoleLog("info", "[SERVER]: Nemesus World Gamemode erstellt von Nemesus.de erfolgreich geladen - (Text-RP)");
                             }
-                            //Discord Bot
-                            //DiscordBot.RunBotAsync();
                             //Call2Home, kann gelöscht werden dient nur zur Statistik
                             Helper.Call2Home();
                             //Materialversteck befüllen
@@ -312,17 +310,17 @@ namespace NemesusWorld
                                         {
                                             if (character.arrested == 0 && character.cell == 0)
                                             {
-                                                if (character.thirst >= 10)
+                                                if (character.thirst >= 5)
                                                 {
-                                                    character.thirst -= 10;
+                                                    character.thirst -= 5;
                                                 }
                                                 else
                                                 {
                                                     character.thirst = 0;
                                                 }
-                                                if (character.hunger >= 10)
+                                                if (character.hunger >= 5)
                                                 {
-                                                    character.hunger -= 10;
+                                                    character.hunger -= 5;
                                                 }
                                                 else
                                                 {
@@ -1318,6 +1316,7 @@ namespace NemesusWorld
                         if (tempData.pet != null)
                         {
                             player.TriggerEvent("Client:DeletePet");
+                            tempData.pet.ResetSharedData("Ped:Name");
                             tempData.pet.Delete();
                             tempData.pet = null;
                             tempData.petTask = 0;
@@ -1624,7 +1623,11 @@ namespace NemesusWorld
                                 player.SetData<int>("Player:AmmuQuiz", 0);
                             }
                         }
-                        tempData.showSmartphone = false;
+                        if (tempData.showSmartphone == true)
+                        {
+                            Helper.AddRemoveAttachments(player, "smartphone", false);
+                            tempData.showSmartphone = false;
+                        }
                         tempData.adminduty = false;
                         //Save smartphones
                         if (tempData.itemlist != null && tempData.itemlist.Count > 0)
@@ -1899,6 +1902,7 @@ namespace NemesusWorld
                     player.TriggerEvent("Client:DeletePet");
                     if (tempData.pet != null)
                     {
+                        tempData.pet.ResetSharedData("Ped:Name");
                         tempData.pet.Delete();
                         tempData.pet = null;
                         tempData.petTask = 0;
@@ -2149,7 +2153,6 @@ namespace NemesusWorld
                     {
                         SmartphoneController.OnEndCall(player);
                     }
-                    tempData.showSmartphone = false;
                     tempData.inventoysetting = "nothing";
                     if (tempData.followed == true)
                     {
@@ -2353,8 +2356,13 @@ namespace NemesusWorld
                     //ToDo: Soundlink anpassen
                     player.TriggerEvent("Client:Play3DSound", "https://nemesus-world.de/nwsounds/alarm.wav", -3);
                 }
-                //Accept Call
+                //Accept Call + Smartphone
                 player.SetData<bool>("Player:AcceptCall", false);
+                if (tempData.showSmartphone == true)
+                {
+                    Helper.AddRemoveAttachments(player, "smartphone", false);
+                    tempData.showSmartphone = false;
+                }
                 //Local Voice RP HandyPlayer
                 if (Helper.adminSettings.voicerp == 2)
                 {
@@ -2908,7 +2916,7 @@ namespace NemesusWorld
                 NAPI.TextLabel.CreateTextLabel("~b~Barkeeper Lukas Koch\n~w~Benutze Taste ~b~[F]~w~ um mit Ihm zu interagieren!", new Vector3(836.1573, -115.343544, 79.77466 + 1.2), 10.0f, 0.5f, 4, new Color(255, 255, 255), false, 0);
                 NAPI.TextLabel.CreateTextLabel("~b~Barkeeper\n~w~Benutze Taste ~b~[F]~w~ um mit Ihm zu interagieren!", new Vector3(-434.2632, 273.92822, 83.42211 + 1.2), 10.0f, 0.5f, 4, new Color(255, 255, 255), false, 0);
                 NAPI.TextLabel.CreateTextLabel("~b~Barkeeper\n~w~Benutze Taste ~b~[F]~w~ um mit Ihm zu interagieren!", new Vector3(-1391.7916, -605.65985, 30.319567 + 1.2), 10.0f, 0.5f, 4, new Color(255, 255, 255), false, 0);
-                NAPI.TextLabel.CreateTextLabel("~b~Barkeeper\n~w~Benutze Taste ~b~[F]~w~ um mit Ihm zu interagieren!", new Vector3(-1377.5298, -629.2274, 30.819584 + 1.2), 10.0f, 0.5f, 4, new Color(255, 255, 255), false, 0);
+                NAPI.TextLabel.CreateTextLabel("~b~Barkeeper\n~w~Benutze Taste ~b~[F]~w~ um mit Ihm zu interagieren!", new Vector3(-1377.5298, -629.2274, 30.819584 + 1.2), 10.0f, 0.5f, 4, new Color(255, 255, 255), true, 0);
                 //Shovel
                 NAPI.TextLabel.CreateTextLabel("~b~Schatzsucher Billy\n~w~Benutze Taste ~b~[F]~w~ um mit Ihm zu interagieren!", new Vector3(1441.0588, 3749.4375, 32.193043 + 1.2), 10.0f, 0.5f, 4, new Color(255, 255, 255), false, 0);
                 //Hall of Fame

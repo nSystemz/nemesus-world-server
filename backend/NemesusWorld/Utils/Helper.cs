@@ -1532,19 +1532,6 @@ namespace NemesusWorld.Utils
             }
         }
 
-        [RemoteEvent("Server:FingerPointSync")]
-        public static void OnFingerPoint(Player player, float camPitch, float camHeading)
-        {
-            try
-            {
-                NAPI.ClientEvent.TriggerClientEventInRange(player.Position, 100, "Client:FingerPointSync", player.Handle, camPitch, camHeading);
-            }
-            catch (Exception e)
-            {
-                Helper.ConsoleLog("error", $"[OnFingerPoint]: " + e.ToString());
-            }
-        }
-
         [RemoteEvent("Server:ShowTabMenu")]
         public static void OnShowTabMenu(Player player)
         {
@@ -6206,7 +6193,7 @@ namespace NemesusWorld.Utils
                     }
                     String rules = "ID,Fahrzeugname,Nummernschild,Aktion";
                     string name = $"{bizz.name} - {Convert.ToInt32(315 * bizz.multiplier)}$ pro Payday Garagenkosten!";
-                    player.TriggerEvent("Client:ShowCenterMenu", rules, NAPI.Util.ToJson(centerMenu.Select(x => x.var4).Distinct()), bizz.name);
+                    player.TriggerEvent("Client:ShowCenterMenu", rules, NAPI.Util.ToJson(centerMenu), bizz.name);
                     return;
                 }
                 //Secruity
@@ -11712,7 +11699,7 @@ namespace NemesusWorld.Utils
                     if (shopname.ToLower() == "haustierverkauf")
                     {
                         text1 = "Husky,Pudel,Mops,Retriever,Rottweiler,Westy,Katze,Abbrechen";
-                        text2 = "8500,8500,8500,8500,8500,8500,8500,0";
+                        text2 = "12500,12500,12500,12500,12500,12500,12500,0";
                     }
                     if (shopname.ToLower() == "waffenkammer lspd")
                     {
@@ -12613,6 +12600,11 @@ namespace NemesusWorld.Utils
                                             weaponArray = weaponItem.props.Split(",");
                                             if (weaponItem.type != 5 || (weaponItem.type == 5 && weaponArray[1] == "0" && weaponArray[4] == "LSPD-Waffenkammer"))
                                             {
+                                                if (weaponItem.description == "Haustier" && tempData.pet != null)
+                                                {
+                                                    SendNotificationWithoutButton(player, "Du musst zuerst dein Haustier zurückrufen!", "error", "top-left", 1750);
+                                                    return;
+                                                }
                                                 found = true;
                                                 foundString += $"{weaponItem.amount}x {weaponItem.description}, ";
                                                 shopItems.itemprice += weaponItem.amount;
@@ -12689,7 +12681,7 @@ namespace NemesusWorld.Utils
                                     Items newitem = null;
                                     if (itemname == "Haustier")
                                     {
-                                        props = "Shepherd";
+                                        props = "Shepherd,K9-Shepherd";
                                     }
                                     newitem = ItemsController.CreateNewItem(player, character.id, itemname, "Player", size, ItemsController.GetFreeItemID(player), props, "LSPD-Waffenkammer", character.name);
                                     if (newitem != null)
@@ -12706,6 +12698,11 @@ namespace NemesusWorld.Utils
                                     Items weaponItem = ItemsController.GetItemByItemName(player, itemname);
                                     if (weaponItem != null)
                                     {
+                                        if(weaponItem.description == "Haustier" && weaponItem.props.Split(",")[0] != "Shepherd")
+                                        {
+                                            Helper.SendNotificationWithoutButton(player, "Dieses Haustier kannst du nicht zurück legen!", "error", "top-end");
+                                            return;
+                                        }
                                         weaponArray = weaponItem.props.Split(",");
                                         if (weaponItem.type != 5 || (weaponItem.type == 5 && weaponArray[1] == "0" && weaponArray[4].ToLower().Contains("waffenkammer")))
                                         {
@@ -15319,7 +15316,7 @@ namespace NemesusWorld.Utils
                         }
                         else
                         {
-                            string props = text1;
+                            string props = text1 + ",n/A";
                             if(bizz == null || bizz.products <= 75)
                             {
                                 bizz.products = 0;
@@ -15332,6 +15329,11 @@ namespace NemesusWorld.Utils
                                 Helper.SendNotificationWithoutButton(player, "Du besitzt bereits ein Haustier!", "error", "top-end");
                                 return;
                             }
+                            if(character.cash <= 12500)
+                            {  
+                                Helper.SendNotificationWithoutButton(player, "Du hast nicht genügend Geld dabei - 12500$!", "error", "top-end");
+                                return;
+                            }
                             if (!ItemsController.CanPlayerHoldItem(player, 3500))
                             {
                                 SendNotificationWithoutButton(player, "Du hast keinen Platz mehr für das Haustier!", "error", "top-end");
@@ -15342,8 +15344,8 @@ namespace NemesusWorld.Utils
                             {
                                 tempData.itemlist.Add(newitem);
                             }
-                            CharacterController.SetMoney(player, -8500);
-                            Business.ManageBizzCash(bizz, 8500);
+                            CharacterController.SetMoney(player, -12500);
+                            Business.ManageBizzCash(bizz, 12500);
                             SendNotificationWithoutButton(player, $"Du hast dir ein neues Haustier ({props}) erworben, rufe dieses über dein Inventar zu dir!", "success", "top-left", 4250);
                         }
                     }

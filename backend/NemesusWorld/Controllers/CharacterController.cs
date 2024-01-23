@@ -1146,6 +1146,8 @@ namespace NemesusWorld.Controllers
 
                 id = character.id;
 
+                player.Heading = -146;
+
                 player.SetData("Player:Screenshot", id);
                 player.TriggerEvent("Client:TakePicture", "Char-" + id, 1);
 

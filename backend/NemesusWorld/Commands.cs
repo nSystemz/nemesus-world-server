@@ -118,6 +118,7 @@ namespace NemesusWorld
                             return;
                         }
                         props = props[0].ToString().ToUpper() + props.Substring(1);
+                        props = props + ",n/A";
                     }
                     Items newitem = ItemsController.CreateNewItem(ntarget, charactertarget.id, itemname, "Player", menge, ItemsController.GetFreeItemID(ntarget), "n/A", "Administrativ", charactertarget.name);
                     if (newitem != null)
@@ -2046,9 +2047,9 @@ namespace NemesusWorld
                 Helper.SetPlayerPosition(player, ntarget.Position.Add(new Vector3(0, 4.5, -4.5)));
                 NAPI.Task.Run(() =>
                 {
-                    player.TriggerEvent("Client:StartSpectate", ntarget.Id, target);
+                    player.TriggerEvent("Client:StartSpectate", ntarget, target);
                     player.SetData<bool>("Player:Spectate", true);
-                }, delayTime: 25);
+                }, delayTime: 125);
             }
             catch (Exception)
             {
@@ -5743,6 +5744,11 @@ namespace NemesusWorld
                     Helper.SendNotificationWithoutButton(player, "Unzureichende Adminrechte!", "error", "top-end");
                     return;
                 }
+                if(player.Vehicle != null)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Du kannst diesen Befehl nicht im Fahrzeug benutzen!", "error");
+                    return;
+                }
                 Player ntarget = Helper.GetPlayerByAccountName(target);
                 if (ntarget == null)
                 {
@@ -7170,7 +7176,7 @@ namespace NemesusWorld
                 Commands.cmd_animation(player, "whistle2", true);
                 if (tempData.petTask == 0)
                 {
-                    Helper.SendNotificationWithoutButton(player, $"Du hast dein Haustier {character.petname} gerufen!", "success", "top-end");
+                    Helper.SendNotificationWithoutButton(player, $"Du hast dein Haustier {petItem.props.Split(",")[1]} gerufen!", "success", "top-end");
                     NAPI.Task.Run(() =>
                     {
                         foreach (Ped ped in NAPI.Pools.GetAllPeds())
@@ -7193,7 +7199,7 @@ namespace NemesusWorld
                 }
                 else
                 {
-                    Helper.SendNotificationWithoutButton(player, $"Dein Haustier {character.petname} wartet jetzt hier!", "success", "top-end");
+                    Helper.SendNotificationWithoutButton(player, $"Dein Haustier {petItem.props.Split(",")[1]} wartet jetzt hier!", "success", "top-end");
                     NAPI.Task.Run(() =>
                     {
                         foreach (Ped ped in NAPI.Pools.GetAllPeds())
@@ -7235,8 +7241,21 @@ namespace NemesusWorld
                     Helper.SendNotificationWithoutButton(player, "Ungültiger Name!", "error", "top-end");
                     return;
                 }
-                character.petname = name;
-                Helper.SendNotificationWithoutButton(player, $"Der Haustiername {character.petname} wurde erfolgreich gesetzt!", "success", "top-end");
+                if(tempData.pet == null)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Du musst zuerst dein Haustier rufen!", "error", "top-end");
+                    return;
+                }
+                Items item = ItemsController.GetItemByItemName(player, "Haustier");
+                if (item == null)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Du musst zuerst dein Haustier rufen!", "error", "top-end");
+                    return;
+                }
+                if(!item.props.Contains(","))
+                {
+                    item.props = item.props + ",n/A";
+                }
                 if (tempData.pet != null)
                 {
                     NAPI.Task.Run(() =>
@@ -7245,7 +7264,10 @@ namespace NemesusWorld
                         {
                             if (ped == tempData.pet)
                             {
-                                tempData.pet.SetSharedData("Ped:Name", character.petname);
+                                String newProps = $"{item.props.Split(",")[0]},{name}";
+                                item.props = newProps;
+                                tempData.pet.SetSharedData("Ped:Name", name);
+                                Helper.SendNotificationWithoutButton(player, $"Der Haustiername {name} wurde erfolgreich gesetzt!", "success", "top-end");
                                 break;
                             }
                         }

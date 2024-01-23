@@ -5,7 +5,7 @@ mp.game.streaming.requestAnimDict("mp_car_bomb");
 
 //Animationsync
 mp.events.add('entityStreamIn', (entity) => {
-    if ((entity.type == 'player' && mp.players.exists(entity) || (entity.type == 'ped' && mp.peds.exists(entity)))  && entity.remoteId != mp.players.local.remoteId && entity.dimension == mp.players.local.dimension) {
+    if ((entity.type == 'player' && mp.players.exists(entity) || (entity.type == 'ped' && mp.peds.exists(entity))) && entity.remoteId != mp.players.local.remoteId && entity.dimension == mp.players.local.dimension) {
         if (entity.hasVariable("Player:AnimData")) {
             value = entity.getVariable("Player:AnimData");
             if (value != "0") {

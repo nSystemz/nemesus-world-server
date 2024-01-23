@@ -708,8 +708,7 @@ CREATE TABLE `characters` (
   `adcount` int(5) NOT NULL DEFAULT 0,
   `guessvalue` int(5) NOT NULL DEFAULT 0,
   `jobless` int(1) NOT NULL DEFAULT 0,
-  `friends` varchar(500) NOT NULL DEFAULT '',
-  `petname` varchar(500) NOT NULL DEFAULT 'n/A'
+  `friends` varchar(500) NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --

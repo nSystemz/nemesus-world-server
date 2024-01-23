@@ -4779,10 +4779,6 @@
                                                                         <td>Auswahlmenü öffnen</td>
                                                                     </tr>
                                                                     <tr>
-                                                                        <td>Y</td>
-                                                                        <td>Cursor anzeigen/verstecken</td>
-                                                                    </tr>
-                                                                    <tr>
                                                                         <td>P</td>
                                                                         <td>Gegenstände aufheben</td>
                                                                     </tr>

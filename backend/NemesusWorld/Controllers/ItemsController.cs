@@ -3079,9 +3079,13 @@ namespace NemesusWorld.Controllers
                                             Helper.SendNotificationWithoutButton(player, "Du musst zuerst aus deinem Fahrzeug aussteigen!", "error");
                                             return;
                                         }
+                                        if(!item.props.Contains(","))
+                                        {
+                                            item.props = item.props + ",n/A";
+                                        }
                                         if (tempData.pet == null)
                                         {
-                                            uint pedHash = Helper.GetPetHashFromName(item.props);
+                                            uint pedHash = Helper.GetPetHashFromName(item.props.Split(",")[0]);
                                             if(pedHash == 0xAAAAAAAA)
                                             {
                                                 Helper.SendNotificationWithoutButton(player, "Ungültiges Haustier!", "error");
@@ -3093,10 +3097,10 @@ namespace NemesusWorld.Controllers
                                             tempData.pet = ped;
                                             tempData.pet.Controller = player;
                                             tempData.pet.SetSharedData("Ped:Death", 0);
-                                            tempData.pet.SetSharedData("Ped:Name", character.petname);
+                                            tempData.pet.SetSharedData("Ped:Name", item.props.Split(",")[1]);
                                             tempData.petTask = 0;
                                             Commands.cmd_animation(player, "whistle2", true);
-                                            Helper.SendNotificationWithoutButton(player, $"Du hast dein Haustier {character.petname} gerufen, benutze /pipe um es zu rufen!", "success");
+                                            Helper.SendNotificationWithoutButton(player, $"Du hast dein Haustier {item.props.Split(",")[1]} gerufen, benutze /pipe um es zu rufen!", "success");
                                         }
                                         else
                                         {
@@ -3108,6 +3112,7 @@ namespace NemesusWorld.Controllers
                                             player.TriggerEvent("Client:DeletePet");
                                             if(tempData.pet != null)
                                             {
+                                                tempData.pet.ResetSharedData("Ped:Name");
                                                 tempData.pet.Delete();
                                                 tempData.pet = null;
                                             }

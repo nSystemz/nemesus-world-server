@@ -569,6 +569,15 @@ let showRecept = false;
 const movementClipSet = "move_ped_crouched";
 const strafeClipSet = "move_ped_crouched_strafing";
 const clipSetSwitchTime = 0.25;
+//Same Groups
+const relationshipNames = {
+    Player: "PLAYER",
+    Default: "RG_PLAYER_NEUTRAL",
+    SameTeam: "RG_PLAYER_TEAMMATE"
+};
+mp.players.local.setRelationshipGroupHash(mp.game.joaat(relationshipNames.Player));
+mp.game.ped.addRelationshipGroup(relationshipNames.SameTeam, 0);
+mp.game.ped.setRelationshipBetweenGroups(0, mp.game.joaat(relationshipNames.Player), mp.game.joaat(relationshipNames.SameTeam));
 //Misc
 let IdleDate = new Date();
 let playerID = 0;
@@ -778,7 +787,7 @@ mp.events.add('render', (nametags) => {
     //Damage
     mp.players.local.setSuffersCriticalHits(false); //Headshots
 
-    //Nametags
+    //Player Nametags
     if (nametagSystem == 0) {
         UpdateNameTags1(nametags);
     } else {
@@ -814,13 +823,12 @@ mp.events.add('render', (nametags) => {
     }
 
     //Seatbelt + Locked
-    if(localPlayer.vehicle && localPlayer.vehicle.getClass() != 8 && localPlayer.vehicle.getClass() != 13 && localPlayer.vehicle.getClass() != 14)
-    {
+    if (localPlayer.vehicle && localPlayer.vehicle.getClass() != 8 && localPlayer.vehicle.getClass() != 13 && localPlayer.vehicle.getClass() != 14 && localPlayer.vehicle.getClass() != 22) {
         let locked = localPlayer.vehicle.getDoorLockStatus();
-        if(locked != 1 && localPlayer.vehicle.getVariable('Vehicle:Name').toLowerCase() != "rcmavic") {
+        if (locked != 1 && localPlayer.vehicle.getVariable('Vehicle:Name').toLowerCase() != "rcmavic") {
             mp.game.controls.disableControlAction(32, 75, true);
         }
-        if(!localPlayer.getConfigFlag(32, true) && localPlayer.vehicle.getVariable('Vehicle:Name').toLowerCase() != "rcmavic") {
+        if (!localPlayer.getConfigFlag(32, true) && localPlayer.vehicle.getVariable('Vehicle:Name').toLowerCase() != "rcmavic") {
             mp.game.controls.disableControlAction(32, 75, true);
         }
     }
@@ -923,8 +931,7 @@ mp.events.add('render', (nametags) => {
                     vehiclename = vehicle.getVariable('Vehicle:Name');
                     vehiclename = vehiclename.charAt(0).toUpperCase() + vehiclename.slice(1).toLowerCase();
                     let engineHealth = vehicle.getVariable("Vehicle:EngineHealth");
-                    if(engineHealth <= 0)
-                    {
+                    if (engineHealth <= 0) {
                         engineHealth = 0;
                     }
                     mp.game.graphics.drawText(`~b~${vehiclename} [${vehicle.remoteId}]\n${vehicle.position.x.toFixed(2)}, ${vehicle.position.y.toFixed(2)}, ${vehicle.position.z.toFixed(2)}\n${vehicle.getRotation(5).x.toFixed(2)}, ${vehicle.getRotation(5).y.toFixed(2)}, ${vehicle.getRotation(5).z.toFixed(2)}\n${parseInt((100 / 1000) * engineHealth)}%
@@ -945,9 +952,8 @@ mp.events.add('render', (nametags) => {
     if (!death && spawned && (getPlayerHealth(localPlayer) - 100) < 10) {
         hideMenus();
         const getGroundZ = mp.game.gameplay.getGroundZFor3dCoord(localPlayer.position.x, localPlayer.position.y, localPlayer.position.z, parseFloat(0), false);
-        if(!localPlayer.vehicle)
-        {
-            localPlayer.position = new mp.Vector3(localPlayer.position.x, localPlayer.position.y, getGroundZ+0.1);
+        if (!localPlayer.vehicle) {
+            localPlayer.position = new mp.Vector3(localPlayer.position.x, localPlayer.position.y, getGroundZ + 0.1);
         }
         setTimeout(function () {
             mp.events.callRemote('Server:SetDeath', null, 7);
@@ -1136,10 +1142,8 @@ mp.events.add("Client:SyncThings", (pricesCsv, animationhotkeys, chair, gprices,
 })
 
 //Chat
-mp.events.add("Client:ClearChat", () =>
-{
-    if(chat)
-    {
+mp.events.add("Client:ClearChat", () => {
+    if (chat) {
         chat.execute(`chatAPI.clear();`);
     }
 });
@@ -1218,20 +1222,14 @@ mp.events.add("Client:ShowSpeedometer", () => {
 })
 
 //Spectate
-mp.events.add('Client:StartSpectate', (targetId, targetName) => {
-    maxDistance = 315;
-
+mp.events.add('Client:StartSpectate', (target, targetName) => {
     localPlayer.freezePosition(true);
 
     setTimeout(() => {
-        mp.players.forEach(p => {
-            if (specTarget == null && specName != '' && p.remoteId === targetId) {
-                specTarget = p;
-                specName = targetName;
-                specWaiting = 0;
-            }
-        });
-    }, 2215);
+        specTarget = target;
+        specName = targetName;
+        specWaiting = 0;
+    }, 515);
 })
 
 mp.events.add('Client:StopSpectate', (modus) => {
@@ -5246,18 +5244,14 @@ mp.events.addDataHandler("Player:Funmodus", (entity, value, oldValue) => {
 });
 
 mp.events.addDataHandler("Player:Tattoos", (entity, value, oldValue) => {
-    if(entity != localPlayer)
-    {
-        if(entity.hasVariable("Player:Tattoos") && entity.getVariable("Player:Tattoos") != 'n/A')
-        {
+    if (entity != localPlayer) {
+        if (entity.hasVariable("Player:Tattoos") && entity.getVariable("Player:Tattoos") != 'n/A') {
             var tattoos = entity.getVariable("Player:Tattoos");
             entity.clearDecorations();
             for (let i = 0; i < tattoos.length; i++) {
                 entity.setDecoration(mp.game.joaat(tattoos[i].dlcname), mp.game.joaat(tattoos[i].name));
             }
-        }
-        else
-        {
+        } else {
             entity.clearDecorations();
         }
     }
@@ -5294,7 +5288,7 @@ mp.events.addDataHandler("Player:FollowStatus", (entity, value, oldValue) => {
 //Inventory
 mp.events.add("Client:ShowInventory", (json, maxweight, toggle, json2, weight2, text2) => {
     if (hudWindow != null) {
-        if(showInventory == false && localPlayer.isFalling()) return;
+        if (showInventory == false && localPlayer.isFalling()) return;
         if (toggle == true) {
             enableDisableRadar(false);
             mp.gui.cursor.show(true, true);
@@ -5408,7 +5402,7 @@ setInterval(() => {
     if ((localPlayer.getVariable('Player:Death') == true || death == true) && !localPlayer.vehicle) {
         if (!localPlayer.isPlayingAnim('dead', 'dead_a', 3) && !localPlayer.isPlayingAnim('dead', 'dead_f', 3)) {
             mp.events.callRemote('Server:PlayDeathAnim');
-         }
+        }
     }
     if (showSaltyError == true || triggerAntiCheat == true) return;
     //Kilometre
@@ -5439,7 +5433,7 @@ setInterval(() => {
     //Crosshair
     if (localPlayer.getVariable('Player:Spawned')) {
         if (localPlayer.weapon != mp.game.joaat('weapon_unarmed') && localPlayer.weapon != mp.game.joaat('weapon_knuckle') && localPlayer.weapon != mp.game.joaat('weapon_sniperrifle') && localPlayer.weapon != mp.game.joaat('weapon_heavysniper') && localPlayer.weapon != mp.game.joaat('weaponweapon_heavysniper_mk2') &&
-            localPlayer.weapon != mp.game.joaat('weapon_marksmanrifle') && localPlayer.weapon != mp.game.joaat('weapon_marksmanrifle_mk2') && pointing.active == false && handsUp == false && showAmmu == false && showShop == false && showShop2 == false && showDealer == false && showTab == false && showSped == false && showCityhall == false && showCarSetting == false && showCenterMenu == false && barberMenu == false && tattooShop == false && startLockpicking == false && showWheel == false && !localPlayer.isInAnyVehicle(true)) {
+            localPlayer.weapon != mp.game.joaat('weapon_marksmanrifle') && localPlayer.weapon != mp.game.joaat('weapon_marksmanrifle_mk2') && handsUp == false && showAmmu == false && showShop == false && showShop2 == false && showDealer == false && showTab == false && showSped == false && showCityhall == false && showCarSetting == false && showCenterMenu == false && barberMenu == false && tattooShop == false && startLockpicking == false && showWheel == false && !localPlayer.isInAnyVehicle(true)) {
             let chair = crosshair;
             if (chair != oldCrosshair && showCrosshair == true) {
                 showCrosshair = false;
@@ -5505,15 +5499,11 @@ setInterval(() => {
     }
     //Pet
     let running = localPlayer.isSprinting();
-    if(ownPet != null && oldRunning != running && noFollow == false)
-    {
+    if (ownPet != null && oldRunning != running && noFollow == false) {
         oldRunning = running;
-        if(oldRunning)
-        {
+        if (oldRunning) {
             ownPet.taskFollowToOffsetOf(localPlayer.handle, 1.5, 1.5, 1.5, 4, -1, 10, true);
-        }
-        else
-        {
+        } else {
             ownPet.taskFollowToOffsetOf(localPlayer.handle, 1.5, 1.5, 1.5, 2, -1, 10, true);
         }
     }
@@ -5550,7 +5540,7 @@ setInterval(() => {
     updateHealthArmor();
     //Damage effect
     if (localPlayer.getVariable('Player:Death') == false) {
-        if ((localPlayer.getVariable('Player:HealthSync')-100) <= 15 && (localPlayer.getVariable('Player:HealthSync')-100) > 1) {
+        if ((localPlayer.getVariable('Player:HealthSync') - 100) <= 15 && (localPlayer.getVariable('Player:HealthSync') - 100) > 1) {
             if (damageEffect == false) {
                 damageEffect = true;
                 mp.game.graphics.startScreenEffect("DeathFailMPDark", -1, false);
@@ -6062,7 +6052,10 @@ mp.events.add('Client:GetWeaponDamage', () => {
 
 //IncomingDamage
 mp.events.add('incomingDamage', (sourceEntity, sourcePlayer, targetEntity, weapon, boneIndex, damage) => {
-    if(targetEntity.type != 'player' || sourceEntity.type != 'player') return;
+    if (targetEntity.type != 'player' || sourceEntity.type != 'player') return;
+    if (targetEntity.type === 'player' && boneIndex === 20 && targetEntity.getVariable('Player:AdminLogin') == true) {
+        return true;
+    }
     if (damage > 0) {
         mp.events.callRemote('Server:SyncHealth');
         if (death == true) {
@@ -6089,9 +6082,8 @@ mp.events.add('incomingDamage', (sourceEntity, sourcePlayer, targetEntity, weapo
             ownPet = null;
             hideMenus();
             const getGroundZ = mp.game.gameplay.getGroundZFor3dCoord(localPlayer.position.x, localPlayer.position.y, localPlayer.position.z, parseFloat(0), false);
-            if(!localPlayer.vehicle)
-            {
-                localPlayer.position = new mp.Vector3(localPlayer.position.x, localPlayer.position.y, getGroundZ+0.1);
+            if (!localPlayer.vehicle) {
+                localPlayer.position = new mp.Vector3(localPlayer.position.x, localPlayer.position.y, getGroundZ + 0.1);
             }
             setTimeout(function () {
                 mp.events.callRemote('Server:SetDeath', null, 7);
@@ -6110,8 +6102,11 @@ mp.events.add('incomingDamage', (sourceEntity, sourcePlayer, targetEntity, weapo
 
 //OutgamingDamage
 mp.events.add('outgoingDamage', (sourceEntity, sourcePlayer, targetEntity, weapon, boneIndex, damage) => {
-    if(targetEntity.type != 'player' || sourceEntity.type != 'player') return;
+    if (targetEntity.type != 'player' || sourceEntity.type != 'player') return;
     if (targetEntity && targetEntity.type == 'player') {
+        if (targetEntity.type === 'player' && boneIndex === 20 && targetEntity.getVariable('Player:AdminLogin') == true) {
+            return true;
+        }
         let death = targetEntity.getVariable('Player:Death');
         if (death == true) {
             return true;
@@ -6286,7 +6281,7 @@ mp.events.add('playerWeaponShot', (targetPosition, targetEntity) => {
     if (distance <= 125) {
         animalPointing = pointingAt(1000, false);
         if (animalPointing && animalPointing.entity.type == 'ped' && animalPointing.entity.hasVariable('Ped:Death')) {
-            let pedDeath = animalPointing.entity.getVariable('Ped:Death');
+            let pedDeath = animalPointing.entity.getVariable('Pedds:Death');
             if (pedDeath == 0) {
                 mp.events.callRemote('Server:UpdatePedStateOfHunting', parseInt(animalPointing.entity.remoteId), 1, animalPointing.entity.getCoords(true));
                 return;
@@ -6392,9 +6387,7 @@ mp.events.add('entityStreamIn', (entity) => {
                         setTimeout(_ => {
                             entity.setBurnout(false);
                         }, 2000)
-                    }
-                    else
-                    {
+                    } else {
                         entity.setBurnout(false);
                     }
                     if (syncComponents[4] == '1') {
@@ -6522,6 +6515,9 @@ mp.events.add('entityStreamIn', (entity) => {
             }
         }
         if (mp.peds.exists(entity) && 0 !== entity.handle && entity.type == 'ped') {
+            if (entity.hasVariable("Ped:Name")) {
+                entity.setRelationshipGroupHash(mp.game.joaat(relationshipNames.SameTeam));
+            }
             if (entity.hasVariable("Ped:Death")) {
                 let pedDeath = entity.getVariable("Ped:Death");
                 if (pedDeath == 1 && getPlayerHealth(entity) > 0) {
@@ -6556,16 +6552,13 @@ mp.events.add('entityStreamIn', (entity) => {
         }
         if (mp.players.exists(entity) && 0 !== entity.handle && entity.type == 'player' && entity.remoteId != localPlayer.remoteId) {
             //Tattoos
-            if(entity.hasVariable("Player:Tattoos") && entity.getVariable("Player:Tattoos") != 'n/A')
-            {
+            if (entity.hasVariable("Player:Tattoos") && entity.getVariable("Player:Tattoos") != 'n/A') {
                 var tattoos = entity.getVariable("Player:Tattoos");
                 entity.clearDecorations();
                 for (let i = 0; i < tattoos.length; i++) {
                     entity.setDecoration(mp.game.joaat(tattoos[i].dlcname), mp.game.joaat(tattoos[i].name));
                 }
-            }
-            else
-            {
+            } else {
                 entity.clearDecorations();
             }
             //Grabbing
@@ -7191,12 +7184,10 @@ mp.events.add('Client:EnableSaltyError', () => {
             mp.events.call("SaltyChat_Disconnected");
             mp.events.call("Client:SetTalkstate", -1);
             hideMenus();
-            if(showMenu)
-            {
+            if (showMenu) {
                 hudWindow.execute(`gui.menu.showMenu('0','0','0','0','0','0','0','0');`)
             }
-            if(showInventory == true)
-            {
+            if (showInventory == true) {
                 mp.events.call("Client:ShowInventory");
             }
         }
@@ -7206,7 +7197,8 @@ mp.events.add('Client:EnableSaltyError', () => {
 mp.events.add('Client:DisableSaltyError', () => {
     if (hudWindow != null) {
         if (showSaltyError == true) {
-            showSaltyError = false;l
+            showSaltyError = false;
+            l
             hudWindow.execute(`gui.menu.showSaltyError();`)
             mp.events.call("SaltyChat_InitToTalkClient", localPlayer.remoteId);
             mp.events.call('Client:ShowHud');
@@ -7456,8 +7448,7 @@ mp.events.addDataHandler("Vehicle:Tuning", (entity, value, oldValue) => {
 });
 
 mp.events.add("Client:VehicleTyreBurst", () => {
-    if(localPlayer.vehicle)
-    {
+    if (localPlayer.vehicle) {
         localPlayer.vehicle.setTyreBurst(0, true, 1000);
         localPlayer.vehicle.setTyreBurst(1, true, 1000);
         localPlayer.vehicle.setTyreBurst(2, true, 1000);
@@ -7474,8 +7465,7 @@ mp.events.add("Client:VehicleTyreBurst", () => {
 });
 
 mp.events.add("Client:RepairVehicleClientside", (vehicle) => {
-    if(vehicle)
-    {
+    if (vehicle) {
         vehicle.setBurnout(false);
     }
 });
@@ -7505,9 +7495,7 @@ mp.events.addDataHandler("Vehicle:Sync", (entity, value, oldValue) => {
                     setTimeout(_ => {
                         vehicle.setBurnout(false);
                     }, 2000)
-                }
-                else
-                {
+                } else {
                     entity.setBurnout(false);
                 }
                 if (syncComponents[4] == '1') {
@@ -7547,19 +7535,19 @@ mp.events.addDataHandler("Vehicle:Sync", (entity, value, oldValue) => {
 
 mp.events.addDataHandler("Vehicle:Health", (entity, value, oldValue) => {
     if (mp.vehicles.exists(entity) && 0 !== entity.handle && entity.typ == 'vehicle') {
-        entity.setHealth(entity.getVariable("Vehicle:Health"));    
+        entity.setHealth(entity.getVariable("Vehicle:Health"));
     }
 })
 
 mp.events.addDataHandler("Vehicle:EngineHealth", (entity, value, oldValue) => {
     if (mp.vehicles.exists(entity) && 0 !== entity.handle && entity.typ == 'vehicle') {
-        entity.setHealth(entity.getVariable("Vehicle:EngineHealth"));    
+        entity.setHealth(entity.getVariable("Vehicle:EngineHealth"));
     }
 })
 
 mp.events.addDataHandler("Vehicle:BodyHealth", (entity, value, oldValue) => {
     if (mp.vehicles.exists(entity) && 0 !== entity.handle && entity.typ == 'vehicle') {
-        entity.setHealth(entity.getVariable("Vehicle:BodyHealth"));    
+        entity.setHealth(entity.getVariable("Vehicle:BodyHealth"));
     }
 })
 
@@ -8337,11 +8325,8 @@ function UpdateNameTags1(nametags) {
                                 scale: [0.45, 0.45],
                                 outline: true
                             });
-                        }
-                        else
-                        {
-                            if(death == true)
-                            {
+                        } else {
+                            if (death == true) {
                                 graphics.drawText('~r~Außer Gefecht', [x, y], {
                                     font: 4,
                                     color: color,
@@ -8355,7 +8340,7 @@ function UpdateNameTags1(nametags) {
                         if (player.hasVariable('Player:AdminLogin')) {
                             admindutytemp = parseInt(player.getVariable('Player:AdminLogin'));
                         }
-                        var healthplayer = player.getVariable('Player:HealthSync')-100;
+                        var healthplayer = player.getVariable('Player:HealthSync') - 100;
                         if (healthplayer > 100) {
                             healthplayer = healthplayer - 100;
                         }
@@ -8367,17 +8352,14 @@ function UpdateNameTags1(nametags) {
 
                         if (player.getAlpha() == 255) {
                             if (admindutytemp == 0) {
-                                if(death == false)
-                                {
+                                if (death == false) {
                                     graphics.drawText(player.name + ' [' + player.remoteId + ']\nLeben: ' + healthplayer + '%, Rüstung: ' + armourplayer + '%\n', [x, y], {
                                         font: 4,
                                         color: color,
                                         scale: [0.45, 0.45],
                                         outline: true
                                     });
-                                }
-                                else
-                                {
+                                } else {
                                     graphics.drawText(player.name + ' [' + player.remoteId + ']\n~r~Außer Gefecht\n', [x, y], {
                                         font: 4,
                                         color: color,
@@ -8444,17 +8426,14 @@ function UpdateNameTags2(nametags) {
                         let adminlevel = parseInt(player.getVariable('Player:Adminlevel'));
 
                         if (admindutytemp == 0) {
-                            if(death == false)
-                            {
+                            if (death == false) {
                                 graphics.drawText(nname + ' [' + player.remoteId + ']\n', [x, y], {
                                     font: 4,
                                     color: color,
                                     scale: [0.45, 0.45],
                                     outline: true
                                 });
-                            }
-                            else
-                            {
+                            } else {
                                 graphics.drawText(player.name + ' [' + player.remoteId + ']\n~r~Außer Gefecht\n', [x, y], {
                                     font: 4,
                                     color: color,
@@ -8475,7 +8454,7 @@ function UpdateNameTags2(nametags) {
                         if (player.hasVariable('Player:AdminLogin')) {
                             admindutytemp = parseInt(player.getVariable('Player:AdminLogin'));
                         }
-                        var healthplayer = player.getVariable('Player:HealthSync')-100;
+                        var healthplayer = player.getVariable('Player:HealthSync') - 100;
                         var armourplayer = player.getArmour();
                         let adminlevel = parseInt(player.getVariable('Player:Adminlevel'));
                         if (!adminlevel) {
@@ -8484,17 +8463,14 @@ function UpdateNameTags2(nametags) {
 
                         if (player.getAlpha() == 255) {
                             if (admindutytemp == 0) {
-                                if(death == false)
-                                {
+                                if (death == false) {
                                     graphics.drawText(player.name + ' [' + player.remoteId + ']\nLeben: ' + healthplayer + '%, Rüstung: ' + armourplayer + '%\n', [x, y], {
                                         font: 4,
                                         color: color,
                                         scale: [0.45, 0.45],
                                         outline: true
                                     });
-                                }
-                                else
-                                {
+                                } else {
                                     graphics.drawText(player.name + ' [' + player.remoteId + ']\n~r~Außer Gefecht\n', [x, y], {
                                         font: 4,
                                         color: color,
@@ -8528,123 +8504,6 @@ const createObject = (model, pos, rot, dim) => {
         dimension: parseInt(dim)
     });
 }
-
-//Fingerpointing
-let pointing = {
-    active: false,
-    interval: null,
-    lastSent: 0,
-    start: function () {
-        if (!this.active) {
-            this.active = true;
-
-            mp.game.streaming.requestAnimDict("anim@mp_point");
-
-            while (!mp.game.streaming.hasAnimDictLoaded("anim@mp_point")) {
-                mp.game.wait(0);
-            }
-            localPlayer.setConfigFlag(36, true)
-            localPlayer.taskMoveNetwork("task_mp_pointing", 0.5, false, "anim@mp_point", 24);
-            mp.game.streaming.removeAnimDict("anim@mp_point");
-
-            this.interval = setInterval(this.process.bind(this), 0);
-        }
-    },
-
-    gameplayCam: mp.cameras.new("gameplay"),
-    lastSync: 0,
-
-    getRelativePitch: function () {
-        let camRot = this.gameplayCam.getRot(2);
-
-        return camRot.x - localPlayer.getPitch();
-    },
-
-    process: function () {
-        if (this.active) {
-
-            if (localPlayer.isInAnyVehicle(true)) {
-                this.active = false;
-                return;
-            }
-
-            mp.game.invoke("0x921ce12c489c4c41", localPlayer.handle);
-
-            let camPitch = this.getRelativePitch();
-
-            if (camPitch < -70.0) {
-                camPitch = -70.0;
-            } else if (camPitch > 42.0) {
-                camPitch = 42.0;
-            }
-            camPitch = (camPitch + 70.0) / 112.0;
-
-            let camHeading = mp.game.cam.getGameplayCamRelativeHeading();
-
-            let cosCamHeading = mp.game.system.cos(camHeading);
-            let sinCamHeading = mp.game.system.sin(camHeading);
-
-            if (camHeading < -180.0) {
-                camHeading = -180.0;
-            } else if (camHeading > 180.0) {
-                camHeading = 180.0;
-            }
-            camHeading = (camHeading + 180.0) / 360.0;
-
-            let coords = localPlayer.getOffsetFromGivenWorldCoords((cosCamHeading * -0.2) - (sinCamHeading * (0.4 * camHeading + 0.3)), (sinCamHeading * -0.2) + (cosCamHeading * (0.4 * camHeading + 0.3)), 0.6);
-            let blocked = (typeof mp.raycasting.testPointToPoint([coords.x, coords.y, coords.z - 0.2], [coords.x, coords.y, coords.z + 0.2], localPlayer.handle, 7) !== 'undefined');
-
-            mp.game.invoke('0xd5bb4025ae449a4e', localPlayer.handle, "Pitch", camPitch)
-            mp.game.invoke('0xd5bb4025ae449a4e', localPlayer.handle, "Heading", camHeading * -1.0 + 1.0)
-            mp.game.invoke('0xb0a6cfd2c69c1088', localPlayer.handle, "isBlocked", blocked)
-            mp.game.invoke('0xb0a6cfd2c69c1088', localPlayer.handle, "isFirstPerson", mp.game.invoke('0xee778f8c7e1142e2', mp.game.invoke('0x19cafa3c87f7c2ff')) == 4)
-
-            if ((Date.now() - this.lastSent) > 100) {
-                this.lastSent = Date.now();
-                mp.events.callRemote('Server:FingerPointSync', camPitch, camHeading);
-            }
-        }
-    }
-}
-
-mp.events.add("Client:FingerPointSync", (id, camPitch, camHeading) => {
-    let netPlayer = getPlayerByRemoteId(parseInt(id));
-    if (netPlayer != null) {
-        if (netPlayer != localPlayer) {
-            netPlayer.lastReceivedPointing = Date.now();
-
-            if (!netPlayer.pointingInterval) {
-                netPlayer.pointingInterval = setInterval((function () {
-                    if ((Date.now() - netPlayer.lastReceivedPointing) > 1000) {
-                        clearInterval(netPlayer.pointingInterval);
-
-                        netPlayer.lastReceivedPointing = undefined;
-                        netPlayer.pointingInterval = undefined;
-
-                        mp.game.invoke("0xd01015c7316ae176", netPlayer.handle, "Stop");
-
-                        netPlayer.setConfigFlag(36, false);
-
-                    }
-                }).bind(netPlayer), 503);
-
-                mp.game.streaming.requestAnimDict("anim@mp_point");
-
-                while (!mp.game.streaming.hasAnimDictLoaded("anim@mp_point")) {
-                    mp.game.wait(0);
-                }
-
-                netPlayer.setConfigFlag(36, true)
-                netPlayer.taskMoveNetwork("task_mp_pointing", 0.5, false, "anim@mp_point", 24);
-                mp.game.streaming.removeAnimDict("anim@mp_point");
-            }
-            mp.game.invoke('0xd5bb4025ae449a4e', netPlayer.handle, "Pitch", camPitch)
-            mp.game.invoke('0xd5bb4025ae449a4e', netPlayer.handle, "Heading", camHeading * -1.0 + 1.0)
-            mp.game.invoke('0xb0a6cfd2c69c1088', netPlayer.handle, "isBlocked", 0);
-            mp.game.invoke('0xb0a6cfd2c69c1088', netPlayer.handle, "isFirstPerson", 0);
-        }
-    }
-});
 
 //Report
 mp.events.add("Client:ReportPlayer", (id) => {
@@ -9306,25 +9165,18 @@ mp.events.add("Client:UpdateAnimals", (ped) => {
     }
 });
 
-//Pet
 mp.events.add("Client:FollowPet", (ped) => {
     ownPet = ped;
-    ped.setAsEnemy(false);
     ped.freezePosition(false);
-    ped.setCanBeDamaged(true);
+    ped.setCanBeDamaged(false);
     ped.setInvincible(true);
     ped.setHealth(100);
     ped.setOnlyDamagedByPlayer(true);
-    ped.setCombatAbility(100);
-    ped.setCombatRange(1);
-    ped.setCombatMovement(2);
-    ped.setCombatAttributes(46, true);
-    ped.setCombatAttributes(17, true);
-    ped.setCombatAttributes(5, true);
     ped.setFleeAttributes(0.0, false);
     ped.setProofs(false, false, false, false, false, false, false, false);
     oldRunning = false;
     noFollow = false;
+    ped.setRelationshipGroupHash(mp.game.joaat(relationshipNames.SameTeam));
     ped.taskFollowToOffsetOf(localPlayer.handle, 1.5, 1.5, 1.5, 1.5, -1, 10, true);
 });
 
@@ -9348,8 +9200,7 @@ function showHideChat(setChat) {
         return;
     }
     mp.gui.chat.show(setChat);
-    if(setChat)
-    {
+    if (setChat) {
         chat.execute(`chatAPI.highlight();`);
     }
 }

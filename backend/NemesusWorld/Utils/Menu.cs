@@ -1,5 +1,4 @@
-﻿using Discord.Net;
-using GTANetworkAPI;
+﻿using GTANetworkAPI;
 using MySql.Data.MySqlClient;
 using NemesusWorld.Controllers;
 using NemesusWorld.Database;

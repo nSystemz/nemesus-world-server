@@ -40,3 +40,4 @@ J:\Tutorials\nemesus-world-server\backend\NemesusWorld\obj\Debug\NemesusWorld.cs
 J:\Tutorials\nemesus-world-server\backend\NemesusWorld\obj\Debug\NemesusWorld.csproj.CopyComplete
 J:\Tutorials\nemesus-world-server\backend\NemesusWorld\obj\Debug\NemesusWorld.dll
 J:\Tutorials\nemesus-world-server\backend\NemesusWorld\obj\Debug\NemesusWorld.pdb
+J:\Tutorials\nemesus-world-server\backend\NemesusWorld\obj\Debug\NemesusWorld.csproj.AssemblyReference.cache

@@ -6281,7 +6281,7 @@ mp.events.add('playerWeaponShot', (targetPosition, targetEntity) => {
     if (distance <= 125) {
         animalPointing = pointingAt(1000, false);
         if (animalPointing && animalPointing.entity.type == 'ped' && animalPointing.entity.hasVariable('Ped:Death')) {
-            let pedDeath = animalPointing.entity.getVariable('Pedds:Death');
+            let pedDeath = animalPointing.entity.getVariable('Ped:Death');
             if (pedDeath == 0) {
                 mp.events.callRemote('Server:UpdatePedStateOfHunting', parseInt(animalPointing.entity.remoteId), 1, animalPointing.entity.getCoords(true));
                 return;
@@ -7198,7 +7198,6 @@ mp.events.add('Client:DisableSaltyError', () => {
     if (hudWindow != null) {
         if (showSaltyError == true) {
             showSaltyError = false;
-            l
             hudWindow.execute(`gui.menu.showSaltyError();`)
             mp.events.call("SaltyChat_InitToTalkClient", localPlayer.remoteId);
             mp.events.call('Client:ShowHud');
@@ -7353,8 +7352,9 @@ mp.events.add("Client:GetFuel", (price, fuel, newfuel) => {
 });
 
 mp.events.add("Client:SelectCrosshair", (crosshair) => {
-    mp.events.callRemote('Server:SelectCrosshair', crosshair);
+    oldCrosshair = -1;
     crosshair = crosshair;
+    mp.events.callRemote('Server:SelectCrosshair', crosshair);
 });
 
 mp.events.add("Client:SelectWalkingStyle", () => {

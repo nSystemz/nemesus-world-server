@@ -6153,7 +6153,7 @@ namespace NemesusWorld.Utils
                             }
                         }
                         String rules = "ID,Fahrzeugname,Nummernschild,Aktion";
-                        player.TriggerEvent("Client:ShowCenterMenu", rules, NAPI.Util.ToJson(centerMenu.Select(x => x.var4).Distinct()), "Hausgarage");
+                        player.TriggerEvent("Client:ShowCenterMenu", rules, NAPI.Util.ToJson(centerMenu), "Hausgarage");
                         return;
                     }
                     else

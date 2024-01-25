@@ -6058,7 +6058,7 @@ mp.events.add('incomingDamage', (sourceEntity, sourcePlayer, targetEntity, weapo
     }
     if (damage > 0) {
         mp.events.callRemote('Server:SyncHealth');
-        if (death == true) {
+        if (death == true || targetEntity.getVariable('Player:AFK') == 1) {
             return true;
         }
         if (weapon != mp.game.joaat('weapon_unarmed')) {
@@ -6108,7 +6108,7 @@ mp.events.add('outgoingDamage', (sourceEntity, sourcePlayer, targetEntity, weapo
             return true;
         }
         let death = targetEntity.getVariable('Player:Death');
-        if (death == true) {
+        if (death == true || targetEntity.getVariable('Player:AFK') == 1) {
             return true;
         }
     }
@@ -8309,6 +8309,7 @@ function UpdateNameTags1(nametags) {
                 }
 
                 let death = player.getVariable('Player:Death');
+                let afk = player.getVariable('Player:AFK');
 
                 if (!foundDrone) {
                     if (admindutynt == 0 && player.getAlpha() == 255) {
@@ -8318,13 +8319,25 @@ function UpdateNameTags1(nametags) {
                         }
                         let adminlevel = parseInt(player.getVariable('Player:Adminlevel'));
 
-                        if (admindutytemp == 1) {
-                            graphics.drawText(realname + ' [' + player.remoteId + ']\n~r~' + GetAdminRang(player, adminlevel) + '\n', [x, y], {
-                                font: 4,
-                                color: color,
-                                scale: [0.45, 0.45],
-                                outline: true
-                            });
+                        if (admindutytemp >= 1) {
+                            if(afk == 0)
+                            {
+                                graphics.drawText(realname + ' [' + player.remoteId + ']\n~r~' + GetAdminRang(player, adminlevel) + '\n', [x, y], {
+                                    font: 4,
+                                    color: color,
+                                    scale: [0.45, 0.45],
+                                    outline: true
+                                });
+                            }
+                            else
+                            {
+                                graphics.drawText(realname + ' [' + player.remoteId + ']\n~r~' + GetAdminRang(player, adminlevel) + '\n~w~AFK\n', [x, y], {
+                                    font: 4,
+                                    color: color,
+                                    scale: [0.45, 0.45],
+                                    outline: true
+                                });
+                            }
                         } else {
                             if (death == true) {
                                 graphics.drawText('~r~Außer Gefecht', [x, y], {
@@ -8351,14 +8364,26 @@ function UpdateNameTags1(nametags) {
                         }
 
                         if (player.getAlpha() == 255) {
-                            if (admindutytemp == 0) {
+                            if (admindutytemp <= 0) {
                                 if (death == false) {
-                                    graphics.drawText(player.name + ' [' + player.remoteId + ']\nLeben: ' + healthplayer + '%, Rüstung: ' + armourplayer + '%\n', [x, y], {
-                                        font: 4,
-                                        color: color,
-                                        scale: [0.45, 0.45],
-                                        outline: true
-                                    });
+                                    if(afk == 0)
+                                    {
+                                        graphics.drawText(player.name + ' [' + player.remoteId + ']\nLeben: ' + healthplayer + '%, Rüstung: ' + armourplayer + '%\n', [x, y], {
+                                            font: 4,
+                                            color: color,
+                                            scale: [0.45, 0.45],
+                                            outline: true
+                                        });
+                                    }
+                                    else
+                                    {
+                                        graphics.drawText(player.name + ' [' + player.remoteId + ']\nLeben: ' + healthplayer + '%, Rüstung: ' + armourplayer + '%\nAFK\n', [x, y], {
+                                            font: 4,
+                                            color: color,
+                                            scale: [0.45, 0.45],
+                                            outline: true
+                                        });
+                                    }
                                 } else {
                                     graphics.drawText(player.name + ' [' + player.remoteId + ']\n~r~Außer Gefecht\n', [x, y], {
                                         font: 4,
@@ -8368,12 +8393,24 @@ function UpdateNameTags1(nametags) {
                                     });
                                 }
                             } else {
-                                graphics.drawText(realname + ' [' + player.remoteId + ']\n~r~' + GetAdminRang(player, adminlevel) + '\n', [x, y], {
-                                    font: 4,
-                                    color: color,
-                                    scale: [0.45, 0.45],
-                                    outline: true
-                                });
+                                if(afk == 0)
+                                {
+                                    graphics.drawText(realname + ' [' + player.remoteId + ']\n~r~' + GetAdminRang(player, adminlevel) + '\n', [x, y], {
+                                        font: 4,
+                                        color: color,
+                                        scale: [0.45, 0.45],
+                                        outline: true
+                                    });
+                                }
+                                else
+                                {
+                                    graphics.drawText(realname + ' [' + player.remoteId + ']\n~r~' + GetAdminRang(player, adminlevel) + '\n~w~AFK\n', [x, y], {
+                                        font: 4,
+                                        color: color,
+                                        scale: [0.45, 0.45],
+                                        outline: true
+                                    });
+                                }
                             }
                         }
                     }
@@ -8416,6 +8453,7 @@ function UpdateNameTags2(nametags) {
                 }
 
                 let death = player.getVariable('Player:Death');
+                let afk = player.getVariable('Player:AFK');
 
                 if (!foundDrone) {
                     if (admindutynt == 0 && player.getAlpha() == 255) {
@@ -8425,14 +8463,26 @@ function UpdateNameTags2(nametags) {
                         }
                         let adminlevel = parseInt(player.getVariable('Player:Adminlevel'));
 
-                        if (admindutytemp == 0) {
+                        if (admindutytemp <= 0) {
                             if (death == false) {
-                                graphics.drawText(nname + ' [' + player.remoteId + ']\n', [x, y], {
-                                    font: 4,
-                                    color: color,
-                                    scale: [0.45, 0.45],
-                                    outline: true
-                                });
+                                if(afk == 0)
+                                {
+                                    graphics.drawText(nname + ' [' + player.remoteId + ']\n', [x, y], {
+                                        font: 4,
+                                        color: color,
+                                        scale: [0.45, 0.45],
+                                        outline: true
+                                    });
+                                }
+                                else
+                                {
+                                    graphics.drawText(nname + ' [' + player.remoteId + ']\nAFK\n', [x, y], {
+                                        font: 4,
+                                        color: color,
+                                        scale: [0.45, 0.45],
+                                        outline: true
+                                    });
+                                }
                             } else {
                                 graphics.drawText(player.name + ' [' + player.remoteId + ']\n~r~Außer Gefecht\n', [x, y], {
                                     font: 4,
@@ -8442,12 +8492,24 @@ function UpdateNameTags2(nametags) {
                                 });
                             }
                         } else {
-                            graphics.drawText(realname + ' [' + player.remoteId + ']\n~r~' + GetAdminRang(player, adminlevel) + '\n', [x, y], {
-                                font: 4,
-                                color: color,
-                                scale: [0.45, 0.45],
-                                outline: true
-                            });
+                            if(afk == 0)
+                            {
+                                graphics.drawText(realname + ' [' + player.remoteId + ']\n~r~' + GetAdminRang(player, adminlevel) + '\n', [x, y], {
+                                    font: 4,
+                                    color: color,
+                                    scale: [0.45, 0.45],
+                                    outline: true
+                                });
+                            }
+                            else
+                            {
+                                graphics.drawText(realname + ' [' + player.remoteId + ']\n~r~' + GetAdminRang(player, adminlevel) + '\n~w~AFK\n', [x, y], {
+                                    font: 4,
+                                    color: color,
+                                    scale: [0.45, 0.45],
+                                    outline: true
+                                });
+                            }
                         }
                     } else {
                         let admindutytemp = 0;
@@ -8462,14 +8524,26 @@ function UpdateNameTags2(nametags) {
                         }
 
                         if (player.getAlpha() == 255) {
-                            if (admindutytemp == 0) {
+                            if (admindutytemp <= 0) {
                                 if (death == false) {
-                                    graphics.drawText(player.name + ' [' + player.remoteId + ']\nLeben: ' + healthplayer + '%, Rüstung: ' + armourplayer + '%\n', [x, y], {
-                                        font: 4,
-                                        color: color,
-                                        scale: [0.45, 0.45],
-                                        outline: true
-                                    });
+                                    if(afk == 0)
+                                    {
+                                        graphics.drawText(player.name + ' [' + player.remoteId + ']\nLeben: ' + healthplayer + '%, Rüstung: ' + armourplayer + '%\n', [x, y], {
+                                            font: 4,
+                                            color: color,
+                                            scale: [0.45, 0.45],
+                                            outline: true
+                                        });
+                                    }
+                                    else
+                                    {
+                                        graphics.drawText(player.name + ' [' + player.remoteId + ']\nLeben: ' + healthplayer + '%, Rüstung: ' + armourplayer + '%\nAFK\n', [x, y], {
+                                            font: 4,
+                                            color: color,
+                                            scale: [0.45, 0.45],
+                                            outline: true
+                                        });
+                                    }
                                 } else {
                                     graphics.drawText(player.name + ' [' + player.remoteId + ']\n~r~Außer Gefecht\n', [x, y], {
                                         font: 4,
@@ -8479,12 +8553,24 @@ function UpdateNameTags2(nametags) {
                                     });
                                 }
                             } else {
-                                graphics.drawText(realname + ' [' + player.remoteId + ']\n~r~' + GetAdminRang(player, adminlevel) + '\n', [x, y], {
-                                    font: 4,
-                                    color: color,
-                                    scale: [0.45, 0.45],
-                                    outline: true
-                                });
+                                if(afk == 0)
+                                {
+                                    graphics.drawText(realname + ' [' + player.remoteId + ']\n~r~' + GetAdminRang(player, adminlevel) + '\n', [x, y], {
+                                        font: 4,
+                                        color: color,
+                                        scale: [0.45, 0.45],
+                                        outline: true
+                                    });
+                                }
+                                else
+                                {
+                                    graphics.drawText(realname + ' [' + player.remoteId + ']\n~r~' + GetAdminRang(player, adminlevel) + '\n~w~AFK\n', [x, y], {
+                                        font: 4,
+                                        color: color,
+                                        scale: [0.45, 0.45],
+                                        outline: true
+                                    });
+                                }
                             }
                         }
                     }

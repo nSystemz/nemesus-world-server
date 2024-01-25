@@ -5438,7 +5438,7 @@
                                                                 <tr>
                                                                     <td>/aban</td>
                                                                     <td>Anticheat Ban</td>
-                                                                    <td>Supporter</td>
+                                                                    <td>High Administrator</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>/screenshot</td>

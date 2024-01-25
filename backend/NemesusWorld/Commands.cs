@@ -622,9 +622,11 @@ namespace NemesusWorld
             Helper.CreateAdminLog($"adminlog", account.name + " hat " + accounttarget.name + " zum " + Account.AdminNames[adminlevel] + " gemacht!");
             if (adminlevel <= 0)
             {
+                Character character = Helper.GetCharacterData(ntarget);
                 TempData tempData = Helper.GetCharacterTempData(ntarget);
                 tempData.adminduty = false;
-                NAPI.Data.SetEntitySharedData(player, "Player:AdminLogin", 0);
+                NAPI.Data.SetEntitySharedData(ntarget, "Player:AdminLogin", 0);
+                ntarget.SetData("Player:AdminDuty", false);
                 accounttarget.admin_since = 1609462861;
                 if (tempData.adminvehicle != null)
                 {
@@ -633,6 +635,11 @@ namespace NemesusWorld
                 }
                 account.admin_rang = "n/A";
                 ntarget.ResetSharedData("Player:AdminRang");
+                ntarget.SetSharedData("Player:Adminsettings", "0,0,0");
+                ntarget.SetData("Player:AdminDuty", false);
+                Helper.SetPlayerHealth(ntarget, ntarget.GetSharedData<int>("Player:HealthSync") - 100);
+                var obj = JObject.Parse(character.json);
+                CharacterController.SetCharacterCloths(ntarget, obj, character.clothing);
             }
             NAPI.Data.SetEntitySharedData(ntarget, "Player:Adminlevel", adminlevel);
             return;
@@ -1195,7 +1202,7 @@ namespace NemesusWorld
                 }
                 lizenz = lizenz[0].ToString().ToUpper() + lizenz.Substring(1);
                 Helper.SendNotificationWithoutButton(player, $"Wert des {lizenz}s des Spielers {accounttarget.name} auf {value} gesetzt!", "success", "top-end", 5500);
-                Helper.SendNotificationWithoutButton(ntarget, $"{account.name} hat den Wert des {lizenz}s auf {value} gesetzt!", "success", "top-end", 5500);
+                Helper.SendNotificationWithoutButton(ntarget, $"{account.name} hat den Wert deines {lizenz}s auf {value} gesetzt!", "success", "top-end", 5500);
                 Helper.CreateAdminLog("adminlog", $"{account.name} hat den Wert des {lizenz}s des Spielers {accounttarget.name} auf {value} gesetzt!");
                 character.licenses = String.Join("|", licArray);
             }
@@ -1666,7 +1673,7 @@ namespace NemesusWorld
                                     CharacterController.SetCharacterCloths(ntarget, obj, character.clothing);
                                 }
                                 faction.members++;
-                                faction.leader = accounttarget.id;
+                                faction.leader = character.id;
                                 character.faction = faction.id;
                                 character.rang = 12;
                                 character.swat = 0;
@@ -7176,7 +7183,7 @@ namespace NemesusWorld
                 Commands.cmd_animation(player, "whistle2", true);
                 if (tempData.petTask == 0)
                 {
-                    Helper.SendNotificationWithoutButton(player, $"Du hast dein Haustier {petItem.props.Split(",")[1]} gerufen!", "success", "top-end");
+                    Helper.SendNotificationWithoutButton(player, $"Du hast dein Haustier {Helper.GetPetName(player)} gerufen!", "success", "top-end");
                     NAPI.Task.Run(() =>
                     {
                         foreach (Ped ped in NAPI.Pools.GetAllPeds())
@@ -7199,7 +7206,7 @@ namespace NemesusWorld
                 }
                 else
                 {
-                    Helper.SendNotificationWithoutButton(player, $"Dein Haustier {petItem.props.Split(",")[1]} wartet jetzt hier!", "success", "top-end");
+                    Helper.SendNotificationWithoutButton(player, $"Dein Haustier {Helper.GetPetName(player)} wartet jetzt hier!", "success", "top-end");
                     NAPI.Task.Run(() =>
                     {
                         foreach (Ped ped in NAPI.Pools.GetAllPeds())
@@ -7252,7 +7259,12 @@ namespace NemesusWorld
                     Helper.SendNotificationWithoutButton(player, "Du musst zuerst dein Haustier rufen!", "error", "top-end");
                     return;
                 }
-                if(!item.props.Contains(","))
+                if (item.props.Contains("Shepherd"))
+                {
+                    Helper.SendNotificationWithoutButton(player, "Du kannst dem K9-Shepherd keinen Namen geben!", "error", "top-end");
+                    return;
+                }
+                if (!item.props.Contains(","))
                 {
                     item.props = item.props + ",n/A";
                 }

@@ -59,7 +59,9 @@
                               <img v-else class="cutimage2 profile-user-img img-fluid img-circle"
                                 style="margin-top: 1.7vw" height="16px" :src="getImgUrl(item.itemname)">
                             </div>
-                            <h3 class="text-center mt-3" style="font-size: 1vw">
+                            <h3 v-if="item.itemname == 'Haustier' && shopname == 'Waffenkammer LSPD'" class="text-center mt-3" style="font-size: 1vw">
+                              K9-Shepherd</h3>
+                            <h3 v-else class="text-center mt-3" style="font-size: 1vw">
                               {{item.itemname}}</h3>
                             <p class="text-muted text-center" v-if="shopname != 'Waffenkammer LSPD' && shopname != 'Lager LSRC' && shopname != 'Lager ACLS'" style="font-size: 0.7vw">
                               Preis: {{item.itemprice}}$</p>

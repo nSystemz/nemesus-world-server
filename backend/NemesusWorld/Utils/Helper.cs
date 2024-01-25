@@ -5291,6 +5291,31 @@ namespace NemesusWorld.Utils
             }
         }
 
+        //AFK
+        [RemoteEvent("Server:SetAFK")]
+        public static void OnSetAFK(Player player)
+        {
+            try
+            {
+                Character character = Helper.GetCharacterData(player);
+                if (character == null) return;
+                if(character.afk == 0)
+                {
+                    character.afk = 1;
+                    player.SetSharedData("Player:AFK", 1);
+                }
+                else
+                {
+                    character.afk = 0;
+                    player.SetSharedData("Player:AFK", 0);
+                }
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[OnSetAFK]: " + e.ToString());
+            }
+        }
+
         //Handsup
         [RemoteEvent("Server:SetHandsUp")]
         public static void OnPlayerHandsUp(Player player)
@@ -5985,7 +6010,7 @@ namespace NemesusWorld.Utils
                     }
                     String rules = "Kosten,Fahrzeugname,Nummernschild,Aktion";
                     var DistinctItems = centerMenu.GroupBy(x => x.var4).Select(y => y.First()).OrderBy(n => n.var3.Length).ToList();
-                    player.TriggerEvent("Client:ShowCenterMenu", rules, DistinctItems);
+                    player.TriggerEvent("Client:ShowCenterMenu", rules, NAPI.Util.ToJson(DistinctItems), "Verwahrplatz");
                     return;
                 }
                 //Fraktionsgaragen
@@ -11232,9 +11257,9 @@ namespace NemesusWorld.Utils
                 PetaPoco.Database db = new PetaPoco.Database(General.Connection);
                 foreach (ShopItems shopItem in db.Fetch<ShopItems>("SELECT * FROM shopitems"))
                 {
-                    if(shopItem.shoplabel.ToLower().Contains("waffenkammer") && shopItem.itemname == "Haustier")
+                    if(shopItem.shoplabel.ToLower().Contains("waffenkammer") && shopItem.itemname == "Haustier" && shopItem.itemprice < 3)
                     {
-                        shopItem.itemprice = 3;
+                        shopItem.itemprice ++;
                     }
                     shopItemList.Add(shopItem);
                 }
@@ -12605,6 +12630,11 @@ namespace NemesusWorld.Utils
                                                     SendNotificationWithoutButton(player, "Du musst zuerst dein Haustier zurückrufen!", "error", "top-left", 1750);
                                                     return;
                                                 }
+                                                if (weaponItem.description == "Haustier" && weaponItem.props.Split(",")[0] != "Shepherd")
+                                                {
+                                                    SendNotificationWithoutButton(player, "Dieses Haustier kannst du nicht zurücklegen!", "error", "top-left", 1750);
+                                                    return;
+                                                }
                                                 found = true;
                                                 foundString += $"{weaponItem.amount}x {weaponItem.description}, ";
                                                 shopItems.itemprice += weaponItem.amount;
@@ -12688,8 +12718,9 @@ namespace NemesusWorld.Utils
                                     {
                                         tempData.itemlist.Add(newitem);
                                     }
-                                    SendNotificationWithoutButton(player, $"Du hast {size}x {itemname} aus der Waffenkammer genommen!", "success", "top-left", 1750);
-                                    Helper.CreateWeaponLog(character.faction, $"{character.name} hat {size}x {itemname} aus der Waffenkammer genommen!");
+                                    String itemString = (itemname == "Haustier") ? "K9-Shepherd" : itemname;
+                                    SendNotificationWithoutButton(player, $"Du hast {size}x {itemString} aus der Waffenkammer genommen!", "success", "top-left", 1750);
+                                    Helper.CreateWeaponLog(character.faction, $"{character.name} hat {size}x {itemString} aus der Waffenkammer genommen!");
                                     shopItemTemp.itemprice -= size;
                                 }
                                 else
@@ -12698,17 +12729,23 @@ namespace NemesusWorld.Utils
                                     Items weaponItem = ItemsController.GetItemByItemName(player, itemname);
                                     if (weaponItem != null)
                                     {
-                                        if(weaponItem.description == "Haustier" && weaponItem.props.Split(",")[0] != "Shepherd")
+                                        if (weaponItem.description == "Haustier" && tempData.pet != null)
                                         {
-                                            Helper.SendNotificationWithoutButton(player, "Dieses Haustier kannst du nicht zurück legen!", "error", "top-end");
+                                            SendNotificationWithoutButton(player, "Du musst zuerst dein Haustier zurückrufen!", "error", "top-left", 1750);
+                                            return;
+                                        }
+                                        if (weaponItem.description == "Haustier" && weaponItem.props.Split(",")[0] != "Shepherd")
+                                        {
+                                            SendNotificationWithoutButton(player, "Dieses Haustier kannst du nicht zurücklegen!", "error", "top-left", 1750);
                                             return;
                                         }
                                         weaponArray = weaponItem.props.Split(",");
                                         if (weaponItem.type != 5 || (weaponItem.type == 5 && weaponArray[1] == "0" && weaponArray[4].ToLower().Contains("waffenkammer")))
                                         {
                                             shopItemTemp.itemprice += weaponItem.amount;
-                                            SendNotificationWithoutButton(player, $"Du hast {size}x {itemname} in die Waffenkammer zurückgelegt!", "success", "top-left", 1750);
-                                            Helper.CreateWeaponLog(character.faction, $"{character.name} hat {size}x {itemname} in die Waffenkammer zurückgelegt!");
+                                            String itemString = (weaponItem.description == "Haustier") ? "K9-Shepherd" : weaponItem.description;
+                                            SendNotificationWithoutButton(player, $"Du hast {size}x {itemString} in die Waffenkammer zurückgelegt!", "success", "top-left", 1750);
+                                            Helper.CreateWeaponLog(character.faction, $"{character.name} hat {size}x {itemString} in die Waffenkammer zurückgelegt!");
                                             ItemsController.RemoveItem(player, weaponItem.itemid);
                                         }
                                         else
@@ -18386,6 +18423,32 @@ namespace NemesusWorld.Utils
             {
                 Helper.ConsoleLog("error", $"[PetRefresh]: " + e.ToString());
             }
+        }
+
+        public static String GetPetName(Player player)
+        {
+            String petName = "n/A";
+            try
+            {
+                Character character = Helper.GetCharacterData(player);
+                if (character != null)
+                {
+                    Items petItem = ItemsController.GetItemByItemName(player, "Haustier");
+                    if (petItem != null)
+                    {
+                        petName = petItem.props.Split(",")[1] != "n/A" ? petItem.props.Split(",")[1] : petItem.props.Split(",")[0];
+                        if(petName == "Sheperd")
+                        {
+                            petName = "K9-Shepherd";
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[PetRefresh]: " + e.ToString());
+            }
+            return petName;
         }
 
         public static uint GetPetHashFromName(string petName)

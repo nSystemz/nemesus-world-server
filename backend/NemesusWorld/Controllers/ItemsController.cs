@@ -3100,7 +3100,7 @@ namespace NemesusWorld.Controllers
                                             tempData.pet.SetSharedData("Ped:Name", item.props.Split(",")[1]);
                                             tempData.petTask = 0;
                                             Commands.cmd_animation(player, "whistle2", true);
-                                            Helper.SendNotificationWithoutButton(player, $"Du hast dein Haustier {item.props.Split(",")[1]} gerufen, benutze /pipe um es zu rufen!", "success");
+                                            Helper.SendNotificationWithoutButton(player, $"Du hast dein Haustier {Helper.GetPetName(player)} gerufen, benutze /pipe um es zu rufen!", "success");
                                         }
                                         else
                                         {

@@ -178,6 +178,14 @@ namespace NemesusWorld
                             HuntingController.InitAnimals();
                             //Load EUP Outfits
                             Events.LoadEUPOutfits(true, false);
+                            //Reset Factionduty Count
+                            System.DateTime moment = new System.DateTime(Helper.UnixTimestamp());
+                            if (moment.DayOfWeek == DayOfWeek.Monday)
+                            {
+                                MySqlCommand command2 = General.Connection.CreateCommand();
+                                command2.CommandText = "UPDATE characters SET faction_dutytime = 0 WHERE faction_dutytime > 0";
+                                command2.ExecuteNonQuery();
+                            }
                             //Load all lifeinvaderads
                             //FactionController.GetAllLifeInvaderAds();
                             //General settings
@@ -634,6 +642,10 @@ namespace NemesusWorld
                                             if (character.payday_points >= 60)
                                             {
                                                 Helper.CheckPayday(player);
+                                            }
+                                            if(character.faction == 1)
+                                            {
+                                                character.faction_dutytime++;
                                             }
                                         }
                                         //Probefahrt
@@ -1254,6 +1266,7 @@ namespace NemesusWorld
                 player.SetOwnSharedData("Player:Spawned", false);
                 player.SetSharedData("Player:Death", false);
                 player.SetSharedData("Player:Tattoos", "n/A");
+                player.SetSharedData("Player:AFK", 0);
                 if (Helper.adminSettings.voicerp == 2)
                 {
                     player.SetSharedData("Player:VoiceRangeLocal", 25.0);
@@ -1805,6 +1818,7 @@ namespace NemesusWorld
                 player.SetSharedData("Player:HealthSync", 100);
                 player.SetSharedData("Player:Tattoos", "n/A");
                 player.SetSharedData("Player:LocalVoiceHandyPlayer", -1);
+                player.SetSharedData("Player:AFK", 0);
                 if (Helper.adminSettings.voicerp == 2)
                 {
                     player.SetSharedData("Player:VoiceRangeLocal", 25.0);
@@ -3696,7 +3710,7 @@ namespace NemesusWorld
                     //Normaler Chat
                     if (tempData.adminduty == true)
                     {
-                        Helper.SendRadiusMessage("!{#FF0000}* " + message + " (( " + account.name + " ))", 13, player);
+                        Helper.SendRadiusMessage("!{#FF0000}* " + account.name + " sagt: " + message, 13, player);
                         player.TriggerEvent("Client:SpeakAnim");
                     }
                     else

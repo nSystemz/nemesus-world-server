@@ -11,6 +11,7 @@
           "BCrypt.Net-Next": "4.0.3",
           "Microsoft.Extensions.DependencyInjection": "6.0.0",
           "MySql.Data": "8.0.27",
+          "MySqlConnector": "1.3.14",
           "Newtonsoft.Json": "12.0.3",
           "PetaPoco.Compiled": "6.0.493-beta",
           "Bootstrapper": "1.1.0.0"
@@ -145,6 +146,14 @@
           "lib/netstandard2.1/ZstdNet.dll": {
             "assemblyVersion": "1.4.5.0",
             "fileVersion": "1.4.5.0"
+          }
+        }
+      },
+      "MySqlConnector/1.3.14": {
+        "runtime": {
+          "lib/netcoreapp3.1/MySqlConnector.dll": {
+            "assemblyVersion": "1.0.0.0",
+            "fileVersion": "1.3.14.0"
           }
         }
       },
@@ -612,6 +621,13 @@
       "sha512": "sha512-Ef+sH12/nGAiF9yLZFkuXh7vtVvEPiLKyZNJiDk+VBULzLcXj0lmfU7qcmWNCSVX5n6zu5jMV+JaNf1C+a+T8g==",
       "path": "mysql.data/8.0.27",
       "hashPath": "mysql.data.8.0.27.nupkg.sha512"
+    },
+    "MySqlConnector/1.3.14": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-JW7YYHtjW5dKk3SQGkgKzvj7+n+RLZXYCZ+s2izjFD1ehmr5JlGZFZG98DCI4T9wB154qKja5GA9IQMfX+GH+Q==",
+      "path": "mysqlconnector/1.3.14",
+      "hashPath": "mysqlconnector.1.3.14.nupkg.sha512"
     },
     "Newtonsoft.Json/12.0.3": {
       "type": "package",

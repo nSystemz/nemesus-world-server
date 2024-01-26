@@ -32,7 +32,7 @@ using NemesusWorld.Controllers;
 using System.Threading;
 using System;
 using NemesusWorld.Models;
-using MySql.Data.MySqlClient;
+using MySqlConnector;
 using System.Linq;
 using System.Data;
 using System.IO;
@@ -197,15 +197,9 @@ namespace NemesusWorld
                             NAPI.Server.SetCommandErrorMessage("~r~Ungültiger Befehl!");
                             NAPI.Server.SetDefaultSpawnLocation(new Vector3(-542.2647, -208.96895, 37.6498), -154.3716f);
                             //Weather
-                            try
-                            {
-                                Helper.SetAndGetWeather("https://nemesus-world.de/WetterInfo.php", true);
-                            }
-                            catch(Exception)
-                            {
-                                Helper.weatherstring = "clear sky";
-                                Helper.SetWeather();
-                            }
+                            Helper.ConsoleLog("success", $"[WETTER-API]: clear sky");
+                            Helper.weatherstring = "clear sky";
+                            Helper.SetWeather();
                             //Set time
                             var time = DateTime.Now;
                             NAPI.World.SetTime(time.Hour, time.Minute, 0);
@@ -236,7 +230,7 @@ namespace NemesusWorld
                                 Helper.ConsoleLog("info", "[SERVER]: Nemesus World Gamemode erstellt von Nemesus.de erfolgreich geladen - (Text-RP)");
                             }
                             //Call2Home, kann gelöscht werden dient nur zur Statistik
-                            Helper.Call2Home();
+                            //Helper.Call2Home();
                             //Materialversteck befüllen
                             Helper.MatsImVersteck += 20;
                         }
@@ -1330,7 +1324,7 @@ namespace NemesusWorld
                             tempData.pet.ResetSharedData("Ped:Name");
                             tempData.pet.Delete();
                             tempData.pet = null;
-                            tempData.petTask = 0;
+                            tempData.petTask = 0;     
                         }
                         //Drunk
                         if (tempData.drunked == true)
@@ -1911,13 +1905,16 @@ namespace NemesusWorld
                 if (tempData != null)
                 {
                     //Pet
-                    player.TriggerEvent("Client:DeletePet");
                     if (tempData.pet != null)
                     {
-                        tempData.pet.ResetSharedData("Ped:Name");
-                        tempData.pet.Delete();
-                        tempData.pet = null;
-                        tempData.petTask = 0;
+                        player.TriggerEvent("Client:DeletePet");
+                        NAPI.Task.Run(() =>
+                        {
+                            tempData.pet.ResetSharedData("Ped:Name");
+                            tempData.pet.Delete();
+                            tempData.pet = null;
+                            tempData.petTask = 0;
+                        }, delayTime: 515);
                     }
                     //Filmkamera
                     if (player.HasData("Player:Filmkamera"))
@@ -3404,7 +3401,7 @@ namespace NemesusWorld
                             if (tempData.jobstatus == 1)
                             {
                                 Helper.SendNotificationWithoutButton(player, $"Ware abgeholt, bringe diese jetzt bitte zu/m/r {spedOrder.to}!", "success", "top-left", 4000);
-                                player.TriggerEvent("Client:CreateWaypoint", spedOrder.position2.X, spedOrder.position2.Y);
+                                player.TriggerEvent("Client:CreateWaypoint", spedOrder.position2.X, spedOrder.position2.Y, -1);
                                 player.TriggerEvent("Client:CreateMarker", spedOrder.position2.X, spedOrder.position2.Y, spedOrder.position2.Z, 39);
                                 if (tempData.jobColshape != null)
                                 {
@@ -3638,6 +3635,8 @@ namespace NemesusWorld
                 if (account == null || character == null) return;
                 //Prison
                 if (account.prison > 0) return;
+                //AFK Tick Reset
+                player.TriggerEvent("Client:AFKTickReset");
                 //Adminchat
                 if (message.StartsWith("@"))
                 {

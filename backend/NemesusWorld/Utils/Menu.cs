@@ -1,12 +1,11 @@
 ﻿using GTANetworkAPI;
-using MySql.Data.MySqlClient;
+using MySqlConnector;
 using NemesusWorld.Controllers;
 using NemesusWorld.Database;
 using NemesusWorld.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace NemesusWorld.Utils
 {
@@ -54,7 +53,7 @@ namespace NemesusWorld.Utils
                     character.items = jsonbackup2;
                     character.animations = jsonbackup3;
                     character.dutyjson = jsonbackup4;
-                }, delayTime: 135);
+                }, delayTime: 155);
             }
             catch (Exception e)
             {

@@ -587,7 +587,6 @@ let list3D = [];
 let marker = null;
 let marker2 = null;
 let ped = null;
-let pedTimer = null;
 let timeMarker = 0;
 let marker2TO = null;
 let lastid = 0;
@@ -736,7 +735,6 @@ RegisterAttachment("tablet", "prop_cs_tablet", 60309, new mp.Vector3(0.03, 0.002
 RegisterAttachment("pickaxe", "prop_tool_pickaxe", 57005, new mp.Vector3(0.09, 0.03, -0.02), new mp.Vector3(-78.0, 13.0, 28.0));
 RegisterAttachment("filmcamera", "prop_v_cam_01", 28422, new mp.Vector3(0.0, 0.0, 0.0), new mp.Vector3(0.0, 0.0, 0.0));
 RegisterAttachment("microphone", "p_ing_microphonel_01", 60309, new mp.Vector3(0.055, 0.05, 0.0), new mp.Vector3(240.0, 0.0, 0.0));
-
 
 //Watercheck
 const getWaterByRaycast = (range = 5.0) => {
@@ -1078,14 +1076,21 @@ mp.events.add('render', (nametags) => {
             if (speed >= 0) {
                 if (dist <= 42) {
                     pdVehiclePos = mp.game.graphics.world3dToScreen2d(pdVehicle.position);
-                    mp.game.graphics.drawRect(pdVehiclePos.x, pdVehiclePos.y, 0.015, 0.015, 255, 0, 0, 125);
-                    mp.game.graphics.drawText(`Geschwindigkeit: ${parseInt(speed)} KM/H\nNummernschild: ${pdVehicle.getNumberPlateText()}`, [pdVehicle.position.x, pdVehicle.position.y, pdVehicle.position.z + 2.45], {
-                        font: 4,
-                        color: [255, 0, 0, 255],
-                        scale: [0.465, 0.465],
-                        outline: true,
-                        centre: true
-                    });
+                    if(pdVehiclePos)
+                    {
+                        mp.game.graphics.drawRect(pdVehiclePos.x, pdVehiclePos.y, 0.015, 0.015, 255, 0, 0, 125);
+                        mp.game.graphics.drawText(`Geschwindigkeit: ${parseInt(speed)} KM/H\nNummernschild: ${pdVehicle.getNumberPlateText()}`, [pdVehicle.position.x, pdVehicle.position.y, pdVehicle.position.z + 2.45], {
+                            font: 4,
+                            color: [255, 0, 0, 255],
+                            scale: [0.465, 0.465],
+                            outline: true,
+                            centre: true
+                        });
+                    }
+                    else
+                    {
+                        pdVehicle = null;
+                    }
                 } else {
                     pdVehicle = null;
                 }
@@ -2062,6 +2067,11 @@ mp.events.add('click', (x, y, upOrDown, leftOrRight, relativeX, relativeY, world
     lastclick = (Date.now() / 1000);
 })
 
+//AFKTickReset
+mp.events.add('Client:AFKTickReset', () => {
+    lastclick = (Date.now() / 1000);
+});
+
 //Wardrobe
 mp.events.add("Client:ShowWardrobe", (json) => {
     if (hudWindow != null) {
@@ -2226,12 +2236,13 @@ mp.events.add("Client:UpdateTicketCount", (ticketCount) => {
     hudWindow.execute(`gui.menu.getTicketCount('${ticketCount}');`)
 })
 
-mp.events.add("Client:LoadAllTickets", () => {
-    mp.events.callRemote('Server:LoadAllTickets');
+mp.events.add("Client:LoadAllTickets", (check) => {
+    mp.events.callRemote('Server:LoadAllTickets',check);
 })
 
-mp.events.add("Client:GetAllTickets", (getTickets) => {
-    hudWindow.execute(`gui.menu.getAllTickets('${getTickets}');`)
+mp.events.add("Client:GetAllTickets", (getTickets, ticketCount, check) => {
+    hudWindow.execute(`gui.menu.getAllTickets('${getTickets}','${check}');`)
+    hudWindow.execute(`gui.menu.getTicketCount('${ticketCount}');`)
 })
 
 mp.events.add("Client:LoadTicketAnswers", (ticketid) => {
@@ -2333,10 +2344,6 @@ mp.events.add("Client:ShowCars", (json, set) => {
             showMenu = !showMenu;
             localPlayer.freezePosition(showMenu);
             hudWindow.execute(`gui.menu.showMenu('${admin}','${adminduty}','${group}','${grouprang}','${faction}','${factionrang}','${job}');`)
-            if (ticketCooldown == 0 || (Date.now() / 1000) > ticketCooldown) {
-                ticketCooldown = (Date.now() / 1000) + (60 * 2);
-                mp.events.callRemote('Server:CountTickets');
-            }
             mp.gui.cursor.show(true, true);
         }
         hudWindow.execute(`gui.menu.showCars('${json}');`)
@@ -3809,8 +3816,8 @@ mp.events.add("Client:PressF2", () => {
     mp.events.call('Client:StopAllNotifications');
     hudWindow.execute(`gui.menu.showMenu('${admin}','${adminduty}','${group}','${grouprang}','${faction}','${factionrang}','${job}','${level}');`)
     if (ticketCooldown == 0 || (Date.now() / 1000) > ticketCooldown) {
-        ticketCooldown = (Date.now() / 1000) + (60 * 2);
-        mp.events.callRemote('Server:CountTickets');
+        mp.events.callRemote('Server:LoadAllTickets', false);
+        ticketCooldown = (Date.now() / 1000) + (30);
     }
     mp.gui.cursor.show(true, true);
     mp.game.ui.displayHud(false);
@@ -5499,7 +5506,7 @@ setInterval(() => {
     }
     //Pet
     let running = localPlayer.isSprinting();
-    if (ownPet != null && oldRunning != running && noFollow == false) {
+    if (ownPet && oldRunning != running && noFollow == false) {
         oldRunning = running;
         if (oldRunning) {
             ownPet.taskFollowToOffsetOf(localPlayer.handle, 1.5, 1.5, 1.5, 4, -1, 10, true);
@@ -5591,9 +5598,6 @@ function playerQuitHandler(player, exitType, reason) {
             mp.game.invoke("0x0F07E7745A236711");
             mp.game.invoke("0x31B73D1EA9F01DA2");
         }
-
-        //Pet
-        ownPet = null;
 
         //Damage effect
         mp.game.graphics.stopScreenEffect("DeathFailMPDark");
@@ -6079,7 +6083,6 @@ mp.events.add('incomingDamage', (sourceEntity, sourcePlayer, targetEntity, weapo
         }
         if (getPlayerHealth(localPlayer) - damage < 100 && death == false) {
             death = true;
-            ownPet = null;
             hideMenus();
             const getGroundZ = mp.game.gameplay.getGroundZFor3dCoord(localPlayer.position.x, localPlayer.position.y, localPlayer.position.z, parseFloat(0), false);
             if (!localPlayer.vehicle) {
@@ -6118,7 +6121,6 @@ mp.events.add('outgoingDamage', (sourceEntity, sourcePlayer, targetEntity, weapo
 mp.events.add("Client:SetDeath", (time) => {
     hideMenus();
     death = true;
-    ownPet = null;
     localPlayer.freezePosition(true);
     mp.game.ui.displayHud(false);
     enableDisableRadar(false);
@@ -6166,9 +6168,6 @@ mp.events.add("playerSpawn", (player) => {
 //Playerdeath
 mp.events.add("playerDeath", (player, reason, killer) => {
     if (player == localPlayer) {
-
-        //Pet
-        ownPet = null;
 
         //Damage effect
         mp.game.graphics.stopScreenEffect("DeathFailMPDark");
@@ -6977,22 +6976,31 @@ mp.events.add("playerCreateWaypoint", (position) => {
         setTimeout(() => {
             let getGroundZ = mp.game.gameplay.getGroundZFor3dCoord(position.x, position.y, position.z + 500, parseFloat(0), false);
             if (getGroundZ <= 0) {
-                getGroundZ = position.z;
+                getGroundZ = position.z+0.15;
             }
             localPlayer.freezePosition(false);
-            mp.events.callRemote('Server:Teleport', position.x, position.y, getGroundZ + 0.25, false, false);
+            mp.events.callRemote('Server:Teleport', position.x, position.y, getGroundZ+0.25, false);
             setteleport = false;
         }, 2850);
     }
     let faction = localPlayer.getVariable('Player:Faction');
     if (localPlayer.vehicle || faction == 1 || faction == 2) {
-        mp.events.callRemote('Server:Teleport', position.x, position.y, position.z, false, true);
+        mp.events.callRemote('Server:Teleport', position.x, position.y, position.z, false);
     }
 });
 
 //Waypoint
-mp.events.add('Client:CreateWaypoint', (posx, posy) => {
-    mp.game.ui.setNewWaypoint(parseFloat(posx), parseFloat(posy));
+mp.events.add('Client:CreateWaypoint', (posx, posy, getvehicle) => {
+    if(getvehicle > -1 && !localPlayer.vehicle)
+    {
+        mp.events.callRemote('Server:Teleport', posx, posy, 0.0, false, false, getvehicle);
+    }
+    else
+    {
+        setTimeout(() => {
+            mp.game.ui.setNewWaypoint(parseFloat(posx), parseFloat(posy));
+        }, 515);
+    }
 });
 
 mp.events.add('Client:RemoveWaypoint', () => {
@@ -7035,7 +7043,7 @@ mp.events.add('Client:CreatePed', (posx, posy, posz, create) => {
             ped = null;
         }
         mp.events.call("Client:CreateMarker", posx, posy, posz + 1.25, 3);
-        mp.events.call("Client:CreateWaypoint", posx, posy);
+        mp.events.call("Client:CreateWaypoint", posx, posy, -1);
         var models = ['ig_abigail', 'csb_anton', 'g_m_m_armgoon_01', 'csb_anton', 'ig_money', 'a_m_y_beachvesp_01', 'u_f_y_bikerchic', 's_m_o_busker_01', 's_m_y_construct_02', 'ig_dale', 'ig_fabien', 'a_f_y_fitness_02', 'a_f_o_genstreet_01', 'cs_gurk', 'a_m_m_indian_01'];
         ped = mp.peds.new(
             mp.game.joaat(models[Math.floor(Math.random() * models.length)]),
@@ -7049,7 +7057,7 @@ mp.events.add('Client:CreatePed', (posx, posy, posz, create) => {
         }, 315);
     } else if (create == 2) {
         mp.events.call("Client:CreateMarker", posx, posy, posz, 30);
-        mp.events.call("Client:CreateWaypoint", posx, posy);
+        mp.events.call("Client:CreateWaypoint", posx, posy, -1);
         ped.taskEnterVehicle(mp.players.local.vehicle.handle, 2750, 0, 1, 1, 0);
     } else if (create == 3) {
         mp.events.call("Client:DeleteMarker");
@@ -9274,6 +9282,7 @@ mp.events.add("Client:FollowPetStop", (ped) => {
 });
 
 mp.events.add("Client:DeletePet", () => {
+    if(ownPet == null) return;
     noFollow = false;
     ownPet = null;
     oldRunning = false;

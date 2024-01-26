@@ -1,7 +1,5 @@
-﻿using Google.Protobuf.WellKnownTypes;
-using GTANetworkAPI;
-using GTANetworkMethods;
-using MySql.Data.MySqlClient;
+﻿using GTANetworkAPI;
+using MySqlConnector;
 using NemesusWorld.Database;
 using NemesusWorld.Models;
 using NemesusWorld.Utils;
@@ -124,7 +122,7 @@ namespace NemesusWorld.Controllers
                                 player.TriggerEvent("Client:ShowDealerShip", "n/A", "n/A", null, null, -1, 1);
                                 Helper.SendNotificationWithoutButton2(player, "Viel Spass bei der Probefahrt, das Fahrzeug steht direkt hier vorne, du hast 5 Minuten Zeit (oder /abort zum beenden benutzen)!", "success", "center", 3750);
                                 player.SetData<int>("Player:TestDrive", Helper.UnixTimestamp() + (60 * 5));
-                                player.TriggerEvent("Client:CreateWaypoint", tempData.dealerShip.Position.X, tempData.dealerShip.Position.Y);
+                                player.TriggerEvent("Client:CreateWaypoint", tempData.dealerShip.Position.X, tempData.dealerShip.Position.Y, -1);
                                 player.SetData<int>("Player:LastBizz", 0);
                                 break;
                             }

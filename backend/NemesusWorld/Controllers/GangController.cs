@@ -5,16 +5,11 @@ using NemesusWorld.Models;
 using NemesusWorld.Utils;
 using GTANetworkAPI;
 using System.Globalization;
-using Google.Protobuf.WellKnownTypes;
-using GTANetworkMethods;
 using Player = GTANetworkAPI.Player;
 using System.Linq;
-using Org.BouncyCastle.Ocsp;
-using System.Numerics;
 using Newtonsoft.Json;
 using Vector3 = GTANetworkAPI.Vector3;
 using Vehicle = GTANetworkAPI.Vehicle;
-using System.Runtime.ConstrainedExecution;
 using Ped = GTANetworkAPI.Ped;
 using TextLabel = GTANetworkAPI.TextLabel;
 
@@ -551,12 +546,15 @@ namespace NemesusWorld.Controllers
                 {
                     amount = 10;
                 }
+                else
+                {
+                    amount = 5;
+                }
                 if (!ItemsController.CanPlayerHoldItem(player, ItemsController.GetItemWeightFromList(craftArray[0]) * amount))
                 {
                     Helper.SendNotificationWithoutButton(player, "Du hast keinen Platz mehr im Inventar für diesen Gegenstand!", "error", "top-left");
                     return;
                 }
-                Items newitem = ItemsController.CreateNewItem(player, character.id, craftArray[0], "Player", amount, ItemsController.GetFreeItemID(player));
                 if (craftArray[0] != "Kokain" && craftArray[0] != "Crystal-Meth" && craftArray[0] != "Space-Cookies")
                 {
                     craftingMats.amount -= amount;

@@ -1,5 +1,5 @@
 ﻿using GTANetworkAPI;
-using MySql.Data.MySqlClient;
+using MySqlConnector;
 using NemesusWorld.Database;
 using NemesusWorld.Models;
 using System;
@@ -18,7 +18,6 @@ using Blip = GTANetworkAPI.Blip;
 using Ped = GTANetworkAPI.Ped;
 using Vector3 = GTANetworkAPI.Vector3;
 using Color = GTANetworkAPI.Color;
-using Newtonsoft.Json;
 
 namespace NemesusWorld.Utils
 {
@@ -1167,7 +1166,7 @@ namespace NemesusWorld.Utils
         }
 
         [RemoteEvent("Server:Teleport")]
-        public static void OnTeleport(Player player, float x, float y, float z, bool check, bool showonly = false)
+        public static void OnTeleport(Player player, float x, float y, float z, bool check, bool showonly = false, int vehid = -1)
         {
             try
             {
@@ -1179,7 +1178,18 @@ namespace NemesusWorld.Utils
                         character.inhouse = -1;
                         player.SetOwnSharedData("Player:InHouse", -1);
                     }
-                    SetPlayerPosition(player, new Vector3(x, y, z), 655);
+                    if(vehid != -1)
+                    {
+                        foreach (Cars car in Cars.carList)
+                        {
+                            if (car.vehicleData != null && car.vehicleHandle != null && car.vehicleData.id == vehid)
+                            {
+                                Commands.CMD_gointocar(player, car.vehicleHandle.Id, 0, true);
+                                return;
+                            }
+                        }
+                    }
+                    SetPlayerPosition(player, new Vector3(x, y, z + 0.25), 615);
                 }
                 else
                 {
@@ -1245,7 +1255,7 @@ namespace NemesusWorld.Utils
                         {
                             if (p.IsInVehicle && p.Vehicle == player.Vehicle && player != p)
                             {
-                                p.TriggerEvent("Client:CreateWaypoint", x, y);
+                                p.TriggerEvent("Client:CreateWaypoint", x, y, -1);
                                 Helper.SendNotificationWithoutButton(p, "Es wurde eine neue Kartenmarkierung geteilt!", "success", "top-left", 1850);
                             }
                         }
@@ -3248,7 +3258,7 @@ namespace NemesusWorld.Utils
                                 tempData.order = spedOrder;
                                 player.TriggerEvent("Client:HideSpedition");
                                 Helper.SendNotificationWithoutButton(player, $"Auftrag angenommen, bitte hol die Ware jetzt bei/m {spedOrder.from} ab!", "success", "top-left", 4000);
-                                player.TriggerEvent("Client:CreateWaypoint", spedOrder.position1.X, spedOrder.position1.Y);
+                                player.TriggerEvent("Client:CreateWaypoint", spedOrder.position1.X, spedOrder.position1.Y, -1);
                                 player.TriggerEvent("Client:CreateMarker", spedOrder.position1.X, spedOrder.position1.Y, spedOrder.position1.Z, 39);
                                 tempData.jobColshape = NAPI.ColShape.CreatCircleColShape(spedOrder.position1.X, spedOrder.position1.Y, 3.5f, player.Dimension);
                             }
@@ -5158,7 +5168,7 @@ namespace NemesusWorld.Utils
                             player.TriggerEvent("Client:HideSpedition");
                             SpedOrders.spedOrderList.Remove(spedOrder);
                             Helper.SendNotificationWithoutButton(player, $"Auftrag angenommen, bitte hol die Ware jetzt bei/m {spedOrder.from} ab!", "success", "top-left", 4000);
-                            player.TriggerEvent("Client:CreateWaypoint", spedOrder.position1.X, spedOrder.position1.Y);
+                            player.TriggerEvent("Client:CreateWaypoint", spedOrder.position1.X, spedOrder.position1.Y, -1);
                             player.TriggerEvent("Client:CreateMarker", spedOrder.position1.X, spedOrder.position1.Y, spedOrder.position1.Z, 39);
                             tempData.jobColshape = NAPI.ColShape.CreatCircleColShape(spedOrder.position1.X, spedOrder.position1.Y, 3.5f, player.Dimension);
                             break;
@@ -5220,7 +5230,7 @@ namespace NemesusWorld.Utils
                                 tempData.jobstatus = 1;
                                 player.TriggerEvent("Client:HideSpedition");
                                 Helper.SendNotificationWithoutButton(player, $"Der Bankautomat wurde markiert!", "success", "top-left", 4000);
-                                player.TriggerEvent("Client:CreateWaypoint", tempData.furniturePosition.X, tempData.furniturePosition.Y);
+                                player.TriggerEvent("Client:CreateWaypoint", tempData.furniturePosition.X, tempData.furniturePosition.Y, -1);
                             }
                             else
                             {
@@ -5242,7 +5252,7 @@ namespace NemesusWorld.Utils
                                 {
                                     player.TriggerEvent("Client:HideSpedition");
                                     Helper.SendNotificationWithoutButton(player, $"Das Business/Unternehmen wurde markiert!", "success", "top-left", 4000);
-                                    player.TriggerEvent("Client:CreateWaypoint", bizz.position.X, bizz.position.Y);
+                                    player.TriggerEvent("Client:CreateWaypoint", bizz.position.X, bizz.position.Y, -1);
                                 }
                             }
                             else
@@ -5714,15 +5724,15 @@ namespace NemesusWorld.Utils
                         }
                         if (character.faction == 1)
                         {
-                            player.TriggerEvent("Client:CreateWaypoint", 597.40106, -33.440994);
+                            player.TriggerEvent("Client:CreateWaypoint", 597.40106, -33.440994, -1);
                         }
                         else if (character.faction == 2)
                         {
-                            player.TriggerEvent("Client:CreateWaypoint", -687.32886, 338.13617);
+                            player.TriggerEvent("Client:CreateWaypoint", -687.32886, 338.13617, -1);
                         }
                         else if (character.faction == 3)
                         {
-                            player.TriggerEvent("Client:CreateWaypoint", -355.77936, -160.7771);
+                            player.TriggerEvent("Client:CreateWaypoint", -355.77936, -160.7771, -1);
                         }
                         SendNotificationWithoutButton(player, "Hier eure Bestellung wir haben diese schon mal vorbereitet, bringe diese jetzt zum Auslieferungspunkt!", "success");
                         if (character.faction == 1)
@@ -7174,7 +7184,7 @@ namespace NemesusWorld.Utils
                                     player.SetData<string>("Player:MoneyInfos", $"{phone},{bank},{bizz.id}");
                                     Helper.AddRemoveAttachments(player, "moneyBag", true);
                                     Business.SaveBusiness(bizz);
-                                    player.TriggerEvent("Client:CreateWaypoint", 234.8648, 217.0689);
+                                    player.TriggerEvent("Client:CreateWaypoint", 234.8648, 217.0689, -1);
                                     Helper.SendNotificationWithoutButton(player, $"Du hast {bizz.cash}$ aus dem Business {bizz.name} genommen, bringe dieses jetzt zum Maze Bank Schalter!", "success", "top-left", 4500);
                                     bizz.cash = 0;
                                 }
@@ -10546,7 +10556,7 @@ namespace NemesusWorld.Utils
 
                 //Dutytime
                 PetaPoco.Database db = new PetaPoco.Database(General.Connection);
-                if (character.faction > 0)
+                if (character.faction > 0 && character.factionduty == true)
                 {
                     character.faction_dutytime++;
                 }
@@ -10559,6 +10569,8 @@ namespace NemesusWorld.Utils
                         db.Save(groupMember);
                     }
                 }
+
+                db.Save(character);
             }
             catch (Exception e)
             {
@@ -10644,7 +10656,8 @@ namespace NemesusWorld.Utils
                         {
                             if (groupmember != null && groupmember.payday > 0)
                             {
-                                if (groupmember.payday_day == groupmember.payday_since)
+                                groupmember.payday_since = groupmember.payday_since + 1;
+                                if (groupmember.payday_day >= groupmember.payday_since)
                                 {
                                     Groups groups1 = GroupsController.GetGroupById(groupmember.groupsid);
                                     if (groups1 != null)
@@ -10669,12 +10682,8 @@ namespace NemesusWorld.Utils
                                         }
                                     }
                                 }
-                                else
-                                {
-                                    groupmember.payday_since = groupmember.payday_since + 1;
-                                }
+                                db.Save(groupmember);
                             }
-                            db.Save(groupmember);
                         }
 
                         if (character.nextpayday > 0)
@@ -17901,7 +17910,7 @@ namespace NemesusWorld.Utils
                                 }
                                 catch (Exception)
                                 {
-                                    if (weatherErrors <= 3)
+                                    if (weatherErrors <= 2)
                                     {
                                         weatherErrors++;
                                         Helper.SetAndGetWeather("https://nemesus-world.de/WetterInfoBackup.php");
@@ -17910,6 +17919,7 @@ namespace NemesusWorld.Utils
                                     {
                                         weatherstring = "clear sky";
                                         SetWeather();
+                                        weatherObj = null;
                                     }
                                 }
                                 if (weatherObjTemp2 != null)
@@ -17940,10 +17950,12 @@ namespace NemesusWorld.Utils
                     }
                 });
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Helper.ConsoleLog("error", $"[WETTER-API]: Fehler beim lesen der Wetterdaten, probiere es nochmal ...");
                 weatherstring = "clear sky";
                 SetWeather();
+                weatherObj = null;
             }
         }
 
@@ -18216,7 +18228,10 @@ namespace NemesusWorld.Utils
                     }
                 }
             }
-            catch (Exception) { }
+            catch (Exception e) 
+            {
+                Helper.ConsoleLog("error", $"[Call2Home]: " + e.ToString());
+            }
         }
 
         public static void DeleteOldLogs()
@@ -18453,7 +18468,7 @@ namespace NemesusWorld.Utils
                     if (petItem != null)
                     {
                         petName = petItem.props.Split(",")[1] != "n/A" ? petItem.props.Split(",")[1] : petItem.props.Split(",")[0];
-                        if(petName == "Sheperd")
+                        if (petName == "Sheperd")
                         {
                             petName = "K9-Shepherd";
                         }

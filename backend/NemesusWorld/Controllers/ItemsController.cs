@@ -2,10 +2,8 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using GTANetworkAPI;
-using GTANetworkMethods;
-using MySql.Data.MySqlClient;
+using MySqlConnector;
 using NemesusWorld.Database;
 using NemesusWorld.Models;
 using NemesusWorld.Utils;
@@ -2348,6 +2346,11 @@ namespace NemesusWorld.Controllers
                                                 item.amount -= 1;
                                                 Commands.cmd_animation(player, "give", true);
                                                 TempData tempData2 = Helper.GetCharacterTempData(getPlayer);
+                                                if (tempData2.adminduty == true)
+                                                {
+                                                    Helper.SendNotificationWithoutButton(player, "Ungültiger Spieler!", "error");
+                                                    return;
+                                                }
                                                 if (tempData2.cuffed == 1)
                                                 {
                                                     Helper.SendNotificationWithoutButton(player, "Der Spieler trägt schon Handschellen, diese müssen erst abgenommen werden!", "error");
@@ -3109,12 +3112,16 @@ namespace NemesusWorld.Controllers
                                                 Helper.SendNotificationWithoutButton(player, "Du bist nicht in der Nähe von deinem Haustier!", "error");
                                                 return;
                                             }
-                                            player.TriggerEvent("Client:DeletePet");
-                                            if(tempData.pet != null)
+                                            if (tempData.pet != null)
                                             {
-                                                tempData.pet.ResetSharedData("Ped:Name");
-                                                tempData.pet.Delete();
-                                                tempData.pet = null;
+                                                player.TriggerEvent("Client:DeletePet");
+                                                NAPI.Task.Run(() =>
+                                                {
+                                                    tempData.pet.ResetSharedData("Ped:Name");
+                                                    tempData.pet.Delete();
+                                                    tempData.pet = null;
+                                                    tempData.petTask = 0;
+                                                }, delayTime: 515);
                                             }
                                             Commands.cmd_animation(player, "whistle2", true);
                                             Helper.SendNotificationWithoutButton(player, "Du hast dein Haustier zurückgerufen!", "success");

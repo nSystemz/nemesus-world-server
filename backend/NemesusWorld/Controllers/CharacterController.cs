@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using GTANetworkAPI;
-using MySql.Data.MySqlClient;
-using NemesusWorld.Controllers;
+using MySqlConnector;
 using NemesusWorld.Database;
 using NemesusWorld.Models;
 using NemesusWorld.Utils;

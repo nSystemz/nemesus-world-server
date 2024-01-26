@@ -1,17 +1,18 @@
 ﻿using GTANetworkAPI;
-using MySql.Data.MySqlClient;
+using MySqlConnector;
 using NemesusWorld.Database;
 using NemesusWorld.Models;
 using NemesusWorld.Utils;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace NemesusWorld.Controllers
 {
     class TicketController : Script
     {
-        [RemoteEvent("Server:CountTickets")]
-        public static void OnCountTickets(Player player)
+        [RemoteEvent("Server:LoadAllTickets")]
+        public static void OnLoadAllTickets(Player player, int check = 1)
         {
             try
             {
@@ -27,63 +28,16 @@ namespace NemesusWorld.Controllers
                 {
                     if (account.adminlevel >= (int)Account.AdminRanks.HighAdministrator)
                     {
-                        command.CommandText = "SELECT COUNT(ts.id) as count FROM tickets as ts JOIN ticket_user as tu ON ts.id = tu.ticketid WHERE ts.status != 9 ORDER by ts.timestamp asc LIMIT 25";
+                        command.CommandText = "SELECT * FROM tickets as ts JOIN ticket_user as tu ON ts.id = tu.ticketid WHERE ts.status != 9 GROUP BY ts.id ORDER by ts.timestamp asc LIMIT 25";
                     }
                     else
                     {
-                        command.CommandText = "SELECT COUNT(ts.id) as count FROM tickets as ts JOIN ticket_user as tu ON ts.id = tu.ticketid WHERE ts.status != 9 AND (tu.userid = @userid or ts.admin = -1) ORDER by ts.timestamp asc LIMIT 25";
+                        command.CommandText = "SELECT * FROM tickets as ts JOIN ticket_user as tu ON ts.id = tu.ticketid WHERE ts.status != 9 AND (tu.userid = @userid or ts.admin = -1) GROUP BY ts.id ORDER by ts.timestamp asc LIMIT 25";
                     }
                 }
                 else
                 {
-                    command.CommandText = "SELECT COUNT(ts.id) as count FROM tickets as ts JOIN ticket_user as tu ON ts.id = tu.ticketid WHERE ts.status != 9 AND tu.userid = @userid ORDER by ts.timestamp asc LIMIT 25";
-                }
-                command.Parameters.AddWithValue("@userid", account.id);
-
-                List<Tickets> ticketList = new List<Tickets>();
-
-                using (MySqlDataReader reader = command.ExecuteReader())
-                {
-                    if(reader.HasRows)
-                    {
-                        reader.Read();
-                        count = reader.GetInt32("count");
-                    }
-                    reader.Close();
-                }
-                player.TriggerEvent("Client:UpdateTicketCount", count);
-            }
-            catch (Exception e)
-            {
-                Helper.ConsoleLog("error", $"[OnCountTickets]: " + e.ToString());
-            }
-        }
-
-        [RemoteEvent("Server:LoadAllTickets")]
-        public static void OnLoadAllTickets(Player player)
-        {
-            try
-            {
-                Account account = Helper.GetAccountData(player);
-
-                if (account == null) return;
-
-                MySqlCommand command = General.Connection.CreateCommand();
-                command = General.Connection.CreateCommand();
-                if (account.adminlevel > 0)
-                {
-                    if (account.adminlevel >= (int)Account.AdminRanks.HighAdministrator)
-                    {
-                        command.CommandText = "SELECT * FROM tickets as ts JOIN ticket_user as tu ON ts.id = tu.ticketid WHERE ts.status != 9 ORDER by ts.timestamp asc LIMIT 25";
-                    }
-                    else
-                    {
-                        command.CommandText = "SELECT * FROM tickets as ts JOIN ticket_user as tu ON ts.id = tu.ticketid WHERE ts.status != 9 AND (tu.userid = @userid or ts.admin = -1) ORDER by ts.timestamp asc LIMIT 25";
-                    }
-                }
-                else
-                {
-                    command.CommandText = "SELECT * FROM tickets as ts JOIN ticket_user as tu ON ts.id = tu.ticketid WHERE ts.status != 9 AND tu.userid = @userid ORDER by ts.timestamp asc LIMIT 25";
+                    command.CommandText = "SELECT * FROM tickets as ts JOIN ticket_user as tu ON ts.id = tu.ticketid WHERE ts.status != 9 AND tu.userid = @userid GROUP BY ts.id ORDER by ts.timestamp asc LIMIT 25";
                 }
                 command.Parameters.AddWithValue("@userid", account.id);
 
@@ -103,6 +57,7 @@ namespace NemesusWorld.Controllers
                         ticket.admin = "" + reader.GetInt32("admin");
                         ticket.status = reader.GetInt32("status");
                         ticketList.Add(ticket);
+                        count++;
                     }
                     reader.Close();
                 }
@@ -117,7 +72,7 @@ namespace NemesusWorld.Controllers
                     }
                 }
 
-                player.TriggerEvent("Client:GetAllTickets", NAPI.Util.ToJson(ticketList));
+                player.TriggerEvent("Client:GetAllTickets", NAPI.Util.ToJson(ticketList.GroupBy(x => x).Select(d => d.First()).ToList()), count, check);
             }
             catch (Exception e)
             {

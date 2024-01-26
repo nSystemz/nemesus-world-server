@@ -226,7 +226,7 @@ export default {
         },
         markBizz: function (posx, posy) {
             // eslint-disable-next-line no-undef
-            mp.trigger("Client:CreateWaypoint", posx, posy);
+            mp.trigger("Client:CreateWaypoint", posx, posy, -1);
             // eslint-disable-next-line no-undef
             mp.trigger("Client:SendNotificationWithoutButton2", 'Business wurde markiert!', 'success', 'center', 2500);
         },

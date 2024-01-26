@@ -2299,7 +2299,7 @@ export default {
             if ((Date.now() / 1000) > this.clicked) {
                 let pos = position.split(',');
                 // eslint-disable-next-line no-undef
-                mp.trigger('Client:CreateWaypoint', pos[0], pos[1]);
+                mp.trigger('Client:CreateWaypoint', pos[0], pos[1], -1);
                 // eslint-disable-next-line no-undef
                 mp.trigger('Client:SendNotificationWithoutButton', 'GPS Lokalisierung erfolgreich!', 'success', 'top-left', 2750);
                 this.clicked = (Date.now() / 1000) + (2);

@@ -2,13 +2,11 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using GTANetworkAPI;
-using MySql.Data.MySqlClient;
+using MySqlConnector;
 using NemesusWorld.Database;
 using NemesusWorld.Models;
 using NemesusWorld.Utils;
-using Newtonsoft.Json;
 
 namespace NemesusWorld.Controllers
 {
@@ -179,6 +177,11 @@ namespace NemesusWorld.Controllers
         {
             try
             {
+                if(Helper.weatherObj == null)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Es gibt keine aktuellen Wetterdaten, bitte probiere es später nochmal!", "error", "top-left", 3000);
+                    return;
+                }
                 player.TriggerEvent("Client:ShowWeather", Helper.weatherObj.ToString(Newtonsoft.Json.Formatting.None));
             }
             catch (Exception e)
@@ -520,7 +523,7 @@ namespace NemesusWorld.Controllers
                             Helper.SendNotificationWithoutButton(getPlayer, $"Dein Taxiauftrag wurde angenommen, ein Taxifahrer wird in kürze bei dir sein. Rückrufnummer: {character.lastsmartphone}!", "success", "top-left", 4550);
                             getPlayer.TriggerEvent("Client:PlaySoundPeep2");
                         }
-                        player.TriggerEvent("Client:CreateWaypoint", taxi.standort.Split(",")[0], taxi.standort.Split(",")[1]);
+                        player.TriggerEvent("Client:CreateWaypoint", taxi.standort.Split(",")[0], taxi.standort.Split(",")[1], -1);
                         taxi.done = character.name;
                         break;
                     }

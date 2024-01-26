@@ -1,5 +1,5 @@
 ﻿using GTANetworkAPI;
-using MySql.Data.MySqlClient;
+using MySqlConnector;
 using NemesusWorld.Database;
 using NemesusWorld.Models;
 using NemesusWorld.Utils;
@@ -129,7 +129,7 @@ namespace NemesusWorld.Controllers
             {
                 MySqlCommand command = General.Connection.CreateCommand();
                 command = General.Connection.CreateCommand();
-                command.CommandText = "SELECT id,name,faction,rang,faction_dutytime,faction_since,online,swat FROM characters where faction=@faction ORDER BY rang DESC, name ASC";
+                command.CommandText = "SELECT id,name,faction,rang,faction_dutytime,faction_since,online,swat FROM characters WHERE faction=@faction ORDER BY rang DESC, name ASC";
                 command.Parameters.AddWithValue("@faction", faction);
 
                 using (MySqlDataReader reader = command.ExecuteReader())
@@ -396,6 +396,11 @@ namespace NemesusWorld.Controllers
                                         if (player.Position.DistanceTo(behindPlayer) <= 1.95)
                                         {
                                             TempData tempData2 = Helper.GetCharacterTempData(getPlayer);
+                                            if(tempData2.adminduty == true)
+                                            {
+                                                Helper.SendNotificationWithoutButton(player, "Ungültiger Spieler!", "error");
+                                                return;
+                                            }
                                             if (tempData2.cuffed == 2)
                                             {
                                                 Helper.SendNotificationWithoutButton(player, "Der Spieler trägt schon Kabelbinder, diese müssen erst abgenommen werden!", "error");

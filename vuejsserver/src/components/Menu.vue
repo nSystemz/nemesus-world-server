@@ -1817,7 +1817,7 @@
                                                                 setzen</button>
                                                             <button v-if="car.battery > 0"
                                                                 class="btn btn-primary btn-sm mt-2" type="submit"
-                                                                v-on:click="gpsCar(car.position)">GPS Ortung</button>
+                                                                v-on:click="gpsCar(car.position, car.id)">GPS Ortung</button>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -6433,8 +6433,8 @@
                     this.clicked = (Date.now() / 1000) + (1);
                     if ((this.lastcheck13 == 0 || (Date.now() / 1000) > this.lastcheck13 || !this.tickets)) {
                         // eslint-disable-next-line no-undef
-                        mp.trigger('Client:LoadAllTickets');
-                        this.lastcheck13 = (Date.now() / 1000) + (120);
+                        mp.trigger('Client:LoadAllTickets', 1);
+                        this.lastcheck13 = (Date.now() / 1000) + (60);
                     } else {
                         if (this.menushowtticket != 2) {
                             this.menushowtticket = 2;
@@ -6444,12 +6444,15 @@
                     }
                 }
             },
-            getAllTickets: function(tickets) {
+            getAllTickets: function(tickets, check) {
                 this.tickets = JSON.parse(tickets);
                 var self = this;
-                setTimeout(function() {
-                    self.menushowtticket = 2;
-                }, 115);
+                if(check == 1)
+                {
+                    setTimeout(function() {
+                        self.menushowtticket = 2;
+                    }, 115);
+                }
             },
             showTicket: function(ticket) {
                 if ((Date.now() / 1000) > this.clicked) {
@@ -6774,11 +6777,11 @@
                     this.$forceUpdate();
                 }
             },
-            gpsCar(position) {
+            gpsCar(position, carid) {
                 if ((Date.now() / 1000) > this.clicked) {
                     let pos = position.split('|');
                     // eslint-disable-next-line no-undef
-                    mp.trigger('Client:CreateWaypoint', pos[0], pos[1]);
+                    mp.trigger('Client:CreateWaypoint', pos[0], pos[1], carid);
                     // eslint-disable-next-line no-undef
                     mp.trigger('Client:SendNotificationWithoutButton', 'Fahrzeug wurde geortet!', 'success', 'top-left',
                         2750);

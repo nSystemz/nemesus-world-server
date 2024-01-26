@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using GTANetworkAPI;
-using MySql.Data.MySqlClient;
+using MySqlConnector;
 using NemesusWorld.Database;
 using NemesusWorld.Models;
 using NemesusWorld.Utils;
@@ -800,7 +799,7 @@ namespace NemesusWorld.Controllers
                         {
                             String msg = "";
                             String msg2 = "";
-                            float zonesize = 0.8f;
+                            float zonesize = 0.65f;
                             mdcArray = data.Split(",");
                             if(mdcArray[1] == "Klein")
                             {
@@ -813,11 +812,6 @@ namespace NemesusWorld.Controllers
                             else
                             {
                                 zonesize = 1.2f;
-                            }
-                            if (zonesize < 0.8 || zonesize > 1.2)
-                            {
-                                Helper.SendNotificationWithoutButton(player, "Ungültige Sperrzonengröße!", "error", "top-left", 2750);
-                                return;
                             }
                             if (Events.closesZone == null)
                             {
@@ -973,7 +967,7 @@ namespace NemesusWorld.Controllers
                                     if (locatedPlayer != null)
                                     {
                                         Helper.SendNotificationWithoutButton(player, $"Lokalisierung erfolgreich!", "success", "top-left", 2500);
-                                        player.TriggerEvent("Client:CreateWaypoint", locatedPlayer.Position.X, locatedPlayer.Position.Y);
+                                        player.TriggerEvent("Client:CreateWaypoint", locatedPlayer.Position.X, locatedPlayer.Position.Y, -1);
                                     }
                                     else
                                     {

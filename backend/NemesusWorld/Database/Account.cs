@@ -1,12 +1,9 @@
 ﻿using GTANetworkAPI;
 using System;
-using MySql.Data.MySqlClient;
+using MySqlConnector;
 using NemesusWorld.Utils;
 using NemesusWorld.Controllers;
 using System.Text.RegularExpressions;
-using System.Threading;
-using System.Collections;
-using System.Security.Principal;
 
 namespace NemesusWorld.Database
 {

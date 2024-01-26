@@ -2019,7 +2019,7 @@ INSERT INTO `furniture` (`id`, `hash`, `name`, `categorie`, `extra`, `price`) VA
 (468, '-2122821887', 'Panel-B', 31, 0, 85),
 (469, '-1659828682', 'Panel-C', 31, 0, 65),
 (470, '-818415955', 'Monitor-E', 15, 0, 150),
-(471, '-2107935824', 'Whiteboard-A', 33, 0, 105),
+(471, '-2107935824', 'Whiteboard-A', 32, 0, 105),
 (472, '-1691492531', 'Wärmelampe-A', 11, 0, 515),
 (473, '-1451197454', 'Wärmelampe-B', 11, 0, 715);
 
@@ -2069,8 +2069,7 @@ INSERT INTO `furniturecategories` (`id`, `name`) VALUES
 (29, 'Luxus'),
 (30, 'Medikamente'),
 (31, 'Sicherheit'),
-(32, 'Test'),
-(33, 'Büro');
+(32, 'Büro');
 
 -- --------------------------------------------------------
 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using GTANetworkAPI;
-using MySql.Data.MySqlClient;
+using MySqlConnector;
 using NemesusWorld.Controllers;
 using NemesusWorld.Models;
 using NemesusWorld.Utils;

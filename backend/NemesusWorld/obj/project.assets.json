@@ -157,6 +157,15 @@
           "lib/netstandard2.1/ZstdNet.dll": {}
         }
       },
+      "MySqlConnector/1.3.14": {
+        "type": "package",
+        "compile": {
+          "lib/netcoreapp3.1/MySqlConnector.dll": {}
+        },
+        "runtime": {
+          "lib/netcoreapp3.1/MySqlConnector.dll": {}
+        }
+      },
       "Newtonsoft.Json/12.0.3": {
         "type": "package",
         "compile": {
@@ -722,6 +731,37 @@
         "lib/netstandard2.1/ZstdNet.dll",
         "mysql.data.8.0.27.nupkg.sha512",
         "mysql.data.nuspec"
+      ]
+    },
+    "MySqlConnector/1.3.14": {
+      "sha512": "JW7YYHtjW5dKk3SQGkgKzvj7+n+RLZXYCZ+s2izjFD1ehmr5JlGZFZG98DCI4T9wB154qKja5GA9IQMfX+GH+Q==",
+      "type": "package",
+      "path": "mysqlconnector/1.3.14",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "lib/net45/MySqlConnector.dll",
+        "lib/net45/MySqlConnector.xml",
+        "lib/net461/MySqlConnector.dll",
+        "lib/net461/MySqlConnector.xml",
+        "lib/net471/MySqlConnector.dll",
+        "lib/net471/MySqlConnector.xml",
+        "lib/net5.0/MySqlConnector.dll",
+        "lib/net5.0/MySqlConnector.xml",
+        "lib/netcoreapp2.1/MySqlConnector.dll",
+        "lib/netcoreapp2.1/MySqlConnector.xml",
+        "lib/netcoreapp3.1/MySqlConnector.dll",
+        "lib/netcoreapp3.1/MySqlConnector.xml",
+        "lib/netstandard1.3/MySqlConnector.dll",
+        "lib/netstandard1.3/MySqlConnector.xml",
+        "lib/netstandard2.0/MySqlConnector.dll",
+        "lib/netstandard2.0/MySqlConnector.xml",
+        "lib/netstandard2.1/MySqlConnector.dll",
+        "lib/netstandard2.1/MySqlConnector.xml",
+        "logo.png",
+        "mysqlconnector.1.3.14.nupkg.sha512",
+        "mysqlconnector.nuspec"
       ]
     },
     "Newtonsoft.Json/12.0.3": {
@@ -1688,6 +1728,7 @@
       "BCrypt.Net-Next >= 4.0.3",
       "Microsoft.Extensions.DependencyInjection >= 6.0.0",
       "MySql.Data >= 8.0.27",
+      "MySqlConnector >= 1.3.14",
       "Newtonsoft.Json >= 12.0.3",
       "PetaPoco.Compiled >= 6.0.493-beta"
     ]
@@ -1742,6 +1783,10 @@
           "MySql.Data": {
             "target": "Package",
             "version": "[8.0.27, )"
+          },
+          "MySqlConnector": {
+            "target": "Package",
+            "version": "[1.3.14, )"
           },
           "Newtonsoft.Json": {
             "target": "Package",

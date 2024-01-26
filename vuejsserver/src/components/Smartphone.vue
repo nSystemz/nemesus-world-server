@@ -2028,7 +2028,7 @@ export default {
             let newtext = text.substring(position1 + 1, text.length - 1);
             const posi = newtext.split(',');
             // eslint-disable-next-line no-undef
-            mp.trigger("Client:CreateWaypoint", posi[0], posi[1]);
+            mp.trigger("Client:CreateWaypoint", posi[0], posi[1], -1);
             // eslint-disable-next-line no-undef
             mp.trigger("Client:SendNotificationWithoutButton", 'Position markiert!', 'info', 'top-left', '2500');
         },

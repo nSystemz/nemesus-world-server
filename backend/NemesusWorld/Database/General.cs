@@ -1,9 +1,8 @@
 ﻿using GTANetworkAPI;
 using System;
 using NemesusWorld.Utils;
-using MySql.Data.MySqlClient;
-using System.Net;
 using System.Data;
+using MySqlConnector;
 
 namespace NemesusWorld.Database
 {
@@ -26,9 +25,6 @@ namespace NemesusWorld.Database
 
         public static bool InitConnection()
         {
-            System.Net.ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
-            System.Net.ServicePointManager.Expect100Continue = false;
-
             if(Connection != null && Connection.State == ConnectionState.Open)
             {
                 Helper.ConsoleLog("success", "[MYSQL]: Verbindung wurde beendet!");

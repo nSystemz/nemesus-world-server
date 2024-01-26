@@ -1,5 +1,5 @@
 ﻿using GTANetworkAPI;
-using MySql.Data.MySqlClient;
+using MySqlConnector;
 using NemesusWorld.Controllers;
 using NemesusWorld.Database;
 using NemesusWorld.Models;
@@ -635,11 +635,25 @@ namespace NemesusWorld
                 }
                 account.admin_rang = "n/A";
                 ntarget.ResetSharedData("Player:AdminRang");
-                ntarget.SetSharedData("Player:Adminsettings", "0,0,0");
                 ntarget.SetData("Player:AdminDuty", false);
                 Helper.SetPlayerHealth(ntarget, ntarget.GetSharedData<int>("Player:HealthSync") - 100);
                 var obj = JObject.Parse(character.json);
+                if (character.factionduty == false)
+                {
+                    obj = JObject.Parse(character.json);
+                }
+                else
+                {
+                    obj = JObject.Parse(character.dutyjson);
+                }
                 CharacterController.SetCharacterCloths(ntarget, obj, character.clothing);
+            }
+            else
+            {
+                if (accounttarget.admin_rang != "n/A")
+                {
+                    ntarget.SetSharedData("Player:AdminRang", accounttarget.admin_rang);
+                }
             }
             NAPI.Data.SetEntitySharedData(ntarget, "Player:Adminlevel", adminlevel);
             return;
@@ -1297,6 +1311,17 @@ namespace NemesusWorld
                             accounttarget.play_time = number;
                             break;
                         }
+                    case "payday":
+                        {
+                            if (number < 1 || number > 1)
+                            {
+                                Helper.SendNotificationWithoutButton(player, "Ungültige Menge!", "error", "top-end");
+                                return;
+                            }
+                            accounttarget.play_points = 60;
+                            Helper.CheckPayday(player);
+                            break;
+                        }
                     case "erfahrungspunkte":
                         {
                             if (number < 0 || number > 9999)
@@ -1827,7 +1852,7 @@ namespace NemesusWorld
                     default:
                         {
                             player.SendChatMessage("~w~Befehl: /set [Spieler/ID] [Option] [Menge]");
-                            player.SendChatMessage("~y~Verfügbare Aktionen: Leben, Geld, Dimension, GruppierungsMember, GruppierungsLeader, FraktionsMember, FraktionsLeader, FraktionsKick, Truckerskill, Diebesskill, Angelskill, Busskill, Landwirtskill, Craftingskill, Premium-Bronze, Premium-Silber, Premium-Gold, Level, Spielstunden, Erfahrungspunkte, Krankheit, Coins");
+                            player.SendChatMessage("~y~Verfügbare Aktionen: Leben, Geld, Dimension, GruppierungsMember, GruppierungsLeader, FraktionsMember, FraktionsLeader, FraktionsKick, Truckerskill, Diebesskill, Angelskill, Busskill, Landwirtskill, Craftingskill, Premium-Bronze, Premium-Silber, Premium-Gold, Level, Spielstunden, Erfahrungspunkte, Krankheit, Coins, Payday");
                             return;
                         }
                 }
@@ -1839,7 +1864,7 @@ namespace NemesusWorld
             catch (Exception)
             {
                 player.SendChatMessage("~w~Befehl: /set [Spieler/ID] [Option] [Menge]");
-                player.SendChatMessage("~y~Verfügbare Aktionen: Leben, Geld, Dimension, GruppierungsMember, GruppierungsLeader, FraktionsMember, FraktionsLeader, FraktionsKick, Truckerskill, Diebesskill, Angelskill, Busskill, Landwirtskill, Premium-Bronze, Premium-Silber, Premium-Gold, Level, Spielstunden, Erfahrungspunkte, Krankheit, Coins");
+                player.SendChatMessage("~y~Verfügbare Aktionen: Leben, Geld, Dimension, GruppierungsMember, GruppierungsLeader, FraktionsMember, FraktionsLeader, FraktionsKick, Truckerskill, Diebesskill, Angelskill, Busskill, Landwirtskill, Premium-Bronze, Premium-Silber, Premium-Gold, Level, Spielstunden, Erfahrungspunkte, Krankheit, Coins, Payday");
             }
         }
 
@@ -5785,7 +5810,7 @@ namespace NemesusWorld
         }
 
         [Command("gointocar", "Befehl: /gointocar [Fahrzeug-ID] [Sitz*]")]
-        public void CMD_gointocar(Player player, int vehicleid, int seatid = 0)
+        public static void CMD_gointocar(Player player, int vehicleid, int seatid = 0, bool hidemessage = false)
         {
             if (!Account.IsPlayerLoggedIn(player)) return;
             Account account = Helper.GetAccountData(player);
@@ -5822,8 +5847,11 @@ namespace NemesusWorld
             NAPI.Task.Run(() =>
             {
                 NAPI.Player.SetPlayerIntoVehicle(player, vehicle, seatid);
-            }, delayTime: 425);
-            Helper.SendNotificationWithoutButton(player, $"Du hast dich in das Fahrzeug mit der ID { vehicleid } teleportiert!", "success", "top-end", 3500);
+            }, delayTime: 1250);
+            if(hidemessage == false)
+            {
+                Helper.SendNotificationWithoutButton(player, $"Du hast dich in das Fahrzeug mit der ID { vehicleid } teleportiert!", "success", "top-end", 3500);
+            }
             return;
         }
 

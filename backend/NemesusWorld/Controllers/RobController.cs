@@ -24,7 +24,9 @@ namespace NemesusWorld.Controllers
                 Business bizz = Business.GetClosestBusiness(player, 75.5f);
                 Ped ped = Helper.GetClosestPed(player, 5.5f);
 
-                if ((ped == null || tempData.inrob == true) && (bizz != null || Helper.IsAtBank(player) != -1)) return;
+                if (bizz == null && Helper.IsAtBank(player) == -1) return;
+
+                if (ped == null || ped.HasSharedData("Ped:Name") || tempData.inrob == true) return;
 
                 if (bizz != null)
                 {
@@ -86,7 +88,7 @@ namespace NemesusWorld.Controllers
 
                 int randomPercentage = 100;
 
-                if (Helper.IsAtBank(player) == 0 || Helper.IsAtBank(player) == 1)
+                if (Helper.IsAtBank(player) > -1)
                 {
                     if (ped.Id != 27)
                     {
@@ -102,7 +104,7 @@ namespace NemesusWorld.Controllers
                         robCooldown.Add(ped.Id, Helper.UnixTimestamp() + 60 * 480);
                     }
                 }
-                else if (bizz.id >= 5 && bizz.id <= 15)
+                else if (bizz!= null && bizz.id >= 5 && bizz.id <= 15)
                 {
                     randomPercentage = 25;
                     if (tempData.adminduty == false)
@@ -111,7 +113,7 @@ namespace NemesusWorld.Controllers
                         robCooldown.Add(ped.Id, Helper.UnixTimestamp() + 60 * 180);
                     }
                 }
-                else if ((bizz.id >= 1 && bizz.id <= 4) || bizz.id == 37 || bizz.id == 38 || bizz.id == 39 || bizz.id == 40 || bizz.id == 41)
+                else if (bizz != null && ((bizz.id >= 1 && bizz.id <= 4) || bizz.id == 37 || bizz.id == 38 || bizz.id == 39 || bizz.id == 40 || bizz.id == 41))
                 {
                     randomPercentage = 15;
                     if (tempData.adminduty == false)
@@ -120,7 +122,7 @@ namespace NemesusWorld.Controllers
                         robCooldown.Add(ped.Id, Helper.UnixTimestamp() + 60 * 180);
                     }
                 }
-                else if (bizz.id >= 17 && bizz.id <= 21)
+                else if (bizz != null && bizz.id >= 17 && bizz.id <= 21)
                 {
                     randomPercentage = 30;
                     if (tempData.adminduty == false)
@@ -214,7 +216,7 @@ namespace NemesusWorld.Controllers
                 }
 
                 //24/7-Tankstelle
-                if (bizz.id >= 5 && bizz.id <= 15)
+                if (bizz != null && bizz.id >= 5 && bizz.id <= 15)
                 {
                     cash = bizz.cash / 100 * 35;
                     if (cash <= 0)
@@ -254,7 +256,7 @@ namespace NemesusWorld.Controllers
                 }
 
                 //Ammunation
-                if (bizz.id >= 17 && bizz.id <= 21)
+                if (bizz != null && bizz.id >= 17 && bizz.id <= 21)
                 {
                     Random random = new Random();
                     String things = "";
@@ -332,7 +334,7 @@ namespace NemesusWorld.Controllers
                 }
 
                 //Kleidungsladen + Juwelier + Tattoo-Laden + Barber-Shop
-                if ((bizz.id >= 1 && bizz.id <= 4) || bizz.id == 37 || bizz.id == 38 || bizz.id == 39 || bizz.id == 40 || bizz.id == 41)
+                if (bizz != null && ((bizz.id >= 1 && bizz.id <= 4) || bizz.id == 37 || bizz.id == 38 || bizz.id == 39 || bizz.id == 40 || bizz.id == 41))
                 {
                     cash = bizz.cash / 100 * 35;
                     if (cash <= 0)

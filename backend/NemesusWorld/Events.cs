@@ -230,7 +230,7 @@ namespace NemesusWorld
                                 Helper.ConsoleLog("info", "[SERVER]: Nemesus World Gamemode erstellt von Nemesus.de erfolgreich geladen - (Text-RP)");
                             }
                             //Call2Home, kann gelöscht werden dient nur zur Statistik
-                            //Helper.Call2Home();
+                            Helper.Call2Home();
                             //Materialversteck befüllen
                             Helper.MatsImVersteck += 20;
                         }

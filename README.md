@@ -14,7 +14,10 @@ Bei RageMP Voice bitte folgende Einstellungen zu deiner conf.json hinzufügen:
 
 Bei diesem Gamemode handelt es sich um einen Gamemode für die Multiplayer Modifikation GTA 5/RageMP, Credits sind im Gamemode vermerkt oder bei der jeweiligen Funktion/MLO etc.
 
-Info: Der Gamemode läuft auf Linux und Windows, auf Windows habe ich aber bessere Erfahrungen gemacht. Der Gamemode war mal für einen relativ schnellen "Release" geplant, an einigen Stellen unsauber geschrieben und natürlich nicht zu 100% fertig. Hier und da kann es zu Bugs kommen, diese könnt Ihr gerne hier oder bei mir im Discord melden.
+Info: Der Gamemode läuft auf Linux und Windows, auf Windows habe ich aber bessere Erfahrungen gemacht.
+Kopiert euch bitte die jeweiligen aktuellen Runtimes (von Rage) in den dotnet Ordner, es liegen die runtimes für Windows dabei!
+
+Der Gamemode war mal für einen relativ schnellen "Release" geplant, an einigen Stellen unsauber geschrieben und natürlich nicht zu 100% fertig. Hier und da kann es zu Bugs kommen, diese könnt Ihr gerne hier oder bei mir im Discord melden.
 
 Testserver: https://bit.ly/3MMK5nD
 

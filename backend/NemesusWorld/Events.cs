@@ -178,12 +178,14 @@ namespace NemesusWorld
                             HuntingController.InitAnimals();
                             //Load EUP Outfits
                             Events.LoadEUPOutfits(true, false);
-                            //Reset Factionduty Count
+                            //Reset Factionduty + Groupduty Count
                             System.DateTime moment = new System.DateTime(Helper.UnixTimestamp());
                             if (moment.DayOfWeek == DayOfWeek.Monday)
                             {
                                 MySqlCommand command2 = General.Connection.CreateCommand();
                                 command2.CommandText = "UPDATE characters SET faction_dutytime = 0 WHERE faction_dutytime > 0";
+                                command2.ExecuteNonQuery();
+                                command2.CommandText = "UPDATE groups_members SET duty_time = 0 WHERE duty_time > 0";
                                 command2.ExecuteNonQuery();
                             }
                             //Load all lifeinvaderads
@@ -642,10 +644,6 @@ namespace NemesusWorld
                                             if (character.payday_points >= 60)
                                             {
                                                 Helper.CheckPayday(player);
-                                            }
-                                            if(character.faction == 1)
-                                            {
-                                                character.faction_dutytime++;
                                             }
                                         }
                                         //Probefahrt

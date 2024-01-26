@@ -10543,6 +10543,22 @@ namespace NemesusWorld.Utils
                 }
 
                 CreatePayday(player);
+
+                //Dutytime
+                if (character.faction > 0)
+                {
+                    character.faction_dutytime++;
+                }
+                if (character.mygroup > -1)
+                {
+                    GroupsMembers groupMember = GroupsController.GetGroupMemberById(character.id, character.mygroup);
+                    if (groupMember != null)
+                    {
+                        groupMember.duty_time++;
+                    }
+                    PetaPoco.Database db = new PetaPoco.Database(General.Connection);
+                    db.Save(groupMember);
+                }
             }
             catch (Exception e)
             {

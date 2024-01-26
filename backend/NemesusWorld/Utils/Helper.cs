@@ -10545,6 +10545,7 @@ namespace NemesusWorld.Utils
                 CreatePayday(player);
 
                 //Dutytime
+                PetaPoco.Database db = new PetaPoco.Database(General.Connection);
                 if (character.faction > 0)
                 {
                     character.faction_dutytime++;
@@ -10555,9 +10556,8 @@ namespace NemesusWorld.Utils
                     if (groupMember != null)
                     {
                         groupMember.duty_time++;
+                        db.Save(groupMember);
                     }
-                    PetaPoco.Database db = new PetaPoco.Database(General.Connection);
-                    db.Save(groupMember);
                 }
             }
             catch (Exception e)

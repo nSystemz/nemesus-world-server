@@ -50,6 +50,16 @@
         <div class="arc"><img @click="setWheel(25,whichwheel)" src=""></div>
         <div class="arc"><img @click="setWheel(25,whichwheel)" src=""></div>
     </div>
+    <div class="wheel" ref="wheel" v-if="whichwheel == 6">
+        <div class="arc"><img @click="setWheel(1,whichwheel)" src="../assets/images/cuffs.png"></div>
+        <div class="arc"><img @click="setWheel(2,whichwheel)" src="../assets/images/grab.png"></div>
+        <div class="arc"><img @click="setWheel(3,whichwheel)" src="../assets/images/search.png"></div>
+        <div class="arc"><img @click="setWheel(25,whichwheel)" src=""></div>
+        <div class="arc"><img @click="setWheel(25,whichwheel)" src=""></div>
+        <div class="arc"><img @click="setWheel(25,whichwheel)" src=""></div>
+        <div class="arc"><img @click="setWheel(25,whichwheel)" src=""></div>
+        <div class="arc"><img @click="setWheel(25,whichwheel)" src=""></div>
+    </div>
 </div>
 </template>
 
@@ -191,7 +201,7 @@ export default {
                         mp.trigger("Client:HideWheel2");
                         // eslint-disable-next-line no-undef
                         mp.trigger("Client:UseWheel", "setcloth", index);
-                    } else if (wheeli == 3 || wheeli == 4 || wheeli == 5) {
+                    } else if (wheeli == 3 || wheeli == 4 || wheeli == 5 || wheeli == 6) {
                         this.showswal = false;
                         // eslint-disable-next-line no-undef
                         mp.trigger("Client:HideWheel2");

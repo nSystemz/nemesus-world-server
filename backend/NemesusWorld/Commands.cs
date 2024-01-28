@@ -1636,18 +1636,22 @@ namespace NemesusWorld
                                 {
                                     character.armor = 4;
                                     character.armorcolor = 0;
-                                    if (NAPI.Player.GetPlayerArmor(ntarget) > 0)
-                                    {
-                                        NAPI.Player.SetPlayerClothes(ntarget, 9, character.armor, character.armorcolor);
-                                    }
                                 }
                                 else
                                 {
                                     character.armor = 7;
                                     character.armorcolor = 0;
-                                    if (NAPI.Player.GetPlayerArmor(ntarget) > 0)
+                                }
+
+                                if (NAPI.Player.GetPlayerArmor(ntarget) > 0)
+                                {
+                                    if (character.factionduty == false || (character.faction != 1 && character.faction != 2 && character.faction != 3))
                                     {
-                                        NAPI.Player.SetPlayerClothes(ntarget, 9, character.armor, character.armorcolor);
+                                        NAPI.Player.SetPlayerClothes(player, 9, Convert.ToInt32(character.armor), Convert.ToInt32(character.armorcolor));
+                                    }
+                                    else
+                                    {
+                                        NAPI.Player.SetPlayerClothes(player, 9, 0, 0);
                                     }
                                 }
 
@@ -1676,7 +1680,7 @@ namespace NemesusWorld
                             FactionsModel faction = FactionController.GetFactionById(number);
                             if (faction != null)
                             {
-                                if (character.faction == number && faction.leader == accounttarget.id)
+                                if (character.faction == number && faction.leader == character.id)
                                 {
                                     Helper.SendNotificationWithoutButton(player, "Der Spieler ist schon in der Fraktion (als Leader) und muss diese erst verlassen!", "error", "top-end");
                                     return;
@@ -1715,20 +1719,25 @@ namespace NemesusWorld
                                 {
                                     character.armor = 4;
                                     character.armorcolor = 0;
-                                    if (NAPI.Player.GetPlayerArmor(ntarget) > 0)
-                                    {
-                                        NAPI.Player.SetPlayerClothes(ntarget, 9, character.armor, character.armorcolor);
-                                    }
                                 }
                                 else
                                 {
                                     character.armor = 7;
                                     character.armorcolor = 0;
-                                    if (NAPI.Player.GetPlayerArmor(ntarget) > 0)
+                                }
+
+                                if (NAPI.Player.GetPlayerArmor(ntarget) > 0)
+                                {
+                                    if (character.factionduty == false || (character.faction != 1 && character.faction != 2 && character.faction != 3))
                                     {
-                                        NAPI.Player.SetPlayerClothes(ntarget, 9, character.armor, character.armorcolor);
+                                        NAPI.Player.SetPlayerClothes(player, 9, Convert.ToInt32(character.armor), Convert.ToInt32(character.armorcolor));
+                                    }
+                                    else
+                                    {
+                                        NAPI.Player.SetPlayerClothes(player, 9, 0, 0);
                                     }
                                 }
+
                                 if (character.faction == 4)
                                 {
                                     Bank bank = BankController.GetBankByBankNumber("SA3701-100000");
@@ -1789,25 +1798,25 @@ namespace NemesusWorld
                                 Helper.SendNotificationWithoutButton(player, "Dieser Wert kann beim Spieler jetzt nicht gesetzt werden!", "error", "top-end");
                                 return;
                             }
-                            if (character.factionduty == true)
-                            {
-                                character.factionduty = false;
-                                Items radio = ItemsController.GetItemByItemName(ntarget, "Funkgerät");
-                                if (radio != null)
-                                {
-                                    ItemsController.RemoveItem(ntarget, radio.itemid);
-                                }
-                                Items shepherd = ItemsController.GetItemByItemName(ntarget, "Haustier");
-                                if (shepherd != null && shepherd.props == "Shepherd")
-                                {
-                                    ItemsController.RemoveItem(ntarget, radio.itemid);
-                                }
-                                var obj = JObject.Parse(character.json);
-                                CharacterController.SetCharacterCloths(ntarget, obj, character.clothing);
-                            }
                             FactionsModel faction = FactionController.GetFactionById(character.faction);
                             if (faction != null)
                             {
+                                if (character.factionduty == true)
+                                {
+                                    character.factionduty = false;
+                                    Items radio = ItemsController.GetItemByItemName(ntarget, "Funkgerät");
+                                    if (radio != null)
+                                    {
+                                        ItemsController.RemoveItem(ntarget, radio.itemid);
+                                    }
+                                    Items shepherd = ItemsController.GetItemByItemName(ntarget, "Haustier");
+                                    if (shepherd != null && shepherd.props == "Shepherd")
+                                    {
+                                        ItemsController.RemoveItem(ntarget, radio.itemid);
+                                    }
+                                    var obj = JObject.Parse(character.json);
+                                    CharacterController.SetCharacterCloths(ntarget, obj, character.clothing);
+                                }
                                 faction.leader = 0;
                                 if (character.faction == 1)
                                 {
@@ -1842,6 +1851,18 @@ namespace NemesusWorld
                                 Helper.CreateFactionLog(faction.id, $"{account.name} hat {accounttarget.name} administrativ aus der Fraktion rausgeworfen!");
                                 FactionController.UpdateFactionStats(ntarget);
                                 CharacterController.SaveCharacter(ntarget);
+
+                                if (NAPI.Player.GetPlayerArmor(ntarget) > 0)
+                                {
+                                    if (character.factionduty == false || (character.faction != 1 && character.faction != 2 && character.faction != 3))
+                                    {
+                                        NAPI.Player.SetPlayerClothes(player, 9, Convert.ToInt32(character.armor), Convert.ToInt32(character.armorcolor));
+                                    }
+                                    else
+                                    {
+                                        NAPI.Player.SetPlayerClothes(player, 9, 0, 0);
+                                    }
+                                }
                             }
                             else
                             {
@@ -3320,7 +3341,7 @@ namespace NemesusWorld
                     command.Parameters.AddWithValue("@posa", 0.0f);
                 }
                 command.ExecuteNonQuery();
-                Helper.SendNotificationWithoutButton(player, "Neues Feuer wurde erstellt!", "success", "top-end");
+                Helper.SendNotificationWithoutButton(player, "Neues/r Feuer/Einsatz wurde erstellt!", "success", "top-end");
             }
             catch (Exception e)
             {
@@ -5986,7 +6007,23 @@ namespace NemesusWorld
                 if (FireController.startFire == true)
                 {
                     FireController.FiresCompleteEvent(player);
-                    Helper.SendNotificationWithoutButton(player, "Das aktuelle Feuer wurde gelöscht!", "success", "top-end");
+                    if (FireController.fireObject != null)
+                    {
+                        FireController.fireObject.Delete();
+                        FireController.fireObject = null;
+                    }
+                    if (FireController.fireLabel != null)
+                    {
+                        FireController.fireLabel.Delete();
+                        FireController.fireLabel = null;
+                    }
+                    if (FireController.fireVehicle != null)
+                    {
+                        FireController.fireVehicle.Delete();
+                        FireController.fireVehicle = null;
+                    }
+                    FireController.objectHealth = 0;
+                    Helper.SendNotificationWithoutButton(player, "Das aktuelle Feuer/der aktuelle Einsatz wurde gelöscht!", "success", "top-end");
                     return;
                 }
                 if (name.Length < 3 || name.Length > 35)
@@ -5997,10 +6034,10 @@ namespace NemesusWorld
                 string ort = FireController.BuildFire(player, name);
                 if (ort == "n/A")
                 {
-                    Helper.SendNotificationWithoutButton(player, "Das Feuer konnte nicht erstellt werden!", "error", "top-end");
+                    Helper.SendNotificationWithoutButton(player, "Das/der Feuer/Einsatz konnte nicht erstellt werden!", "error", "top-end");
                     return;
                 }
-                Helper.SendNotificationWithoutButton(player, $"Neues Feuer ({ort}) wurde gestartet!", "success", "top-left");
+                Helper.SendNotificationWithoutButton(player, $"Neues/r Feuer/Einsatz ({ort}) wurde gestartet!", "success", "top-left");
             }
             catch (Exception e)
             {
@@ -6421,6 +6458,13 @@ namespace NemesusWorld
                     {
                         obj = JObject.Parse(character.dutyjson);
                         CharacterController.SetCharacterCloths(player, obj, character.clothing);
+                    }
+                    if (NAPI.Player.GetPlayerArmor(player) > 0)
+                    {
+                        if (character.factionduty == false || (character.faction != 1 && character.faction != 2 && character.faction != 3))
+                        {
+                            NAPI.Player.SetPlayerClothes(player, 9, Convert.ToInt32(character.armor), Convert.ToInt32(character.armorcolor));
+                        }
                     }
                 }
             }
@@ -7176,6 +7220,64 @@ namespace NemesusWorld
             catch (Exception e)
             {
                 Helper.ConsoleLog("error", $"[cmd_credits]: " + e.ToString());
+            }
+        }
+
+        [Command("disguise", "Befehl: /disguise")]
+        public static void CMD_disguise(Player player)
+        {
+            try
+            {
+                Character character = Helper.GetCharacterData(player);
+                TempData tempData = Helper.GetCharacterTempData(player);
+                if (tempData == null || character == null) return;
+                if (player.GetSharedData<bool>("Player:Death") == true) return;
+                if (tempData.freezed == true)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Du kannst diesen Befehl jetzt nicht benutzen!", "error", "top-end");
+                    return;
+                }
+                var obj = JObject.Parse(character.json);
+                if(character.factionduty == true)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Du kannst jetzt nicht deine Identität verschleiern!", "error", "top-end");
+                    return;
+                }
+                if ((int)obj["clothing"][8] == -1 || (int)obj["clothing"][8] == 0 || (int)obj["clothing"][8] == 255)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Keine Maske oder ähnliches vorhanden!", "error", "top-end");
+                    return;
+                }
+                string[] clothingArray = new string[8];
+                clothingArray = character.clothing.Split(",");
+                if (Convert.ToInt32(clothingArray[7]) == 0)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Du musst zuerst deine Maske oder ähnliches anziehen!", "error", "top-end");
+                    return;
+                }
+                if (tempData.undercover == "")
+                {
+                    character.ucp_privat = 1;
+                    Helper.SendNotificationWithoutButton(player, "Du hast deine Identität verschleiert!", "success", "top-left", 2750);
+                    String name = "Unbekannt - " + player.Id;
+                    tempData.undercover = name;
+                    player.SetData<string>("Client:OldName", character.name);
+                    character.name = name;
+                    player.Name = name;
+                }
+                else
+                {
+                    Helper.SendNotificationWithoutButton(player, "Deine Identität ist nichtmehr verschleiert!", "success", "top-left", 2750);
+                    tempData.undercover = "";
+                    character.name = player.GetData<string>("Client:OldName");
+                    player.Name = character.name;
+                    player.ResetData("Client:OldName");
+                }
+                CharacterController.SaveCharacter(player);
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[CMD_disguise]: " + e.ToString());
             }
         }
 

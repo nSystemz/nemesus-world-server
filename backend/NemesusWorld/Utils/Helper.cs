@@ -803,12 +803,26 @@ namespace NemesusWorld.Utils
         }
 
         [RemoteEvent("Server:SyncHealth")]
-        public static void OnSyncHealth(Player player)
+        public static void OnSyncHealth(Player player, int check = 0)
         {
             try
             {
-                player.SetSharedData("Player:HealthSync", (NAPI.Player.GetPlayerHealth(player) + 100));
-                player.SetOwnSharedData("Player:Health", (NAPI.Player.GetPlayerHealth(player) + 100));
+                if (check == 0)
+                {
+                    player.SetSharedData("Player:HealthSync", (NAPI.Player.GetPlayerHealth(player) + 100));
+                    player.SetOwnSharedData("Player:Health", (NAPI.Player.GetPlayerHealth(player) + 100));
+                }
+                else
+                {
+                    Random rand = new Random();
+                    int randomDamage = rand.Next(10);
+                    float health = (NAPI.Player.GetPlayerHealth(player)) - (15 + randomDamage);
+                    if(health <= 0)
+                    {
+                        health = 0;
+                    }
+                    Helper.SetPlayerHealth(player, (int)health);
+                }
             }
             catch (Exception e)
             {
@@ -1170,26 +1184,35 @@ namespace NemesusWorld.Utils
         {
             try
             {
+                if (player.GetSharedData<bool>("Player:Death") == true) return;
                 Character character = Helper.GetCharacterData(player);
+                TempData tempData = Helper.GetCharacterTempData(player);
                 if (showonly == false)
                 {
-                    if (character.inhouse > -1)
+                    if (tempData.adminduty == true)
                     {
-                        character.inhouse = -1;
-                        player.SetOwnSharedData("Player:InHouse", -1);
-                    }
-                    if(vehid != -1)
-                    {
-                        foreach (Cars car in Cars.carList)
+                        if (character.inhouse > -1)
                         {
-                            if (car.vehicleData != null && car.vehicleHandle != null && car.vehicleData.id == vehid)
+                            character.inhouse = -1;
+                            player.SetOwnSharedData("Player:InHouse", -1);
+                        }
+                        if (vehid != -1)
+                        {
+                            foreach (Cars car in Cars.carList)
                             {
-                                Commands.CMD_gointocar(player, car.vehicleHandle.Id, 0, true);
-                                return;
+                                if (car.vehicleData != null && car.vehicleHandle != null && car.vehicleData.id == vehid)
+                                {
+                                    Commands.CMD_gointocar(player, car.vehicleHandle.Id, 0, true);
+                                    return;
+                                }
                             }
                         }
+                        SetPlayerPosition(player, new Vector3(x, y, z + 0.25), 615);
                     }
-                    SetPlayerPosition(player, new Vector3(x, y, z + 0.25), 615);
+                    else
+                    {
+                        player.TriggerEvent("Client:CreateWaypoint", x, y, -1);
+                    }
                 }
                 else
                 {
@@ -3014,8 +3037,11 @@ namespace NemesusWorld.Utils
                             {
                                 Helper.SendNotificationWithoutButton2(player, "Fahrzeug erfolgreich erworben, das Fahrzeug steht direkt hier vorne, alles weitere findest du im F2 Menü!", "success", "center", 3750);
                             }
-                            player.ResetData("Player:VehicleBuyData");
-                            if (number == 2)
+                            if (player.HasData("Player:VehicleBuyData"))
+                            {
+                                player.ResetData("Player:VehicleBuyData");
+                            }
+                            if (number == 2 && group != null)
                             {
                                 Helper.CreateGroupLog(group.id, $"{character.name} hat ein {carArray[0]} für {price}$, für die Gruppierung erworben!");
                             }
@@ -3710,6 +3736,16 @@ namespace NemesusWorld.Utils
                                     MySqlCommand command = General.Connection.CreateCommand();
                                     command.CommandText = "SELECT COUNT(*) as count FROM business where owner=@owner";
                                     command.Parameters.AddWithValue("@owner", character.name);
+
+                                    using (MySqlDataReader reader = command.ExecuteReader())
+                                    {
+                                        if (reader.HasRows)
+                                        {
+                                            reader.Read();
+                                            count = reader.GetInt32("count");
+                                        }
+                                        reader.Close();
+                                    }
 
                                     if (account.premium == 0)
                                     {
@@ -7700,6 +7736,11 @@ namespace NemesusWorld.Utils
                         SendNotificationWithoutButton(player, "Du kannst diese Funktion jetzt nicht benutzen!", "error", "top-end", 2250);
                         return;
                     }
+                    if(character.factionduty == true)
+                    {
+                        SendNotificationWithoutButton(player, "Du kannst diese Funktion jetzt nicht benutzen!", "error", "top-end", 2250);
+                        return;
+                    }
                     ShowTattooShop(player);
                 }
                 //Haustier Shop
@@ -7807,6 +7848,11 @@ namespace NemesusWorld.Utils
                     if (NAPI.Player.GetPlayerAccessoryDrawable(player, 0) != 255)
                     {
                         SendNotificationWithoutButton(player, "Zieh zuerst bitte deine Kopfbedeckung ab!", "error", "top-end", 2250);
+                        return;
+                    }
+                    if (NAPI.Player.GetPlayerClothesDrawable(player, 1) > 0 && NAPI.Player.GetPlayerAccessoryDrawable(player, 1) != 255)
+                    {
+                        SendNotificationWithoutButton(player, "Zieh zuerst bitte deine Maske ab!", "error", "top-end", 2250);
                         return;
                     }
                     Business.ShowMaskMenu(player);
@@ -8806,6 +8852,22 @@ namespace NemesusWorld.Utils
         }
 
         //Outfits
+        [RemoteEvent("Server:Deleteoutfit2")]
+        public static void OnDeleteOutfit2(Player player, int id)
+        {
+            try
+            {
+                MySqlCommand command = General.Connection.CreateCommand();
+                command.CommandText = "DELETE FROM outfits WHERE id = @id LIMIT 1";
+                command.Parameters.AddWithValue("@id", id);
+                command.ExecuteNonQuery();
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[OnDeleteOutfit]: " + e.ToString());
+            }
+        }
+
         [RemoteEvent("Server:Deleteoutfit")]
         public static void OnDeleteOutfit(Player player, int id)
         {
@@ -9213,6 +9275,12 @@ namespace NemesusWorld.Utils
                     {
                         if (NAPI.Player.GetPlayerClothesDrawable(player, 1) != 0)
                         {
+                            TempData tempData = Helper.GetCharacterTempData(player);
+                            if (tempData.undercover != "" && tempData.undercover.Contains("Unbekannt"))
+                            {
+                                SendNotificationWithoutButton(player, "Du kannst deine Maske jetzt nicht ausziehen!", "error", "top-left", 1150);
+                                return;
+                            }
                             clothingArray[7] = "0";
                             NAPI.Player.SetPlayerClothes(player, 1, 0, 0);
                             SendNotificationWithoutButton(player, "Maske ausgezogen!", "success", "top-left", 1150);
@@ -17067,6 +17135,13 @@ namespace NemesusWorld.Utils
                     {
                         if (vehicle == null) return;
                         SendNotificationWithoutButton(player, "Fahrzeug erfolgreich abgebockt!", "success", "top-left", 3500);
+                        uint dim = vehicle.Dimension;
+                        vehicle.Dimension = 999;
+                        NAPI.Task.Run(() =>
+                        {
+                            vehicle.Dimension = dim;
+                        }, delayTime: 155);
+
                     }
                     else if (action == "mecha3")
                     {
@@ -17704,7 +17779,16 @@ namespace NemesusWorld.Utils
                         }
                     case "deleteoutfit":
                         {
-                            Outfits outfits = outfitList.Find(o => o.name == name);
+                            Outfits outfits = null;
+
+                            foreach (Outfits searchOutfit in outfitList)
+                            {
+                                if (searchOutfit != null && searchOutfit.name.ToLower() == name.ToLower())
+                                {
+                                    outfits = searchOutfit;
+                                    break;
+                                }
+                            }
                             if (outfits == null)
                             {
                                 SendNotificationWithoutButton(player, "Ungültiges Outfit!", "error");
@@ -17950,7 +18034,7 @@ namespace NemesusWorld.Utils
                     }
                 });
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Helper.ConsoleLog("error", $"[WETTER-API]: Fehler beim lesen der Wetterdaten, probiere es nochmal ...");
                 weatherstring = "clear sky";

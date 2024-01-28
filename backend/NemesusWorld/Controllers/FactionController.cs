@@ -382,6 +382,62 @@ namespace NemesusWorld.Controllers
                             int number = Convert.ToInt32(json);
                             if (number == 1)
                             {
+                                if (character.faction == 0)
+                                {
+                                    Player getPlayer = Helper.GetClosestPlayer(player, 2.5f);
+                                    if (getPlayer != null)
+                                    {
+                                        Vector3 behindPlayer = Helper.GetPositionBehindOfPlayer(getPlayer, 1.95f);
+                                        if (player.Position.DistanceTo(behindPlayer) <= 1.95)
+                                        {
+                                            Items item = ItemsController.GetItemByItemName(player, "Kabelbinder");
+                                            if(item == null || item.amount <= 0)
+                                            {
+                                                Helper.SendNotificationWithoutButton(player, "Du hast keine Kabelbinder dabei!", "error");
+                                                return;
+                                            }
+                                            item.amount -= 1;
+                                            Commands.cmd_animation(player, "give", true);
+                                            TempData tempData2 = Helper.GetCharacterTempData(getPlayer);
+                                            if (tempData2.adminduty == true)
+                                            {
+                                                Helper.SendNotificationWithoutButton(player, "Ungültiger Spieler!", "error");
+                                                return;
+                                            }
+                                            if (tempData2.cuffed == 1)
+                                            {
+                                                Helper.SendNotificationWithoutButton(player, "Der Spieler trägt schon Handschellen, diese müssen erst abgenommen werden!", "error");
+                                                return;
+                                            }
+                                            if (tempData2.cuffed == 2)
+                                            {
+                                                Helper.SendNotificationWithoutButton(player, "Der Spieler trägt schon Kabelbinder!", "error");
+                                                return;
+                                            }
+                                            if (tempData2.cuffed == 0)
+                                            {
+                                                NAPI.Player.SetPlayerCurrentWeapon(getPlayer, WeaponHash.Unarmed);
+                                                getPlayer.TriggerEvent("Client:HideMenus");
+                                                tempData2.cuffed = 2;
+                                                Helper.SendNotificationWithoutButton(player, "Du hast jemanden Kabelbinder angelegt!", "success");
+                                                Helper.SendNotificationWithoutButton(getPlayer, "Dir wurden Kabelbinder angelegt!", "success");
+                                                getPlayer.TriggerEvent("Client:SetCuff", true);
+                                                NAPI.Task.Run(() =>
+                                                {
+                                                    getPlayer.SetSharedData("Player:AnimData", $"mp_arresting%idle%{49}");
+                                                }, delayTime: 215);
+                                            }
+                                        }
+                                        else
+                                        {
+                                            Helper.SendNotificationWithoutButton(player, "Du stehst nicht hinter dem Spieler!", "error");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        Helper.SendNotificationWithoutButton(player, "Es befindet sich kein Spieler in der Nähe!", "error");
+                                    }
+                                }
                                 if (character.faction == 1)
                                 {
                                     if (character.factionduty == false)
@@ -498,7 +554,7 @@ namespace NemesusWorld.Controllers
                             }
                             else if (number == 2)
                             {
-                                if (character.faction == 1)
+                                if (character.faction == 1 || character.faction == 0)
                                 {
                                     Player getPlayer = Helper.GetClosestPlayer(player, 2.5f);
                                     if (getPlayer != null && getPlayer != player && !getPlayer.IsInVehicle)
@@ -510,7 +566,7 @@ namespace NemesusWorld.Controllers
                                             Helper.SendNotificationWithoutButton(player, "Der Spieler ist nicht gefesselt!", "error");
                                             return;
                                         }
-                                        if (tempData2.cuffed == 1)
+                                        if (tempData2.cuffed > 0)
                                         {
                                             if (tempData2.follow == false && tempData2.followed == false)
                                             {
@@ -602,7 +658,7 @@ namespace NemesusWorld.Controllers
                             }
                             else if (number == 3)
                             {
-                                if (character.faction == 1)
+                                if (character.faction == 1 || character.faction == 0)
                                 {
                                     Player getPlayer = Helper.GetClosestPlayer(player, 2.5f);
                                     if (getPlayer != null)
@@ -610,9 +666,9 @@ namespace NemesusWorld.Controllers
                                         TempData tempData2 = Helper.GetCharacterTempData(getPlayer);
                                         if (getPlayer.GetSharedData<bool>("Player:Death") == false)
                                         {
-                                            if (tempData2.cuffed != 1)
+                                            if (tempData2.cuffed == 0)
                                             {
-                                                Helper.SendNotificationWithoutButton(player, "Der Spieler muss Handschellen anhaben, damit du Ihn durchsuchen kannst!", "error");
+                                                Helper.SendNotificationWithoutButton(player, "Der Spieler muss Handschellen/Kabelbinder anhaben, damit du Ihn durchsuchen kannst!", "error");
                                                 return;
                                             }
                                             Helper.SendNotificationWithoutButton(player, "Du dursuchst jemanden!", "success");
@@ -622,8 +678,11 @@ namespace NemesusWorld.Controllers
                                         }
                                         else
                                         {
-                                            player.SetData<Player>("Player:NearestPlayer", getPlayer);
-                                            player.TriggerEvent("Client:StartLockpicking", 12, "searchdeath", "Tatort wird untersucht...");
+                                            if (character.faction == 1)
+                                            {
+                                                player.SetData<Player>("Player:NearestPlayer", getPlayer);
+                                                player.TriggerEvent("Client:StartLockpicking", 12, "searchdeath", "Tatort wird untersucht...");
+                                            }
                                         }
                                     }
                                     else
@@ -1212,6 +1271,14 @@ namespace NemesusWorld.Controllers
 
                                 player.SetOwnSharedData("Player:Faction", 0);
                                 player.SetOwnSharedData("Player:FactionRang", 0);
+
+                                if (NAPI.Player.GetPlayerArmor(player) > 0)
+                                {
+                                    if (character.factionduty == false || (character.faction != 1 && character.faction != 2 && character.faction != 3))
+                                    {
+                                        NAPI.Player.SetPlayerClothes(player, 9, Convert.ToInt32(character.armor), Convert.ToInt32(character.armorcolor));
+                                    }
+                                }
                             }
                             else
                             {

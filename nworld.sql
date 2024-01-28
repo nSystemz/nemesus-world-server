@@ -485,8 +485,8 @@ CREATE TABLE `bankfile` (
 CREATE TABLE `banksettings` (
   `id` int(11) NOT NULL,
   `banknumber` varchar(13) NOT NULL DEFAULT 'n/A',
-  `setting` varchar(25) NOT NULL DEFAULT 'n/A',
-  `value` varchar(25) NOT NULL DEFAULT 'n/A',
+  `setting` varchar(35) NOT NULL DEFAULT 'n/A',
+  `value` varchar(35) NOT NULL DEFAULT 'n/A',
   `name` varchar(35) NOT NULL DEFAULT 'n/A',
   `timestamp` int(11) NOT NULL DEFAULT 1609462861
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;

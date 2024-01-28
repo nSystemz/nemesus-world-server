@@ -4045,7 +4045,7 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td>M</td>
-                                                                        <td>Fraktionaktionsmenü öffnen</td>
+                                                                        <td>Fraktionaktionsmenü/Interaktionsmenü öffnen</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>Q</td>
@@ -4194,7 +4194,7 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td>M</td>
-                                                                        <td>Fraktionaktionsmenü öffnen</td>
+                                                                        <td>Fraktionaktionsmenü/Interaktionsmenü öffnen</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>Q</td>
@@ -4310,7 +4310,7 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td>M</td>
-                                                                        <td>Fraktionaktionsmenü öffnen</td>
+                                                                        <td>Fraktionaktionsmenü/Interaktionsmenü öffnen</td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>Q</td>
@@ -4942,6 +4942,10 @@
                                                                 <tr>
                                                                     <td>/petname</td>
                                                                     <td>Haustiernamen festlegen</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>/disguise</td>
+                                                                    <td>Identität verschleiern</td>
                                                                 </tr>
                                                                 <tr v-if="voicerp == 0">
                                                                     <td>/me - /do</td>

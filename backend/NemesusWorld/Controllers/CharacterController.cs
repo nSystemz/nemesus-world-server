@@ -758,6 +758,10 @@ namespace NemesusWorld.Controllers
                         {
                             NAPI.Player.SetPlayerClothes(player, 1, 0, 0);
                         }
+                        if(character.faction == 1 || character.faction == 2 || character.faction == 3)
+                        {
+                            NAPI.Player.SetPlayerClothes(player, 9, character.armor, character.armorcolor);
+                        }
                     }
                 }
                 else
@@ -961,7 +965,12 @@ namespace NemesusWorld.Controllers
                     }
                     character.items = NAPI.Util.ToJson(tempData.itemlist);
                     character.health = NAPI.Player.GetPlayerHealth(player);
-                    if ((player.Dimension != 125000 && player.GetData<bool>("Player:InShop") == false && account.prison == 0 && player.GetData<bool>("Player:Spectate") == false) || (player.IsInVehicle && !player.Vehicle.GetSharedData<String>("Vehicle:Name").Contains("rcbandito")))
+                    bool inBandito = false;
+                    if(player.IsInVehicle && player.Vehicle.GetSharedData<String>("Vehicle:Name").Contains("rcbandito"))
+                    {
+                        inBandito = true;
+                    }
+                    if (player.Dimension != 125000 && player.GetData<bool>("Player:InShop") == false && account.prison == 0 && player.GetData<bool>("Player:Spectate") == false && inBandito == false)
                     {
                         character.lastpos = $"{player.Position.X}|{player.Position.Y}|{player.Position.Z}|{player.Rotation.Z}|{player.Dimension}";
                     }
@@ -972,7 +981,25 @@ namespace NemesusWorld.Controllers
                     }
                     if (character.json != null && character.json.Length > 5)
                     {
-                        db.Save(character);
+                        if (tempData.undercover != "")
+                        {
+                            if (tempData.undercover.Length > 3)
+                            {
+                                character.name = player.GetData<string>("Client:OldName");
+                            }
+                            if (character.name != null)
+                            {
+                                db.Save(character);
+                            }
+                            if (tempData.undercover.Length > 3)
+                            {
+                                character.name = "Unbekannt - " + player.Id;
+                            }
+                        }
+                        else
+                        {
+                            db.Save(character);
+                        }
                     }
                 }
             }

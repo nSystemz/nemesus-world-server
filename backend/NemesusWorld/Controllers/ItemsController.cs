@@ -774,7 +774,7 @@ namespace NemesusWorld.Controllers
                             {
                                 Character character2 = Helper.GetCharacterData(getPlayer);
                                 tempData2 = Helper.GetCharacterTempData(getPlayer);
-                                if (tempData2.cuffed == 1 || character2.death == true)
+                                if (tempData2.cuffed > 0 || character2.death == true)
                                 {
                                     player.TriggerEvent("Client:UpdateInventory", NAPI.Util.ToJson(tempData.itemlist), NAPI.Util.ToJson(tempData2.itemlist));
                                     return;
@@ -1053,7 +1053,7 @@ namespace NemesusWorld.Controllers
                         {
                             tempData2 = Helper.GetCharacterTempData(getPlayer);
                             character2 = Helper.GetCharacterData(getPlayer);
-                            if (tempData2.cuffed == 1 || character2.death == true)
+                            if (tempData2.cuffed > 0 || character2.death == true)
                             {
                                 search = true;
                             }
@@ -1438,7 +1438,7 @@ namespace NemesusWorld.Controllers
                                 {
                                     character2 = Helper.GetCharacterData(getPlayer);
                                     tempData2 = Helper.GetCharacterTempData(getPlayer);
-                                    if (tempData2.cuffed == 1 || character2.death == true)
+                                    if (tempData2.cuffed > 0 || character2.death == true)
                                     {
                                         search = true;
                                     }
@@ -2704,10 +2704,17 @@ namespace NemesusWorld.Controllers
                                         }
                                         OnShowInventory(player, 1);
                                         item.amount -= 1;
-                                        fire.props = "" + (Convert.ToInt32(fire.props) - 1);
-                                        if (Convert.ToInt32(fire.props) <= 0)
+                                        try
                                         {
-                                            ItemsController.RemoveItem(player, fire.itemid);
+                                            fire.props = "" + (Convert.ToInt32(fire.props) - 1);
+                                            if (Convert.ToInt32(fire.props) <= 0)
+                                            {
+                                                ItemsController.RemoveItem(player, fire.itemid);
+                                            }
+                                        }
+                                        catch (Exception)
+                                        {
+                                            fire.props = "1";
                                         }
                                         if (player.IsInVehicle)
                                         {

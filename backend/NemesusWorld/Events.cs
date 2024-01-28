@@ -196,10 +196,6 @@ namespace NemesusWorld
                             NAPI.Server.SetGlobalDefaultCommandMessages(true);
                             NAPI.Server.SetCommandErrorMessage("~r~Ungültiger Befehl!");
                             NAPI.Server.SetDefaultSpawnLocation(new Vector3(-542.2647, -208.96895, 37.6498), -154.3716f);
-                            //Weather
-                            Helper.ConsoleLog("success", $"[WETTER-API]: clear sky");
-                            Helper.weatherstring = "clear sky";
-                            Helper.SetWeather();
                             //Set time
                             var time = DateTime.Now;
                             NAPI.World.SetTime(time.Hour, time.Minute, 0);
@@ -229,10 +225,21 @@ namespace NemesusWorld
                             {
                                 Helper.ConsoleLog("info", "[SERVER]: Nemesus World Gamemode erstellt von Nemesus.de erfolgreich geladen - (Text-RP)");
                             }
-                            //Call2Home, kann gelöscht werden dient nur zur Statistik
-                            Helper.Call2Home();
                             //Materialversteck befüllen
                             Helper.MatsImVersteck += 20;
+                            //Call2Home, kann gelöscht werden dient nur zur Statistik
+                            Helper.Call2Home();
+                            //Weather
+                            try
+                            {
+                                Helper.SetAndGetWeather("https://nemesus-world.de/WetterInfoBackup.php", true);
+                            }
+                            catch (Exception)
+                            {
+                                Helper.ConsoleLog("success", $"[WETTER-API]: clear sky");
+                                Helper.weatherstring = "clear sky";
+                                Helper.SetWeather();
+                            }
                         }
                     }
                 }
@@ -314,17 +321,17 @@ namespace NemesusWorld
                                         {
                                             if (character.arrested == 0 && character.cell == 0)
                                             {
-                                                if (character.thirst >= 5)
+                                                if (character.thirst >= 3)
                                                 {
-                                                    character.thirst -= 5;
+                                                    character.thirst -= 3;
                                                 }
                                                 else
                                                 {
                                                     character.thirst = 0;
                                                 }
-                                                if (character.hunger >= 5)
+                                                if (character.hunger >= 3)
                                                 {
-                                                    character.hunger -= 5;
+                                                    character.hunger -= 3;
                                                 }
                                                 else
                                                 {
@@ -535,10 +542,10 @@ namespace NemesusWorld
                         halfMinuteCounter++;
                         foreach (Player player in NAPI.Pools.GetAllPlayers())
                         {
-                            if (player != null && Account.IsPlayerLoggedIn(player) && player.GetOwnSharedData<bool>("Player:Spawned") == true)
+                            if (player != null && Account.IsPlayerLoggedIn(player) && player.IsInVehicle && player.GetOwnSharedData<bool>("Player:Spawned") == true)
                             {
                                 //Taxi Taxameter
-                                if (Helper.IsATaxiDriver(player) > -1 && player.IsInVehicle && (player.Vehicle.GetSharedData<String>("Vehicle:Name") == "taxi" || player.Vehicle.GetSharedData<String>("Vehicle:Name") == "tourbus"))
+                                if (Helper.IsATaxiDriver(player) > -1 && (player.Vehicle.GetSharedData<String>("Vehicle:Name") == "taxi" || player.Vehicle.GetSharedData<String>("Vehicle:Name") == "tourbus"))
                                 {
                                     if (player.HasData("Player:Fare") && player.HasData("Player:TaxameterOn"))
                                     {
@@ -1352,6 +1359,7 @@ namespace NemesusWorld
                         {
                             tempData.undercover = "";
                             character.name = player.GetData<string>("Client:OldName");
+                            player.Name = character.name;
                             player.ResetData("Client:OldName");
                         }
                         //Ghettoblaster
@@ -2494,7 +2502,7 @@ namespace NemesusWorld
                 if (vehicle != null)
                 {
                     //Radio + Enginesystem
-                    if (vehicle.GetSharedData<string>("Vehicle:Sync").Split(",")[6] == "0")
+                    if (vehicle.HasSharedData("Vehicle:Sync") && vehicle.GetSharedData<string>("Vehicle:Sync").Split(",")[6] == "0")
                     {
                         if (vehicle.HasData("Vehicle:EngineStatus"))
                         {

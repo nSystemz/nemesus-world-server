@@ -405,6 +405,11 @@ namespace NemesusWorld.Controllers
                                 return;
                             }
                             Groups mygroupCheck = GetGroupById(character.mygroup);
+                            if(mygroupCheck == null)
+                            {
+                                Helper.SendNotificationWithoutButton(player, "Ungültige Gruppierung!", "error", "top-left");
+                                return;
+                            }
                             if (mygroupCheck.status != 1)
                             {
                                 Helper.SendNotificationWithoutButton(player, "Deine Gruppierung ist keine Firma!", "error", "top-left");

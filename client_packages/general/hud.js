@@ -785,6 +785,16 @@ mp.events.add('render', (nametags) => {
     //Damage
     mp.players.local.setSuffersCriticalHits(false); //Headshots
 
+    //Blackable Weapons for Heavy Attack
+    if(localPlayer.weapon != mp.game.joaat('weapon_unarmed') || localPlayer.vehicle || mp.game.invoke('0x475768A975D5AD17', localPlayer, 6)) {
+        if(!isABlackableWeapon(localPlayer.weapon, 1))
+        {
+            mp.game.controls.disableControlAction(0, 140, true);
+            mp.game.controls.disableControlAction(0, 141, true);
+            mp.game.controls.disableControlAction(0, 142, true);
+        }
+    }
+
     //Player Nametags
     if (nametagSystem == 0) {
         UpdateNameTags1(nametags);
@@ -1430,7 +1440,7 @@ mp.events.add("Client:StartLockpicking", (time, action, text) => {
                 }
             } else if (action == 'mecha2') {
                 mp.events.callRemote('Server:VehicleJack');
-                closestVeh.vehicle.freezePosition(true);
+                closestVeh.vehicle.freezePosition(false);
                 if (closestVeh && closestVeh.distance < 6.55) {
                     var countInterval = 0;
                     var intervalMecha = setInterval(() => {
@@ -2916,6 +2926,7 @@ mp.events.add("Client:ShowMaskMenu", (getarray1, getarray2, gender) => {
             mp.game.ui.displayHud(true);
             showHideChat(true);
             enableDisableRadar(true);
+            mp.events.callRemote('Server:HideMaskMenu');
         }
     }
 });
@@ -4140,11 +4151,14 @@ mp.keys.bind(0x4D, true, function () {
             return;
         }
         let faction = localPlayer.getVariable('Player:Faction');
-        if (showWheel == false && !localPlayer.isInAnyVehicle(true) && (faction == 1 || faction == 2 || faction == 3)) {
+        if (showWheel == false && !localPlayer.isInAnyVehicle(true) && (faction == 0 || faction == 1 || faction == 2 || faction == 3)) {
             if ((wheelSelected == 0 || wheelSelected == 3) && showInventory == false && showMenu == false && prisonCount == 0 && showCenterMenu == false && showBank == false && clothMenu == false && clothMenu2 == false && showSped == false && showCarSetting == false && showCityhall == false && showFuel == false && showAmmu == false && showShop == false && showShop2 == false && startRange == false && showDealer == false && showTab == false && showHandy == false && showTuning == false && specTarget == null && cuffed == false && nokeys == false && death == false && barberMenu == false && tattooShop == false && showFurniture == false && editFurniture == false) {
                 wheelSelected = 3;
                 showWheel = true;
-                if (faction == 1) {
+                if (faction == 0) {
+                    hudWindow.execute(`gui.selectwheel.showWheel(6);`)
+                }
+                else if (faction == 1) {
                     hudWindow.execute(`gui.selectwheel.showWheel(3);`)
                 } else if (faction == 2) {
                     hudWindow.execute(`gui.selectwheel.showWheel(4);`)
@@ -4260,7 +4274,7 @@ mp.keys.bind(0x09, true, function () {
     if (localPlayer.getVariable('Player:Death') == true || showSaltyError == true || triggerAntiCheat == true || localPlayer.isTypingInTextChat || !spawned || nokeys == true || death == true || prisonCount > 0 || showCenterMenu == true || showFuel == true || showAmmu == true || showShop == true || showShop2 == true || showCarSetting == true || showCityhall == true || showSped == true || showHandy == true || showTuning == true || InteriorSwitch == true || editFurniture == true || showFurniture == true || showBank == true || showWheel == true || showMenu == true || afk == true || ping == true || hack == true) return;
     if (pressedTab == 0 || (Date.now() / 1000) > pressedTab) {
         mp.events.callRemote('Server:ShowTabMenu');
-        pressedTab = (Date.now() / 1000) + (20);
+        pressedTab = (Date.now() / 1000) + (5);
     } else {
         if (showTab == true) {
             mp.events.call('Client:UpdateHud3');
@@ -6061,7 +6075,6 @@ mp.events.add('incomingDamage', (sourceEntity, sourcePlayer, targetEntity, weapo
         return true;
     }
     if (damage > 0) {
-        mp.events.callRemote('Server:SyncHealth');
         if (death == true || targetEntity.getVariable('Player:AFK') == 1) {
             return true;
         }
@@ -6081,8 +6094,19 @@ mp.events.add('incomingDamage', (sourceEntity, sourcePlayer, targetEntity, weapo
         if (hack == true) {
             mp.events.call('Client:StopHack2');
         }
+        /*if(isABlackableWeapon(weapon, 2))
+        {
+            mp.events.callRemote('Server:SyncHealth', 1);
+            return true;
+        }
+        else
+        {
+            mp.events.callRemote('Server:SyncHealth', 0);
+        }*/
+        mp.events.callRemote('Server:SyncHealth', 0);
         if (getPlayerHealth(localPlayer) - damage < 100 && death == false) {
             death = true;
+            mp.game.ui.setNewWaypoint(parseFloat(localPlayer.position.x), parseFloat(localPlayer.position.y));
             hideMenus();
             const getGroundZ = mp.game.gameplay.getGroundZFor3dCoord(localPlayer.position.x, localPlayer.position.y, localPlayer.position.z, parseFloat(0), false);
             if (!localPlayer.vehicle) {
@@ -6121,6 +6145,7 @@ mp.events.add('outgoingDamage', (sourceEntity, sourcePlayer, targetEntity, weapo
 mp.events.add("Client:SetDeath", (time) => {
     hideMenus();
     death = true;
+    mp.game.ui.setNewWaypoint(parseFloat(localPlayer.position.x), parseFloat(localPlayer.position.y));
     localPlayer.freezePosition(true);
     mp.game.ui.displayHud(false);
     enableDisableRadar(false);
@@ -6168,6 +6193,9 @@ mp.events.add("playerSpawn", (player) => {
 //Playerdeath
 mp.events.add("playerDeath", (player, reason, killer) => {
     if (player == localPlayer) {
+
+        //Remove Waypoint
+        mp.game.ui.setNewWaypoint(parseFloat(localPlayer.position.x), parseFloat(localPlayer.position.y));
 
         //Damage effect
         mp.game.graphics.stopScreenEffect("DeathFailMPDark");
@@ -6965,7 +6993,7 @@ mp.events.add('Client:HideSpedition', () => {
 
 mp.events.add("playerCreateWaypoint", (position) => {
     if (cleanerHandle2 != null || cleanerHandle4 != null || farmerStatus == 4 || farmerStatus == 1337 || drivingSchoolHandle != null || drivingSchoolHandle2 != null) return;
-    if (prisonCount > 0) return;
+    if (prisonCount > 0 || death == true) return;
     let adminduty = localPlayer.getVariable('Player:AdminLogin');
     let testmodus = localPlayer.getVariable('Player:Testmodus');
     if ((adminduty || testmodus) && !localPlayer.vehicle && setteleport == false) {
@@ -6991,7 +7019,7 @@ mp.events.add("playerCreateWaypoint", (position) => {
 
 //Waypoint
 mp.events.add('Client:CreateWaypoint', (posx, posy, getvehicle) => {
-    if(getvehicle > -1 && !localPlayer.vehicle)
+    if(getvehicle > -1 && !localPlayer.vehicle && localPl.hasVariable('Player:AdminLogin') == 1)
     {
         mp.events.callRemote('Server:Teleport', posx, posy, 0.0, false, false, getvehicle);
     }
@@ -8492,7 +8520,7 @@ function UpdateNameTags2(nametags) {
                                     });
                                 }
                             } else {
-                                graphics.drawText(player.name + ' [' + player.remoteId + ']\n~r~Außer Gefecht\n', [x, y], {
+                                graphics.drawText(nname + ' [' + player.remoteId + ']\n~r~Außer Gefecht\n', [x, y], {
                                     font: 4,
                                     color: color,
                                     scale: [0.45, 0.45],
@@ -8617,7 +8645,6 @@ mp.events.add("Client:StartStopCCTV", () => {
         localPlayer.freezePosition(cctvShow);
         nokeys = cctvShow;
         mp.game.ui.displayHud(cctvShow);
-        showHideChat(cctvShow);
         enableDisableRadar(cctvShow);
         if (cctvShow == true) {
             mp.events.call("Client:UnSetSmartphoneObj");
@@ -10111,6 +10138,29 @@ function calcDist(v1, v2) {
         v2.y,
         v2.z
     );
+}
+
+function isABlackableWeapon(weapon, set = 1)
+{
+    if(set == 1)
+    {
+        if(weapon == mp.game.joaat('weapon_unarmed') || weapon == mp.game.joaat('weapon_dagger') || weapon == mp.game.joaat('weapon_bat') || weapon == mp.game.joaat('weapon_bottle') || weapon == mp.game.joaat('weapon_crowbar') || weapon == mp.game.joaat('weapon_flashlight') || weapon == mp.game.joaat('weapon_golfclub') || weapon == mp.game.joaat('weapon_hammer')
+        || weapon == mp.game.joaat('weapon_hatchet') || weapon == mp.game.joaat('weapon_knuckle') || weapon == mp.game.joaat('weapon_knife') || weapon == mp.game.joaat('weapon_machete') || weapon == mp.game.joaat('weapon_switchblade') || weapon == mp.game.joaat('weapon_nightstick') || weapon == mp.game.joaat('weapon_wrench') || weapon == mp.game.joaat('weapon_battleaxe') 
+        || weapon == mp.game.joaat('weapon_poolcue') || weapon == mp.game.joaat('weapon_stone_hatchet') || weapon == mp.game.joaat('weapon_candycane') || weapon == mp.game.joaat('weapon_grenade') || weapon == mp.game.joaat('weapon_bzgas') || weapon == mp.game.joaat('weapon_molotov') || weapon == mp.game.joaat('weapon_stickybomb') || weapon == mp.game.joaat('weapon_proxmine') || weapon == mp.game.joaat('weapon_snowball') || weapon == mp.game.joaat('weapon_pipebomb') || weapon == mp.game.joaat('weapon_ball') || weapon == mp.game.joaat('weapon_smokegrenade') || weapon == mp.game.joaat('weapon_flare') || weapon == mp.game.joaat('weapon_acidpackage') || weapon == mp.game.joaat('weapon_fireextinguisher'))
+        {
+            return true;
+        }
+    }
+    else
+    {
+        if(weapon == mp.game.joaat('weapon_unarmed') || weapon == mp.game.joaat('weapon_dagger') || weapon == mp.game.joaat('weapon_bat') || weapon == mp.game.joaat('weapon_bottle') || weapon == mp.game.joaat('weapon_crowbar') || weapon == mp.game.joaat('weapon_flashlight') || weapon == mp.game.joaat('weapon_golfclub') || weapon == mp.game.joaat('weapon_hammer')
+        || weapon == mp.game.joaat('weapon_hatchet') || weapon == mp.game.joaat('weapon_knuckle') || weapon == mp.game.joaat('weapon_knife') || weapon == mp.game.joaat('weapon_machete') || weapon == mp.game.joaat('weapon_switchblade') || weapon == mp.game.joaat('weapon_nightstick') || weapon == mp.game.joaat('weapon_wrench') || weapon == mp.game.joaat('weapon_battleaxe') 
+        || weapon == mp.game.joaat('weapon_poolcue') || weapon == mp.game.joaat('weapon_stone_hatchet') || weapon == mp.game.joaat('weapon_candycane'))
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 const getClosestBone = (raycast) => {

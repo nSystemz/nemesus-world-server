@@ -181,7 +181,7 @@ namespace NemesusWorld.Controllers
                                 tempData.inrob = false;
                             }
                         }
-                    }, delayTime: 10500);
+                    }, delayTime: 60000);
                 }
                 //Bank
                 if (ped.Id != 27 && (Helper.IsAtBank(player) == 0 || Helper.IsAtBank(player) == 1))
@@ -212,7 +212,7 @@ namespace NemesusWorld.Controllers
                             tempData.inrob = false;
                         }
                         ped.SetSharedData("Player:AnimData", "0");
-                    }, delayTime: 10500);
+                    }, delayTime: 60000 * 6);
                 }
 
                 //24/7-Tankstelle
@@ -252,7 +252,7 @@ namespace NemesusWorld.Controllers
                         }
                         bizz.nobuy = false;
                         ped.SetSharedData("Player:AnimData", "0");
-                    }, delayTime: 10500);
+                    }, delayTime: 60000 * 5);
                 }
 
                 //Ammunation
@@ -330,7 +330,7 @@ namespace NemesusWorld.Controllers
                         }
                         bizz.nobuy = false;
                         ped.SetSharedData("Player:AnimData", "0");
-                    }, delayTime: 10500);
+                    }, delayTime: 60000 * 5);
                 }
 
                 //Kleidungsladen + Juwelier + Tattoo-Laden + Barber-Shop
@@ -370,7 +370,7 @@ namespace NemesusWorld.Controllers
                         }
                         bizz.nobuy = false;
                         ped.SetSharedData("Player:AnimData", "0");
-                    }, delayTime: 10500);
+                    }, delayTime: 60000*3);
                 }
             }
             catch (Exception e)

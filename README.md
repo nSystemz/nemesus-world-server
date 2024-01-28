@@ -17,6 +17,18 @@ Bei diesem Gamemode handelt es sich um einen Gamemode für die Multiplayer Modif
 Info: Der Gamemode läuft auf Linux und Windows, auf Windows habe ich aber bessere Erfahrungen gemacht.
 Kopiert euch bitte die jeweiligen aktuellen Runtimes (von Rage) in den dotnet Ordner, es liegen die runtimes für Windows dabei!
 
+Weitere Abhängigkeiten:
+- NPM 8.5.0
+- NodeJS 16.14.2
+- DotNet 3.1 
+- VUE 2
+- Bootstrapper.dll von Rage
+- BCrypt.Net-Next 4.0.3 (NuGet)
+- Microsoft.Extensions.DependencyInjection 6.0.0 (NuGet)
+- MySqlConnector 1.3.14 (NuGet)
+- Newtonsoft.Json 12.0.3 (NuGet)
+- PetaPoco.Compiled 6.0.493-beta (NuGet)
+
 Der Gamemode war mal für einen relativ schnellen "Release" geplant, an einigen Stellen unsauber geschrieben und natürlich nicht zu 100% fertig. Hier und da kann es zu Bugs kommen, diese könnt Ihr gerne hier oder bei mir im Discord melden.
 
 Testserver: https://bit.ly/3MMK5nD
@@ -68,9 +80,9 @@ ForumConnect: https://nemesus.de/downloads/nemesusworld/forumConnect.txt
 PostChangelog: https://nemesus.de/downloads/nemesusworld/postChangelog.txt
 
 Beachtet bitte die ToDos im Code und die Installationsanleitung auf Youtube: 
+- https://youtu.be/0j1qmqTB8qA (ZAP-Hosting - Günstige RageMP Server: https://bit.ly/3ELgfbY - Gutschein: Nsus-a-3805) *Werbung
 - https://youtu.be/vBB-E4IgV2Q (Windows)
 - https://youtu.be/ggKe51qOM4w (Linux Debian)
-- https://youtu.be/0j1qmqTB8qA (ZAP-Hosting)
 - https://youtu.be/vZP-QDRra64 (Text-RP)
 - https://youtu.be/R4jcu1xuCVo (ForumConnect/PostChangelog System)
 

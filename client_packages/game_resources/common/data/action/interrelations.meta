@@ -1,0 +1,665 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<CInterrelationTestContainer>
+  <aInterrelationTests>
+    <Item type="CInterrelationTest">
+      <Name>IRT_standard</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-0.315000" y="0.500000" />
+        <DistanceRange x="0.000000" y="1.500000" />
+        <PlanarAngularRange x="0.000000" y="0.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_shove</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-0.315000" y="0.500000" />
+        <DistanceRange x="0.000000" y="0.750000" />
+        <PlanarAngularRange x="0.000000" y="0.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_taunt</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="0.000000" y="0.000000" />
+        <DistanceRange x="0.750000" y="10000.000000" />
+        <PlanarAngularRange x="0.000000" y="0.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_DISTANCE_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_front_no_height</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="0.000000" y="0.000000" />
+        <DistanceRange x="0.000000" y="0.000000" />
+        <PlanarAngularRange x="-45.000000" y="45.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_front_close</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-0.315000" y="0.500000" />
+        <DistanceRange x="0.000000" y="3.000000" />
+        <PlanarAngularRange x="-45.000000" y="45.000000" />
+        <HeightDifference value="0.500000" />
+        <RelativeRangeAttrs>RRA_CHECK_HEIGHT_RANGE RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_front_close_no_height</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="0.000000" y="0.000000" />
+        <DistanceRange x="0.000000" y="3.000000" />
+        <PlanarAngularRange x="-100.000000" y="100.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_front_short</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-0.315000" y="0.500000" />
+        <DistanceRange x="1.500000" y="3.000000" />
+        <PlanarAngularRange x="-45.000000" y="45.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_front_short_weapon</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-0.315000" y="0.500000" />
+        <DistanceRange x="0.000000" y="2.000000" />
+        <PlanarAngularRange x="-45.000000" y="45.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_front_medium</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-0.315000" y="0.500000" />
+        <DistanceRange x="3.000000" y="4.000000" />
+        <PlanarAngularRange x="-45.000000" y="45.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_front_swimming</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="0.000000" y="0.000000" />
+        <DistanceRange x="0.000000" y="20.000000" />
+        <PlanarAngularRange x="-90.000000" y="90.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_front_medium_low</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-1.500000" y="-0.950000" />
+        <DistanceRange x="2.500000" y="4.000000" />
+        <PlanarAngularRange x="-90.000000" y="90.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE RRA_ALLOW_PED_DEAD_GROUND_OVERRIDE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_front_long_low</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-1.500000" y="-0.950000" />
+        <DistanceRange x="4.000000" y="5.500000" />
+        <PlanarAngularRange x="-60.000000" y="60.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE RRA_ALLOW_PED_DEAD_GROUND_OVERRIDE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_front_walking</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-0.315000" y="0.500000" />
+        <DistanceRange x="0.000000" y="5.000000" />
+        <PlanarAngularRange x="-45.000000" y="45.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_front_close_mid</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-0.950000" y="-0.315000" />
+        <DistanceRange x="0.000000" y="3.500000" />
+        <PlanarAngularRange x="-45.000000" y="45.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE RRA_ALLOW_PED_GETUP_GROUND_OVERRIDE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_front_long_mid</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-1.100000" y="-0.315000" />
+        <DistanceRange x="2.500000" y="5.500000" />
+        <PlanarAngularRange x="-90.000000" y="90.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE RRA_ALLOW_PED_GETUP_GROUND_OVERRIDE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_front_running</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-0.315000" y="0.500000" />
+        <DistanceRange x="0.000000" y="7.000000" />
+        <PlanarAngularRange x="-65.000000" y="65.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_front_running_short_range</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-0.315000" y="0.500000" />
+        <DistanceRange x="0.000000" y="1.500000" />
+        <PlanarAngularRange x="-65.000000" y="65.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_front_running_long_range</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-0.315000" y="0.500000" />
+        <DistanceRange x="4.500000" y="7.000000" />
+        <PlanarAngularRange x="-65.000000" y="65.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_front_stealth_kill</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-0.350000" y="0.300000" />
+        <DistanceRange x="0.000000" y="0.000" />
+        <PlanarAngularRange x="-90.000000" y="90.000000" />
+        <HeightDifference value="0.0" />
+        <RelativeRangeAttrs>RRA_CHECK_HEIGHT_RANGE RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_front_takedown</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-0.250000" y="0.0000" />
+        <DistanceRange x="0.000000" y="0.00000" />
+        <PlanarAngularRange x="-90.000000" y="90.000000" />
+        <HeightDifference value="0" />
+        <RelativeRangeAttrs>RRA_CHECK_HEIGHT_RANGE RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_front_takedown_psycho</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-0.250000" y="0.250000" />
+        <DistanceRange x="0.000000" y="0.000" />
+        <PlanarAngularRange x="-135.000000" y="135.000000" />
+        <HeightDifference value="0" />
+        <RelativeRangeAttrs>RRA_CHECK_HEIGHT_RANGE RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_front_takedown_armed</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-0.250000" y="0.250000" />
+        <DistanceRange x="0.000000" y="0.00000" />
+        <PlanarAngularRange x="-90.000000" y="90.000000" />
+        <HeightDifference value="0" />
+        <RelativeRangeAttrs>RRA_CHECK_HEIGHT_RANGE RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_front_takedown_animal</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="0.000000" y="0.000000" />
+        <DistanceRange x="0.000000" y="2.500000" />
+        <PlanarAngularRange x="-90.000000" y="90.000000" />
+        <HeightDifference value="0" />
+        <RelativeRangeAttrs>RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_front_kick_close</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-0.315000" y="0.500000" />
+        <DistanceRange x="0.000000" y="2.500000" />
+        <PlanarAngularRange x="-45.000000" y="45.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_front_kick</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-0.750000" y="0.750000" />
+        <DistanceRange x="2.500000" y="4.000000" />
+        <PlanarAngularRange x="-60.000000" y="60.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_rear_no_height</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="0.000000" y="0.000000" />
+        <DistanceRange x="0.000000" y="0.000000" />
+        <PlanarAngularRange x="135.000000" y="-135.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_rear_right_close</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-0.315000" y="0.500000" />
+        <DistanceRange x="0.000000" y="2.000000" />
+        <PlanarAngularRange x="-180.000000" y="-135.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_rear_right_close_no_height</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="0.000000" y="0.000000" />
+        <DistanceRange x="0.000000" y="2.500000" />
+        <PlanarAngularRange x="-180.000000" y="-135.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_rear_right_close_mid</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-0.950000" y="-0.315000" />
+        <DistanceRange x="0.000000" y="3.000000" />
+        <PlanarAngularRange x="-180.000000" y="-135.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE RRA_ALLOW_PED_GETUP_GROUND_OVERRIDE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_rear_right_close_low</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-1.500000" y="-0.950000" />
+        <DistanceRange x="0.000000" y="3.000000" />
+        <PlanarAngularRange x="-180.000000" y="-135.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE RRA_ALLOW_PED_DEAD_GROUND_OVERRIDE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_rear_left_close</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-0.315000" y="0.500000" />
+        <DistanceRange x="0.000000" y="2.000000" />
+        <PlanarAngularRange x="135.000000" y="180.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_rear_left_close_no_height</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="0.000000" y="0.000000" />
+        <DistanceRange x="0.000000" y="2.500000" />
+        <PlanarAngularRange x="135.000000" y="180.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_rear_left_close_mid</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-0.950000" y="-0.315000" />
+        <DistanceRange x="0.000000" y="3.000000" />
+        <PlanarAngularRange x="135.000000" y="180.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE RRA_ALLOW_PED_GETUP_GROUND_OVERRIDE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_rear_left_close_low</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-1.500000" y="-0.950000" />
+        <DistanceRange x="0.000000" y="3.000000" />
+        <PlanarAngularRange x="135.000000" y="180.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE RRA_ALLOW_PED_DEAD_GROUND_OVERRIDE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_rear_right_medium</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-0.315000" y="0.500000" />
+        <DistanceRange x="2.000000" y="4.000000" />
+        <PlanarAngularRange x="-180.000000" y="-135.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_rear_left_medium</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-0.315000" y="0.500000" />
+        <DistanceRange x="2.000000" y="4.000000" />
+        <PlanarAngularRange x="135.000000" y="180.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_rear_stealth_kill_no_height</Name>
+      <RootOffsetZ value="0.000000" />
+      <RelativeRange>
+        <GroundHeightRange x="0.000000" y="0.000000" />
+        <DistanceRange x="0.000000" y="2.500000" />
+        <PlanarAngularRange x="90.000000" y="-90.000000" />
+        <HeightDifference value="99999999999.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_rear_takedown</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-0.250000" y="0.250000" />
+        <DistanceRange x="0.000000" y="2.500000" />
+        <PlanarAngularRange x="135.000000" y="-135.000000" />
+        <HeightDifference value="99999999999.650000" />
+        <RelativeRangeAttrs>RRA_CHECK_HEIGHT_RANGE RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_rear_takedown_psycho</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-0.250000" y="0.250000" />
+        <DistanceRange x="0.000000" y="4.000000" />
+        <PlanarAngularRange x="90.000000" y="-90.000000" />
+        <HeightDifference value="99999999999.650000" />
+        <RelativeRangeAttrs>RRA_CHECK_HEIGHT_RANGE RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_rear_takedown_armed</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-0.250000" y="0.250000" />
+        <DistanceRange x="0.000000" y="1.500000" />
+        <PlanarAngularRange x="90.000000" y="-90.000000" />
+        <HeightDifference value="99999999999.650000" />
+        <RelativeRangeAttrs>RRA_CHECK_HEIGHT_RANGE RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_rear_takedown_animal</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="0.000000" y="0.000000" />
+        <DistanceRange x="0.000000" y="2.500000" />
+        <PlanarAngularRange x="90.000000" y="-90.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_left_half_no_height</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="0.000000" y="0.000000" />
+        <DistanceRange x="0.000000" y="0.000000" />
+        <PlanarAngularRange x="0.000000" y="180.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_left_no_height</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="0.000000" y="0.000000" />
+        <DistanceRange x="0.000000" y="0.000000" />
+        <PlanarAngularRange x="45.000000" y="135.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_left_close</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-0.315000" y="0.500000" />
+        <DistanceRange x="0.000000" y="2.000000" />
+        <PlanarAngularRange x="45.000000" y="135.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_left_close_no_height</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="0.000000" y="0.000000" />
+        <DistanceRange x="0.000000" y="2.500000" />
+        <PlanarAngularRange x="45.000000" y="135.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_left_close_low</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-1.500000" y="-0.950000" />
+        <DistanceRange x="0.000000" y="3.000000" />
+        <PlanarAngularRange x="45.000000" y="135.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE RRA_ALLOW_PED_DEAD_GROUND_OVERRIDE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_left_close_mid</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-0.950000" y="-0.315000" />
+        <DistanceRange x="0.000000" y="3.500000" />
+        <PlanarAngularRange x="45.000000" y="135.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE RRA_ALLOW_PED_GETUP_GROUND_OVERRIDE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_left_medium</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-0.315000" y="0.500000" />
+        <DistanceRange x="2.000000" y="4.000000" />
+        <PlanarAngularRange x="45.000000" y="135.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_right_half_no_height</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="0.000000" y="0.000000" />
+        <DistanceRange x="0.000000" y="0.000000" />
+        <PlanarAngularRange x="-180.000000" y="0.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_right_no_height</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="0.000000" y="0.000000" />
+        <DistanceRange x="0.000000" y="0.000000" />
+        <PlanarAngularRange x="-135.000000" y="-45.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_right_close</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-0.315000" y="0.500000" />
+        <DistanceRange x="0.000000" y="2.000000" />
+        <PlanarAngularRange x="-135.000000" y="-45.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_right_close_no_height</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="0.000000" y="0.000000" />
+        <DistanceRange x="0.000000" y="2.500000" />
+        <PlanarAngularRange x="-135.000000" y="-45.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_right_close_low</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-1.500000" y="-0.950000" />
+        <DistanceRange x="0.000000" y="3.000000" />
+        <PlanarAngularRange x="-135.000000" y="-45.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE RRA_ALLOW_PED_DEAD_GROUND_OVERRIDE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_right_close_mid</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-0.950000" y="-0.315000" />
+        <DistanceRange x="0.000000" y="3.500000" />
+        <PlanarAngularRange x="-135.000000" y="-45.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE RRA_ALLOW_PED_GETUP_GROUND_OVERRIDE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_right_medium</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-0.315000" y="0.500000" />
+        <DistanceRange x="2.000000" y="4.000000" />
+        <PlanarAngularRange x="-135.000000" y="-45.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_close_low</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-1.500000" y="-0.950000" />
+        <DistanceRange x="0.000000" y="2.500000" />
+        <PlanarAngularRange x="-180.000000" y="180.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE RRA_ALLOW_PED_DEAD_GROUND_OVERRIDE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_forward_close_low</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-1.500000" y="-0.950000" />
+        <DistanceRange x="0.000000" y="2.500000" />
+        <PlanarAngularRange x="-45.000000" y="45.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE RRA_ALLOW_PED_DEAD_GROUND_OVERRIDE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_very_close_low</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="-1.500000" y="-0.950000" />
+        <DistanceRange x="0.000000" y="1.250000" />
+        <PlanarAngularRange x="-180.000000" y="180.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_GROUND_RANGE RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE RRA_ALLOW_PED_DEAD_GROUND_OVERRIDE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_takedown_animal</Name>
+      <RootOffsetZ value="0.500000" />
+      <RelativeRange>
+        <GroundHeightRange x="0.000000" y="0.000000" />
+        <DistanceRange x="0.000000" y="3.500000" />
+        <PlanarAngularRange x="-75.000000" y="75.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+    <Item type="CInterrelationTest">
+      <Name>IRT_shark</Name>
+      <RootOffsetZ value="0.000000" />
+      <RelativeRange>
+        <GroundHeightRange x="0.000000" y="0.000000" />
+        <DistanceRange x="0.000000" y="5.500000" />
+        <PlanarAngularRange x="-180.000000" y="180.000000" />
+        <HeightDifference value="0.000000" />
+        <RelativeRangeAttrs>RRA_CHECK_DISTANCE_RANGE RRA_CHECK_ANGULAR_RANGE</RelativeRangeAttrs>
+      </RelativeRange>
+    </Item>
+  </aInterrelationTests>
+</CInterrelationTestContainer>

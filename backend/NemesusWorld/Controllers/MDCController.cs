@@ -29,7 +29,7 @@ namespace NemesusWorld.Controllers
             try
             {
                 PetaPoco.Database db = new PetaPoco.Database(General.Connection);
-                foreach (Fahndungen fahndung in db.Fetch<Fahndungen>("SELECT * FROM fahndungen ORDER BY timestamp DESC LIMIT 75"))
+                foreach (Fahndungen fahndung in db.Fetch<Fahndungen>("SELECT * FROM fahndungen ORDER BY timestamp DESC LIMIT 25"))
                 {
                     fahndungList.Add(fahndung);
                 }
@@ -65,7 +65,7 @@ namespace NemesusWorld.Controllers
             {
                 PetaPoco.Database db = new PetaPoco.Database(General.Connection);
                 Fahndungen fahndungen = new Fahndungen();
-                fahndungen.text = data;
+                fahndungen.text = ""+data;
                 fahndungen.creator = "Überwachungskamera";
                 fahndungen.timestamp = Helper.UnixTimestamp();
                 fahndungen.editor = "n/A";
@@ -681,6 +681,11 @@ namespace NemesusWorld.Controllers
                                 if (value == 0)
                                 {
                                     MySqlCommand command = General.Connection.CreateCommand();
+                                    if (Convert.ToInt32(Helper.SetAndGetCharacterLicense(player, value2, 1337, getCharacter)) <= 0)
+                                    {
+                                        Helper.SendNotificationWithoutButton(player, $"Die Person besitzt diese Lizenz nicht!", "error", "top-left", 2500);
+                                        return;
+                                    }
                                     if (Convert.ToInt32(Helper.SetAndGetCharacterLicense(player, value2, 1337, getCharacter)) <= 1)
                                     {
                                         Helper.SendNotificationWithoutButton(player, $"14 Tage Sperre für den {GetLicName(value2)} gesetzt!", "success", "top-left", 2500);
@@ -830,7 +835,6 @@ namespace NemesusWorld.Controllers
                                 msg = $"Die Sperrzone wurde aufgehoben!";
                                 msg2 = $"Die Sperrzone wurde aufgehoben!";
                             }
-                            //Helper.SendAdminMessage3("" + msg2, 180000);
                             foreach (Player p in NAPI.Pools.GetAllPlayers())
                             {
                                 if (p != null && p.GetOwnSharedData<bool>("Player:Spawned") == true)
@@ -890,7 +894,6 @@ namespace NemesusWorld.Controllers
                                     }
                                 }
                             }
-                            //Helper.SendAdminMessage3(msgnew, 180000);
                             break;
                         }
                     case "locateweapon":
@@ -938,6 +941,7 @@ namespace NemesusWorld.Controllers
                                     tempData.undercover = data;
                                     player.SetData<string>("Client:OldName", character.name);
                                     character.name = data;
+                                    player.Name = character.name;
                                     CharacterController.SaveCharacter(player);
                                 }
                                 else
@@ -945,6 +949,7 @@ namespace NemesusWorld.Controllers
                                     Helper.SendNotificationWithoutButton(player, "Undercover Identität abgelegt!", "success", "top-left", 2750);
                                     tempData.undercover = "";
                                     character.name = player.GetData<string>("Client:OldName");
+                                    player.Name = character.name;
                                     player.ResetData("Client:OldName");
                                     CharacterController.SaveCharacter(player);
                                 }
@@ -1097,7 +1102,7 @@ namespace NemesusWorld.Controllers
                             else
                             {
                                 MySqlCommand command = General.Connection.CreateCommand();
-                                command.CommandText = "SELECT id,name,screen FROM characters WHERE LOWER(name) LIKE @searchname LIMIT 8";
+                                command.CommandText = "SELECT id,name,screen FROM characters WHERE LOWER(name) LIKE @searchname LIMIT 4";
                                 command.Parameters.AddWithValue("@searchname", "%" + data.ToLower() + "%");
 
                                 List<LoadCharactersModel> loadedCharactersList = new List<LoadCharactersModel>();
@@ -1121,6 +1126,7 @@ namespace NemesusWorld.Controllers
                     case "selectpersonal":
                         {
                             Character getCharacter = db.Single<Character>("WHERE id = @0", Convert.ToInt32(data));
+                            Helper.SendNotificationWithoutButton(player, getCharacter.name, "info", "top-left", 2500);
 
                             if (getCharacter.faction == character.faction && getCharacter.rang >= character.rang && getCharacter.id != character.id && character.rang != 12)
                             {
@@ -1276,6 +1282,8 @@ namespace NemesusWorld.Controllers
                             command.CommandText = "SELECT id,vehiclename,plate,tuev FROM vehicles WHERE owner = @owner AND plate != 'n/A' LIMIT 15";
                             command.Parameters.AddWithValue("@owner", "character-" + Convert.ToInt32(data));
 
+                            Helper.SendNotificationWithoutButton(player, "ID: "+ data, "info", "top-left", 2500);
+
                             using (MySqlDataReader reader = command.ExecuteReader())
                             {
                                 while (reader.Read())
@@ -1284,7 +1292,7 @@ namespace NemesusWorld.Controllers
                                     characterModel.ID = reader.GetInt32("id");
                                     characterModel.Name = reader.GetString("vehiclename");
                                     characterModel.Screen = reader.GetString("plate");
-                                    characterModel.Faction = reader.GetString("tuev");
+                                    characterModel.Faction = reader.GetInt32("tuev").ToString();
                                     loadedCharactersList.Add(characterModel);
                                 }
                                 reader.Close();
@@ -1349,7 +1357,7 @@ namespace NemesusWorld.Controllers
                                 while (reader.Read())
                                 {
                                     LoadCharactersModel characterModel = new LoadCharactersModel();
-                                    characterModel.Bank = reader.GetInt64("ident");
+                                    characterModel.Screen = reader.GetString("ident");
                                     characterModel.Name = reader.GetString("shop");
                                     characterModel.Job = reader.GetString("weaponname");
                                     characterModel.Closed = reader.GetInt32("timestamp");
@@ -1388,7 +1396,7 @@ namespace NemesusWorld.Controllers
                         {
                             mdcArray = data.Split("|");
                             Fahndungen fahndungen = new Fahndungen();
-                            fahndungen.text = mdcArray[0];
+                            fahndungen.text = ""+mdcArray[0];
                             fahndungen.creator = character.name;
                             fahndungen.timestamp = Helper.UnixTimestamp();
                             fahndungen.editor = "n/A";
@@ -1448,7 +1456,7 @@ namespace NemesusWorld.Controllers
                         }
                     case "loadfahndungen":
                         {
-                            player.TriggerEvent("Client:MDCSettings", "showfahndungen", NAPI.Util.ToJson(fahndungList.Take(35)));
+                            player.TriggerEvent("Client:MDCSettings", "showfahndungen", NAPI.Util.ToJson(fahndungList.Take(25)));
                             break;
                         }
                     case "loaddispatches":

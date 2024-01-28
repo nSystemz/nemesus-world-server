@@ -2252,7 +2252,14 @@ export default {
             }
         },
         setWeatherInfo: function (weatherjson) {
-            this.weather = JSON.parse(weatherjson);
+            if(weatherjson != null)
+            {
+                this.weather = JSON.parse(weatherjson);
+            }
+            else
+            {
+                this.weather = null;
+            }
             this.setting = 7;
         },
         showWeather: function () {
@@ -2270,7 +2277,14 @@ export default {
                 mp.trigger('Client:StartSmartphoneWeather');
                 this.lastcheck2 = (Date.now() / 1000) + (60 * 3);
             } else {
-                this.setting = 7;
+                if(this.weather == null)
+                {
+                    mp.trigger('Client:StartSmartphoneWeather');
+                }
+                else
+                {
+                    this.setting = 7;
+                }
             }
         },
         showSetNumber: function () {

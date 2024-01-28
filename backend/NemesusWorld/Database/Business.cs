@@ -1306,6 +1306,19 @@ namespace NemesusWorld.Database
             }
         }
 
+        [RemoteEvent("Server:HideMaskMenu")]
+        public static void OnHideMaskMenu(Player player)
+        {
+            try
+            {
+                NAPI.Player.SetPlayerClothes(player, 1, 0, 0);
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", "[OnHideMaskMenu]: " + e.ToString());
+            }
+        }
+
         [RemoteEvent("Server:BuyNewHairs")]
         public static void OnBuyNewHairs(Player player, int id, int color, int id2, int color2, int color3, int price, int overlay0, int overlaycolor0, int overlay1, int overlaycolor1, int overlay2, int overlaycolor2)
         {

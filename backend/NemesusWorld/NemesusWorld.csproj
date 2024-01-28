@@ -26,12 +26,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="Bootstrapper">
-      <HintPath>..\..\dotnet\runtime\Bootstrapper.dll</HintPath>
-    </Reference>
+    <None Remove="Bootstrapper" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="Bootstrapper" />
+    <Reference Include="Bootstrapper">
+      <HintPath>..\..\dotnet\runtime\Bootstrapper.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

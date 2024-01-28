@@ -616,7 +616,7 @@
                                         <div class="card" style="overflow-x: auto; height:100%">
                                             <div class="card-header border-transparent">
                                                 <h3 class="card-title" style="font-family: 'Exo', sans-serif; font-size: 0.8vw">
-                                                    Waffendatenbankeintrag - WEPN-{{weaponInfo.ident}}
+                                                    Waffendatenbankeintrag - WEPN-{{weaponInfo.Screen}}
                                                 </h3>
                                             </div>
                                             <div class="card-body p-0" style="height: 18.5vw">
@@ -629,7 +629,7 @@
                                                     </li>
                                                     <li class="ml-5 mt-1">
                                                         <b>Identifikationsnummer</b> <a class="float-right mr-5">
-                                                            <div class="col-12 float-right">WEPN-{{weaponInfo.ident}}
+                                                            <div class="col-12 float-right">WEPN-{{weaponInfo.Screen}}
                                                             </div>
                                                         </a>
                                                     </li>
@@ -1072,9 +1072,6 @@
                                                                                         </td>
                                                                                     </tr>
                                                                                 </table>
-                                                                                <div v-if="policeFile.length <= 0">
-                                                                                    <h5>Kein Eintrag vorhanden!</h5>
-                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -1101,9 +1098,6 @@
                                                                                         </td>
                                                                                     </tr>
                                                                                 </table>
-                                                                                <div v-if="policeFile.length <= 0">
-                                                                                    <h5>Kein Eintrag vorhanden!</h5>
-                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -1130,9 +1124,6 @@
                                                                                         </td>
                                                                                     </tr>
                                                                                 </table>
-                                                                                <div v-if="policeFile.length <= 0">
-                                                                                    <h5>Kein Eintrag vorhanden!</h5>
-                                                                                </div>
                                                                             </div>
                                                                         </div>
                                                                     </div>
@@ -1276,11 +1267,11 @@
                                                                                             <th>Aktion</th>
                                                                                         </tr>
                                                                                     </thead>
-                                                                                    <tr v-for="weapon in weaponInfo" :key="weapon.Bank">
-                                                                                        <td>WEPN-{{weapon.Bank}}</td>
+                                                                                    <tr v-for="weapon in weaponInfo" :key="weapon.Screen">
+                                                                                        <td>WEPN-{{weapon.Screen}}</td>
                                                                                         <td>{{weapon.Job}}</td>
                                                                                         <td>{{weapon.Name}}</td>
-                                                                                        <td><i class="nav-icon fa-solid fa-copy icongreen ml-2" @click="locateWeapon(String(weapon.Bank))"></i></td>
+                                                                                        <td><i class="nav-icon fa-solid fa-copy icongreen ml-2" @click="locateWeapon(String(weapon.Screen))"></i></td>
                                                                                     </tr>
                                                                                 </table>
                                                                             </div>
@@ -1358,7 +1349,7 @@
                                                 <div class="col-md-12">
                                                     <div class="card-body p-0" style="height: 18.5vw" v-if="personalInfo.length > 0">
                                                         <ul class="users-list clearfix">
-                                                            <li v-for="personal in personalInfo" :key="personal.id">
+                                                            <li v-for="personal in personalInfo" :key="personal.ID">
                                                                 <img v-bind:src="personal.Screen" style="max-height: 112px;border-radius: 10%;border: 1px solid #adb5bd; width: 10vw;">
                                                                 <a class="users-list-name" style="display: block;font-size: 0.875rem;" href="#" @click="navigate('selectPersonal', personal.ID)"><strong>{{personal.Name}}</strong></a>
                                                             </li>
@@ -2087,7 +2078,7 @@ export default {
                 if ((Date.now() / 1000) > this.carsLoaded) {
                     // eslint-disable-next-line no-undef
                     mp.trigger('Client:MDCSettings', 'selectcars', '' + id);
-                    this.carsLoaded = (Date.now() / 1000) + (60);
+                    this.carsLoaded = (Date.now() / 1000) + (30);
                 }
                 this.clicked = (Date.now() / 1000) + (1);
             }

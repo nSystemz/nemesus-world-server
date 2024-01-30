@@ -5,10 +5,19 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <Description>https://nemesus-world.de
+https://nemesus.de</Description>
+    <Authors>Nemesus</Authors>
+    <Company>Nemesus.de</Company>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageLicenseExpression></PackageLicenseExpression>
+    <PackageProjectUrl>https://nemesus-world.de</PackageProjectUrl>
+    <PackageLicenseFile>license.md</PackageLicenseFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <OutputPath>J:\Tutorials\nemesus-world-server\dotnet\resources\NemesusWorld\</OutputPath>
+    <OutputPath>..\..\dotnet\resources\NemesusWorld\</OutputPath>
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 
@@ -27,6 +36,10 @@
 
   <ItemGroup>
     <None Remove="Bootstrapper" />
+    <None Include="..\..\license.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

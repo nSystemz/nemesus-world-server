@@ -4947,6 +4947,10 @@
                                                                     <td>/disguise</td>
                                                                     <td>Identität verschleiern</td>
                                                                 </tr>
+                                                                <tr>
+                                                                    <td>/q</td>
+                                                                    <td>Spiel beenden</td>
+                                                                </tr>
                                                                 <tr v-if="voicerp == 0">
                                                                     <td>/me - /do</td>
                                                                     <td>Roleplay Befehle</td>

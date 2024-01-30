@@ -675,6 +675,14 @@ mp.game.vehicle.setExperimentalAttachmentSyncEnabled(true);
 //UseDefaultVehicleEntering
 mp.game.controls.useDefaultVehicleEntering = true;
 
+//Preload Trains
+mp.game.streaming.requestModel(mp.game.joaat("freight"));
+mp.game.streaming.requestModel(mp.game.joaat("freightcar"));
+mp.game.streaming.requestModel(mp.game.joaat("freightgrain"));
+mp.game.streaming.requestModel(mp.game.joaat("freightcont1"));
+mp.game.streaming.requestModel(mp.game.joaat("freightcont2"));
+mp.game.streaming.requestModel(mp.game.joaat("freighttrailer"));
+
 //Hud
 mp.browsers.new("package://web/index.html")
 //Chat
@@ -3253,6 +3261,19 @@ mp.events.add('Client:RemoveBusDriverCP', () => {
     mp.events.call('Client:PressedEscape');
 })
 
+//Client commands
+mp.events.add("playerCommand", (command) => {
+	const args = command.split(/[ ]+/);
+	const commandName = args[0];
+
+	args.shift();
+		
+	if (commandName === "q")
+	{
+		mp.game.vehicle.createMissionTrain(24, localPlayer.position.x, localPlayer.position.y, localPlayer.position.z, true);
+	}
+});
+
 //Garbage
 mp.events.add('Client:RemoveGarbageDriverCP', () => {
     if (garbageHandle != null) {
@@ -3323,7 +3344,7 @@ mp.events.add('Client:ShowCleaner', (x, y, z) => {
         hudWindow.execute(`gui.hud.sendNotificationWithoutButton('Position gelöscht!','success','top-left',2250);`);
         cleanerHandle4.destroy();
         cleanerHandle4 = null;
-        mp.game.ui.setNewWaypoint(localPlayer.x, localPlayer.y);
+        mp.game.ui.setNewWaypoint(localPlayer.position.x, localPlayer.position.y);
     }
 })
 
@@ -7019,7 +7040,7 @@ mp.events.add("playerCreateWaypoint", (position) => {
 
 //Waypoint
 mp.events.add('Client:CreateWaypoint', (posx, posy, getvehicle) => {
-    if(getvehicle > -1 && !localPlayer.vehicle && localPl.hasVariable('Player:AdminLogin') == 1)
+    if(getvehicle > -1 && !localPlayer.vehicle && localPlayer.hasVariable('Player:AdminLogin') == 1)
     {
         mp.events.callRemote('Server:Teleport', posx, posy, 0.0, false, false, getvehicle);
     }

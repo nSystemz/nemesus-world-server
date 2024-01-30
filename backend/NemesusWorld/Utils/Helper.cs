@@ -3071,7 +3071,7 @@ namespace NemesusWorld.Utils
                                 else
                                 {
                                     group = GroupsController.GetGroupById(character.mygroup);
-                                    if (group == null)
+                                    if (character.mygroup == -1 || group == null)
                                     {
                                         Helper.SendNotificationWithoutButton2(player, "Du hast keine Gruppierung ausgewählt!", "error", "center");
                                         return;
@@ -10889,19 +10889,22 @@ namespace NemesusWorld.Utils
                             if (car.vehicleData != null && car.vehicleData.plate.Length > 0 && car.vehicleData.owner == "character-" + character.id)
                             {
                                 VehicleShop vehicleShop = DealerShipController.GetVehicleShopByVehicleName(car.vehicleData.vehiclename);
-                                Payday kfzsteuer = new Payday();
-                                kfzsteuer.modus = "Steuern";
-                                string vehiclename = car.vehicleData.vehiclename;
-                                if (car.vehicleData.ownname != "n/A")
+                                if (vehicleShop != null)
                                 {
-                                    vehiclename = car.vehicleData.ownname;
+                                    Payday kfzsteuer = new Payday();
+                                    kfzsteuer.modus = "Steuern";
+                                    string vehiclename = car.vehicleData.vehiclename;
+                                    if (car.vehicleData.ownname != "n/A")
+                                    {
+                                        vehiclename = car.vehicleData.ownname;
+                                    }
+                                    kfzsteuer.setting = "KFZ-Steuer " + adminSettings.ksteuer + "%" + " für " + vehiclename;
+                                    kfzsteuer.value = -(int)(vehicleShop.price / 100 * adminSettings.ksteuer);
+                                    charbank.bankvalue -= kfzsteuer.value;
+                                    paydayList.Add(kfzsteuer);
+                                    Helper.SetGovMoney((int)(vehicleShop.price / 100 * adminSettings.ksteuer), "KFZ-Steuer Einzahlung");
+                                    total += kfzsteuer.value;
                                 }
-                                kfzsteuer.setting = "KFZ-Steuer " + adminSettings.ksteuer + "%" + " für " + vehiclename;
-                                kfzsteuer.value = -(int)(vehicleShop.price / 100 * adminSettings.ksteuer);
-                                charbank.bankvalue -= kfzsteuer.value;
-                                paydayList.Add(kfzsteuer);
-                                Helper.SetGovMoney((int)(vehicleShop.price / 100 * adminSettings.ksteuer), "KFZ-Steuer Einzahlung");
-                                total += kfzsteuer.value;
                             }
                         }
 

@@ -188,7 +188,7 @@ namespace NemesusWorld
                                 command2.CommandText = "UPDATE groups_members SET duty_time = 0 WHERE duty_time > 0";
                                 command2.ExecuteNonQuery();
                             }
-                            //Load all lifeinvaderads
+                            //Load all lifeinvaderads (WIP)
                             //FactionController.GetAllLifeInvaderAds();
                             //General settings
                             NAPI.Server.SetAutoRespawnAfterDeath(false);

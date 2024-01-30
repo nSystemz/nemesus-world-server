@@ -1354,6 +1354,12 @@ namespace NemesusWorld.Controllers
                         {
                             PetaPoco.Database db = new PetaPoco.Database(General.Connection);
                             Groups mygroup = GetGroupById(character.mygroup);
+                            if(mygroup == null || character.mygroup == 1)
+                            {
+                                player.TriggerEvent("Client:ShowStadthalle");
+                                Helper.SendNotificationWithoutButton(player, "Du befindest dich in keiner Gruppierung!", "error", "top-left");
+                                return;
+                            }
                             GroupsRangs myGroupsRangs = GetGroupRangsByID(character.mygroup);
                             GroupsMembers groupMember1 = GetGroupMemberById(character.id, mygroup.id);
                             if (groupMember1 != null)

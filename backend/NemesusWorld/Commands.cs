@@ -7231,7 +7231,7 @@ namespace NemesusWorld
                 Character character = Helper.GetCharacterData(player);
                 TempData tempData = Helper.GetCharacterTempData(player);
                 if (tempData == null || character == null) return;
-                if (player.GetSharedData<bool>("Player:Death") == true) return;
+                if (player.HasSharedData("Player:Death") && player.GetSharedData<bool>("Player:Death") == true) return;
                 if (tempData.freezed == true)
                 {
                     Helper.SendNotificationWithoutButton(player, "Du kannst diesen Befehl jetzt nicht benutzen!", "error", "top-end");
@@ -7596,6 +7596,20 @@ namespace NemesusWorld
             {
                 if (!Account.IsPlayerLoggedIn(player)) return;
                 Helper.SendNotificationWithoutButton(player, "Dein Leben: " + NAPI.Player.GetPlayerHealth(player) + "%", "info", "top-end", 4500);
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[cmd_health]: " + e.ToString());
+            }
+        }
+
+        [Command("q", "Befehl: /q")]
+        public void cmd_quit(Player player)
+        {
+            try
+            {
+                if (!Account.IsPlayerLoggedIn(player)) return;
+                Helper.SendNotificationWithoutButton(player, "Spiel wird beendet ...", "info", "top-end", 4500);
             }
             catch (Exception e)
             {

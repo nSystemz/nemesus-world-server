@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
+  <metadata>
+    <id>NemesusWorld</id>
+    <version>1.0.0</version>
+    <authors>Nemesus</authors>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <license type="file">license.md</license>
+    <licenseUrl>https://aka.ms/deprecateLicenseUrl</licenseUrl>
+    <projectUrl>https://nemesus-world.de/</projectUrl>
+    <description>https://nemesus-world.de
+https://nemesus.de</description>
+    <dependencies>
+      <group targetFramework=".NETCoreApp3.1">
+        <dependency id="BCrypt.Net-Next" version="4.0.3" exclude="Build,Analyzers" />
+        <dependency id="Microsoft.Extensions.DependencyInjection" version="6.0.0" exclude="Build,Analyzers" />
+        <dependency id="MySql.Data" version="8.0.27" exclude="Build,Analyzers" />
+        <dependency id="MySqlConnector" version="1.3.14" exclude="Build,Analyzers" />
+        <dependency id="Newtonsoft.Json" version="12.0.3" exclude="Build,Analyzers" />
+        <dependency id="PetaPoco.Compiled" version="6.0.493-beta" exclude="Build,Analyzers" />
+      </group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="J:\Tutorials\nemesus-world-server\dotnet\resources\NemesusWorld\NemesusWorld.dll" target="lib\netcoreapp3.1\NemesusWorld.dll" />
+    <file src="J:\Tutorials\nemesus-world-server\license.md" target="license.md" />
+  </files>
+</package>

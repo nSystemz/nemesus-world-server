@@ -983,17 +983,19 @@ namespace NemesusWorld.Controllers
                     {
                         if (tempData.undercover != "")
                         {
+                            String oldTempName = "n/A";
                             if (tempData.undercover.Length > 3)
                             {
+                                oldTempName = character.name;
                                 character.name = player.GetData<string>("Client:OldName");
                             }
                             if (character.name != null)
                             {
                                 db.Save(character);
                             }
-                            if (tempData.undercover.Length > 3)
+                            if (tempData.undercover.Length > 3 && oldTempName != "n/A")
                             {
-                                character.name = "Unbekannt - " + player.Id;
+                                character.name = oldTempName;
                             }
                         }
                         else

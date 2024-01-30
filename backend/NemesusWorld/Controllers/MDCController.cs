@@ -1126,7 +1126,6 @@ namespace NemesusWorld.Controllers
                     case "selectpersonal":
                         {
                             Character getCharacter = db.Single<Character>("WHERE id = @0", Convert.ToInt32(data));
-                            Helper.SendNotificationWithoutButton(player, getCharacter.name, "info", "top-left", 2500);
 
                             if (getCharacter.faction == character.faction && getCharacter.rang >= character.rang && getCharacter.id != character.id && character.rang != 12)
                             {
@@ -1281,8 +1280,6 @@ namespace NemesusWorld.Controllers
                             MySqlCommand command = General.Connection.CreateCommand();
                             command.CommandText = "SELECT id,vehiclename,plate,tuev FROM vehicles WHERE owner = @owner AND plate != 'n/A' LIMIT 15";
                             command.Parameters.AddWithValue("@owner", "character-" + Convert.ToInt32(data));
-
-                            Helper.SendNotificationWithoutButton(player, "ID: "+ data, "info", "top-left", 2500);
 
                             using (MySqlDataReader reader = command.ExecuteReader())
                             {

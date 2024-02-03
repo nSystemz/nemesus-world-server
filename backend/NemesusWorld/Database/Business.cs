@@ -1072,6 +1072,14 @@ namespace NemesusWorld.Database
                         ItemsController.RemoveItem(player, radio.itemid);
                     }
 
+                    if (tempData.undercover != "")
+                    {
+                        tempData.undercover = "";
+                        character.name = player.GetData<string>("Client:OldName");
+                        player.Name = character.name;
+                        player.ResetData("Client:OldName");
+                    }
+
                     obj = JObject.Parse(character.json);
 
                     CharacterController.SetCharacterCloths(player, obj, character.clothing);

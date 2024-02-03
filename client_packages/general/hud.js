@@ -578,6 +578,8 @@ const relationshipNames = {
 mp.players.local.setRelationshipGroupHash(mp.game.joaat(relationshipNames.Player));
 mp.game.ped.addRelationshipGroup(relationshipNames.SameTeam, 0);
 mp.game.ped.setRelationshipBetweenGroups(0, mp.game.joaat(relationshipNames.Player), mp.game.joaat(relationshipNames.SameTeam));
+//AiWeaponDamageModifier
+mp.game.ped.setAiWeaponDamageModifier(0.5);
 //Misc
 let IdleDate = new Date();
 let playerID = 0;
@@ -2213,7 +2215,6 @@ mp.events.add("Client:Tase", () => {
 mp.events.add("Client:ShowGovMenu", (p0, p1, p2) => {
     showGov = !showGov;
     nokeys = showGov;
-    showHideChat(showGov);
     mp.gui.cursor.show(showGov, showGov);
     if (hudWindow != null) {
         hudWindow.execute(`gui.menu.showGov('${p0}','${p1}','${p2}');`)
@@ -2223,7 +2224,6 @@ mp.events.add("Client:ShowGovMenu", (p0, p1, p2) => {
 mp.events.add("Client:SaveGov", (csv, modus) => {
     showGov = false;
     nokeys = showGov;
-    showHideChat(true);
     mp.gui.cursor.show(showGov, showGov);
     mp.events.callRemote('Server:SaveGov', csv, modus);
 })
@@ -3851,6 +3851,7 @@ mp.events.add("Client:PressF2", () => {
         mp.events.callRemote('Server:LoadAllTickets', false);
         ticketCooldown = (Date.now() / 1000) + (30);
     }
+    mp.events.callRemote('Server:GetCoins');
     mp.gui.cursor.show(true, true);
     mp.game.ui.displayHud(false);
     showHideChat(false);
@@ -4204,7 +4205,7 @@ mp.keys.bind(0x4D, true, function () {
 mp.keys.bind(0x4F, true, function () {
     if (pressedO == 0 || (Date.now() / 1000) > pressedO) {
         let spawned = localPlayer.getVariable('Player:Spawned');
-        if (showSaltyError == true || triggerAntiCheat == true || localPlayer.isTypingInTextChat || !spawned || nokeys == true || death == true || cuffed == true) return;
+        if (showSaltyError == true || triggerAntiCheat == true || localPlayer.isTypingInTextChat || !spawned || nokeys == true || death == true || cuffed == true || editFurniture == true || showFurniture == true) return;
         if (showWheel == true || showInventory == true || showMenu == true || InteriorSwitch == true || showCenterMenu == true || showBank == true || showAmmu == true || showShop == true || showShop2 == true || startRange == true || showDealer == true || showTab == true || showHandy == true || showTuning == true || barberMenu == true || tattooShop == true || showHandy == true) return;
         if (checkChat == 1) {
             checkChat = 0;
@@ -6115,7 +6116,7 @@ mp.events.add('incomingDamage', (sourceEntity, sourcePlayer, targetEntity, weapo
         if (hack == true) {
             mp.events.call('Client:StopHack2');
         }
-        /*if(isABlackableWeapon(weapon, 2))
+        if(isABlackableWeapon(weapon, 2) && targetEntity.getVariable('Player:AdminLogin') == false)
         {
             mp.events.callRemote('Server:SyncHealth', 1);
             return true;
@@ -6123,7 +6124,7 @@ mp.events.add('incomingDamage', (sourceEntity, sourcePlayer, targetEntity, weapo
         else
         {
             mp.events.callRemote('Server:SyncHealth', 0);
-        }*/
+        }
         mp.events.callRemote('Server:SyncHealth', 0);
         if (getPlayerHealth(localPlayer) - damage < 100 && death == false) {
             death = true;
@@ -9815,7 +9816,7 @@ function antiCheatCheck() {
                     }
                 }
             } else {
-                if (distance >= 39 && parseInt(localPlayer.vehicle.getClass()) != 15 && parseInt(localPlayer.vehicle.getClass()) != 16 && checkCarPos(25)) {
+                if (distance >= 39 && localPlayer.vehicle.getPedInSeat(0) === localPlayer.handle && parseInt(localPlayer.vehicle.getClass()) != 15 && parseInt(localPlayer.vehicle.getClass()) != 16 && checkCarPos(25)) {
                     if (flyTime == 0 || (flyTime != 0 && Date.now() / 1000 > flyTime)) {
                         flyTime = Date.now() / 1000 + (35);
                         flyTrys = 0;

@@ -208,6 +208,13 @@ mp.events.add("Client:SetSoundRange", (range) => {
     playedSoundRange = range;
 });
 
+mp.events.add("Client:StopGhettoBlasterSound", () => {
+    if (playedSound != null) {
+        playedSound.pause();
+        playedSound.destroy();
+        playedSound = null;
+});
+
 mp.events.add("Client:Play3DSound", (url, status) => {
     if (status == -1) {
         if (playedSound == null) {

@@ -450,131 +450,136 @@ namespace NemesusWorld.Utils
         //ToDo: Gruppen IDs und Sonstiges anpassen
         public static void ForumUpdate(Player player, string action, int forumid = -1, string grund = "n/A", int zeit = -1)
         {
-            return;
-#pragma warning disable CS0162 // Unerreichbarer Code wurde entdeckt - löschen wenn ToDo oben erledigt
-            Character character = Helper.GetCharacterData(player);
-#pragma warning restore CS0162 // Unerreichbarer Code wurde entdeckt - löschen wenn ToDo oben erledigt
-            Account account = Helper.GetAccountData(player);
-            TempData tempData = Helper.GetCharacterTempData(player);
-
-            if (account == null || character == null || tempData == null || (account.forumaccount == -1 && forumid == -1)) return;
-
-            int oldForumID = forumid;
-
-            if (account.forumaccount > -1 && forumid == -1)
+            try
             {
-                forumid = account.forumaccount;
-            }
+                return;
+                #pragma warning disable CS0162 // Unerreichbarer Code wurde entdeckt - löschen wenn ToDo oben erledigt
+                Character character = Helper.GetCharacterData(player);
+                #pragma warning restore CS0162 // Unerreichbarer Code wurde entdeckt - löschen wenn ToDo oben erledigt
+                Account account = Helper.GetAccountData(player);
+                TempData tempData = Helper.GetCharacterTempData(player);
 
-            if (action == "ban")
-            {
-                //ToDo: ForumConnect Link anpassen
-                HTTP.Post("HIER/forumConnect.php?id=cu4VUud8EB4TLyfhbSSN589u7&status=ban&userid=" + forumid + "&grund=" + grund + "&zeit=" + zeit, new System.Collections.Specialized.NameValueCollection());
-            }
-            else if (action == "unban")
-            {
-                //ToDo: ForumConnect Link anpassen
-                HTTP.Post("HIER/forumConnect.php?id=cu4VUud8EB4TLyfhbSSN589u7&status=unban&userid=" + forumid, new System.Collections.Specialized.NameValueCollection());
-            }
-            else if (action == "groups" || action == "all")
-            {
-                string groups = "6";
-                string removeGroups = "-1";
+                if (account == null || character == null || tempData == null || (account.forumaccount == -1 && forumid == -1)) return;
 
-                //Premium
-                if (account.premium > 0 && account.premium > UnixTimestamp())
+                int oldForumID = forumid;
+
+                if (account.forumaccount > -1 && forumid == -1)
                 {
-                    if (account.premium == 1)
+                    forumid = account.forumaccount;
+                }
+
+                if (action == "ban")
+                {
+                    //ToDo: ForumConnect Link anpassen
+                    HTTP.Post("HIER/forumConnect.php?id=cu4VUud8EB4TLyfhbSSN589u7&status=ban&userid=" + forumid + "&grund=" + grund + "&zeit=" + zeit, new System.Collections.Specialized.NameValueCollection());
+                }
+                else if (action == "unban")
+                {
+                    //ToDo: ForumConnect Link anpassen
+                    HTTP.Post("HIER/forumConnect.php?id=cu4VUud8EB4TLyfhbSSN589u7&status=unban&userid=" + forumid, new System.Collections.Specialized.NameValueCollection());
+                }
+                else if (action == "groups" || action == "all")
+                {
+                    string groups = "6";
+                    string removeGroups = "-1";
+
+                    //Premium
+                    if (account.premium > 0 && account.premium > UnixTimestamp())
+                    {
+                        if (account.premium == 1)
+                        {
+                            groups = groups + ",16";
+                            removeGroups = removeGroups + ",14,15";
+                        }
+                        else if (account.premium == 2)
+                        {
+                            groups = groups + ",15";
+                            removeGroups = removeGroups + ",14,16";
+                        }
+                        else if (account.premium == 3)
+                        {
+                            groups = groups + ",14";
+                            removeGroups = removeGroups + ",15,16";
+                        }
+                    }
+                    else
                     {
                         groups = groups + ",16";
-                        removeGroups = removeGroups + ",14,15";
+                        removeGroups = removeGroups + ",14,15,16";
                     }
-                    else if (account.premium == 2)
-                    {
-                        groups = groups + ",15";
-                        removeGroups = removeGroups + ",14,16";
-                    }
-                    else if (account.premium == 3)
-                    {
-                        groups = groups + ",14";
-                        removeGroups = removeGroups + ",15,16";
-                    }
-                }
-                else
-                {
-                    groups = groups + ",16";
-                    removeGroups = removeGroups + ",14,15,16";
-                }
-                //Fraktionen
-                int faction = -1;
-                int leader = 0;
-                int member = 0;
-                int rang = 0;
-                FactionsModel factionsModel = null;
+                    //Fraktionen
+                    int faction = -1;
+                    int leader = 0;
+                    int member = 0;
+                    int rang = 0;
+                    FactionsModel factionsModel = null;
 
-                MySqlCommand command = General.Connection.CreateCommand();
-                command.CommandText = "SELECT faction,leader,member,rang FROM characters WHERE userid = @userid";
-                command.Parameters.AddWithValue("@userid", account.id);
+                    MySqlCommand command = General.Connection.CreateCommand();
+                    command.CommandText = "SELECT faction,leader,member,rang FROM characters WHERE userid = @userid";
+                    command.Parameters.AddWithValue("@userid", account.id);
 
-                using (MySqlDataReader reader = command.ExecuteReader())
-                {
-                    while (reader.Read())
+                    using (MySqlDataReader reader = command.ExecuteReader())
                     {
-                        reader.Read();
-                        faction = reader.GetInt32("faction");
-                        leader = reader.GetInt32("leader");
-                        member = reader.GetInt32("member");
-                        rang = reader.GetInt32("rang");
-                        factionsModel = GetFactionById(faction);
-                        if (factionsModel != null)
+                        while (reader.Read())
                         {
-                            if (faction == 1)
+                            faction = reader.GetInt32("faction");
+                            leader = reader.GetInt32("leader");
+                            member = reader.GetInt32("member");
+                            rang = reader.GetInt32("rang");
+                            factionsModel = GetFactionById(faction);
+                            if (factionsModel != null)
                             {
-                                if (account.id == factionsModel.leader || rang >= 10)
+                                if (faction == 1)
                                 {
-                                    if (!groups.Contains(",20"))
+                                    if (account.id == factionsModel.leader || rang >= 10)
                                     {
-                                        groups = groups + ",20";
+                                        if (!groups.Contains(",20"))
+                                        {
+                                            groups = groups + ",20";
+                                        }
+                                        if (!groups.Contains(",21"))
+                                        {
+                                            removeGroups = removeGroups + ",21";
+                                        }
                                     }
-                                    if (!groups.Contains(",21"))
+                                    else
                                     {
-                                        removeGroups = removeGroups + ",21";
-                                    }
-                                }
-                                else
-                                {
-                                    if (!groups.Contains(",21"))
-                                    {
-                                        groups = groups + ",21";
-                                    }
-                                    if (!groups.Contains(",20"))
-                                    {
-                                        removeGroups = removeGroups + ",20";
+                                        if (!groups.Contains(",21"))
+                                        {
+                                            groups = groups + ",21";
+                                        }
+                                        if (!groups.Contains(",20"))
+                                        {
+                                            removeGroups = removeGroups + ",20";
+                                        }
                                     }
                                 }
                             }
                         }
+                        reader.Close();
                     }
-                    reader.Close();
+
+                    //Police
+                    if (!groups.Contains(",20") && !groups.Contains(",21") && !removeGroups.Contains(",20") && !removeGroups.Contains(",21"))
+                    {
+                        removeGroups = removeGroups + ",20,21";
+                    }
+
+                    //Post
+                    //ToDo: ForumConnect Link anpassen
+                    HTTP.Post("HIER/forumConnect.php?id=cu4VUud8EB4TLyfhbSSN589u7&status=removefromgroups&userid=" + forumid + "&groupids=" + removeGroups, new System.Collections.Specialized.NameValueCollection());
+                    HTTP.Post("HIER/forumConnect.php?id=cu4VUud8EB4TLyfhbSSN589u7&status=settogroups&userid=" + forumid + "&groupids=" + groups, new System.Collections.Specialized.NameValueCollection());
                 }
 
-                //Police
-                if (!groups.Contains(",20") && !groups.Contains(",21") && !removeGroups.Contains(",20") && !removeGroups.Contains(",21"))
+                if (oldForumID == -1)
                 {
-                    removeGroups = removeGroups + ",20,21";
+                    account.forumupdate = Helper.UnixTimestamp() + (60 * 25);
                 }
-
-                //Post
-                //ToDo: ForumConnect Link anpassen
-                HTTP.Post("HIER/forumConnect.php?id=cu4VUud8EB4TLyfhbSSN589u7&status=removefromgroups&userid=" + forumid + "&groupids=" + removeGroups, new System.Collections.Specialized.NameValueCollection());
-                HTTP.Post("HIER/forumConnect.php?id=cu4VUud8EB4TLyfhbSSN589u7&status=settogroups&userid=" + forumid + "&groupids=" + groups, new System.Collections.Specialized.NameValueCollection());
             }
-
-            if (oldForumID == -1)
+            catch (Exception e)
             {
-                account.forumupdate = Helper.UnixTimestamp() + (60 * 25);
+                Helper.ConsoleLog("error", $"[ForumUpdate]: " + e.ToString());
             }
-            return;
         }
 
         //Logs
@@ -1034,8 +1039,8 @@ namespace NemesusWorld.Utils
                     account.coins -= 300;
                     Helper.SendNotificationWithoutButton2(player, "Du hast Premium Gold für 30 Tage freigeschaltet!", "success", "center");
                 }
-                Account.SaveAccount(player);
                 player.TriggerEvent("Client:ShowCoins", account.coins);
+                Account.SaveAccount(player);
             }
             catch (Exception e)
             {
@@ -1044,7 +1049,23 @@ namespace NemesusWorld.Utils
         }
 
         //Local Voice-Chat
-        [RemoteEvent("Server:Add_Voice_Listener")]
+        [RemoteEvent("Server:GetCoins")]
+        public static void OnGetCoins(Player player)
+        {
+            try
+            {
+                Account account = Helper.GetAccountData(player);
+                if (account == null) return;
+                player.TriggerEvent("Client:ShowCoins", account.coins);
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[OnGetCoins]: " + e.ToString());
+            }
+        }
+
+            //Local Voice-Chat
+            [RemoteEvent("Server:Add_Voice_Listener")]
         public static void OnAdd_Voice_Listener(Player player, Player target)
         {
             try
@@ -2667,12 +2688,31 @@ namespace NemesusWorld.Utils
 
         public static void SendRadiusMessage(string message, int radius, Player player, bool cancelOwnPlayer = false)
         {
+            Helper.CreateAdminLog($"chatlog", message);
             foreach (Player p in NAPI.Pools.GetAllPlayers())
             {
                 if (Account.IsPlayerLoggedIn(p) && IsInRangeOfPoint(p.Position, player.Position, radius))
                 {
                     if (cancelOwnPlayer == true && p == player) continue;
-                    SendChatMessage(p, message);
+                    Character character = Helper.GetCharacterData(p);
+                    if (character != null)
+                    {
+                        if (Helper.adminSettings.nametag == 1 && p != player)
+                        {
+                            if (character.friends.ToLower().Contains(player.Name.ToLower()))
+                            {
+                                SendChatMessage(p, message);
+                            }
+                            else
+                            {
+                                SendChatMessage(p, message.Replace(player.Name, "Unbekannt"));
+                            }
+                        }
+                        else
+                        {
+                            SendChatMessage(p, message);
+                        }
+                    }
                 }
             }
         }
@@ -2694,11 +2734,13 @@ namespace NemesusWorld.Utils
                     }
                 }
             }
+            Helper.CreateAdminLog($"chatlog", message);
         }
 
         public static void SendPremiumMessage(string message, int premiumlevel, Player player)
         {
             string nachricht = message;
+            string text = "";
             Account account = Helper.GetAccountData(player);
             foreach (Player c in NAPI.Pools.GetAllPlayers())
             {
@@ -2713,10 +2755,11 @@ namespace NemesusWorld.Utils
                         case 3: premiums = "!{#FFcc00}Gold"; break;
 
                     }
-                    string text = "!{#008080}[Premium Chat] " + account.name + "[" + c.Id + "]" + "(" + premiums + "!{#008080}) :!{#008080} " + nachricht.Remove(0, 1);
+                    text = "!{#008080}[Premium Chat] " + account.name + "[" + c.Id + "]" + "(" + premiums + "!{#008080}) :!{#008080} " + nachricht.Remove(0, 1);
                     SendChatMessage(c, text, false);
                 }
             }
+            Helper.CreateAdminLog($"chatlog", text);
         }
 
         public static void SendHouseMessage(int houseID, string message)
@@ -2730,6 +2773,7 @@ namespace NemesusWorld.Utils
                     SendChatMessage(player, message);
                 }
             }
+            Helper.CreateAdminLog($"chatlog", message);
         }
 
         public static void SendChatMessage(Player player, string message, bool removefirst = false)
@@ -2749,6 +2793,7 @@ namespace NemesusWorld.Utils
         //Testmessage
         public static void SendTestMessage(string message, Player player)
         {
+            string text = "";
             Account account = Helper.GetAccountData(player);
             message = message.Remove(0, 1);
             foreach (Player c in NAPI.Pools.GetAllPlayers())
@@ -2756,36 +2801,40 @@ namespace NemesusWorld.Utils
                 Account cacc = Helper.GetAccountData(c);
                 if (Account.IsPlayerLoggedIn(c) && (c.GetOwnSharedData<bool>("Player:Testmodus") == true || cacc.adminlevel >= 1))
                 {
-                    string text = "!{#07C71B}[Testchat] " + account.name + ": " + message;
+                    text = "!{#07C71B}[Testchat] " + account.name + ": " + message;
                     SendChatMessage(c, text, false);
                 }
             }
+            Helper.CreateAdminLog($"chatlog", text);
         }
 
         //Adminsystem
         public static void SendAdminMessage(string message, Player player)
         {
             Account account = Helper.GetAccountData(player);
+            string text = "";
             message = message.Remove(0, 1);
             foreach (Player c in NAPI.Pools.GetAllPlayers())
             {
                 Account cacc = Helper.GetAccountData(c);
                 if (Account.IsPlayerLoggedIn(c) && cacc.adminlevel >= 1)
                 {
-                    string text = "!{#0099ff}[Adminchat] " + account.name + ": " + message;
+                    text = "!{#0099ff}[Adminchat] " + account.name + ": " + message;
                     SendChatMessage(c, text, false);
                 }
             }
+            Helper.CreateAdminLog($"chatlog", text);
         }
 
         public static void SendAdminMessage2(string message, int adminlevel, bool todiscord = true)
         {
+            string text2 = "";
             foreach (Player c in NAPI.Pools.GetAllPlayers())
             {
                 Account cacc = Helper.GetAccountData(c);
                 if (c.Exists && Account.IsPlayerLoggedIn(c) && cacc != null && cacc.adminlevel >= adminlevel)
                 {
-                    string text2 = "!{#0099ff}[Benachrichtigung]: " + message;
+                    text2 = "!{#0099ff}[Benachrichtigung]: " + message;
                     SendChatMessage(c, text2, false);
                 }
             }
@@ -2793,6 +2842,7 @@ namespace NemesusWorld.Utils
             {
                 DiscordWebhook(AdminNotificationWebHook, message, "Gameserver");
             }
+            Helper.CreateAdminLog($"chatlog", text2);
         }
 
         public static void SendAdminMessageToAll(string message, bool removefirst = false)
@@ -2804,6 +2854,7 @@ namespace NemesusWorld.Utils
                     SendChatMessage(c, message, removefirst);
                 }
             }
+            Helper.CreateAdminLog($"chatlog", message);
         }
 
         public static void SendAdminMessage3(string message, int time = 14500, bool sendtodiscord = false)
@@ -2820,6 +2871,7 @@ namespace NemesusWorld.Utils
             {
                 DiscordWebhook(AdminNotificationWebHook, message, "Gameserver");
             }
+            Helper.CreateAdminLog($"chatlog", message);
         }
 
         public static void GetAdminSettings()
@@ -5152,7 +5204,7 @@ namespace NemesusWorld.Utils
                                 }
                                 else if (number == -1)
                                 {
-                                    if (character.job > 0 && character.faction > 0)
+                                    if (character.job > 0 || character.faction > 0)
                                     {
                                         Helper.SendNotificationWithoutButton(player, "Du kannst kein Arbeitslosengeld beantragen!", "error", "top-end");
                                         return;
@@ -5603,7 +5655,7 @@ namespace NemesusWorld.Utils
                     player.TriggerEvent("Client:ShowGangzone");
                     return;
                 }
-                //Crafting + Kleiderschrank
+                //Crafting + Kleiderschrank + Musik
                 House house = null;
                 FurnitureSetHouse furniture = null;
                 if (character.inhouse == -1)
@@ -5630,7 +5682,7 @@ namespace NemesusWorld.Utils
                             player.TriggerEvent("Client:ShowCraft", amount);
                             return;
                         }
-                        else if (furniture.name.Contains("Kleiderschrank"))
+                        else if(furniture.name.Contains("Kleiderschrank"))
                         {
                             if (tempData.adminduty == true || character.factionduty == true)
                             {
@@ -5639,6 +5691,18 @@ namespace NemesusWorld.Utils
                             }
                             ShowWardrobe(player, furniture);
                             return;
+                        }
+                        else if(furniture.name.Contains("Jukebox"))
+                        {
+                            if (House.HasPlayerHouseKey2(player, house.id) > 0)
+                            {
+                                player.TriggerEvent("Client:SetSoundRange", 15.5f);
+                                player.TriggerEvent("Client:ShowMusicStation", 2);
+                            }
+                            else
+                            {
+                                Helper.SendNotificationWithoutButton(player, "Du darfst die Jukebox nicht benutzen!", "error");
+                            }
                         }
                     }
                 }
@@ -10767,7 +10831,7 @@ namespace NemesusWorld.Utils
                             paydayList.Add(joblohn);
                         }
 
-                        if (total > 0 && character.jobless == 1)
+                        if ((total > 0 || character.job > 0 || character.faction > 0) && character.jobless == 1)
                         {
                             character.jobless = 0;
                         }
@@ -18393,13 +18457,38 @@ namespace NemesusWorld.Utils
             NAPI.Player.SetPlayerArmor(player, armor);
         }
 
-        public static void SetPlayerPosition(Player player, Vector3 position, int waittime = 485)
+        public static void SetPlayerPosition(Player player, Vector3 position, int waittime = 485, bool firstfreeze = false)
         {
+            if(firstfreeze == true)
+            {
+                player.TriggerEvent("Client:PlayerFreeze", true);
+            }
             player.TriggerEvent("Client:UpdatePosition", position.X, position.Y, position.Z);
-            NAPI.Task.Run(() =>
+            if (waittime > 0)
+            {
+                NAPI.Task.Run(() =>
+                {
+                    player.Position = position;
+                    if (firstfreeze == true)
+                    {
+                        NAPI.Task.Run(() =>
+                        {
+                            player.TriggerEvent("Client:PlayerFreeze", false);
+                        }, delayTime: 1150);
+                    }
+                }, delayTime: waittime);
+            }
+            else
             {
                 player.Position = position;
-            }, delayTime: waittime);
+                if (firstfreeze == true)
+                {
+                    NAPI.Task.Run(() =>
+                    {
+                        player.TriggerEvent("Client:PlayerFreeze", false);
+                    }, delayTime: 2150);
+                }
+            }
         }
 
         public static void SpawnPlayer(Player player, Vector3 position, float rotation, int waittime = 405)

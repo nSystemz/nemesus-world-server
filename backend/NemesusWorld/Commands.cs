@@ -1839,6 +1839,13 @@ namespace NemesusWorld
                                 character.faction_dutytime = 0;
                                 character.dutyjson = "{\"clothing\":[-1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],\"clothingColor\":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]}";
                                 character.faction_since = Helper.UnixTimestamp();
+                                if (tempData.undercover != "")
+                                {
+                                    tempData.undercover = "";
+                                    character.name = player.GetData<string>("Client:OldName");
+                                    player.Name = character.name;
+                                    player.ResetData("Client:OldName");
+                                }
 
                                 MySqlCommand command = General.Connection.CreateCommand();
                                 command.CommandText = "DELETE FROM outfits WHERE owner = @owner";
@@ -5160,7 +5167,7 @@ namespace NemesusWorld
                     }
                 }
                 character.inhouse = character2.inhouse;
-                Helper.SetPlayerPosition(player, new Vector3(ntarget.Position.X + 1f, ntarget.Position.Y, ntarget.Position.Z + 1f));
+                Helper.SetPlayerPosition(player, new Vector3(ntarget.Position.X + 1.25f, ntarget.Position.Y + 1.25f, ntarget.Position.Z + 0.5f), 100, true);
                 player.Dimension = ntarget.Dimension;
                 Helper.SendNotificationWithoutButton(player, $"Du hast dich zu { account2.name } teleportiert!", "success", "top-end", 3500);
                 return;
@@ -5247,7 +5254,7 @@ namespace NemesusWorld
                     }
                 }
                 character2.inhouse = character.inhouse;
-                Helper.SetPlayerPosition(ntarget, new Vector3(player.Position.X + 1f, player.Position.Y, player.Position.Z + 1f));
+                Helper.SetPlayerPosition(ntarget, new Vector3(player.Position.X + 1.25f, player.Position.Y + 1.25f, player.Position.Z + 0.5f), 100, true);
                 ntarget.Dimension = player.Dimension;
                 Helper.SendNotificationWithoutButton(player, $"Du hast { account2.name } zu dir teleportiert!", "success", "top-end", 3500);
                 Helper.SendNotificationWithoutButton(ntarget, $"{ account.name } hat dich zu sich teleportiert!", "success", "top-end", 3500);
@@ -7603,6 +7610,23 @@ namespace NemesusWorld
             }
         }
 
+        [Command("age", "Befehl: /age")]
+        public void cmd_age(Player player)
+        {
+            try
+            {
+                if (!Account.IsPlayerLoggedIn(player)) return;
+                Character character = Helper.GetCharacterData(player);
+                if (character == null) return;
+                int age = Helper.GetAge(DateTime.ParseExact(character.birth, "dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture));
+                Helper.SendNotificationWithoutButton(player, "Dein Alter: " + age + " Jahre", "info", "top-end", 4500);
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[cmd_age]: " + e.ToString());
+            }
+        }
+
         [Command("q", "Befehl: /q")]
         public void cmd_quit(Player player)
         {
@@ -7613,7 +7637,7 @@ namespace NemesusWorld
             }
             catch (Exception e)
             {
-                Helper.ConsoleLog("error", $"[cmd_health]: " + e.ToString());
+                Helper.ConsoleLog("error", $"[cmd_quit]: " + e.ToString());
             }
         }
 
@@ -8538,6 +8562,12 @@ namespace NemesusWorld
                     Helper.SendNotificationWithoutButton(player, "Ungültiger Spieler!", "error", "top-left", 2500);
                     return;
                 }
+                TempData tempData = Helper.GetCharacterTempData(tempPlayer);
+                if (tempData == null || tempData.adminduty == true)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Du kannst diesen Spieler nicht zu deiner Freundesliste hinzufügen!", "error", "top-left", 2500);
+                    return;
+                }
                 if (character.friends.Contains(tempPlayer.Name))
                 {
                     Helper.SendNotificationWithoutButton(player, "Dieser Spieler steht schon auf deiner Freundesliste!", "error", "top-left", 2500);
@@ -8565,6 +8595,11 @@ namespace NemesusWorld
                 if (Helper.adminSettings.nametag != 1)
                 {
                     Helper.SendNotificationWithoutButton(player, "Das Nametagsystem steht nicht auf 1!", "error", "top-left", 2500);
+                    return;
+                }
+                if (tempPlayer == null)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Ungültiger Spieler!", "error", "top-left", 2500);
                     return;
                 }
                 if (!character.friends.Contains(tempPlayer.Name))

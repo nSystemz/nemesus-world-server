@@ -537,10 +537,6 @@ namespace NemesusWorld.Controllers
                             player.TriggerEvent("SaltyChat_InitToTalkClient", player.Id);
                         }
                         ItemsController.UpdateInventory(player);
-                        if (account.forumaccount > -1 && (account.forumupdate + 432000) < Helper.UnixTimestamp())
-                        {
-                            Helper.ForumUpdate(player, "all");
-                        }
                         NAPI.Task.Run(() =>
                         {
                             player.TriggerEvent("Client:Waiting", 0);
@@ -762,6 +758,7 @@ namespace NemesusWorld.Controllers
                         {
                             NAPI.Player.SetPlayerClothes(player, 9, character.armor, character.armorcolor);
                         }
+                        NAPI.Player.SetPlayerClothes(player, 1, (int)obj["clothing"][8], (int)obj["clothingColor"][8]);
                     }
                 }
                 else

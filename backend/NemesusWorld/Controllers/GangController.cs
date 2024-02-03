@@ -704,8 +704,6 @@ namespace NemesusWorld.Controllers
                     dealerLabel = NAPI.TextLabel.CreateTextLabel("~b~A. der Waffendealer\n~w~Benutze Taste ~b~[E]~w~ um mit Ihm zu interagieren!", new Vector3(-38.65145, -2235.7646, 7.811672 + 1.2), 10.0f, 0.5f, 4, new Color(255, 255, 255), false, 0);
                 }
 
-                Helper.SendAdminMessage2($"A. der Waffendealer wurde bei/m {position} gespawned!", 1, false);
-
                 dealerAmount = new int[22];
 
                 dealerAmount[0] = rnd.Next(6, 15);

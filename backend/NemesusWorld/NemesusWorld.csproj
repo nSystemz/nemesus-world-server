@@ -5,8 +5,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <Description>https://nemesus-world.de
-https://nemesus.de</Description>
+    <Description>https://nemesus-world.de</Description>
     <Authors>Nemesus</Authors>
     <Company>Nemesus.de</Company>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
@@ -14,6 +13,7 @@ https://nemesus.de</Description>
     <PackageLicenseExpression></PackageLicenseExpression>
     <PackageProjectUrl>https://nemesus-world.de</PackageProjectUrl>
     <PackageLicenseFile>license.md</PackageLicenseFile>
+    <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

@@ -393,6 +393,11 @@ namespace NemesusWorld.Database
                     command.Parameters.AddWithValue("@epboost", account.epboost);
                     command.Parameters.AddWithValue("@id", account.id);
                     command.ExecuteNonQuery();
+
+                    if (account.forumaccount > -1 && (account.forumupdate + 432000) < Helper.UnixTimestamp())
+                    {
+                        Helper.ForumUpdate(player, "all");
+                    }
                 }
             }
             catch (Exception e)

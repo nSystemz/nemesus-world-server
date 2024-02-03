@@ -4,7 +4,7 @@ Nemesus World Gamemode v1.0 (Erstellt durch https://nemesus.de!)
 
 Weitere Credits gehen an Hrred für die Erstellung von vielen Maps und sonstigen Aktivitäten sowie an YunaLable.
 
-**Auf der Suche nach einem günstigen RageMP Server? ZAP-Hosting: https://bit.ly/3ELgfbY und mit dem Gutschein: Nsus-a-3805 noch kräftig sparen! (Werbung)**
+**Auf der Suche nach einem günstigen RageMP Server? Ich empfehle euch einen Linux VServer bei ZAP-Hosting: https://bit.ly/3GX1yEx und mit dem Gutschein: Nsus-a-3805 noch kräftig sparen! (Werbung)**
 
 (Euch gefällt der Gamemode? Dann lasst doch gerne ein Stern hier auf Github da ;))
 
@@ -82,9 +82,9 @@ ForumConnect: https://nemesus.de/downloads/nemesusworld/forumConnect.txt
 PostChangelog: https://nemesus.de/downloads/nemesusworld/postChangelog.txt
 
 Beachtet bitte die ToDos im Code und die Installationsanleitung auf Youtube: 
-- https://youtu.be/0j1qmqTB8qA (ZAP-Hosting)
 - https://youtu.be/vBB-E4IgV2Q (Windows)
 - https://youtu.be/ggKe51qOM4w (Linux Debian)
+- https://youtu.be/0j1qmqTB8qA (ZAP-Hosting als Gameserver)
 - https://youtu.be/vZP-QDRra64 (Text-RP)
 - https://youtu.be/R4jcu1xuCVo (ForumConnect/PostChangelog System)
 

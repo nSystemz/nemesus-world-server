@@ -2552,6 +2552,7 @@ namespace NemesusWorld.Controllers
                                             {
                                                 Helper.PlayShortAnimation(player, "anim@heists@narcotics@trash", "throw_b", 1250);
                                                 Helper.SendNotificationWithoutButton(player, "Ghettoblaster abgebaut!", "success");
+                                                player.TriggerEvent("Client:StopGhettoBlasterSound");
                                                 tempData.ghettoblaster.Delete();
                                                 tempData.ghettoblaster = null;
                                             }
@@ -2563,6 +2564,11 @@ namespace NemesusWorld.Controllers
                                         else
                                         {
                                             if ((Helper.IsInRangeOfPoint(player.Position, new Vector3(1987.5565, 3051.1028, 47.215157), 65f) || Helper.IsInRangeOfPoint(player.Position, new Vector3(121.39574, -1279.8123, 29.6533), 65f) || Helper.IsInRangeOfPoint(player.Position, new Vector3(840.6783, -118.2715, 79.77466), 65f) || Helper.IsInRangeOfPoint(player.Position, new Vector3(-456.60736, 274.12994, 84.22368), 65f) || Helper.IsInRangeOfPoint(player.Position, new Vector3(-561.8999, 281.58398, 85.67638), 65f) || Helper.IsInRangeOfPoint(player.Position, new Vector3(-1381.4324, -616.371, 31.497929), 65f)) && player.Dimension == 0)
+                                            {
+                                                Helper.SendNotificationWithoutButton(player, "Du kannst hier keinen Ghettoblaster aufbauen!", "error");
+                                                return;
+                                            }
+                                            if(character.inhouse != -1)
                                             {
                                                 Helper.SendNotificationWithoutButton(player, "Du kannst hier keinen Ghettoblaster aufbauen!", "error");
                                                 return;

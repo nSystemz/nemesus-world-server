@@ -21,7 +21,7 @@
 
 	______________________________________________________________________________________________
 	
-	Stand: 12.2023
+	Stand: 02.2024
 
 */
 
@@ -639,7 +639,7 @@ namespace NemesusWorld
                                             }
                                         }
                                         //Payday
-                                        if (player.GetOwnSharedData<string>("Player:Needs").Split(",")[2] == "0")
+                                        if (player.GetOwnSharedData<string>("Player:Needs").Split(",")[2] == "0" && tempData.adminduty == false)
                                         {
                                             character.payday_points++;
                                             if (character.payday_points >= 60)
@@ -1314,6 +1314,14 @@ namespace NemesusWorld
                     TempData tempData = Helper.GetCharacterTempData(player);
                     if (tempData != null)
                     {
+                        //Undercover
+                        if (tempData.undercover != "")
+                        {
+                            tempData.undercover = "";
+                            character.name = player.GetData<string>("Client:OldName");
+                            player.Name = character.name;
+                            player.ResetData("Client:OldName");
+                        }
                         //Filmkamera
                         if (player.HasData("Player:Filmkamera"))
                         {
@@ -1353,14 +1361,6 @@ namespace NemesusWorld
                                 bizz.musicPlayer = null;
                             }
                             player.ResetData("Player:MusicBizz");
-                        }
-                        //Undercover
-                        if (tempData.undercover != "")
-                        {
-                            tempData.undercover = "";
-                            character.name = player.GetData<string>("Client:OldName");
-                            player.Name = character.name;
-                            player.ResetData("Client:OldName");
                         }
                         //Ghettoblaster
                         if (tempData.ghettoblaster != null)
@@ -3692,6 +3692,7 @@ namespace NemesusWorld
                         Player handyPlayer = SmartphoneController.GetPlayerFromSmartPhone(player.GetData<string>("Player:InCall"));
                         if (handyPlayer != null)
                         {
+                            Character character2 = Helper.GetCharacterData(handyPlayer);
                             TempData tempData2 = Helper.GetCharacterTempData(handyPlayer);
                             if (tempData2 != null && tempData2.inCall2 == true && handyPlayer.GetData<bool>("Player:AcceptCall") == true && player.GetData<bool>("Player:AcceptCall") == true)
                             {
@@ -3699,7 +3700,21 @@ namespace NemesusWorld
                                 Helper.SendChatMessage(player, "!{#EE82EE}* " + character.name + " sagt (Handy): " + message);
                                 if (tempData2.speaker == false)
                                 {
-                                    Helper.SendChatMessage(handyPlayer, "!{#EE82EE}* " + character.name + " sagt (Handy): " + message);
+                                    if (Helper.adminSettings.nametag != 1)
+                                    {
+                                        Helper.SendChatMessage(handyPlayer, "!{#EE82EE}* " + character.name + " sagt (Handy): " + message);
+                                    }
+                                    else
+                                    {
+                                        if (character2.friends.ToLower().Contains(player.Name.ToLower()))
+                                        {
+                                            Helper.SendChatMessage(handyPlayer, "!{#EE82EE}* " + character.name + " sagt (Handy): " + message);
+                                        }
+                                        else
+                                        {
+                                            Helper.SendChatMessage(handyPlayer, "!{#EE82EE}* Unbekannt sagt (Handy): " + message);
+                                        }
+                                    }
                                 }
                                 else
                                 {

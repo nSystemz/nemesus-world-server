@@ -213,6 +213,7 @@ mp.events.add("Client:StopGhettoBlasterSound", () => {
         playedSound.pause();
         playedSound.destroy();
         playedSound = null;
+    }
 });
 
 mp.events.add("Client:Play3DSound", (url, status) => {

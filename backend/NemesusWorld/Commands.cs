@@ -1842,9 +1842,9 @@ namespace NemesusWorld
                                 if (tempData.undercover != "")
                                 {
                                     tempData.undercover = "";
-                                    character.name = player.GetData<string>("Client:OldName");
+                                    character.name = player.GetSharedData<string>("Client:OldName");
                                     player.Name = character.name;
-                                    player.ResetData("Client:OldName");
+                                    player.SetSharedData("Client:OldName", "n/A");
                                 }
 
                                 MySqlCommand command = General.Connection.CreateCommand();
@@ -5079,7 +5079,7 @@ namespace NemesusWorld
                 }
                 NAPI.Task.Run(() =>
                 {
-                    Helper.SetPlayerPosition(ntarget, new Vector3(ntarget.Position.X, ntarget.Position.Y, ntarget.Position.Z + 0.05f));
+                    Helper.SetPlayerPosition(ntarget, new Vector3(ntarget.Position.X+1.5, ntarget.Position.Y+1.5, ntarget.Position.Z + 0.5f));
                 }, delayTime: 55);
                 ntarget.TriggerEvent("Client:UnsetDeath");
                 character2.death = false;
@@ -5090,7 +5090,7 @@ namespace NemesusWorld
                 Helper.SendNotificationWithoutButton(player, $"Du hast { account2.name } wiederbelebt!", "success", "top-end", 3500);
                 Helper.SendNotificationWithoutButton(ntarget, $"{ account.name } hat dich wiederbelebt", "success", "top-end", 3500);
                 Helper.SendAdminMessage2($"{account.name} hat {account2.name} wiederbelebt!", 1, false);
-                Helper.SetPlayerHealth(ntarget, 50);
+                Helper.SetPlayerHealth(ntarget, 100);
                 Helper.SpawnPlayer(ntarget, ntarget.Position, ntarget.Heading);
                 Helper.OnStopAnimation2(ntarget);
                 if (tempData2.cuffed > 0)
@@ -7268,7 +7268,7 @@ namespace NemesusWorld
                     Helper.SendNotificationWithoutButton(player, "Du hast deine Identität verschleiert!", "success", "top-left", 2750);
                     String name = "Unbekannt - " + player.Id;
                     tempData.undercover = name;
-                    player.SetData<string>("Client:OldName", character.name);
+                    player.SetSharedData("Client:OldName", character.name);
                     character.name = name;
                     player.Name = name;
                 }
@@ -7276,9 +7276,9 @@ namespace NemesusWorld
                 {
                     Helper.SendNotificationWithoutButton(player, "Deine Identität ist nichtmehr verschleiert!", "success", "top-left", 2750);
                     tempData.undercover = "";
-                    character.name = player.GetData<string>("Client:OldName");
+                    character.name = player.GetSharedData<string>("Client:OldName");
                     player.Name = character.name;
-                    player.ResetData("Client:OldName");
+                    player.SetSharedData("Client:OldName", "n/A");
                 }
                 CharacterController.SaveCharacter(player);
             }

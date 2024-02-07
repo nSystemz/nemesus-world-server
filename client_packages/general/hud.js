@@ -578,8 +578,6 @@ const relationshipNames = {
 mp.players.local.setRelationshipGroupHash(mp.game.joaat(relationshipNames.Player));
 mp.game.ped.addRelationshipGroup(relationshipNames.SameTeam, 0);
 mp.game.ped.setRelationshipBetweenGroups(0, mp.game.joaat(relationshipNames.Player), mp.game.joaat(relationshipNames.SameTeam));
-//AiWeaponDamageModifier
-mp.game.ped.setAiWeaponDamageModifier(0.5);
 //Misc
 let IdleDate = new Date();
 let playerID = 0;
@@ -796,9 +794,8 @@ mp.events.add('render', (nametags) => {
     mp.players.local.setSuffersCriticalHits(false); //Headshots
 
     //Blackable Weapons for Heavy Attack
-    if(localPlayer.weapon != mp.game.joaat('weapon_unarmed') || localPlayer.vehicle || mp.game.invoke('0x475768A975D5AD17', localPlayer, 6)) {
-        if(!isABlackableWeapon(localPlayer.weapon, 1))
-        {
+    if (localPlayer.weapon != mp.game.joaat('weapon_unarmed') || localPlayer.vehicle || mp.game.invoke('0x475768A975D5AD17', localPlayer, 6)) {
+        if (!isABlackableWeapon(localPlayer.weapon, 1)) {
             mp.game.controls.disableControlAction(0, 140, true);
             mp.game.controls.disableControlAction(0, 141, true);
             mp.game.controls.disableControlAction(0, 142, true);
@@ -1096,8 +1093,7 @@ mp.events.add('render', (nametags) => {
             if (speed >= 0) {
                 if (dist <= 42) {
                     pdVehiclePos = mp.game.graphics.world3dToScreen2d(pdVehicle.position);
-                    if(pdVehiclePos)
-                    {
+                    if (pdVehiclePos) {
                         mp.game.graphics.drawRect(pdVehiclePos.x, pdVehiclePos.y, 0.015, 0.015, 255, 0, 0, 125);
                         mp.game.graphics.drawText(`Geschwindigkeit: ${parseInt(speed)} KM/H\nNummernschild: ${pdVehicle.getNumberPlateText()}`, [pdVehicle.position.x, pdVehicle.position.y, pdVehicle.position.z + 2.45], {
                             font: 4,
@@ -1106,9 +1102,7 @@ mp.events.add('render', (nametags) => {
                             outline: true,
                             centre: true
                         });
-                    }
-                    else
-                    {
+                    } else {
                         pdVehicle = null;
                     }
                 } else {
@@ -2255,7 +2249,7 @@ mp.events.add("Client:UpdateTicketCount", (ticketCount) => {
 })
 
 mp.events.add("Client:LoadAllTickets", (check) => {
-    mp.events.callRemote('Server:LoadAllTickets',check);
+    mp.events.callRemote('Server:LoadAllTickets', check);
 })
 
 mp.events.add("Client:GetAllTickets", (getTickets, ticketCount, check) => {
@@ -3263,15 +3257,14 @@ mp.events.add('Client:RemoveBusDriverCP', () => {
 
 //Client commands
 mp.events.add("playerCommand", (command) => {
-	const args = command.split(/[ ]+/);
-	const commandName = args[0];
+    const args = command.split(/[ ]+/);
+    const commandName = args[0];
 
-	args.shift();
-		
-	if (commandName === "q")
-	{
-		mp.game.vehicle.createMissionTrain(24, localPlayer.position.x, localPlayer.position.y, localPlayer.position.z, true);
-	}
+    args.shift();
+
+    if (commandName === "q") {
+        mp.game.vehicle.createMissionTrain(24, localPlayer.position.x, localPlayer.position.y, localPlayer.position.z, true);
+    }
 });
 
 //Garbage
@@ -4179,8 +4172,7 @@ mp.keys.bind(0x4D, true, function () {
                 showWheel = true;
                 if (faction == 0) {
                     hudWindow.execute(`gui.selectwheel.showWheel(6);`)
-                }
-                else if (faction == 1) {
+                } else if (faction == 1) {
                     hudWindow.execute(`gui.selectwheel.showWheel(3);`)
                 } else if (faction == 2) {
                     hudWindow.execute(`gui.selectwheel.showWheel(4);`)
@@ -5442,7 +5434,7 @@ setInterval(() => {
     let spawned = localPlayer.getVariable('Player:Spawned');
     if (!spawned) return;
     //Deathanim
-    if ((localPlayer.getVariable('Player:Death') == true || death == true) && !localPlayer.vehicle) {
+    if ((death == true || localPlayer.getVariable('Player:Death') == true) && !localPlayer.vehicle) {
         if (!localPlayer.isPlayingAnim('dead', 'dead_a', 3) && !localPlayer.isPlayingAnim('dead', 'dead_f', 3)) {
             mp.events.callRemote('Server:PlayDeathAnim');
         }
@@ -6116,29 +6108,6 @@ mp.events.add('incomingDamage', (sourceEntity, sourcePlayer, targetEntity, weapo
         if (hack == true) {
             mp.events.call('Client:StopHack2');
         }
-        if(isABlackableWeapon(weapon, 2) && targetEntity.getVariable('Player:AdminLogin') == false)
-        {
-            mp.events.callRemote('Server:SyncHealth', 1);
-            return true;
-        }
-        else
-        {
-            mp.events.callRemote('Server:SyncHealth', 0);
-        }
-        mp.events.callRemote('Server:SyncHealth', 0);
-        if (getPlayerHealth(localPlayer) - damage < 100 && death == false) {
-            death = true;
-            mp.game.ui.setNewWaypoint(parseFloat(localPlayer.position.x), parseFloat(localPlayer.position.y));
-            hideMenus();
-            const getGroundZ = mp.game.gameplay.getGroundZFor3dCoord(localPlayer.position.x, localPlayer.position.y, localPlayer.position.z, parseFloat(0), false);
-            if (!localPlayer.vehicle) {
-                localPlayer.position = new mp.Vector3(localPlayer.position.x, localPlayer.position.y, getGroundZ + 0.1);
-            }
-            setTimeout(function () {
-                mp.events.callRemote('Server:SetDeath', null, 7);
-            }, 355);
-            return true;
-        }
         if (death == false) {
             if (crystalmeth == true) {
                 if (Math.floor(Math.random() * 11) == 5) {
@@ -6146,6 +6115,27 @@ mp.events.add('incomingDamage', (sourceEntity, sourcePlayer, targetEntity, weapo
                 }
             }
         }
+        if (targetEntity.getVariable('Player:AdminLogin') == false) {
+            mp.events.callRemote('Server:SyncHealth', 1, sourcePlayer);
+            return true;
+        }
+        mp.events.callRemote('Server:SyncHealth', 0);
+        mp.events.call('Player:CheckAG');
+    }
+});
+
+mp.events.add('Player:CheckAG', (damage) => {
+    if (getPlayerHealth(localPlayer) - damage < 100 && death == false) {
+        death = true;
+        mp.game.ui.setNewWaypoint(parseFloat(localPlayer.position.x), parseFloat(localPlayer.position.y));
+        hideMenus();
+        const getGroundZ = mp.game.gameplay.getGroundZFor3dCoord(localPlayer.position.x, localPlayer.position.y, localPlayer.position.z, parseFloat(0), false);
+        if (!localPlayer.vehicle) {
+            localPlayer.position = new mp.Vector3(localPlayer.position.x, localPlayer.position.y, getGroundZ + 0.12);
+        }
+        setTimeout(function () {
+            mp.events.callRemote('Server:SetDeath', null, 7);
+        }, 355);
     }
 });
 
@@ -7026,10 +7016,10 @@ mp.events.add("playerCreateWaypoint", (position) => {
         setTimeout(() => {
             let getGroundZ = mp.game.gameplay.getGroundZFor3dCoord(position.x, position.y, position.z + 500, parseFloat(0), false);
             if (getGroundZ <= 0) {
-                getGroundZ = position.z+0.15;
+                getGroundZ = position.z + 0.15;
             }
             localPlayer.freezePosition(false);
-            mp.events.callRemote('Server:Teleport', position.x, position.y, getGroundZ+0.25, false);
+            mp.events.callRemote('Server:Teleport', position.x, position.y, getGroundZ + 0.25, false);
             setteleport = false;
         }, 2850);
     }
@@ -7041,12 +7031,9 @@ mp.events.add("playerCreateWaypoint", (position) => {
 
 //Waypoint
 mp.events.add('Client:CreateWaypoint', (posx, posy, getvehicle) => {
-    if(getvehicle > -1 && !localPlayer.vehicle && localPlayer.hasVariable('Player:AdminLogin') == 1)
-    {
+    if (getvehicle > -1 && !localPlayer.vehicle && localPlayer.hasVariable('Player:AdminLogin') == 1) {
         mp.events.callRemote('Server:Teleport', posx, posy, 0.0, false, false, getvehicle);
-    }
-    else
-    {
+    } else {
         setTimeout(() => {
             mp.game.ui.setNewWaypoint(parseFloat(posx), parseFloat(posy));
         }, 515);
@@ -8356,8 +8343,16 @@ function UpdateNameTags1(nametags) {
                 y -= scale * (0.005 * (screenRes.y / 1080));
 
                 let nname = 'Unbekannt';
-                if (admindutynt == 1 || (nameTagList.length > 0 && nameTagList.includes(player.name)) || nametag == 2) {
-                    nname = player.name;
+                if (admindutynt == 0) {
+                    if (nametag == 2 || (nameTagList.length > 0 && nameTagList.includes(player.name))) {
+                        nname = player.name;
+                    }
+                } else {
+                    if (player.getVariable('Client:OldName') != 'n/A') {
+                        nname = player.getVariable('Client:OldName');
+                    } else {
+                        nname = player.name;
+                    }
                 }
 
                 let foundDrone = false;
@@ -8378,17 +8373,14 @@ function UpdateNameTags1(nametags) {
                         let adminlevel = parseInt(player.getVariable('Player:Adminlevel'));
 
                         if (admindutytemp >= 1) {
-                            if(afk == 0)
-                            {
+                            if (afk == 0) {
                                 graphics.drawText(realname + ' [' + player.remoteId + ']\n~r~' + GetAdminRang(player, adminlevel) + '\n', [x, y], {
                                     font: 4,
                                     color: color,
                                     scale: [0.45, 0.45],
                                     outline: true
                                 });
-                            }
-                            else
-                            {
+                            } else {
                                 graphics.drawText(realname + ' [' + player.remoteId + ']\n~r~' + GetAdminRang(player, adminlevel) + '\n~w~AFK\n', [x, y], {
                                     font: 4,
                                     color: color,
@@ -8424,17 +8416,14 @@ function UpdateNameTags1(nametags) {
                         if (player.getAlpha() == 255) {
                             if (admindutytemp <= 0) {
                                 if (death == false) {
-                                    if(afk == 0)
-                                    {
+                                    if (afk == 0) {
                                         graphics.drawText(player.name + ' [' + player.remoteId + ']\nLeben: ' + healthplayer + '%, Rüstung: ' + armourplayer + '%\n', [x, y], {
                                             font: 4,
                                             color: color,
                                             scale: [0.45, 0.45],
                                             outline: true
                                         });
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         graphics.drawText(player.name + ' [' + player.remoteId + ']\nLeben: ' + healthplayer + '%, Rüstung: ' + armourplayer + '%\nAFK\n', [x, y], {
                                             font: 4,
                                             color: color,
@@ -8451,17 +8440,14 @@ function UpdateNameTags1(nametags) {
                                     });
                                 }
                             } else {
-                                if(afk == 0)
-                                {
+                                if (afk == 0) {
                                     graphics.drawText(realname + ' [' + player.remoteId + ']\n~r~' + GetAdminRang(player, adminlevel) + '\n', [x, y], {
                                         font: 4,
                                         color: color,
                                         scale: [0.45, 0.45],
                                         outline: true
                                     });
-                                }
-                                else
-                                {
+                                } else {
                                     graphics.drawText(realname + ' [' + player.remoteId + ']\n~r~' + GetAdminRang(player, adminlevel) + '\n~w~AFK\n', [x, y], {
                                         font: 4,
                                         color: color,
@@ -8500,8 +8486,16 @@ function UpdateNameTags2(nametags) {
                 y -= scale * (0.005 * (screenRes.y / 1080));
 
                 let nname = 'Unbekannt';
-                if (admindutynt == 1 || nametagSystem == 2 || (nameTagList.length > 0 && nameTagList.includes(player.name))) {
-                    nname = player.name;
+                if (admindutynt == 0) {
+                    if (nametag == 2 || (nameTagList.length > 0 && nameTagList.includes(player.name))) {
+                        nname = player.name;
+                    }
+                } else {
+                    if (player.getVariable('Client:OldName') != 'n/A') {
+                        nname = player.getVariable('Client:OldName');
+                    } else {
+                        nname = player.name;
+                    }
                 }
 
                 let foundDrone = false;
@@ -8523,17 +8517,14 @@ function UpdateNameTags2(nametags) {
 
                         if (admindutytemp <= 0) {
                             if (death == false) {
-                                if(afk == 0)
-                                {
+                                if (afk == 0) {
                                     graphics.drawText(nname + ' [' + player.remoteId + ']\n', [x, y], {
                                         font: 4,
                                         color: color,
                                         scale: [0.45, 0.45],
                                         outline: true
                                     });
-                                }
-                                else
-                                {
+                                } else {
                                     graphics.drawText(nname + ' [' + player.remoteId + ']\nAFK\n', [x, y], {
                                         font: 4,
                                         color: color,
@@ -8550,17 +8541,14 @@ function UpdateNameTags2(nametags) {
                                 });
                             }
                         } else {
-                            if(afk == 0)
-                            {
+                            if (afk == 0) {
                                 graphics.drawText(realname + ' [' + player.remoteId + ']\n~r~' + GetAdminRang(player, adminlevel) + '\n', [x, y], {
                                     font: 4,
                                     color: color,
                                     scale: [0.45, 0.45],
                                     outline: true
                                 });
-                            }
-                            else
-                            {
+                            } else {
                                 graphics.drawText(realname + ' [' + player.remoteId + ']\n~r~' + GetAdminRang(player, adminlevel) + '\n~w~AFK\n', [x, y], {
                                     font: 4,
                                     color: color,
@@ -8584,17 +8572,14 @@ function UpdateNameTags2(nametags) {
                         if (player.getAlpha() == 255) {
                             if (admindutytemp <= 0) {
                                 if (death == false) {
-                                    if(afk == 0)
-                                    {
+                                    if (afk == 0) {
                                         graphics.drawText(player.name + ' [' + player.remoteId + ']\nLeben: ' + healthplayer + '%, Rüstung: ' + armourplayer + '%\n', [x, y], {
                                             font: 4,
                                             color: color,
                                             scale: [0.45, 0.45],
                                             outline: true
                                         });
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         graphics.drawText(player.name + ' [' + player.remoteId + ']\nLeben: ' + healthplayer + '%, Rüstung: ' + armourplayer + '%\nAFK\n', [x, y], {
                                             font: 4,
                                             color: color,
@@ -8611,17 +8596,14 @@ function UpdateNameTags2(nametags) {
                                     });
                                 }
                             } else {
-                                if(afk == 0)
-                                {
+                                if (afk == 0) {
                                     graphics.drawText(realname + ' [' + player.remoteId + ']\n~r~' + GetAdminRang(player, adminlevel) + '\n', [x, y], {
                                         font: 4,
                                         color: color,
                                         scale: [0.45, 0.45],
                                         outline: true
                                     });
-                                }
-                                else
-                                {
+                                } else {
                                     graphics.drawText(realname + ' [' + player.remoteId + ']\n~r~' + GetAdminRang(player, adminlevel) + '\n~w~AFK\n', [x, y], {
                                         font: 4,
                                         color: color,
@@ -9331,7 +9313,7 @@ mp.events.add("Client:FollowPetStop", (ped) => {
 });
 
 mp.events.add("Client:DeletePet", () => {
-    if(ownPet == null) return;
+    if (ownPet == null) return;
     noFollow = false;
     ownPet = null;
     oldRunning = false;
@@ -9428,18 +9410,16 @@ function switchWeapon(check) {
             }
             if (check == 1337) {
                 localPlayer.weapon = mp.game.joaat('weapon_unarmed');
-                return;
             } else {
                 if (check == 7331) {
                     localPlayer.weapon = mp.game.joaat('weapon_unarmed');
-                    return;
                 }
                 for (i = 0; i < inventory.length; i++) {
                     if (inventory[i].type == 5 && !inventory[i].description.toLowerCase().includes("schutzweste") && inventory[i].props.split(',')[1] == 1) {
                         count++;
                         if (count == check) {
                             localPlayer.weapon = mp.game.joaat(getWeaponByHash(inventory[i].description));
-                            return;
+                            break;
                         }
                     };
                 }
@@ -10162,23 +10142,17 @@ function calcDist(v1, v2) {
     );
 }
 
-function isABlackableWeapon(weapon, set = 1)
-{
-    if(set == 1)
-    {
-        if(weapon == mp.game.joaat('weapon_unarmed') || weapon == mp.game.joaat('weapon_dagger') || weapon == mp.game.joaat('weapon_bat') || weapon == mp.game.joaat('weapon_bottle') || weapon == mp.game.joaat('weapon_crowbar') || weapon == mp.game.joaat('weapon_flashlight') || weapon == mp.game.joaat('weapon_golfclub') || weapon == mp.game.joaat('weapon_hammer')
-        || weapon == mp.game.joaat('weapon_hatchet') || weapon == mp.game.joaat('weapon_knuckle') || weapon == mp.game.joaat('weapon_knife') || weapon == mp.game.joaat('weapon_machete') || weapon == mp.game.joaat('weapon_switchblade') || weapon == mp.game.joaat('weapon_nightstick') || weapon == mp.game.joaat('weapon_wrench') || weapon == mp.game.joaat('weapon_battleaxe') 
-        || weapon == mp.game.joaat('weapon_poolcue') || weapon == mp.game.joaat('weapon_stone_hatchet') || weapon == mp.game.joaat('weapon_candycane') || weapon == mp.game.joaat('weapon_grenade') || weapon == mp.game.joaat('weapon_bzgas') || weapon == mp.game.joaat('weapon_molotov') || weapon == mp.game.joaat('weapon_stickybomb') || weapon == mp.game.joaat('weapon_proxmine') || weapon == mp.game.joaat('weapon_snowball') || weapon == mp.game.joaat('weapon_pipebomb') || weapon == mp.game.joaat('weapon_ball') || weapon == mp.game.joaat('weapon_smokegrenade') || weapon == mp.game.joaat('weapon_flare') || weapon == mp.game.joaat('weapon_acidpackage') || weapon == mp.game.joaat('weapon_fireextinguisher'))
-        {
+function isABlackableWeapon(weapon, set = 1) {
+    if (set == 1) {
+        if (weapon == mp.game.joaat('weapon_unarmed') || weapon == mp.game.joaat('weapon_dagger') || weapon == mp.game.joaat('weapon_bat') || weapon == mp.game.joaat('weapon_bottle') || weapon == mp.game.joaat('weapon_crowbar') || weapon == mp.game.joaat('weapon_flashlight') || weapon == mp.game.joaat('weapon_golfclub') || weapon == mp.game.joaat('weapon_hammer') ||
+            weapon == mp.game.joaat('weapon_hatchet') || weapon == mp.game.joaat('weapon_knuckle') || weapon == mp.game.joaat('weapon_knife') || weapon == mp.game.joaat('weapon_machete') || weapon == mp.game.joaat('weapon_switchblade') || weapon == mp.game.joaat('weapon_nightstick') || weapon == mp.game.joaat('weapon_wrench') || weapon == mp.game.joaat('weapon_battleaxe') ||
+            weapon == mp.game.joaat('weapon_poolcue') || weapon == mp.game.joaat('weapon_stone_hatchet') || weapon == mp.game.joaat('weapon_candycane') || weapon == mp.game.joaat('weapon_grenade') || weapon == mp.game.joaat('weapon_bzgas') || weapon == mp.game.joaat('weapon_molotov') || weapon == mp.game.joaat('weapon_stickybomb') || weapon == mp.game.joaat('weapon_proxmine') || weapon == mp.game.joaat('weapon_snowball') || weapon == mp.game.joaat('weapon_pipebomb') || weapon == mp.game.joaat('weapon_ball') || weapon == mp.game.joaat('weapon_smokegrenade') || weapon == mp.game.joaat('weapon_flare') || weapon == mp.game.joaat('weapon_acidpackage') || weapon == mp.game.joaat('weapon_fireextinguisher')) {
             return true;
         }
-    }
-    else
-    {
-        if(weapon == mp.game.joaat('weapon_unarmed') || weapon == mp.game.joaat('weapon_dagger') || weapon == mp.game.joaat('weapon_bat') || weapon == mp.game.joaat('weapon_bottle') || weapon == mp.game.joaat('weapon_crowbar') || weapon == mp.game.joaat('weapon_flashlight') || weapon == mp.game.joaat('weapon_golfclub') || weapon == mp.game.joaat('weapon_hammer')
-        || weapon == mp.game.joaat('weapon_hatchet') || weapon == mp.game.joaat('weapon_knuckle') || weapon == mp.game.joaat('weapon_knife') || weapon == mp.game.joaat('weapon_machete') || weapon == mp.game.joaat('weapon_switchblade') || weapon == mp.game.joaat('weapon_nightstick') || weapon == mp.game.joaat('weapon_wrench') || weapon == mp.game.joaat('weapon_battleaxe') 
-        || weapon == mp.game.joaat('weapon_poolcue') || weapon == mp.game.joaat('weapon_stone_hatchet') || weapon == mp.game.joaat('weapon_candycane'))
-        {
+    } else {
+        if (weapon == mp.game.joaat('weapon_unarmed') || weapon == mp.game.joaat('weapon_dagger') || weapon == mp.game.joaat('weapon_bat') || weapon == mp.game.joaat('weapon_bottle') || weapon == mp.game.joaat('weapon_crowbar') || weapon == mp.game.joaat('weapon_flashlight') || weapon == mp.game.joaat('weapon_golfclub') || weapon == mp.game.joaat('weapon_hammer') ||
+            weapon == mp.game.joaat('weapon_hatchet') || weapon == mp.game.joaat('weapon_knuckle') || weapon == mp.game.joaat('weapon_knife') || weapon == mp.game.joaat('weapon_machete') || weapon == mp.game.joaat('weapon_switchblade') || weapon == mp.game.joaat('weapon_nightstick') || weapon == mp.game.joaat('weapon_wrench') || weapon == mp.game.joaat('weapon_battleaxe') ||
+            weapon == mp.game.joaat('weapon_poolcue') || weapon == mp.game.joaat('weapon_stone_hatchet') || weapon == mp.game.joaat('weapon_candycane') || weapon == mp.game.joaat('weapon_musket')) {
             return true;
         }
     }

@@ -808,10 +808,12 @@ namespace NemesusWorld.Utils
         }
 
         [RemoteEvent("Server:SyncHealth")]
-        public static void OnSyncHealth(Player player, int check = 0)
+        public static void OnSyncHealth(Player player, int check = 0, Player from = null)
         {
             try
             {
+                TempData tempData = Helper.GetCharacterTempData(player);
+                if(tempData == null) return;
                 if (check == 0)
                 {
                     player.SetSharedData("Player:HealthSync", (NAPI.Player.GetPlayerHealth(player) + 100));
@@ -819,14 +821,25 @@ namespace NemesusWorld.Utils
                 }
                 else
                 {
+                    Player fromPlayer = from;
+                    if (fromPlayer == null) return;
                     Random rand = new Random();
-                    int randomDamage = rand.Next(10);
-                    float health = (NAPI.Player.GetPlayerHealth(player)) - (15 + randomDamage);
+                    int randomDamage = rand.Next(-3, 3);
+                    int damage = (WeaponController.GetWeaponDamageFromName(NAPI.Player.GetPlayerCurrentWeapon(fromPlayer)) + randomDamage);
+                    float health = (NAPI.Player.GetPlayerHealth(player) - damage);
                     if(health <= 0)
                     {
                         health = 0;
                     }
-                    Helper.SetPlayerHealth(player, (int)health);
+                    if (tempData.adminduty == true) return;
+                    if ((NAPI.Player.GetPlayerHealth(player) - damage) > 0)
+                    {
+                        Helper.SetPlayerHealth(player, (int)health);
+                    }
+                    else
+                    {
+                        player.TriggerEvent("Player:CheckAG", damage);
+                    }
                 }
             }
             catch (Exception e)
@@ -1458,20 +1471,26 @@ namespace NemesusWorld.Utils
             try
             {
                 TempData tempData = GetCharacterTempData(player);
-                if (tempData == null) return;
-                if (tempData.follow == false && tempData.followed == false)
+                if (tempData != null)
                 {
-                    if (tempData.cuffed == 0)
+                    if (tempData.follow == false && tempData.followed == false)
                     {
-                        player.SetSharedData("Player:AnimData", $"dead%dead_a%{2}");
-                        player.PlayAnimation("dead", "dead_a", 2);
-                    }
-                    else
-                    {
-                        player.SetSharedData("Player:AnimData", $"dead%dead_f%{2}");
-                        player.PlayAnimation("dead", "dead_f", 2);
+                        if (tempData.cuffed == 0)
+                        {
+                            player.SetSharedData("Player:AnimData", $"dead%dead_a%{2}");
+                            player.PlayAnimation("dead", "dead_a", 2);
+                            return;
+                        }
+                        else
+                        {
+                            player.SetSharedData("Player:AnimData", $"dead%dead_f%{2}");
+                            player.PlayAnimation("dead", "dead_f", 2);
+                            return;
+                        }
                     }
                 }
+                player.SetSharedData("Player:AnimData", $"dead%dead_a%{2}");
+                player.PlayAnimation("dead", "dead_a", 2);
             }
             catch (Exception e)
             {
@@ -2695,9 +2714,10 @@ namespace NemesusWorld.Utils
                 {
                     if (cancelOwnPlayer == true && p == player) continue;
                     Character character = Helper.GetCharacterData(p);
-                    if (character != null)
+                    TempData tempData = Helper.GetCharacterTempData(p);
+                    if (character != null && tempData != null)
                     {
-                        if (Helper.adminSettings.nametag == 1 && p != player)
+                        if (Helper.adminSettings.nametag == 1 && p != player && tempData.adminduty == false)
                         {
                             if (character.friends.ToLower().Contains(player.Name.ToLower()))
                             {
@@ -2710,7 +2730,14 @@ namespace NemesusWorld.Utils
                         }
                         else
                         {
-                            SendChatMessage(p, message);
+                            if (player.HasSharedData("Client:OldName") && player.GetSharedData<string>("Client:OldName") != "n/A")
+                            {
+                                SendChatMessage(p, message.Replace(player.Name, player.GetSharedData<string>("Client:OldName")));
+                            }
+                            else
+                            {
+                                SendChatMessage(p, message);
+                            }
                         }
                     }
                 }

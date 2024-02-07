@@ -503,6 +503,217 @@ namespace NemesusWorld.Controllers
             }
         }
 
+        public static int GetWeaponDamageFromName(WeaponHash weaponhash)
+        {
+            try
+            {
+                switch (weaponhash)
+                {
+                    case WeaponHash.Unarmed:
+                        {
+                            return 15;
+                        }
+                    case WeaponHash.Pistol:
+                        {
+                            return 25;
+                        }
+                    case WeaponHash.Pistol_mk2:
+                        {
+                            return 26;
+                        }
+                    case WeaponHash.Pistol50:
+                        {
+                            return 27;
+                        }
+                    case WeaponHash.Combatpistol:
+                        {
+                            return 28;
+                        }
+                    case WeaponHash.Heavypistol:
+                        {
+                            return 30;
+                        }
+                    case WeaponHash.CeramicPistol:
+                        {
+                            return 29;
+                        }
+                    case WeaponHash.Flaregun:
+                        {
+                            return 5;
+                        }
+                    case WeaponHash.Revolver:
+                        {
+                            return 34;
+                        }
+                    case WeaponHash.Revolver_mk2:
+                        {
+                            return 35;
+                        }
+                    case WeaponHash.Snspistol:
+                        {
+                            return 32;
+                        }
+                    case WeaponHash.Snspistol_mk2:
+                        {
+                            return 33;
+                        }
+                    case WeaponHash.Stungun:
+                        {
+                            return 0;
+                        }
+                    case WeaponHash.Dagger:
+                        {
+                            return 35;
+                        }
+                    case WeaponHash.Bat:
+                        {
+                            return 30;
+                        }
+                    case WeaponHash.Crowbar:
+                        {
+                            return 28;
+                        }
+                    case WeaponHash.Flashlight:
+                        {
+                            return 5;
+                        }
+                    case WeaponHash.Golfclub:
+                        {
+                            return 26;
+                        }
+                    case WeaponHash.Battleaxe:
+                        {
+                            return 35;
+                        }
+                    case WeaponHash.Hatchet:
+                        {
+                            return 35;
+                        }
+                    case WeaponHash.Knuckle:
+                        {
+                            return 21;
+                        }
+                    case WeaponHash.Knife:
+                        {
+                            return 35;
+                        }
+                    case WeaponHash.Machete:
+                        {
+                            return 40;
+                        }
+                    case WeaponHash.Switchblade:
+                        {
+                            return 37;
+                        }
+                    case WeaponHash.Nightstick:
+                        {
+                            return 32;
+                        }
+                    case WeaponHash.Poolcue:
+                        {
+                            return 25;
+                        }
+                    case WeaponHash.Microsmg:
+                        {
+                            return 32;
+                        }
+                    case WeaponHash.Smg:
+                        {
+                            return 33;
+                        }
+                    case WeaponHash.Smg_mk2:
+                        {
+                            return 34;
+                        }
+                    case WeaponHash.Assaultsmg:
+                        {
+                            return 35;
+                        }
+                    case WeaponHash.Combatmg:
+                        {
+                            return 36;
+                        }
+                    case WeaponHash.Machinepistol:
+                        {
+                            return 33;
+                        }
+                    case WeaponHash.Minismg:
+                        {
+                            return 32;
+                        }
+                    case WeaponHash.Pumpshotgun:
+                        {
+                            return 40;
+                        }
+                    case WeaponHash.Pumpshotgun_mk2:
+                        {
+                            return 41;
+                        }
+                    case WeaponHash.Sawnoffshotgun:
+                        {
+                            return 42;
+                        }
+                    case (WeaponHash)0x5A96BA4:
+                        {
+                            return 43;
+                        }
+                    case WeaponHash.Musket:
+                        {
+                            return 35;
+                        }
+                    case (WeaponHash)0xBFEFFF6D:
+                        {
+                            return 37;
+                        }
+                    case (WeaponHash)0x394F415C:
+                        {
+                            return 38;
+                        }
+                    case (WeaponHash)0xD1D5F52B:
+                        {
+                            return 39;
+                        }
+                    case (WeaponHash)0x83BF0278:
+                        {
+                            return 40;
+                        }
+                    case (WeaponHash)0xFAD1F1C9:
+                        {
+                            return 40;
+                        }
+                    case WeaponHash.Specialcarbine:
+                        {
+                            return 41;
+                        }
+                    case WeaponHash.Specialcarbine_mk2:
+                        {
+                            return 42;
+                        }
+                    case WeaponHash.Compactrifle:
+                        {
+                            return 43;
+                        }
+                    case WeaponHash.Mg:
+                        {
+                            return 45;
+                        }
+                    case WeaponHash.Gusenberg:
+                        {
+                            return 44;
+                        }
+                    case WeaponHash.Sniperrifle:
+                        {
+                            return 55;
+                        }
+                }
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[GetWeaponDamageFromName]: " + e.ToString());
+            }
+            return 5;
+        }
+
         public static Int64 GetWeaponHashFromName(string weaponName)
         {
             try

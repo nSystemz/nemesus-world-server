@@ -1075,9 +1075,9 @@ namespace NemesusWorld.Database
                     if (tempData.undercover != "")
                     {
                         tempData.undercover = "";
-                        character.name = player.GetData<string>("Client:OldName");
+                        character.name = player.GetSharedData<string>("Client:OldName");
                         player.Name = character.name;
-                        player.ResetData("Client:OldName");
+                        player.ResetSharedData("Client:OldName");
                     }
 
                     obj = JObject.Parse(character.json);

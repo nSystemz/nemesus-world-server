@@ -5,7 +5,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <Description>https://nemesus-world.de</Description>
+    <Description>RageMP Roleplay Gamemode, erstellt von Nemesus.de</Description>
     <Authors>Nemesus</Authors>
     <Company>Nemesus.de</Company>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>

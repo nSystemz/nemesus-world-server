@@ -999,6 +999,19 @@ namespace NemesusWorld
                             player.ResetData("Player:MoneyInfos");
                         }
                     }
+                    TempData tempData = Helper.GetCharacterTempData(player);
+                    Character character = Helper.GetCharacterData(player);
+                    if (tempData != null && character != null)
+                    {
+                        //Undercover
+                        if (tempData.undercover != "")
+                        {
+                            tempData.undercover = "";
+                            character.name = player.GetSharedData<string>("Client:OldName");
+                            player.Name = character.name;
+                            player.SetSharedData("Client:OldName", "n/A");
+                        }
+                    }
                 }
                 foreach (Vehicle vehicle in NAPI.Pools.GetAllVehicles())
                 {
@@ -1266,6 +1279,7 @@ namespace NemesusWorld
                 player.SetSharedData("Player:Death", false);
                 player.SetSharedData("Player:Tattoos", "n/A");
                 player.SetSharedData("Player:AFK", 0);
+                player.SetSharedData("Client:OldName", "n/A");
                 if (Helper.adminSettings.voicerp == 2)
                 {
                     player.SetSharedData("Player:VoiceRangeLocal", 25.0);
@@ -1318,9 +1332,9 @@ namespace NemesusWorld
                         if (tempData.undercover != "")
                         {
                             tempData.undercover = "";
-                            character.name = player.GetData<string>("Client:OldName");
+                            character.name = player.GetSharedData<string>("Client:OldName");
                             player.Name = character.name;
-                            player.ResetData("Client:OldName");
+                            player.SetSharedData("Client:OldName", "n/A");
                         }
                         //Filmkamera
                         if (player.HasData("Player:Filmkamera"))
@@ -1819,6 +1833,7 @@ namespace NemesusWorld
                 player.SetSharedData("Player:Tattoos", "n/A");
                 player.SetSharedData("Player:LocalVoiceHandyPlayer", -1);
                 player.SetSharedData("Player:AFK", 0);
+                player.SetSharedData("Client:OldName", "n/A");
                 if (Helper.adminSettings.voicerp == 2)
                 {
                     player.SetSharedData("Player:VoiceRangeLocal", 25.0);
@@ -1962,13 +1977,10 @@ namespace NemesusWorld
                         }
                         player.SetSharedData("Player:Adminsettings", "1,0,0");
                         player.TriggerEvent("Client:LastDamage");
+                        Helper.SetPlayerHealth(player, 1);
                         if (reason != 7)
                         {
                             Helper.SetPlayerPosition(player, player.Position);
-                        }
-                        else
-                        {
-                            Helper.SetPlayerHealth(player, 1);
                         }
                     }
                     else

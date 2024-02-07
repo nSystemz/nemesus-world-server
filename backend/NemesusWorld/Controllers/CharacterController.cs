@@ -984,7 +984,7 @@ namespace NemesusWorld.Controllers
                             if (tempData.undercover.Length > 3)
                             {
                                 oldTempName = character.name;
-                                character.name = player.GetData<string>("Client:OldName");
+                                character.name = player.GetSharedData<string>("Client:OldName");
                             }
                             if (character.name != null)
                             {

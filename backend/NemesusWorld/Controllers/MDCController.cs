@@ -939,7 +939,7 @@ namespace NemesusWorld.Controllers
                                     character.ucp_privat = 1;
                                     Helper.SendNotificationWithoutButton(player, "Undercover Identität angenommen!", "success", "top-left", 2750);
                                     tempData.undercover = data;
-                                    player.SetData<string>("Client:OldName", character.name);
+                                    player.SetSharedData("Client:OldName", character.name);
                                     character.name = data;
                                     player.Name = character.name;
                                     CharacterController.SaveCharacter(player);
@@ -948,9 +948,9 @@ namespace NemesusWorld.Controllers
                                 {
                                     Helper.SendNotificationWithoutButton(player, "Undercover Identität abgelegt!", "success", "top-left", 2750);
                                     tempData.undercover = "";
-                                    character.name = player.GetData<string>("Client:OldName");
+                                    character.name = player.GetSharedData<string>("Client:OldName");
                                     player.Name = character.name;
-                                    player.ResetData("Client:OldName");
+                                    player.ResetSharedData("Client:OldName");
                                     CharacterController.SaveCharacter(player);
                                 }
                             }

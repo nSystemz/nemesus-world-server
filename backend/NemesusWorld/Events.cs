@@ -36,6 +36,9 @@ using MySqlConnector;
 using System.Linq;
 using System.Data;
 using System.IO;
+using System.Text.Json;
+using Newtonsoft.Json.Linq;
+using Newtonsoft.Json;
 
 namespace NemesusWorld
 {
@@ -51,6 +54,9 @@ namespace NemesusWorld
         public static Timer saveTimer = null;
         //ToDo: Speicherzeit einstellen (Es wird alles gespeichert)
         public static int saveMinutes = 15; //Speicherzeit in Minuten
+        //ToDo: Restartzeit einstellen
+        public static int RestartHour = -1; //Um wieviel Uhr soll der Server neustarten (-1 = garnicht), bitte Service einrichten welcher den Server automatisch wieder startet
+        public static bool InitRestart = false;
         public static ColShape ammuCol = null;
         public static TextLabel busLabel = null;
         public static int busCount = 0;
@@ -178,6 +184,8 @@ namespace NemesusWorld
                             HuntingController.InitAnimals();
                             //Load EUP Outfits
                             Events.LoadEUPOutfits(true, false);
+                            //Best Torso
+                            Events.LoadBestTorsos();
                             //Reset Factionduty + Groupduty Count
                             System.DateTime moment = new System.DateTime(Helper.UnixTimestamp());
                             if (moment.DayOfWeek == DayOfWeek.Monday)
@@ -461,6 +469,19 @@ namespace NemesusWorld
                                 }
                                 fullHourTimer = 0;
                             }
+                            //Auto Restart
+                            if (Events.RestartHour > -1 && moment.Hour == Events.RestartHour)
+                            {
+                                if (Events.InitRestart == false)
+                                {
+                                    Helper.SendAdminMessageToAll($"Der Server wird in ca. 5 Sekunden neugestartet ...");
+                                    Events.InitRestart = true;
+                                    NAPI.Task.Run(() =>
+                                    {
+                                        System.Environment.Exit(1);
+                                    }, delayTime: 5000);
+                                }
+                            }
                         }
                     });
                 });
@@ -681,7 +702,7 @@ namespace NemesusWorld
                                             }
                                         }
                                         //Pet
-                                        if(tempData.pet != null)
+                                        if (tempData.pet != null)
                                         {
                                             if (!Helper.IsInRangeOfPoint(player.Position, tempData.pet.Position, 25.5f) || player.Dimension != tempData.pet.Dimension)
                                             {
@@ -1353,7 +1374,7 @@ namespace NemesusWorld
                             tempData.pet.ResetSharedData("Ped:Name");
                             tempData.pet.Delete();
                             tempData.pet = null;
-                            tempData.petTask = 0;     
+                            tempData.petTask = 0;
                         }
                         //Drunk
                         if (tempData.drunked == true)
@@ -2775,9 +2796,7 @@ namespace NemesusWorld
                 NAPI.Blip.SetBlipName(Atm11, "Bankautomat"); NAPI.Blip.SetBlipShortRange(Atm11, true); NAPI.Blip.SetBlipScale(Atm11, 0.4f);
                 Blip Atm12 = NAPI.Blip.CreateBlip(108, new Vector3(-256, -715, 33), 1.0f, 25);
                 NAPI.Blip.SetBlipName(Atm12, "Bankautomat"); NAPI.Blip.SetBlipShortRange(Atm12, true); NAPI.Blip.SetBlipScale(Atm12, 0.5f);
-                Blip Atm13 = NAPI.Blip.CreateBlip(108, new Vector3(-254, 692, 33), 0.4f, 25);
-                NAPI.Blip.SetBlipName(Atm13, "Bankautomat"); NAPI.Blip.SetBlipShortRange(Atm13, true); NAPI.Blip.SetBlipScale(Atm13, 0.4f);
-                Blip Atm14 = NAPI.Blip.CreateBlip(108, new Vector3(-28, -723, 44), 0.4f, 25);
+                Blip Atm14 = NAPI.Blip.CreateBlip(108, new Vector3(-258, -723, 44), 0.4f, 25);
                 NAPI.Blip.SetBlipName(Atm14, "Bankautomat"); NAPI.Blip.SetBlipShortRange(Atm14, true); NAPI.Blip.SetBlipScale(Atm14, 0.4f);
                 Blip Atm15 = NAPI.Blip.CreateBlip(108, new Vector3(1078, -776, 57), 0.4f, 25);
                 NAPI.Blip.SetBlipName(Atm15, "Bankautomat"); NAPI.Blip.SetBlipShortRange(Atm15, true); NAPI.Blip.SetBlipScale(Atm15, 0.4f);
@@ -3538,11 +3557,86 @@ namespace NemesusWorld
             }
         }
 
-        //LoadEUPOutfits
-        public static void LoadEUPOutfits(bool insert = true, bool delete = false)
+        //LoadBestTorsos
+        public static void LoadBestTorsos()
         {
             try
             {
+                string directory = "./serverdata/besttorso/besttorso_female.json";
+                if (File.Exists(directory))
+                {
+                    string tempWoman = File.ReadAllText(directory);
+                    Helper.TorsosWoman = JObject.Parse(tempWoman);
+                }
+                string directory2 = "./serverdata/besttorso/besttorso_male.json";
+                if (File.Exists(directory2))
+                {
+                    string tempMen = File.ReadAllText(directory2);
+                    Helper.TorsosMen = JObject.Parse(tempMen);
+                }
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[LoadBestTorsos]: " + e.ToString());
+            }
+        }
+
+        [RemoteEvent("Server:GetBestTorso")] //Besser Clientside machen
+        public static void GetBestTorso(Player player, int drawable, int variation, bool show = false, bool permanent = true)
+        {
+            try
+            {
+                Character character = Helper.GetCharacterData(player);
+                if (character == null) return;
+                JObject obj = Helper.TorsosMen;
+                if (character.gender != 1)
+                {
+                    obj = Helper.TorsosWoman;
+                }
+                int draw = (int)obj[$"{drawable}"][$"{variation}"]["BestTorsoDrawable"];
+                int vari = (int)obj[$"{drawable}"][$"{variation}"]["BestTorsoTexture"];
+                if (draw == -1)
+                {
+                    if (show == true)
+                    {
+                        Helper.SendNotificationWithoutButton(player, $"Es wurde kein geeigneter Torso gefunden, bitte wähle einen manuell aus!", "success", "top-left", 2500);
+                    }
+                    return;
+                }
+                NAPI.Player.SetPlayerClothes(player, 3, draw, vari);
+                if (show == true)
+                {
+                    Helper.SendNotificationWithoutButton(player, $"Es wurde ein geeigneter Torso ({draw}/{vari}) gesetzt!", "success", "top-left", 2500);
+                }
+                if (permanent == true)
+                {
+                    JObject obj2 = null;
+                    if (character.factionduty == false)
+                    {
+                        obj2 = JObject.Parse(character.json);
+                    }
+                    else
+                    {
+                        obj2 = JObject.Parse(character.dutyjson);
+                    }
+                    obj2["clothing"][1] = draw;
+                    obj2["clothingColor"][1] = vari;
+                    character.json = NAPI.Util.ToJson(obj2);
+                }
+                player.SetData<int>("Player:TorsoCD", Helper.UnixTimestamp() + (2));
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[GetBestTorso]: " + e.ToString());
+            }
+        }
+
+        //LoadEUPOutfits
+        public static void LoadEUPOutfits(bool insert = true, bool delete = false, bool log = false)
+        {
+            try
+            {
+                String concat = "";
                 MySqlCommand command = null;
                 if (delete == true)
                 {
@@ -3566,6 +3660,7 @@ namespace NemesusWorld
                     String headline = "Male LSPD Class A";
                     String category1 = "LSPD";
                     String category2 = "Patrol Division";
+                    String gender = "male";
                     int count = 0;
                     PetaPoco.Database db = new PetaPoco.Database(General.Connection);
                     StreamReader sr = new StreamReader(@"./serverdata/outfits/eup.txt");
@@ -3589,6 +3684,14 @@ namespace NemesusWorld
                             headline = line;
                             headline = headline.Replace("[", "");
                             headline = headline.Replace("]", "");
+                            if(line.StartsWith("[Male"))
+                            {
+                                gender = "male";
+                            }
+                            else
+                            {
+                                gender = "female";
+                            }
                         }
                         else
                         {
@@ -3596,6 +3699,15 @@ namespace NemesusWorld
                             {
                                 if (line.Contains(":"))
                                 {
+                                    if (line.Contains("UnderCoat") && gender == "male" && (category1 == "LSSD" || category1 == "LSSD" || category1 == "SAHP" || category1 == "LSFD" || category1 == "Medical Services" || category1 == "SanFire"))
+                                    {
+                                        var temp = line.Split("=")[1];
+                                        var temp2 = temp.Split(":")[0];
+                                        if (Convert.ToInt32(temp2) > 0)
+                                        {
+                                            concat = concat + $"{temp2},";
+                                        }
+                                    }
                                     jsonTemp = line.Split("=")[1];
                                     if (json1 == "[")
                                     {
@@ -3635,6 +3747,12 @@ namespace NemesusWorld
                         }
                     }
                     sr.Close();
+                }
+                if (log == true)
+                {
+                    var concatArray = concat.Split(",");
+                    var distinctConcatArray = concatArray.Distinct().ToArray();
+                    Helper.ConsoleLog("info", String.Join(",", distinctConcatArray));
                 }
             }
             catch (Exception e)

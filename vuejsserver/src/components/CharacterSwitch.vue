@@ -127,7 +127,7 @@ export default {
                     denyButtonText: `Ja`,
                 }).then((result) => {
                     if (result.isDenied) {
-                        this.clicked = (Date.now() / 1000) + (5);
+                        this.clicked = (Date.now() / 1000) + (1);
                         // eslint-disable-next-line no-undef
                         mp.trigger('Client:DeleteCharacter', characterid);
                     }

@@ -50,6 +50,8 @@ namespace NemesusWorld.Utils
         public static List<SpikeStrip> spikeStripList = new List<SpikeStrip>();
         public static List<PoliceProps> policePropList = new List<PoliceProps>();
         public static Vector3 RathausPosition = null;
+        public static JObject TorsosMen;
+        public static JObject TorsosWoman;
         //ToDo: Discord Webhooks setzen
         public static string AdminNotificationWebHook = "TODO";
         public static string ErrorWebhook = "TODO";
@@ -826,6 +828,7 @@ namespace NemesusWorld.Utils
                     Random rand = new Random();
                     int randomDamage = rand.Next(-3, 3);
                     int damage = (WeaponController.GetWeaponDamageFromName(NAPI.Player.GetPlayerCurrentWeapon(fromPlayer)) + randomDamage);
+                    if (damage <= 0) return;
                     float health = (NAPI.Player.GetPlayerHealth(player) - damage);
                     if(health <= 0)
                     {
@@ -4882,6 +4885,13 @@ namespace NemesusWorld.Utils
                                     string inputpw = adminpw + "(8wgwWoRld136=";
                                     if (BCrypt.Net.BCrypt.Verify(inputpw, adminSettings.adminpassword))
                                     {
+                                        if (tempData.undercover != "")
+                                        {
+                                            tempData.undercover = "";
+                                            character.name = player.GetSharedData<string>("Client:OldName");
+                                            player.Name = character.name;
+                                            player.SetSharedData("Client:OldName", "n/A");
+                                        }
                                         player.TriggerEvent("Client:ResetTabCD");
                                         SendNotificationWithoutButton(player, "Der Adminlogin war erfolgreich!", "success", "top-end");
                                         tempData.adminduty = true;
@@ -9755,7 +9765,14 @@ namespace NemesusWorld.Utils
                                 }
                                 else
                                 {
-                                    perso.name = tempData.undercover;
+                                    if (!getPlayer.Name.Contains("Unbekannt"))
+                                    {
+                                        perso.name = getCharacter.name;
+                                    }
+                                    else
+                                    {
+                                        perso.name = getPlayer.GetSharedData<string>("Client:OldName");
+                                    }
                                 }
                                 perso.birthday = getCharacter.birth;
                                 perso.size = getCharacter.size;
@@ -9803,7 +9820,14 @@ namespace NemesusWorld.Utils
                                 }
                                 else
                                 {
-                                    lics.name = tempData.undercover;
+                                    if (!getPlayer.Name.Contains("Unbekannt"))
+                                    {
+                                        lics.name = getCharacter.name;
+                                    }
+                                    else
+                                    {
+                                        lics.name = getPlayer.GetSharedData<string>("Client:OldName");
+                                    }
                                 }
                                 lics.birthday = getCharacter.birth;
                                 if (getPlayer != player)
@@ -12037,7 +12061,7 @@ namespace NemesusWorld.Utils
                     }
                     else if (shopname.ToLower() == "angelmenü")
                     {
-                        text1 = "Angel kaufen,15x Köder kaufen,Boot ausleihen,Fisch verkaufen,Abbrechen";
+                        text1 = "Angel kaufen,15x Köder kaufen,Boot ausleihen/zurückgeben,Fisch verkaufen,Abbrechen";
                         text2 = "625,275,535,0,0";
                     }
                     else if (shopname.ToLower() == "schatzsuchermenü")
@@ -13715,7 +13739,7 @@ namespace NemesusWorld.Utils
                         {
                             player.TriggerEvent("Client:PressedEscape");
                         }
-                        else if (text1 == "Boot ausleihen")
+                        else if (text1 == "Boot ausleihen/zurückgeben")
                         {
                             if (player.IsInVehicle)
                             {

@@ -15,8 +15,6 @@ require('./misc/gangzones');
 
 require('more-immersive-emergency-lights-client/index');
 
-require('./helper/soundviewer');
-
 require('./dev/devmodus');
 
 require('./general/hud');

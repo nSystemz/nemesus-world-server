@@ -1,3 +1,5 @@
+//Created by ItsMos | Edit by: Nemesus.de
+
 let rampKey = 85, // Q
   hookKey = 131; // Left Shift
 
@@ -25,17 +27,18 @@ function createBed(veh) {
   });
 }
 
-let keypressCheck;
+let keypressCheck = undefined;
 
 function checkForKeypress(toggle) {
   if (!toggle) {
-    clearInterval(keypressCheck)
-    keypressCheck = null
+    if (keypressCheck !== undefined) {
+      clearInterval(keypressCheck);
+      keypressCheck = undefined;
+    }
     return
   }
 
-  if (keypressCheck == null) {
-    // same as render event
+  if (keypressCheck == undefined) {
     keypressCheck = setInterval(() => {
       let flatbed = player.vehicle
       if (mp.game.controls.isControlJustPressed(0, rampKey)) {
@@ -294,6 +297,7 @@ function getVehicleHook(veh, forward) {
       return veh.getWorldPositionOfBone(veh.getBoneIndexByName('engine'))
 
     } else {
+      let closestVeh = getClosestVehicle(veh.position);
       let pos = closestVeh.position
       let forwardVec = closestVeh.getForwardVector()
       return new mp.Vector3(pos.x + forwardVec.x, pos.y + forwardVec.y, pos.z + forwardVec.z)
@@ -310,6 +314,7 @@ function getVehicleHook(veh, forward) {
       return veh.getWorldPositionOfBone(veh.getBoneIndexByName('trunk'))
 
     } else {
+      let closestVeh = getClosestVehicle(veh.position);
       let pos = closestVeh.position
       let forwardVec = closestVeh.getForwardVector()
       return new mp.Vector3(pos.x + forwardVec.x, pos.y + forwardVec.y, pos.z + forwardVec.z)
@@ -454,4 +459,24 @@ function waitFor(e) {
       }
     }, 100)
   })
+}
+
+function getClosestVehicle(position) {
+  try {
+    let closest = 500;
+    let closestVeh = null;
+
+    mp.vehicles.forEachInStreamRange(v => {
+      let dist = mp.game.system.vdist(position.x, position.y, position.z, v.position.x, v.position.y, v.position.z);
+
+      if (dist < closest) {
+        closest = dist;
+        closestVeh = v;
+      }
+    });
+    return {
+      distance: closest,
+      vehicle: closestVeh
+    };
+  } catch (e) {}
 }

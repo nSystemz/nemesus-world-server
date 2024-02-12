@@ -4379,7 +4379,7 @@ export default {
         let timerInterval = 15000;
         Swal.fire({
           title: 'Willkommen!',
-          html: 'Wir wünschen dir viel Spass auf Nemesus World! Solltest du Hilfe benötigen, drücke die F2 Taste, dort kannst du dann z.B dir die Ersten Schritte anschauen oder ein Support Ticket erstellen. Weitere Informationen findest du auf unserer Webseite unter https://nemesus-world.de oder bei uns im UCP auf https://ucp.nemesus-world.de!. PS: Dieser Gamemode wurde von Nemesus.de entwickelt, alle zukünftigen Updates findest du im Nemesus World Server Github Repo!',
+          html: 'Wir wünschen dir viel Spass auf Nemesus World! Solltest du Hilfe benötigen, drücke die F2 Taste, dort kannst du dann z.B dir die Ersten Schritte anschauen oder ein Support Ticket erstellen. Weitere Informationen findest du auf unserer Webseite unter https://nemesus-world.de oder bei uns im UCP auf https://ucp.nemesus-world.de! PS: Dieser Gamemode wurde von Nemesus.de entwickelt, alle zukünftigen Updates findest du im Nemesus World Server Github Repo!',
           timer: 12000,
           allowEscapeKey: false,
           timerProgressBar: true,

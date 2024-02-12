@@ -8,6 +8,7 @@ mp.events.add("Client:ChangeShopClothes", (cloth, id, color) => {
         mp.players.local.setComponentVariation(3, id, Number(color), 0);
     } else if (cloth == 'Oberbekleidung') {
         mp.players.local.setComponentVariation(11, id, Number(color), 0);
+        mp.events.callRemote('Server:GetBestTorso', id, Number(color), false, false);
     } else if (cloth == 'T-Shirt') {
         mp.players.local.setComponentVariation(8, id, Number(color), 0);
     } else if (cloth == 'Rucksack') {

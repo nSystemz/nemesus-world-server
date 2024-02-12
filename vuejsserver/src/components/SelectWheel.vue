@@ -316,11 +316,22 @@ h1 {
     color: white;
 }
 
-.wheel .arc img {
-    position: absolute;
-    width: 2.5vw;
-    top: 4.8vw;
-    left: 1.6vw;
+@media (max-width: 1920px) {
+    .wheel .arc img {
+        position: absolute;
+        width: 2.5vw;
+        top: 4.8vw;
+        left: 1.6vw;
+    }
+}
+
+@media (min-width: 2560px) {
+    .wheel .arc img {
+        position: absolute;
+        height: 1.15vw;
+        top: 4.6vh;
+        left: 1.4vh;
+    }
 }
 
 .wheel[data-chosen='1'] .arc:nth-child(1) {

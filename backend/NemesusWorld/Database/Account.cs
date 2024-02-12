@@ -535,6 +535,15 @@ namespace NemesusWorld.Database
             return false;
         }
 
+        public static void SetAccountKey(Player player)
+        {
+            Account account = Helper.GetAccountData(player);
+            if (account != null)
+            {
+                player.SetData(Helper.GetAccountKey(), account);
+            }
+        }
+
         public void Login(Player player, bool firstlogin)
         {
             try

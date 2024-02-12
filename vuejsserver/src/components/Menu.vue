@@ -5493,6 +5493,11 @@
                                                                     <td>Lottoausschüttung starten</td>
                                                                     <td>High Administrator</td>
                                                                 </tr>
+                                                                <tr>
+                                                                    <td>/clearchat</td>
+                                                                    <td>Chatverlauf löschen</td>
+                                                                    <td>High Administrator</td>
+                                                                </tr>
                                                             </tbody>
                                                             <tbody v-if="admin >= 6">
                                                                 <tr>

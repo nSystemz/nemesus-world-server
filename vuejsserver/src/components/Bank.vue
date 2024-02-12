@@ -6,11 +6,11 @@
                 <div class="col-md-12 mt-1">
                     <div class="box box-default">
                         <div class="card card-primary card-outline">
-                            <div v-if="atbank==0" class="card-header" style="font-family: 'Exo', sans-serif">Maze Bank - Kontoverwaltung <div class="float-right" style="font-family: 'Exo', sans-serif" @click="newPin()"><b>Neuer Pin</b></div>
+                            <div v-if="atbank==0" class="card-header" style="font-family: 'Exo', sans-serif">Maze Bank - Kontoverwaltung <div class="float-right" style="font-family: 'Exo', sans-serif" @click="newPin()"><b style="cursor:pointer">Neuer Pin</b></div>
                             </div>
-                            <div v-if="atbank==1" class="card-header" style="font-family: 'Exo', sans-serif">Fleeca Bank - Kontoverwaltung <div class="float-right" style="font-family: 'Exo', sans-serif" @click="newPin()"><b>Neuer Pin</b></div>
+                            <div v-if="atbank==1" class="card-header" style="font-family: 'Exo', sans-serif">Fleeca Bank - Kontoverwaltung <div class="float-right" style="font-family: 'Exo', sans-serif" @click="newPin()"><b style="cursor:pointer">Neuer Pin</b></div>
                             </div>
-                            <div v-if="atbank==2" class="card-header" style="font-family: 'Exo', sans-serif">Bankautomat - Kontoverwaltung <div class="float-right" style="font-family: 'Exo', sans-serif" @click="newPin()"><b>Neuer Pin</b></div>
+                            <div v-if="atbank==2" class="card-header" style="font-family: 'Exo', sans-serif">Bankautomat - Kontoverwaltung <div class="float-right" style="font-family: 'Exo', sans-serif" @click="newPin()"><b style="cursor:pointer">Neuer Pin</b></div>
                             </div>
                             <div class="card-body" style="max-height:75vh; overflow-x: auto;">
                                 <div style="display: flex; justify-content: center; align-items: center;">

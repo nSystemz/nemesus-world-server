@@ -32,6 +32,7 @@ Weitere Abhängigkeiten:
 - PetaPoco.Compiled 6.0.493-beta (NuGet)
 
 Der Gamemode war mal für einen relativ schnellen "Release" geplant, an einigen Stellen unsauber geschrieben und natürlich nicht zu 100% fertig. Hier und da kann es zu Bugs kommen, diese könnt Ihr gerne hier oder bei mir im Discord melden.
+Bitte beachtet zusätzlich, das der Gamemode für eine Auflösung von 1920x1080 ausgelegt wurde.
 
 Testserver: https://bit.ly/3MMK5nD
 

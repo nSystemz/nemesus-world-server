@@ -195,6 +195,8 @@ namespace NemesusWorld.Controllers
                     {
                         Helper.SyncThings(player);
                         player.TriggerEvent("Client:ShowHud", player.Id);
+                        player.TriggerEvent("Client:ClearChat");
+                        Account.SetAccountKey(player);
                         Helper.SendChatMessage(player, "~b~Willkommen auf Nemesus World " + account.name + ", schau dir doch mal das F2 Menü an, dort findest du auch wichtige Tipps und den Reiter - Erste Schritte für deinen Anfang auf diesem Server!");
                         Helper.SendChatMessage(player, "~b~Dieser Gamemode wurde von Nemesus.de entwickelt!");
                         if (Helper.adminSettings.voicerp == 1)
@@ -230,6 +232,8 @@ namespace NemesusWorld.Controllers
                     NAPI.Task.Run(() =>
                     {
                         player.TriggerEvent("Client:ShowHud", player.Id);
+                        player.TriggerEvent("Client:ClearChat");
+                        Account.SetAccountKey(player);
                         Helper.SendChatMessage(player, "~b~Willkommen auf Nemesus World " + account.name + ", schau dir doch mal das F2 Menü an, dort findest du auch wichtige Tipps und den Reiter - Erste Schritte für deinen Anfang auf diesem Server!");
                         Helper.SendChatMessage(player, "~b~Dieser Gamemode wurde von Nemesus.de entwickelt!");
                         player.SetOwnSharedData("Player:Spawned", true);

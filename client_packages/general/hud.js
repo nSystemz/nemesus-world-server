@@ -586,7 +586,7 @@ let vehicleListDl = [];
 let list3D = [];
 let marker = null;
 let marker2 = null;
-let ped = null;
+let ped = undefined;
 let timeMarker = 0;
 let marker2TO = null;
 let lastid = 0;
@@ -7075,9 +7075,9 @@ mp.events.add('Client:DrawMarkerWithTime', (markerRange) => {
 
 mp.events.add('Client:CreatePed', (posx, posy, posz, create) => {
     if (create == 1) {
-        if (ped != null) {
+        if (ped !== undefined) {
             ped.destroy();
-            ped = null;
+            ped = undefined;
         }
         mp.events.call("Client:CreateMarker", posx, posy, posz + 1.25, 3);
         mp.events.call("Client:CreateWaypoint", posx, posy, -1);
@@ -7104,18 +7104,18 @@ mp.events.add('Client:CreatePed', (posx, posy, posz, create) => {
             ped.setKeepTask(true);
         }, 55);
         setTimeout(() => {
-            if (ped != null) {
+            if (ped !== undefined) {
                 ped.destroy();
-                ped = null;
+                ped = undefined;
             }
         }, 4500);
     }
 });
 
 mp.events.add('Client:DeletePed', () => {
-    if (ped != null) {
+    if (ped !== undefined) {
         ped.destroy();
-        ped = null;
+        ped = undefined;
     }
 });
 

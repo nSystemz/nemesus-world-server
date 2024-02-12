@@ -919,7 +919,17 @@ namespace NemesusWorld.Controllers
                             {
                                 if (tempData.undercover == "")
                                 {
+                                    if(tempData.adminduty == true)
+                                    {
+                                        Helper.SendNotificationWithoutButton(player, "Du kannst jetzt keine Undercover Identität annehmen!", "error", "top-left", 2750);
+                                        return;
+                                    }
                                     if (!Regex.IsMatch(data, "^([A-Z][a-z]+[ ][A-Z][a-z]+)$"))
+                                    {
+                                        Helper.SendNotificationWithoutButton(player, "Ungültige Identität!", "error", "top-left", 2750);
+                                        return;
+                                    }
+                                    if(data.Contains("Unbekannt"))
                                     {
                                         Helper.SendNotificationWithoutButton(player, "Ungültige Identität!", "error", "top-left", 2750);
                                         return;
@@ -950,7 +960,7 @@ namespace NemesusWorld.Controllers
                                     tempData.undercover = "";
                                     character.name = player.GetSharedData<string>("Client:OldName");
                                     player.Name = character.name;
-                                    player.ResetSharedData("Client:OldName");
+                                    player.SetSharedData("Client:OldName", "n/A");
                                     CharacterController.SaveCharacter(player);
                                 }
                             }

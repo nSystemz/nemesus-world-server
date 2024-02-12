@@ -4867,12 +4867,20 @@ namespace NemesusWorld
                         }
                     case "produkte":
                         {
-                            if (wert < 0 || wert > 2000)
+                            if (bizz.products+wert < 0 || bizz.products+wert > 2000)
                             {
                                 Helper.SendNotificationWithoutButton(player, "Das Lager umfasst max. 2000 und min. 0 Produkte Platz!", "error", "top-end");
                                 return;
                             }
-                            bizz.products = wert;
+                            bizz.products += wert;
+                            if(bizz.products > 2000)
+                            {
+                                bizz.products = 2000;
+                            }
+                            if(bizz.products < 0)
+                            {
+                                bizz.products = 0;
+                            }
                             break;
                         }
                     case "blipid":
@@ -5591,7 +5599,13 @@ namespace NemesusWorld
                     {
                         vehicleData.tuev = -50;
                     }
-                    player.SetIntoVehicle(vehicle, (int)VehicleSeat.Driver);
+                    NAPI.Task.Run(() =>
+                    {
+                        if (vehicle != null)
+                        {
+                            player.SetIntoVehicle(vehicle, (int)VehicleSeat.Driver);
+                        }
+                    }, delayTime: 315);
                     Helper.SetVehicleEngine(vehicle, false);
                     Helper.SendNotificationWithoutButton(player, "Fraktionsfahrzeug erfolgreich erstellt!", "success", "top-left");
                     Helper.CreateFactionLog(faction.id, $"{account.name} hat ein neues Fahrzeug ({vehname}) für die Fraktion erstellt!");
@@ -6696,17 +6710,6 @@ namespace NemesusWorld
             }
         }
 
-        [Command("soundviewer", "Befehl: /soundviewer")]
-        public void CMD_soundviewer(Player player)
-        {
-            if (!Account.IsAdminOnDuty(player, (int)Account.AdminRanks.HighAdministrator))
-            {
-                Helper.SendNotificationWithoutButton(player, "Unzureichende Adminrechte!", "error", "top-end");
-                return;
-            }
-            player.TriggerEvent("Client:ShowSoundViewer");
-        }
-
         [Command("funmodus", "Befehl: /funmodus")]
         public void CMD_funmodus(Player player)
         {
@@ -6753,15 +6756,35 @@ namespace NemesusWorld
                 }
                 Helper.CreateAdminLog($"adminlog", account.name + " hat den Server neugestartet!");
                 Helper.SendNotificationWithoutButton(player, "Server wird neugestartet ...", "success", "top-end");
-                Helper.SendAdminMessage2($"{account.name} hat den Server neugestartet, Neustart in ca. 10 Sekunden ...", 1, true);
-                NAPI.Task.Run(() =>
-                {
-                    Helper.SendAdminMessage3($"Server wird in ca. 10 Sekunden neugestartet ...");
-                }, delayTime: 500);
+                Helper.SendAdminMessage3($"Server wird in ca. 3 Sekunden neugestartet ...");
                 NAPI.Task.Run(() =>
                 {
                     Events.OnResourceStop();
-                }, delayTime: 2300);
+                }, delayTime: 3000);
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[CMD_restart]: " + e.ToString());
+            }
+        }
+
+        [Command("clearchat", "Befehl: /clearchat")]
+        public void CMD_clearchat(Player player)
+        {
+            try
+            {
+                Account account = Helper.GetAccountData(player);
+                if (!Account.IsAdminOnDuty(player, (int)Account.AdminRanks.HighAdministrator))
+                {
+                    Helper.SendNotificationWithoutButton(player, "Unzureichende Adminrechte!", "error", "top-end");
+                    return;
+                }
+                Helper.SendNotificationWithoutButton(player, "Chatverlauf erfolgreich gelöscht!", "success", "top-end");
+                foreach (Player p in NAPI.Pools.GetAllPlayers())
+                {
+                    p.TriggerEvent("Client:ClearChat");
+                    Helper.SendChatMessage(p, "~r~Der Chatverlauf wurde administrativ gelöscht!");
+                }
             }
             catch (Exception e)
             {
@@ -7239,7 +7262,7 @@ namespace NemesusWorld
                 TempData tempData = Helper.GetCharacterTempData(player);
                 if (tempData == null || character == null) return;
                 if (player.HasSharedData("Player:Death") && player.GetSharedData<bool>("Player:Death") == true) return;
-                if (tempData.freezed == true)
+                if (tempData.freezed == true || tempData.adminduty == true)
                 {
                     Helper.SendNotificationWithoutButton(player, "Du kannst diesen Befehl jetzt nicht benutzen!", "error", "top-end");
                     return;
@@ -7955,7 +7978,7 @@ namespace NemesusWorld
         }
 
         [Command("settorso", "Befehl: /settorso [Torso-ID] [Variation]")]
-        public void cmd_settorso(Player player, int torso, int variation)
+        public void cmd_settorso(Player player, int torso = -1, int variation = 0)
         {
             try
             {
@@ -7970,6 +7993,12 @@ namespace NemesusWorld
                             Helper.SendNotificationWithoutButton(player, "Du musst noch kurz warten, bevor du diesen Befehl wieder ausführen kannst!", "error", "top-end");
                             return;
                         }
+                    }
+                    JObject obj = JObject.Parse(character.json);
+                    if (torso == -1)
+                    {
+                        Events.GetBestTorso(player, Convert.ToInt32((int)obj["clothing"][0]), Convert.ToInt32(obj["clothingColor"][0]), true, true);
+                        return;
                     }
                     if (character.gender == 1)
                     {
@@ -7988,7 +8017,6 @@ namespace NemesusWorld
                         }
                     }
                     player.SetData<int>("Player:TorsoCD", Helper.UnixTimestamp() + (2));
-                    JObject obj = JObject.Parse(character.json);
                     obj["clothing"][1] = torso;
                     obj["clothingColor"][1] = variation;
                     character.json = NAPI.Util.ToJson(obj);
@@ -8534,6 +8562,22 @@ namespace NemesusWorld
                 player.TriggerEvent("Client:ShowHud");
                 NAPI.Task.Run(() =>
                 {
+                    NAPI.Player.ClearPlayerAccessory(player, 0);
+                    NAPI.Player.ClearPlayerAccessory(player, 1);
+                    NAPI.Player.ClearPlayerAccessory(player, 2);
+                    NAPI.Player.ClearPlayerAccessory(player, 6);
+                    NAPI.Player.ClearPlayerAccessory(player, 7);
+                    NAPI.Player.SetPlayerClothes(player, 1, 0, 0);
+                    NAPI.Player.SetPlayerClothes(player, 5, 0, 0);
+                    NAPI.Player.SetPlayerClothes(player, 7, 0, 0);
+                    NAPI.Player.SetPlayerClothes(player, 8, 1, 0);
+                    NAPI.Player.SetPlayerClothes(player, 11, 129, 0);
+                    NAPI.Player.SetPlayerClothes(player, 3, 14, 0);
+                    NAPI.Player.SetPlayerClothes(player, 4, 75, 0);
+                    NAPI.Player.SetPlayerClothes(player, 6, 103, 0);
+                    NAPI.Player.SetPlayerClothes(player, 9, 0, 0);
+                    NAPI.Player.SetPlayerClothes(player, 10, 0, 0);
+                    NAPI.Player.SetPlayerAccessory(player, 1, 255, 0);
                     CharacterController.GetAvailableCharacters(player, account.id);
                 }, delayTime: 215);
             }

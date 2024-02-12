@@ -505,7 +505,7 @@ namespace NemesusWorld.Database
             }
             catch (Exception e)
             {
-                Helper.ConsoleLog("error", "[ShowClothMenu]: " + e.ToString());
+                Helper.ConsoleLog("error", "[ShowJuweMenu]: " + e.ToString());
             }
         }
 
@@ -1077,7 +1077,7 @@ namespace NemesusWorld.Database
                         tempData.undercover = "";
                         character.name = player.GetSharedData<string>("Client:OldName");
                         player.Name = character.name;
-                        player.ResetSharedData("Client:OldName");
+                        player.SetSharedData("Client:OldName", "n/A");
                     }
 
                     obj = JObject.Parse(character.json);

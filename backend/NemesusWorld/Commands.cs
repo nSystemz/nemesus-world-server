@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace NemesusWorld
@@ -105,7 +106,7 @@ namespace NemesusWorld
                     if (itemname.ToLower() == "haustier")
                     {
                         Items petItem = ItemsController.GetItemByItemName(ntarget, "Haustier");
-                        if(petItem != null)
+                        if (petItem != null)
                         {
                             Helper.SendNotificationWithoutButton(player, "Der Spieler hat bereits ein Haustier!", "error", "top-end");
                             return;
@@ -554,6 +555,78 @@ namespace NemesusWorld
             {
                 player.SendChatMessage("~w~Befehl: /deleteitem [Item-ID] [Spieler/ID*]");
             }
+        }
+
+        [Command("eventucn", "Befehl: /eventucn [Undercovername]", GreedyArg = true)]
+        public void CMD_eventucn(Player player, String data)
+        {
+            try
+            {
+                if (!Account.IsPlayerLoggedIn(player)) return;
+                Account account = Helper.GetAccountData(player);
+                TempData tempData = Helper.GetCharacterTempData(player);
+                Character character = Helper.GetCharacterData(player);
+                if (account.adminlevel < (int)Account.AdminRanks.Administrator)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Unzureichende Adminrechte!", "error", "top-end");
+                    return;
+                }
+                if (tempData.adminduty == true)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Du musst zuerst deinen Admindienst beenden!", "error", "top-end");
+                }
+                if (tempData.undercover == "")
+                {
+                    if (tempData.adminduty == true)
+                    {
+                        Helper.SendNotificationWithoutButton(player, "Du kannst jetzt keine Undercover Identität annehmen!", "error", "top-left", 2750);
+                        return;
+                    }
+                    if (!Regex.IsMatch(data, "^([A-Z][a-z]+[ ][A-Z][a-z]+)$"))
+                    {
+                        Helper.SendNotificationWithoutButton(player, "Ungültige Identität!", "error", "top-left", 2750);
+                        return;
+                    }
+                    if (data.Contains("Unbekannt"))
+                    {
+                        Helper.SendNotificationWithoutButton(player, "Ungültige Identität!", "error", "top-left", 2750);
+                        return;
+                    }
+                    MySqlCommand command = General.Connection.CreateCommand();
+                    command.CommandText = "SELECT id FROM characters WHERE name=@name LIMIT 1";
+                    command.Parameters.AddWithValue("@name", data);
+
+                    using (MySqlDataReader reader = command.ExecuteReader())
+                    {
+                        if (reader.HasRows)
+                        {
+                            Helper.SendNotificationWithoutButton(player, "Ungültige Identität!", "error", "top-left", 2750);
+                            return;
+                        }
+                    }
+                    character.ucp_privat = 1;
+                    Helper.SendNotificationWithoutButton(player, "Event Undercover Identität angenommen!", "success", "top-left", 2750);
+                    tempData.undercover = data;
+                    player.SetSharedData("Client:OldName", character.name);
+                    character.name = data;
+                    player.Name = character.name;
+                    CharacterController.SaveCharacter(player);
+                }
+                else
+                {
+                    Helper.SendNotificationWithoutButton(player, "Event Undercover Identität abgelegt!", "success", "top-left", 2750);
+                    tempData.undercover = "";
+                    character.name = player.GetSharedData<string>("Client:OldName");
+                    player.Name = character.name;
+                    player.SetSharedData("Client:OldName", "n/A");
+                    CharacterController.SaveCharacter(player);
+                }
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[CMD_eventucn]: " + e.ToString());
+            }
+            return;
         }
 
         [Command("saveall", "Befehl: /saveall")]
@@ -4867,17 +4940,17 @@ namespace NemesusWorld
                         }
                     case "produkte":
                         {
-                            if (bizz.products+wert < 0 || bizz.products+wert > 2000)
+                            if (bizz.products + wert < 0 || bizz.products + wert > 2000)
                             {
                                 Helper.SendNotificationWithoutButton(player, "Das Lager umfasst max. 2000 und min. 0 Produkte Platz!", "error", "top-end");
                                 return;
                             }
                             bizz.products += wert;
-                            if(bizz.products > 2000)
+                            if (bizz.products > 2000)
                             {
                                 bizz.products = 2000;
                             }
-                            if(bizz.products < 0)
+                            if (bizz.products < 0)
                             {
                                 bizz.products = 0;
                             }
@@ -5087,7 +5160,7 @@ namespace NemesusWorld
                 }
                 NAPI.Task.Run(() =>
                 {
-                    Helper.SetPlayerPosition(ntarget, new Vector3(ntarget.Position.X+1.5, ntarget.Position.Y+1.5, ntarget.Position.Z + 0.5f));
+                    Helper.SetPlayerPosition(ntarget, new Vector3(ntarget.Position.X + 1.5, ntarget.Position.Y + 1.5, ntarget.Position.Z + 0.5f));
                 }, delayTime: 55);
                 ntarget.TriggerEvent("Client:UnsetDeath");
                 character2.death = false;
@@ -5359,6 +5432,50 @@ namespace NemesusWorld
             }
         }
 
+        [Command("admingarage", "Befehl: /admingarage")]
+        public void cmd_admingarage(Player player)
+        {
+            try
+            {
+                if (!Account.IsPlayerLoggedIn(player)) return;
+                Account account = Helper.GetAccountData(player);
+                if (!Account.IsAdminOnDuty(player, (int)Account.AdminRanks.ProbeModerator))
+                {
+                    Helper.SendNotificationWithoutButton(player, "Unzureichende Adminrechte!", "error", "top-end");
+                    return;
+                }
+                List<CenterMenu> centerMenu = new List<CenterMenu>();
+                foreach (Cars car in Cars.carList)
+                {
+                    if (car.vehicleData != null && car.vehicleData.garage == "admin")
+                    {
+                        CenterMenu cMenu = new CenterMenu();
+                        cMenu.var1 = DealerShipController.GetVehicleOwner(car.vehicleData.owner);
+                        if (car.vehicleData.ownname != "n/A")
+                        {
+                            cMenu.var2 = car.vehicleData.ownname;
+                        }
+                        else
+                        {
+                            cMenu.var2 = car.vehicleData.vehiclename;
+                        }
+                        cMenu.var3 = car.vehicleData.plate;
+                        cMenu.var4 = "" + car.vehicleData.id;
+                        centerMenu.Add(cMenu);
+                    }
+                }
+                String rules = "Besitzer,Fahrzeugname,Nummernschild,Aktion";
+                var DistinctItems = centerMenu.GroupBy(x => x.var4).Select(y => y.First()).OrderBy(n => n.var3.Length).ToList();
+                player.TriggerEvent("Client:ShowCenterMenu", rules, NAPI.Util.ToJson(DistinctItems), "Admingarage");
+                return;
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[cmd_admingarage]: " + e.ToString());
+            }
+        }
+
+
         [Command("vehiclegarage", "Befehl: /vehiclegarage [Fahrzeug-ID] [Garage]")]
         public void cmd_vehiclegarage(Player player, int id, string garage)
         {
@@ -5414,7 +5531,14 @@ namespace NemesusWorld
                                 car.vehicleHandle = null;
                             }
                             player.Dimension = 0;
-                            Helper.SendNotificationWithoutButton(player, "Das Fahrzeug wurde erfolgreich eingeparkt!", "success", "center");
+                            if (car.vehicleData.garage == "admin")
+                            {
+                                Helper.SendNotificationWithoutButton(player, "Das Fahrzeug wurde in die Admingarage gesperrt!", "success", "center");
+                            }
+                            else
+                            {
+                                Helper.SendNotificationWithoutButton(player, "Das Fahrzeug wurde erfolgreich eingeparkt!", "success", "center");
+                            }
                         }, delayTime: 315);
                         return;
                     }
@@ -5818,7 +5942,7 @@ namespace NemesusWorld
                     Helper.SendNotificationWithoutButton(player, "Unzureichende Adminrechte!", "error", "top-end");
                     return;
                 }
-                if(player.Vehicle != null)
+                if (player.Vehicle != null)
                 {
                     Helper.SendNotificationWithoutButton(player, "Du kannst diesen Befehl nicht im Fahrzeug benutzen!", "error");
                     return;
@@ -5890,7 +6014,7 @@ namespace NemesusWorld
             {
                 NAPI.Player.SetPlayerIntoVehicle(player, vehicle, seatid);
             }, delayTime: 1250);
-            if(hidemessage == false)
+            if (hidemessage == false)
             {
                 Helper.SendNotificationWithoutButton(player, $"Du hast dich in das Fahrzeug mit der ID { vehicleid } teleportiert!", "success", "top-end", 3500);
             }
@@ -6541,6 +6665,35 @@ namespace NemesusWorld
             }
         }
 
+        [Command("toggleachat", "Befehl: /toggleachat")]
+        public void CMD_toggleachat(Player player)
+        {
+            try
+            {
+                Account account = Helper.GetAccountData(player);
+                TempData tempData = Helper.GetCharacterTempData(player);
+                if (!Account.IsAdminOnDuty(player, (int)Account.AdminRanks.Moderator))
+                {
+                    Helper.SendNotificationWithoutButton(player, "Unzureichende Adminrechte!", "error", "top-end");
+                    return;
+                }
+                if (tempData.achat == false)
+                {
+                    tempData.achat = true;
+                    Helper.SendNotificationWithoutButton(player, "Admin-Benachrichtigungen aktiviert!", "success", "top-end");
+                }
+                else
+                {
+                    tempData.achat = false;
+                    Helper.SendNotificationWithoutButton(player, "Admin-Benachrichtigungen deaktiviert!", "success", "top-end");
+                }
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[CMD_toggleachat]: " + e.ToString());
+            }
+        }
+
         [Command("devmodus", "Befehl: /devmodus")]
         public void CMD_devmodus(Player player)
         {
@@ -6788,7 +6941,22 @@ namespace NemesusWorld
             }
             catch (Exception e)
             {
-                Helper.ConsoleLog("error", $"[CMD_restart]: " + e.ToString());
+                Helper.ConsoleLog("error", $"[CMD_clearchat]: " + e.ToString());
+            }
+        }
+
+
+        [Command("clearmychat", "Befehl: /clearmychat")]
+        public void CMD_clearmychat(Player player)
+        {
+            try
+            {
+                Helper.SendNotificationWithoutButton(player, "Du hast deinen Chatverlauf erfolgreich gelöscht!", "success", "top-end");
+                player.TriggerEvent("Client:ClearChat");
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[CMD_clearmychat]: " + e.ToString());
             }
         }
 
@@ -7268,7 +7436,7 @@ namespace NemesusWorld
                     return;
                 }
                 var obj = JObject.Parse(character.json);
-                if(character.factionduty == true)
+                if (character.factionduty == true)
                 {
                     Helper.SendNotificationWithoutButton(player, "Du kannst jetzt nicht deine Identität verschleiern!", "error", "top-end");
                     return;
@@ -7403,12 +7571,12 @@ namespace NemesusWorld
                 TempData tempData = Helper.GetCharacterTempData(player);
                 Character character = Helper.GetCharacterData(player);
                 if (tempData == null) return;
-                if(name.Length < 3 || name.Length > 35)
+                if (name.Length < 3 || name.Length > 35)
                 {
                     Helper.SendNotificationWithoutButton(player, "Ungültiger Name!", "error", "top-end");
                     return;
                 }
-                if(tempData.pet == null)
+                if (tempData.pet == null)
                 {
                     Helper.SendNotificationWithoutButton(player, "Du musst zuerst dein Haustier rufen!", "error", "top-end");
                     return;
@@ -7647,6 +7815,25 @@ namespace NemesusWorld
             catch (Exception e)
             {
                 Helper.ConsoleLog("error", $"[cmd_age]: " + e.ToString());
+            }
+        }
+
+        [Command("reloadvoicechat", "Befehl: /reloadvoicechat")]
+        public void cmd_reloadvoicechat(Player player)
+        {
+            try
+            {
+                if (!Account.IsPlayerLoggedIn(player)) return;
+                if (Helper.adminSettings.voicerp != 2)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Der Ingame-Voice Modus muss zuerst aktiviert werden!", "error", "top-end");
+                    return;
+                }
+                Helper.SendNotificationWithoutButton(player, "Der Voice-Chat wurde reloadet!", "success", "top-end", 4500);
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[cmd_reloadvoicechat]: " + e.ToString());
             }
         }
 
@@ -8669,7 +8856,7 @@ namespace NemesusWorld
             {
                 if (!Account.IsPlayerLoggedIn(player)) return;
                 if (player.GetSharedData<bool>("Player:Death") == true) return;
-                if (Helper.adminSettings.voicerp == 1)
+                if (Helper.adminSettings.voicerp > 0)
                 {
                     Helper.SendNotificationWithoutButton(player, "Der Text-RP Modus muss zuerst aktiviert werden!", "error", "top-end");
                     return;
@@ -8687,12 +8874,46 @@ namespace NemesusWorld
             }
         }
 
+        [Command("b", "Befehl: /b [Nachricht]", GreedyArg = true)]
+        public void CMD_b(Player player, string nachricht)
+        {
+            try
+            {
+                Account account = Helper.GetAccountData(player);
+                TempData tempData = Helper.GetCharacterTempData(player);
+                if (!Account.IsPlayerLoggedIn(player)) return;
+                if (player.GetSharedData<bool>("Player:Death") == true) return;
+                if (Helper.adminSettings.voicerp > 0)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Der Text-RP Modus muss zuerst aktiviert werden!", "error", "top-end");
+                    return;
+                }
+                if (nachricht.Length < 3)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Ungültige Nachricht!", "error", "top-end");
+                    return;
+                }
+                if (tempData.adminduty == false)
+                {
+                    Helper.SendRadiusMessage("!{#FFFFFF} (( " + account.name + ": " + nachricht + " ))", 12, player);
+                }
+                else
+                {
+                    Helper.SendRadiusMessage("!{#FFFFFF} (( !{#FF0000}" + account.name + " !{#FFFFFF}:" + nachricht + " ))", 12, player);
+                }
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[CMD_b]: " + e.ToString());
+            }
+        }
+
         [Command("do", "Befehl: /do [Nachricht]", GreedyArg = true)]
         public void CMD_do(Player player, string nachricht)
         {
             if (!Account.IsPlayerLoggedIn(player)) return;
             if (player.GetSharedData<bool>("Player:Death") == true) return;
-            if (Helper.adminSettings.voicerp == 1)
+            if (Helper.adminSettings.voicerp > 0)
             {
                 Helper.SendNotificationWithoutButton(player, "Der Text-RP Modus muss zuerst aktiviert werden!", "error", "top-end");
                 return;
@@ -8705,11 +8926,11 @@ namespace NemesusWorld
             Helper.SendRadiusMessage("!{#42b6f5}* " + nachricht + " (( " + player.Name + " ))", 8, player);
         }
 
-        [Command("speakquit", "Befehl: /speakquit [Nachricht]", GreedyArg = true, Alias = "sq")]
-        public void CMD_speakquit(Player player, string nachricht)
+        [Command("speakquiet", "Befehl: /speakquiet [Nachricht]", GreedyArg = true, Alias = "sq")]
+        public void CMD_speakquiet(Player player, string nachricht)
         {
             if (!Account.IsPlayerLoggedIn(player)) return;
-            if (Helper.adminSettings.voicerp == 1)
+            if (Helper.adminSettings.voicerp > 0)
             {
                 Helper.SendNotificationWithoutButton(player, "Der Text-RP Modus muss zuerst aktiviert werden!", "error", "top-end");
                 return;
@@ -8729,7 +8950,7 @@ namespace NemesusWorld
             TempData tempData = Helper.GetCharacterTempData(player);
             if (!Account.IsPlayerLoggedIn(player) || tempData == null) return;
             if (player.GetSharedData<bool>("Player:Death") == true) return;
-            if (Helper.adminSettings.voicerp == 1)
+            if (Helper.adminSettings.voicerp > 0)
             {
                 Helper.SendNotificationWithoutButton(player, "Der Text-RP Modus muss zuerst aktiviert werden!", "error", "top-end");
                 return;
@@ -8759,7 +8980,7 @@ namespace NemesusWorld
             TempData tempData = Helper.GetCharacterTempData(player);
             if (!Account.IsPlayerLoggedIn(player) || tempData == null) return;
             if (player.GetSharedData<bool>("Player:Death") == true) return;
-            if (Helper.adminSettings.voicerp == 1)
+            if (Helper.adminSettings.voicerp > 0)
             {
                 Helper.SendNotificationWithoutButton(player, "Der Text-RP Modus muss zuerst aktiviert werden!", "error", "top-end");
                 return;

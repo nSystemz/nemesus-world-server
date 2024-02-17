@@ -1314,7 +1314,16 @@ namespace NemesusWorld
                 }, delayTime: 85);
                 NAPI.Task.Run(() =>
                 {
-                    Account.CheckRockstarIdentifier(player);
+                    if (Helper.whitelist == false || Helper.IsWhitelisted(player.SocialClubId) || player.SocialClubId == 0)
+                    {
+                        Account.CheckRockstarIdentifier(player);
+                    }
+                    else
+                    {
+                        player.Name = player.GetData<string>("Player:ConnectName");
+                        player.TriggerEvent("Client:StopSound");
+                        AntiCheatController.SetKick(player, $"Du stehst nicht auf der Whitelist - {player.SocialClubId}", "Server", true, false);
+                    }
                 }, delayTime: 3250);
             }
             catch (MySqlException)
@@ -3776,7 +3785,7 @@ namespace NemesusWorld
                 //AFK Tick Reset
                 player.TriggerEvent("Client:AFKTickReset");
                 //Adminchat
-                if (message.StartsWith("@"))
+                if (message.StartsWith("@") && tempData.achat == true)
                 {
                     if (Account.IsAdmin(player, (int)Account.AdminRanks.ProbeModerator))
                     {
@@ -3860,7 +3869,7 @@ namespace NemesusWorld
                     //Normaler Chat
                     if (tempData.adminduty == true)
                     {
-                        Helper.SendRadiusMessage("!{#FF0000}* " + account.name + " sagt: " + message, 13, player);
+                        Helper.SendRadiusMessage("!{#FF0000}* " + account.name + "!{#FFFFFF}* sagt: " + message, 13, player);
                         player.TriggerEvent("Client:SpeakAnim");
                     }
                     else

@@ -1791,7 +1791,7 @@
                                                                 <a v-if="car.tuev != 2 && car.tuev <= 5"
                                                                     class="float-right" style="color:red">Nein</a>
                                                             </li>
-                                                            <li class="list-group-item">
+                                                            <li class="list-group-item" v-if="car.garage != 'admin'">
                                                                 <b>Ind. Name</b> <a
                                                                     class="float-right text-center"><input
                                                                         style="width: 45%" type="text"
@@ -1800,24 +1800,26 @@
                                                                         maxlength="60" autocomplete="off"></a>
                                                             </li>
                                                             <li class="list-group-item"
-                                                                v-if="!car.owner.includes('character')">
+                                                                v-if="!car.owner.includes('character') && car.garage != 'admin'">
                                                                 <b>Ab Rang</b> <a class="float-right text-center"><input
                                                                         style="width: 20%" type="text"
                                                                         class="float-right form-control text-center"
                                                                         :placeholder="car.rang" v-model="car.rang"
                                                                         maxlength="2" autocomplete="off"></a>
                                                             </li>
-                                                            <button class="btn btn-primary btn-sm mt-2" type="submit"
+                                                            <button v-if="car.garage != 'admin'" class="btn btn-primary btn-sm mt-2" type="submit"
                                                                 v-on:click="setCarName(car.id,car.ownname,car.owner)">Ind.
                                                                 Name
                                                                 setzen</button>
-                                                            <button v-if="!car.owner.includes('character')"
+                                                            <button v-if="!car.owner.includes('character') && car.garage != 'admin'"
                                                                 class="btn btn-primary btn-sm mt-2" type="submit"
                                                                 v-on:click="setCarRang(car.id,car.rang,car.owner)">Rang
                                                                 setzen</button>
-                                                            <button v-if="car.battery > 0"
+                                                            <button v-if="car.battery > 0 && car.garage != 'admin'"
                                                                 class="btn btn-primary btn-sm mt-2" type="submit"
                                                                 v-on:click="gpsCar(car.position, car.id)">GPS Ortung</button>
+                                                            <button v-if="car.garage == 'admin'" disabled
+                                                                class="btn btn-danger btn-sm mt-2" type="submit">Gesperrt</button>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -4948,6 +4950,10 @@
                                                                     <td>Identität verschleiern</td>
                                                                 </tr>
                                                                 <tr>
+                                                                    <td>/clearmychat</td>
+                                                                    <td>Chatverlauf löschenv</td>
+                                                                </tr>
+                                                                <tr>
                                                                     <td>/q</td>
                                                                     <td>Spiel beenden</td>
                                                                 </tr>
@@ -4958,6 +4964,10 @@
                                                                 <tr v-if="voicerp == 0">
                                                                     <td>[T] Text</td>
                                                                     <td>Roleplay (normaler) Chat</td>
+                                                                </tr>
+                                                                <tr v-if="voicerp == 0">
+                                                                    <td>/b</td>
+                                                                    <td>OOC Chat</td>
                                                                 </tr>
                                                                 <tr v-if="voicerp == 0">
                                                                     <td>/sq</td>
@@ -4974,6 +4984,10 @@
                                                                 <tr v-if="voicerp == 0">
                                                                     <td>/speaker</td>
                                                                     <td>Handy Lautsprecher an/ausschalten</td>
+                                                                </tr>
+                                                                <tr v-if="voicerp == 2">
+                                                                    <td>/reloadvoicechat</td>
+                                                                    <td>Voice-Chat reloaden</td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
@@ -5016,6 +5030,11 @@
                                                                 <tr>
                                                                     <td>@ Nachricht</td>
                                                                     <td>Adminchat benutzen</td>
+                                                                    <td>Probe Moderator</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>/toggleachat</td>
+                                                                    <td>Admin-Benachrichtigungen aktivieren/deaktivieren</td>
                                                                     <td>Probe Moderator</td>
                                                                 </tr>
                                                                 <tr>
@@ -5062,6 +5081,11 @@
                                                                 <tr>
                                                                     <td>/vehiclegarage</td>
                                                                     <td>Fahrzeuge in Garage einparken</td>
+                                                                    <td>Probe Moderator</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>/admingarage</td>
+                                                                    <td>Admingarage aufrufen</td>
                                                                     <td>Probe Moderator</td>
                                                                 </tr>
                                                                 <tr>
@@ -5441,6 +5465,11 @@
                                                                     <td>Gruppierungs/Firmenlizenzen vergeben</td>
                                                                     <td>Administrator</td>
                                                                 </tr>
+                                                                <tr>
+                                                                    <td>/eventucn</td>
+                                                                    <td>Event Undercover Identität annehmen/ablegen</td>
+                                                                    <td>Administrator</td>
+                                                                </tr>
                                                             </tbody>
                                                             <tbody v-if="admin >= 5">
                                                                 <tr>
@@ -5739,7 +5768,7 @@
                                                             </tbody>
                                                         </table>
                                                         <div
-                                                            v-if="centerHeader.toLowerCase().includes('garage') || centerHeader.toLowerCase().includes('verwahrplatz')">
+                                                            v-if="(centerHeader.toLowerCase().includes('garage') || centerHeader.toLowerCase().includes('verwahrplatz')) && !centerHeader.toLowerCase().includes('admingarage')">
                                                             <button class="btn btn-block btn-primary btn-sm mb-1"
                                                                 type="submit" v-on:click="enterGarage()">Fahrzeug
                                                                 einparken</button>

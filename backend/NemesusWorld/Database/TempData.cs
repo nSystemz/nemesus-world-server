@@ -74,6 +74,7 @@ namespace NemesusWorld.Database
         public bool speaker { get; set; }
         public Ped pet { get; set; }
         public int petTask { get; set; }
+        public bool achat { get; set; }
 
         public TempData()
         {
@@ -142,6 +143,7 @@ namespace NemesusWorld.Database
             speaker = false;
             pet = null;
             petTask = 0;
+            achat = true;
         }
     }
 }

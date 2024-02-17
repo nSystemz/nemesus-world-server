@@ -3265,6 +3265,10 @@ mp.events.add("playerCommand", (command) => {
     if (commandName === "q") {
         mp.game.vehicle.createMissionTrain(24, localPlayer.position.x, localPlayer.position.y, localPlayer.position.z, true);
     }
+    else if(commandName === "reloadvoicechat" && voicerp == 2)
+    {
+        mp.voiceChat.cleanupAndReload(true, true, true);
+    }
 });
 
 //Garbage

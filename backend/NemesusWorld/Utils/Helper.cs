@@ -52,11 +52,14 @@ namespace NemesusWorld.Utils
         public static Vector3 RathausPosition = null;
         public static JObject TorsosMen;
         public static JObject TorsosWoman;
+        public static int MatsImVersteck = 0;
+        public static double gamemodeVersion = 1.1;
+        public static bool whitelist = false; //False = Whitelist aus, True = Whitelist an
         //ToDo: Discord Webhooks setzen
         public static string AdminNotificationWebHook = "TODO";
         public static string ErrorWebhook = "TODO";
         public static string ScreenshotWebhook = "TODO";
-        public static int MatsImVersteck = 0;
+        //Fuelpositions
         public static Vector3[] fuelPositions = new Vector3[62]
                                 { 
                                   //Bizz 5
@@ -309,6 +312,26 @@ namespace NemesusWorld.Utils
             }
         }
 
+        //Whitelist
+        public static bool IsWhitelisted(ulong socialclubid)
+        {
+            try
+            {
+                foreach (Whitelist whitelist in Helper.whitelistList)
+                {
+                    if (whitelist.socialclubid == socialclubid)
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[IsWhitelisted]: " + e.ToString());
+            }
+            return false;
+        }
+
         //BankSettings
         public static void BankSettings(string banknumber, string setting, string value, string name)
         {
@@ -490,16 +513,19 @@ namespace NemesusWorld.Utils
                     {
                         if (account.premium == 1)
                         {
+                            //Premium Bronze
                             groups = groups + ",16";
                             removeGroups = removeGroups + ",14,15";
                         }
                         else if (account.premium == 2)
                         {
+                            //Premium Silber
                             groups = groups + ",15";
                             removeGroups = removeGroups + ",14,16";
                         }
                         else if (account.premium == 3)
                         {
+                            //Premium Gold
                             groups = groups + ",14";
                             removeGroups = removeGroups + ",15,16";
                         }
@@ -511,13 +537,11 @@ namespace NemesusWorld.Utils
                     }
                     //Fraktionen
                     int faction = -1;
-                    int leader = 0;
-                    int member = 0;
                     int rang = 0;
                     FactionsModel factionsModel = null;
 
                     MySqlCommand command = General.Connection.CreateCommand();
-                    command.CommandText = "SELECT faction,leader,member,rang FROM characters WHERE userid = @userid";
+                    command.CommandText = "SELECT faction,rang FROM characters WHERE userid = @userid";
                     command.Parameters.AddWithValue("@userid", account.id);
 
                     using (MySqlDataReader reader = command.ExecuteReader())
@@ -525,13 +549,38 @@ namespace NemesusWorld.Utils
                         while (reader.Read())
                         {
                             faction = reader.GetInt32("faction");
-                            leader = reader.GetInt32("leader");
-                            member = reader.GetInt32("member");
                             rang = reader.GetInt32("rang");
                             factionsModel = GetFactionById(faction);
                             if (factionsModel != null)
                             {
+                                //SAPD
                                 if (faction == 1)
+                                {
+                                    if (account.id == factionsModel.leader || rang >= 10)
+                                    {
+                                        if (!groups.Contains(",20"))
+                                        {
+                                            groups = groups + ",20";
+                                        }
+                                        if (!groups.Contains(",21"))
+                                        {
+                                            removeGroups = removeGroups + ",21";
+                                        }
+                                    }
+                                    else
+                                    {
+                                        if (!groups.Contains(",21"))
+                                        {
+                                            groups = groups + ",21";
+                                        }
+                                        if (!groups.Contains(",20"))
+                                        {
+                                            removeGroups = removeGroups + ",20";
+                                        }
+                                    }
+                                }
+                                //SARC
+                                else if (faction == 2)
                                 {
                                     if (account.id == factionsModel.leader || rang >= 10)
                                     {
@@ -561,7 +610,7 @@ namespace NemesusWorld.Utils
                         reader.Close();
                     }
 
-                    //Police
+                    //SAPD
                     if (!groups.Contains(",20") && !groups.Contains(",21") && !removeGroups.Contains(",20") && !removeGroups.Contains(",21"))
                     {
                         removeGroups = removeGroups + ",20,21";
@@ -2829,7 +2878,8 @@ namespace NemesusWorld.Utils
             foreach (Player c in NAPI.Pools.GetAllPlayers())
             {
                 Account cacc = Helper.GetAccountData(c);
-                if (Account.IsPlayerLoggedIn(c) && (c.GetOwnSharedData<bool>("Player:Testmodus") == true || cacc.adminlevel >= 1))
+                TempData tempData = Helper.GetCharacterTempData(c);
+                if (Account.IsPlayerLoggedIn(c) && (c.GetOwnSharedData<bool>("Player:Testmodus") == true || cacc.adminlevel >= 1) && tempData.achat == true)
                 {
                     text = "!{#07C71B}[Testchat] " + account.name + ": " + message;
                     SendChatMessage(c, text, false);
@@ -2847,7 +2897,8 @@ namespace NemesusWorld.Utils
             foreach (Player c in NAPI.Pools.GetAllPlayers())
             {
                 Account cacc = Helper.GetAccountData(c);
-                if (Account.IsPlayerLoggedIn(c) && cacc.adminlevel >= 1)
+                TempData tempData = Helper.GetCharacterTempData(c);
+                if (Account.IsPlayerLoggedIn(c) && cacc.adminlevel >= 1 && tempData.achat == true)
                 {
                     text = "!{#0099ff}[Adminchat] " + account.name + ": " + message;
                     SendChatMessage(c, text, false);
@@ -2862,7 +2913,8 @@ namespace NemesusWorld.Utils
             foreach (Player c in NAPI.Pools.GetAllPlayers())
             {
                 Account cacc = Helper.GetAccountData(c);
-                if (c.Exists && Account.IsPlayerLoggedIn(c) && cacc != null && cacc.adminlevel >= adminlevel)
+                TempData tempData = Helper.GetCharacterTempData(c);
+                if (c.Exists && Account.IsPlayerLoggedIn(c) && cacc != null && cacc.adminlevel >= adminlevel && tempData.achat == true)
                 {
                     text2 = "!{#0099ff}[Benachrichtigung]: " + message;
                     SendChatMessage(c, text2, false);
@@ -2879,7 +2931,8 @@ namespace NemesusWorld.Utils
         {
             foreach (Player c in NAPI.Pools.GetAllPlayers())
             {
-                if (c.Exists && c.GetOwnSharedData<bool>("Player:Spawned") == true)
+                TempData tempData = Helper.GetCharacterTempData(c);
+                if (c.Exists && c.GetOwnSharedData<bool>("Player:Spawned") == true && tempData.achat == true)
                 {
                     SendChatMessage(c, message, removefirst);
                 }
@@ -2892,7 +2945,8 @@ namespace NemesusWorld.Utils
 
             foreach (Player player in NAPI.Pools.GetAllPlayers())
             {
-                if (player != null && player.Exists && Account.IsPlayerLoggedIn(player))
+                TempData tempData = Helper.GetCharacterTempData(player);
+                if (player != null && player.Exists && Account.IsPlayerLoggedIn(player) && tempData.achat == true)
                 {
                     player.TriggerEvent("Client:AdminInfoMessage", message, time);
                 }

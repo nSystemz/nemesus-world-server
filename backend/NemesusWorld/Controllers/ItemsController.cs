@@ -1903,19 +1903,20 @@ namespace NemesusWorld.Controllers
                                     if (tempData.inventoysetting.Contains("evidence"))
                                     {
                                         Helper.CreateEvidenceLog($"{character.name} hat {amount}x {item.description} in die Asservatenkammer gelegt!");
-                                        string[] weaponArray = new string[7];
-                                        weaponArray = item.props.Split(",");
+                                        if (item.type == 5)
+                                        {
+                                            string[] weaponArray = new string[7];
+                                            weaponArray = item.props.Split(",");
 
-                                        item.props = $"{weaponArray[0]},{weaponArray[1]},{weaponArray[2]},{weaponArray[3]},Asservatenkammer|LSPD,0,|";
+                                            item.props = $"{weaponArray[0]},{weaponArray[1]},{weaponArray[2]},{weaponArray[3]},Asservatenkammer|LSPD,0,|";
 
-                                        MySqlCommand command = General.Connection.CreateCommand();
-                                        command = General.Connection.CreateCommand();
-                                        command.CommandText = "UPDATE weapons SET name = 'LSPD', shop = 'Asservatenkammer' WHERE ident=@ident";
-                                        command.Parameters.AddWithValue("@name", "LSPD");
-                                        command.Parameters.AddWithValue("@shop", "Asservatenkammer");
-                                        command.Parameters.AddWithValue("@ident", weaponArray[3]);
+                                            MySqlCommand command = General.Connection.CreateCommand();
+                                            command = General.Connection.CreateCommand();
+                                            command.CommandText = "UPDATE weapons SET name = 'LSPD', shop = 'Asservatenkammer' WHERE ident=@ident";
+                                            command.Parameters.AddWithValue("@ident", weaponArray[3]);
 
-                                        command.ExecuteNonQuery();
+                                            command.ExecuteNonQuery();
+                                        }
                                     }
                                     if (item.description == "Smartphone" && item.props == character.lastsmartphone)
                                     {

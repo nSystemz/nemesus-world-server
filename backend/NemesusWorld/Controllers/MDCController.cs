@@ -919,10 +919,9 @@ namespace NemesusWorld.Controllers
                             {
                                 if (tempData.undercover == "")
                                 {
-                                    if(tempData.adminduty == true)
+                                    if (tempData.adminduty == true)
                                     {
-                                        Helper.SendNotificationWithoutButton(player, "Du kannst jetzt keine Undercover Identität annehmen!", "error", "top-left", 2750);
-                                        return;
+                                        Helper.SendNotificationWithoutButton(player, "Du musst zuerst deinen Admindienst beenden!", "error", "top-end");
                                     }
                                     if (!Regex.IsMatch(data, "^([A-Z][a-z]+[ ][A-Z][a-z]+)$"))
                                     {

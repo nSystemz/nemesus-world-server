@@ -157,7 +157,7 @@ namespace NemesusWorld.Controllers
                 {
                     if (car.id > -1)
                     {
-                        if (car.vehicleData != null && car.vehicleData.owner.ToLower() == identifier)
+                        if (car.vehicleData != null && car.vehicleData.owner.ToLower() == identifier && car.vehicleData.garage != "admin")
                         {
                             count++;
                         }
@@ -169,6 +169,38 @@ namespace NemesusWorld.Controllers
                 Helper.ConsoleLog("error", $"[CountVehicles]: " + e.ToString());
             }
             return count;
+        }
+
+        public static String GetVehicleOwner(String carowner)
+        {
+            String owner = "n/A";
+            try
+            {
+                if (carowner.Contains("-"))
+                {
+                    if (carowner.Contains("character-"))
+                    {
+                        owner = Helper.GetCharacterName(Convert.ToInt32(carowner.Split("-")[1]));
+                    }
+                    else if (carowner.Contains("group-"))
+                    {
+                        Groups group = GroupsController.GetGroupById(Convert.ToInt32(carowner.Split("-"[1])));
+                        if (group != null)
+                        {
+                            owner = group.name;
+                        }
+                    }
+                    else if (carowner.Contains("faction-"))
+                    {
+                        owner = Helper.GetFactionName(Convert.ToInt32(carowner.Split("-")[1]));
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[GetVehicleOwner]: " + e.ToString());
+            }
+            return owner;
         }
 
         public static int MaxVehicles(Player player, int mod)
@@ -267,7 +299,7 @@ namespace NemesusWorld.Controllers
                     NAPI.Task.Run(() =>
                     {
                         player.TriggerEvent("Client:ShowDealerShip", bizz.name, vehicleShop.vehiclename, NAPI.Util.ToJson(vehicleShopList), DealerShipController.maxSpeeds, bizz.id, bizz.multiplier);
-                    }, delayTime: 500);                  
+                    }, delayTime: 500);
                 }
             }
             catch (Exception e)
@@ -326,7 +358,7 @@ namespace NemesusWorld.Controllers
                 {
                     if (vehicleData != null)
                     {
-                        if(vehicleData.towed > 0)
+                        if (vehicleData.towed > 0)
                         {
                             vehicleData.towed += Helper.adminSettings.towedcash;
                             if (vehicleData.towed > 35000)
@@ -390,7 +422,7 @@ namespace NemesusWorld.Controllers
             {
                 if (vehicle != null)
                 {
-                    if(doors == 1)
+                    if (doors == 1)
                     {
                         vehicle.SetSharedData("Vehicle:Doors", vehicleData);
                     }

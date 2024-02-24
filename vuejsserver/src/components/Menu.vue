@@ -4958,6 +4958,10 @@
                                                                     <td>Spiel beenden</td>
                                                                 </tr>
                                                                 <tr v-if="voicerp == 0">
+                                                                    <td>/condition</td>
+                                                                    <td>Zustand setzen/entfernen</td>
+                                                                </tr>
+                                                                <tr v-if="voicerp == 0">
                                                                     <td>/me - /do</td>
                                                                     <td>Roleplay Befehle</td>
                                                                 </tr>
@@ -7729,7 +7733,7 @@
             },
             startHouse: function() {
                 if (this.lastcheck2 == 0 || (Date.now() / 1000) > this.lastcheck2) {
-                    this.lastcheck2 = (Date.now() / 1000) + (2);
+                    this.lastcheck2 = (Date.now() / 1000) + (1);
                     this.clicked = (Date.now() / 1000);
                     // eslint-disable-next-line no-undef
                     mp.trigger('Client:StartHouse');
@@ -7776,7 +7780,7 @@
                     this.clicked = (Date.now() / 1000);
                     // eslint-disable-next-line no-undef
                     mp.trigger('Client:StartBizz');
-                    this.lastcheck2 = (Date.now() / 1000) + (2);
+                    this.lastcheck2 = (Date.now() / 1000) + (1);
                     return;
                 } else {
                     if (this.menubizzshow == false) {
@@ -7923,7 +7927,7 @@
                     mp.trigger('Client:ShowHud');
                     // eslint-disable-next-line no-undef
                     mp.trigger('Client:StartMoebel');
-                    this.lastcheck2 = (Date.now() / 1000) + (2);
+                    this.lastcheck2 = (Date.now() / 1000) + (1);
                     this.clicked = (Date.now() / 1000);
                     return;
                 } else {

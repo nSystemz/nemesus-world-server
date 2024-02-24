@@ -8,7 +8,7 @@
     <div>
       <div class="info server" v-if="showhud">
         <div class="info player">
-          <div class="money float-right mr-2" style="color:#689149">
+          <div class="money float-right mr-2" style="color:#4477ad">
             <span>{{("00000000" + money).slice(-8)}}$</span>
           </div>
           <div id="status" style="font-size: 1.9vh;margin-top: 0.2vh !important">
@@ -4830,6 +4830,7 @@ html, body, template, * {
 
 .money {
   font-size: 3.51vh;
+  font-weight: 450;
   font-family: 'Exo', sans-serif;
   z-index: -1;
   text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;

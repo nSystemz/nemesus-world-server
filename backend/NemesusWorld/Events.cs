@@ -38,7 +38,7 @@ using System.Data;
 using System.IO;
 using System.Text.Json;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;
+using Newtonsoft.Json;  
 
 namespace NemesusWorld
 {
@@ -213,26 +213,6 @@ namespace NemesusWorld
                             command.ExecuteNonQuery();
                             command.CommandText = "UPDATE users SET online = 0 WHERE online = 1";
                             command.ExecuteNonQuery();
-                            //Console
-                            Helper.ConsoleLog("info", "#     #");
-                            Helper.ConsoleLog("info", "##    #  ######  #    #  ######   ####   #    #   ####");
-                            Helper.ConsoleLog("info", "# #   #  #       ##  ##  #       #       #    #  #");
-                            Helper.ConsoleLog("info", "#  #  #  #####   # ## #  #####    ####   #    #   ####");
-                            Helper.ConsoleLog("info", "#   # #  #       #    #  #            #  #    #       #");
-                            Helper.ConsoleLog("info", "#    ##  #       #    #  #       #    #  #    #  #    #");
-                            Helper.ConsoleLog("info", "#     #  ######  #    #  ######   ####    ####    ####");
-                            if (Helper.adminSettings.voicerp == 1)
-                            {
-                                Helper.ConsoleLog("info", "[SERVER]: Nemesus World Gamemode erstellt von Nemesus.de erfolgreich geladen - (Voice-RP)");
-                            }
-                            else if (Helper.adminSettings.voicerp == 2)
-                            {
-                                Helper.ConsoleLog("info", "[SERVER]: Nemesus World Gamemode erstellt von Nemesus.de erfolgreich geladen - (Ingame-Voice)");
-                            }
-                            else
-                            {
-                                Helper.ConsoleLog("info", "[SERVER]: Nemesus World Gamemode erstellt von Nemesus.de erfolgreich geladen - (Text-RP)");
-                            }
                             //Materialversteck befüllen
                             Helper.MatsImVersteck += 20;
                             //Call2Home, kann gelöscht werden dient nur zur Statistik
@@ -240,7 +220,7 @@ namespace NemesusWorld
                             //Weather
                             try
                             {
-                                Helper.SetAndGetWeather("https://nemesus-world.de/WetterInfoBackup.php", true);
+                                Helper.SetAndGetWeather("https://nemesus-world.de/WetterInfo.php", true);
                             }
                             catch (Exception)
                             {
@@ -248,6 +228,34 @@ namespace NemesusWorld
                                 Helper.weatherstring = "clear sky";
                                 Helper.SetWeather();
                             }
+                            //Console
+                            Helper.ConsoleLog("info", "-------------------------------------------------------------------------------------------------------");
+                            Helper.ConsoleLog("info", "#     #");
+                            Helper.ConsoleLog("info", "##    #  ######  #    #  ######   ####   #    #   ####");
+                            Helper.ConsoleLog("info", "# #   #  #       ##  ##  #       #       #    #  #");
+                            Helper.ConsoleLog("info", "#  #  #  #####   # ## #  #####    ####   #    #   ####");
+                            Helper.ConsoleLog("info", "#   # #  #       #    #  #            #  #    #       #");
+                            Helper.ConsoleLog("info", "#    ##  #       #    #  #       #    #  #    #  #    #");
+                            Helper.ConsoleLog("info", "#     #  ######  #    #  ######   ####    ####    ####");
+                            Helper.ConsoleLog("info", "");
+                            Helper.ConsoleLog("info", $"Gamemode: Nemesus World RageMP by Nemesus.de");
+                            Helper.ConsoleLog("info", $"Lizenz: CC-BY-NC-SA-4.0");
+                            Helper.ConsoleLog("info", $"Support: https://discord.nemesus.de");
+                            Helper.ConsoleLog("info", $"Version: {Helper.gamemodeVersion}");
+                            if (Helper.adminSettings.voicerp == 1)
+                            {
+                                Helper.ConsoleLog("info", $"Roleplay-Art: Voice-RP (SaltyChat)");
+                            }
+                            else if (Helper.adminSettings.voicerp == 2)
+                            {
+                                Helper.ConsoleLog("info", $"Roleplay-Art: Voice-RP (Ingame-Voice)");
+                            }
+                            else
+                            {
+                                Helper.ConsoleLog("info", $"Roleplay-Art: Text-RP");
+                            }
+                            Helper.ConsoleLog("info", $"Status: Alle Systeme wurden erfolgreich geladen!");
+                            Helper.ConsoleLog("info", "-------------------------------------------------------------------------------------------------------");
                         }
                     }
                 }
@@ -1301,6 +1309,7 @@ namespace NemesusWorld
                 player.SetSharedData("Player:Tattoos", "n/A");
                 player.SetSharedData("Player:AFK", 0);
                 player.SetSharedData("Client:OldName", "n/A");
+                player.SetSharedData("Client:Condition", "n/A");
                 if (Helper.adminSettings.voicerp == 2)
                 {
                     player.SetSharedData("Player:VoiceRangeLocal", 25.0);
@@ -1864,6 +1873,7 @@ namespace NemesusWorld
                 player.SetSharedData("Player:LocalVoiceHandyPlayer", -1);
                 player.SetSharedData("Player:AFK", 0);
                 player.SetSharedData("Client:OldName", "n/A");
+                player.SetSharedData("Client:Condition", "n/A");
                 if (Helper.adminSettings.voicerp == 2)
                 {
                     player.SetSharedData("Player:VoiceRangeLocal", 25.0);
@@ -1957,6 +1967,8 @@ namespace NemesusWorld
                 }
                 if (tempData != null)
                 {
+                    //Condition
+                    player.SetSharedData("Client:Condition", "n/A");
                     //Pet
                     if (tempData.pet != null)
                     {
@@ -3785,11 +3797,16 @@ namespace NemesusWorld
                 //AFK Tick Reset
                 player.TriggerEvent("Client:AFKTickReset");
                 //Adminchat
-                if (message.StartsWith("@") && tempData.achat == true)
+                if (message.StartsWith("@"))
                 {
                     if (Account.IsAdmin(player, (int)Account.AdminRanks.ProbeModerator))
                     {
                         if (message.Length <= 1) return;
+                        if (tempData.achat == false)
+                        {
+                            Helper.SendNotificationWithoutButton(player, "Aktiviere zuerst die Adminbenachrichtigungen!");
+                            return;
+                        }
                         Helper.SendAdminMessage(message, player);
                         return;
                     }
@@ -3869,7 +3886,7 @@ namespace NemesusWorld
                     //Normaler Chat
                     if (tempData.adminduty == true)
                     {
-                        Helper.SendRadiusMessage("!{#FF0000}* " + account.name + "!{#FFFFFF}* sagt: " + message, 13, player);
+                        Helper.SendRadiusMessage("!{#FF0000}* " + account.name + "!{#FFFFFF} sagt: " + message, 13, player);
                         player.TriggerEvent("Client:SpeakAnim");
                     }
                     else

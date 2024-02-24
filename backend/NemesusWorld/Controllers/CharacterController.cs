@@ -994,10 +994,13 @@ namespace NemesusWorld.Controllers
                             {
                                 db.Save(character);
                             }
-                            if (tempData.undercover.Length > 3 && oldTempName != "n/A")
+                            NAPI.Task.Run(() =>
                             {
-                                character.name = oldTempName;
-                            }
+                                if (tempData.undercover.Length > 3 && oldTempName != "n/A")
+                                {
+                                    character.name = oldTempName;
+                                }
+                            }, delayTime: 1250);
                         }
                         else
                         {

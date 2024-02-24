@@ -7015,10 +7015,10 @@ mp.events.add("playerCreateWaypoint", (position) => {
     if ((adminduty || testmodus) && !localPlayer.vehicle && setteleport == false) {
         setteleport = true;
         mp.events.call('Client:UpdatePosition', position.x, position.y, position.z);
-        localPlayer.position = position;
         localPlayer.freezePosition(true);
+        localPlayer.position = position;
         setTimeout(() => {
-            let getGroundZ = mp.game.gameplay.getGroundZFor3dCoord(position.x, position.y, position.z + 500, parseFloat(0), false);
+            let getGroundZ = mp.game.gameplay.getGroundZFor3dCoord(position.x, position.y, position.z + 999, parseFloat(0), false);
             if (getGroundZ <= 0) {
                 getGroundZ = position.z + 0.15;
             }
@@ -8344,7 +8344,7 @@ function UpdateNameTags1(nametags) {
                 let scale = (distance / maxDistance);
                 if (scale < 0.6) scale = 0.6;
 
-                y -= scale * (0.005 * (screenRes.y / 1080));
+                y -= scale * (0.006 * (screenRes.y / 1080));
 
                 let nname = 'Unbekannt';
                 if (admindutynt == 0) {
@@ -8367,6 +8367,7 @@ function UpdateNameTags1(nametags) {
 
                 let death = player.getVariable('Player:Death');
                 let afk = player.getVariable('Player:AFK');
+                let condition = player.getVariable('Client:Condition');
 
                 if (!foundDrone) {
                     if (admindutynt == 0 && player.getAlpha() == 255) {
@@ -8421,12 +8422,24 @@ function UpdateNameTags1(nametags) {
                             if (admindutytemp <= 0) {
                                 if (death == false) {
                                     if (afk == 0) {
-                                        graphics.drawText(player.name + ' [' + player.remoteId + ']\nLeben: ' + healthplayer + '%, Rüstung: ' + armourplayer + '%\n', [x, y], {
-                                            font: 4,
-                                            color: color,
-                                            scale: [0.45, 0.45],
-                                            outline: true
-                                        });
+                                        if(condition = 'n/A')
+                                        {
+                                            graphics.drawText(player.name + ' [' + player.remoteId + ']\nLeben: ' + healthplayer + '%, Rüstung: ' + armourplayer + '%\n', [x, y], {
+                                                font: 4,
+                                                color: color,
+                                                scale: [0.45, 0.45],
+                                                outline: true
+                                            });
+                                        }
+                                        else
+                                        {
+                                            graphics.drawText(player.name + ' [' + player.remoteId + ']\nLeben: ' + healthplayer + '%, Rüstung: ' + armourplayer + '%\n~y~' + condition + '\n', [x, y], {
+                                                font: 4,
+                                                color: color,
+                                                scale: [0.45, 0.45],
+                                                outline: true
+                                            });
+                                        }
                                     } else {
                                         graphics.drawText(player.name + ' [' + player.remoteId + ']\nLeben: ' + healthplayer + '%, Rüstung: ' + armourplayer + '%\nAFK\n', [x, y], {
                                             font: 4,
@@ -8487,7 +8500,7 @@ function UpdateNameTags2(nametags) {
                 let scale = (distance / maxDistance);
                 if (scale < 0.6) scale = 0.6;
 
-                y -= scale * (0.005 * (screenRes.y / 1080));
+                y -= scale * (0.006 * (screenRes.y / 1080));
 
                 let nname = 'Unbekannt';
                 if (admindutynt == 0) {
@@ -8510,6 +8523,7 @@ function UpdateNameTags2(nametags) {
 
                 let death = player.getVariable('Player:Death');
                 let afk = player.getVariable('Player:AFK');
+                let condition = player.getVariable('Client:Condition');
 
                 if (!foundDrone) {
                     if (admindutynt == 0 && player.getAlpha() == 255) {
@@ -8522,12 +8536,24 @@ function UpdateNameTags2(nametags) {
                         if (admindutytemp <= 0) {
                             if (death == false) {
                                 if (afk == 0) {
-                                    graphics.drawText(nname + ' [' + player.remoteId + ']\n', [x, y], {
-                                        font: 4,
-                                        color: color,
-                                        scale: [0.45, 0.45],
-                                        outline: true
-                                    });
+                                    if(condition == 'n/A')
+                                    {
+                                        graphics.drawText(nname + ' [' + player.remoteId + ']\n', [x, y], {
+                                            font: 4,
+                                            color: color,
+                                            scale: [0.45, 0.45],
+                                            outline: true
+                                        });
+                                    }
+                                    else
+                                    {
+                                        graphics.drawText(nname + ' [' + player.remoteId + ']\n~y~' + condition + '\n', [x, y], {
+                                            font: 4,
+                                            color: color,
+                                            scale: [0.45, 0.45],
+                                            outline: true
+                                        });
+                                    }
                                 } else {
                                     graphics.drawText(nname + ' [' + player.remoteId + ']\nAFK\n', [x, y], {
                                         font: 4,
@@ -8577,12 +8603,24 @@ function UpdateNameTags2(nametags) {
                             if (admindutytemp <= 0) {
                                 if (death == false) {
                                     if (afk == 0) {
-                                        graphics.drawText(player.name + ' [' + player.remoteId + ']\nLeben: ' + healthplayer + '%, Rüstung: ' + armourplayer + '%\n', [x, y], {
-                                            font: 4,
-                                            color: color,
-                                            scale: [0.45, 0.45],
-                                            outline: true
-                                        });
+                                        if(condition == 'n/A')
+                                        {
+                                            graphics.drawText(player.name + ' [' + player.remoteId + ']\nLeben: ' + healthplayer + '%, Rüstung: ' + armourplayer + '%\n', [x, y], {
+                                                font: 4,
+                                                color: color,
+                                                scale: [0.45, 0.45],
+                                                outline: true
+                                            });
+                                        }
+                                        else
+                                        {
+                                            graphics.drawText(player.name + ' [' + player.remoteId + ']\nLeben: ' + healthplayer + '%, Rüstung: ' + armourplayer + '%\n~y~' + condition + '\n', [x, y], {
+                                                font: 4,
+                                                color: color,
+                                                scale: [0.45, 0.45],
+                                                outline: true
+                                            });
+                                        }
                                     } else {
                                         graphics.drawText(player.name + ' [' + player.remoteId + ']\nLeben: ' + healthplayer + '%, Rüstung: ' + armourplayer + '%\nAFK\n', [x, y], {
                                             font: 4,

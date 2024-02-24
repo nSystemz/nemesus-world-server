@@ -923,6 +923,11 @@ namespace NemesusWorld.Controllers
                                     {
                                         Helper.SendNotificationWithoutButton(player, "Du musst zuerst deinen Admindienst beenden!", "error", "top-end");
                                     }
+                                    if (tempData.undercover.Length > 3 && tempData.undercover.Contains("Unbekannt"))
+                                    {
+                                        Helper.SendNotificationWithoutButton(player, "Du kannst jetzt keine Undercover Identität annehmen!", "error", "top-end");
+                                        return;
+                                    }
                                     if (!Regex.IsMatch(data, "^([A-Z][a-z]+[ ][A-Z][a-z]+)$"))
                                     {
                                         Helper.SendNotificationWithoutButton(player, "Ungültige Identität!", "error", "top-left", 2750);

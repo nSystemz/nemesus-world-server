@@ -605,6 +605,7 @@ namespace NemesusWorld.Utils
                                         }
                                     }
                                 }
+                                //Weitere Fraktionen hinzufügen ...
                             }
                         }
                         reader.Close();
@@ -615,6 +616,7 @@ namespace NemesusWorld.Utils
                     {
                         removeGroups = removeGroups + ",20,21";
                     }
+                    //Weitere Fraktionsrechte entfernen ...
 
                     //Post
                     //ToDo: ForumConnect Link anpassen
@@ -1273,6 +1275,7 @@ namespace NemesusWorld.Utils
                 if (player.GetSharedData<bool>("Player:Death") == true) return;
                 Character character = Helper.GetCharacterData(player);
                 TempData tempData = Helper.GetCharacterTempData(player);
+                if (character == null || tempData == null) return;
                 if (showonly == false)
                 {
                     if (tempData.adminduty == true)
@@ -1286,7 +1289,7 @@ namespace NemesusWorld.Utils
                         {
                             foreach (Cars car in Cars.carList)
                             {
-                                if (car.vehicleData != null && car.vehicleHandle != null && car.vehicleData.id == vehid)
+                                if (car != null && car.vehicleData != null && car.vehicleHandle != null && car.vehicleData.id == vehid)
                                 {
                                     Commands.CMD_gointocar(player, car.vehicleHandle.Id, 0, true);
                                     return;
@@ -1305,7 +1308,7 @@ namespace NemesusWorld.Utils
                     if ((character.faction == 1 || character.faction == 2 || character.faction == 3))
                     {
                         FactionsModel faction = FactionController.GetFactionById(character.faction);
-                        if (faction.numbername == character.name)
+                        if (faction != null && faction.numbername == character.name)
                         {
                             if (FactionController.OperatorBlip == false)
                             {
@@ -1320,15 +1323,15 @@ namespace NemesusWorld.Utils
                                 FactionController.OperatorBlip = true;
                                 if (character.faction == 1)
                                 {
-                                    MDCController.SendPoliceMDCMessage(player, $"Neue Leitstellenmarkiert vorhanden!");
+                                    MDCController.SendPoliceMDCMessage(player, $"Neue Leitstellenmarkierung vorhanden!");
                                 }
                                 else if (character.faction == 2)
                                 {
-                                    MDCController.SendMedicMDCMessage(player, $"Neue Leitstellenmarkiert vorhanden!");
+                                    MDCController.SendMedicMDCMessage(player, $"Neue Leitstellenmarkierung vorhanden!");
                                 }
                                 else if (character.faction == 3)
                                 {
-                                    MDCController.SendACLSMDCMessage(player, $"Neue Leitstellenmarkiert vorhanden!");
+                                    MDCController.SendACLSMDCMessage(player, $"Neue Leitstellenmarkierung vorhanden!");
                                 }
                             }
                             else
@@ -1362,7 +1365,7 @@ namespace NemesusWorld.Utils
                     {
                         foreach (Player p in NAPI.Pools.GetAllPlayers())
                         {
-                            if (p.IsInVehicle && p.Vehicle == player.Vehicle && player != p)
+                            if (p != null && p.IsInVehicle && p.Vehicle == player.Vehicle && player != p)
                             {
                                 p.TriggerEvent("Client:CreateWaypoint", x, y, -1);
                                 Helper.SendNotificationWithoutButton(p, "Es wurde eine neue Kartenmarkierung geteilt!", "success", "top-left", 1850);
@@ -1787,7 +1790,7 @@ namespace NemesusWorld.Utils
         }
 
         [RemoteEvent("Server:RPQuizFinish")]
-        public static void OnRPQuizFinis(Player player, int errors)
+        public static void OnRPQuizFinish(Player player, int errors)
         {
             try
             {
@@ -2777,14 +2780,21 @@ namespace NemesusWorld.Utils
                             }
                             else
                             {
-                                SendChatMessage(p, message.Replace(player.Name, "Unbekannt"));
+                                SendChatMessage(p, Helper.ReplaceFirst(message, player.Name, "Unbekannt"));
                             }
                         }
                         else
                         {
                             if (player.HasSharedData("Client:OldName") && player.GetSharedData<string>("Client:OldName") != "n/A")
                             {
-                                SendChatMessage(p, message.Replace(player.Name, player.GetSharedData<string>("Client:OldName")));
+                                if (p == player && !tempData.undercover.Contains("Unbekannt"))
+                                {
+                                    SendChatMessage(p, Helper.ReplaceFirst(message, player.Name, tempData.undercover));
+                                }
+                                else
+                                {
+                                    SendChatMessage(p, Helper.ReplaceFirst(message, player.Name, player.GetSharedData<string>("Client:OldName")));
+                                }
                             }
                             else
                             {
@@ -2855,7 +2865,7 @@ namespace NemesusWorld.Utils
             Helper.CreateAdminLog($"chatlog", message);
         }
 
-        public static void SendChatMessage(Player player, string message, bool removefirst = false)
+        public static void SendChatMessage(Player player, string message, bool removefirst = false) //hier
         {
             Character character = GetCharacterData(player);
             Account account = GetAccountData(player);
@@ -2894,13 +2904,13 @@ namespace NemesusWorld.Utils
             Account account = Helper.GetAccountData(player);
             string text = "";
             message = message.Remove(0, 1);
+            text = "!{#0099ff}[Adminchat] " + account.name + ": " + message;
             foreach (Player c in NAPI.Pools.GetAllPlayers())
             {
                 Account cacc = Helper.GetAccountData(c);
                 TempData tempData = Helper.GetCharacterTempData(c);
                 if (Account.IsPlayerLoggedIn(c) && cacc.adminlevel >= 1 && tempData.achat == true)
                 {
-                    text = "!{#0099ff}[Adminchat] " + account.name + ": " + message;
                     SendChatMessage(c, text, false);
                 }
             }
@@ -2946,9 +2956,12 @@ namespace NemesusWorld.Utils
             foreach (Player player in NAPI.Pools.GetAllPlayers())
             {
                 TempData tempData = Helper.GetCharacterTempData(player);
-                if (player != null && player.Exists && Account.IsPlayerLoggedIn(player) && tempData.achat == true)
+                if (tempData != null)
                 {
-                    player.TriggerEvent("Client:AdminInfoMessage", message, time);
+                    if (player != null && player.Exists && Account.IsPlayerLoggedIn(player) && tempData.achat == true)
+                    {
+                        player.TriggerEvent("Client:AdminInfoMessage", message, time);
+                    }
                 }
             }
             if (sendtodiscord == true)
@@ -4947,6 +4960,7 @@ namespace NemesusWorld.Utils
                                             player.SetSharedData("Client:OldName", "n/A");
                                         }
                                         player.TriggerEvent("Client:ResetTabCD");
+                                        player.SetSharedData("Client:Condition", "n/A");
                                         SendNotificationWithoutButton(player, "Der Adminlogin war erfolgreich!", "success", "top-end");
                                         tempData.adminduty = true;
                                         NAPI.Data.SetEntitySharedData(player, "Player:AdminLogin", 1);
@@ -18673,6 +18687,16 @@ namespace NemesusWorld.Utils
         {
             var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(plainText);
             return System.Convert.ToBase64String(plainTextBytes);
+        }
+
+        public static string ReplaceFirst(string text, string search, string replace)
+        {
+            int pos = text.IndexOf(search);
+            if (pos < 0)
+            {
+                return text;
+            }
+            return text.Substring(0, pos) + replace + text.Substring(pos + search.Length);
         }
 
         public static string ReplaceUmlauts(string text)

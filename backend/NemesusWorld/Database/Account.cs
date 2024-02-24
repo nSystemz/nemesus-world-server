@@ -232,7 +232,7 @@ namespace NemesusWorld.Database
             try
             {
                 MySqlCommand command = General.Connection.CreateCommand();
-                command.CommandText = "INSERT INTO users (password, name, adminlevel, last_ip, identifier, account_created, last_login, last_save) VALUES (@password, @name, @adminlevel, @last_ip, @identifier, @account_created, @last_login, @last_save)";
+                command.CommandText = "INSERT INTO users (password, name, adminlevel, last_ip, identifier, account_created, last_login, last_save, rpquizfinish) VALUES (@password, @name, @adminlevel, @last_ip, @identifier, @account_created, @last_login, @last_save, @rpquizfinish)";
 
                 command.Parameters.AddWithValue("@password", saltedpw);
                 command.Parameters.AddWithValue("@name", name);
@@ -242,6 +242,14 @@ namespace NemesusWorld.Database
                 command.Parameters.AddWithValue("@account_created", Helper.UnixTimestamp());
                 command.Parameters.AddWithValue("@last_login", account.last_login);
                 command.Parameters.AddWithValue("@last_save", account.last_save);
+                if (Helper.adminSettings.rpquiz == false)
+                {
+                    command.Parameters.AddWithValue("@rpquizfinish", 1);
+                }
+                else
+                {
+                    command.Parameters.AddWithValue("@rpquizfinish", 0);
+                }
 
                 command.ExecuteNonQuery();
                 account.id = (int)command.LastInsertedId;

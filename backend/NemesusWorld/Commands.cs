@@ -575,6 +575,11 @@ namespace NemesusWorld
                 {
                     Helper.SendNotificationWithoutButton(player, "Du musst zuerst deinen Admindienst beenden!", "error", "top-end");
                 }
+                if (tempData.undercover.Length > 3 && tempData.undercover.Contains("Unbekannt"))
+                {
+                    Helper.SendNotificationWithoutButton(player, "Du kannst diesen Befehl jetzt nicht benutzen!", "error", "top-end");
+                    return;
+                }
                 if (tempData.undercover == "")
                 {
                     if (tempData.adminduty == true)
@@ -6548,6 +6553,7 @@ namespace NemesusWorld
                     {
                         player.TriggerEvent("Client:ResetTabCD");
                         tempData.adminduty = true;
+                        player.SetSharedData("Client:Condition", "n/A");
                         Helper.SendNotificationWithoutButton(player, "Der Adminlogin war erfolgreich!", "success", "top-end");
                         NAPI.Data.SetEntitySharedData(player, "Player:AdminLogin", 1);
                         player.SetData<int>("Player:OldHealth", player.GetSharedData<int>("Player:HealthSync") - 100);
@@ -6575,6 +6581,7 @@ namespace NemesusWorld
                     }
                     player.TriggerEvent("Client:ResetTabCD");
                     player.SetOwnSharedData("Player:Funmodus", false);
+                    player.SetSharedData("Client:Condition", "n/A");
                     Helper.SendNotificationWithoutButton(player, "Admindienst beendet!", "success", "top-end");
                     NAPI.Player.SetPlayerCurrentWeapon(player, WeaponHash.Unarmed);
                     tempData.adminduty = false;
@@ -6680,12 +6687,12 @@ namespace NemesusWorld
                 if (tempData.achat == false)
                 {
                     tempData.achat = true;
-                    Helper.SendNotificationWithoutButton(player, "Admin-Benachrichtigungen aktiviert!", "success", "top-end");
+                    Helper.SendNotificationWithoutButton(player, "Adminbenachrichtigungen aktiviert!", "success", "top-end");
                 }
                 else
                 {
                     tempData.achat = false;
-                    Helper.SendNotificationWithoutButton(player, "Admin-Benachrichtigungen deaktiviert!", "success", "top-end");
+                    Helper.SendNotificationWithoutButton(player, "Adminbenachrichtigungen deaktiviert!", "success", "top-end");
                 }
             }
             catch (Exception e)
@@ -7435,6 +7442,11 @@ namespace NemesusWorld
                     Helper.SendNotificationWithoutButton(player, "Du kannst diesen Befehl jetzt nicht benutzen!", "error", "top-end");
                     return;
                 }
+                if(tempData.undercover.Length > 3 && !tempData.undercover.Contains("Unbekannt"))
+                {
+                    Helper.SendNotificationWithoutButton(player, "Du kannst diesen Befehl jetzt nicht benutzen!", "error", "top-end");
+                    return;
+                }
                 var obj = JObject.Parse(character.json);
                 if (character.factionduty == true)
                 {
@@ -8150,7 +8162,7 @@ namespace NemesusWorld
                     Helper.SendNotificationWithoutButton(player, "Du hast deinen Account noch nicht mit dem Forum verifiziert!", "error", "top-left");
                     return;
                 }
-                if (Helper.UnixTimestamp() > account.forumupdate)
+                if (Helper.UnixTimestamp() < account.forumupdate)
                 {
                     Helper.SendNotificationWithoutButton(player, "Du kannst deine Forumrechte nur alle 25 Minuten updaten!", "error", "top-left");
                     return;
@@ -8867,6 +8879,45 @@ namespace NemesusWorld
                     return;
                 }
                 Helper.SendRadiusMessage("!{#EE82EE}* " + player.Name + " " + nachricht, 8, player);
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[CMD_me]: " + e.ToString());
+            }
+        }
+
+        [Command("condition", "Befehl: /condition [Condition]", GreedyArg = true)]
+        public void cmd_condition(Player player, string condition)
+        {
+            try
+            {
+                if (!Account.IsPlayerLoggedIn(player)) return;
+                if (player.GetSharedData<bool>("Player:Death") == true) return;
+                TempData tempData = Helper.GetCharacterTempData(player);
+                if (tempData == null) return;
+                if (Helper.adminSettings.voicerp > 0 || Helper.adminSettings.nametag == 0)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Der Text-RP Modus/Nametagmodus > 0 muss zuerst aktiviert werden!", "error", "top-end");
+                    return;
+                }
+                if(tempData.adminduty == true)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Du kannst diesen Befehl jetzt nicht benutzen!", "error", "top-end");
+                    return;
+                }
+                if (condition.Length < 3 || condition.Length > 64)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Ungültiger Zustand!", "error", "top-end");
+                    return;
+                }
+                if(condition.ToLower() == "n/A" || condition.ToLower() == "keinen")
+                {
+                    player.SetSharedData("Client:Condition", "n/A");
+                    Helper.SendNotificationWithoutButton(player, "Der Zustand wurde entfernt!", "success", "top-end");
+                    return;
+                }
+                player.SetSharedData("Client:Condition", condition);
+                Helper.SendNotificationWithoutButton(player, "Der Zustand wurde gesetzt!", "success", "top-end");
             }
             catch (Exception e)
             {

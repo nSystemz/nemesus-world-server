@@ -228,7 +228,7 @@ namespace NemesusWorld.Controllers
 
                 Helper.SendAdminMessage3($"{name} wurde vom Server gekickt, Grund: {text}!");
 
-                Helper.DiscordWebhook(Helper.AdminNotificationWebHook, discordMessage, "Gameserver");
+                Helper.DiscordWebhook(Settings._Settings.AdminNotificationWebHook, discordMessage, "Gameserver");
 
                 if (log == true)
                 {
@@ -309,7 +309,7 @@ namespace NemesusWorld.Controllers
 
                 Helper.SendAdminMessage3($"{account.name} wurde vom Server gebannt, Grund: {text}");
 
-                Helper.DiscordWebhook(Helper.AdminNotificationWebHook, discordMessage, "Gameserver");
+                Helper.DiscordWebhook(Settings._Settings.AdminNotificationWebHook, discordMessage, "Gameserver");
 
                 if (time > 1)
                 {

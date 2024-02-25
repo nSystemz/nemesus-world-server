@@ -525,7 +525,7 @@ namespace NemesusWorld.Controllers
                         Helper.SendNotificationWithoutButton2(player, "Das Ticket wurde erfolgreich angelegt, in kürze wird sich ein Teammitglied bei dir melden!", "success", "center", 3500);
 
                         Helper.SendAdminMessage2($"{account.name} hat ein neues Ticket[{ticketId}] ingame erstellt - {ticketArray[0]}", 1, false);
-                        Helper.DiscordWebhook(Helper.AdminNotificationWebHook, $"{account.name} hat ein neues Ticket[{ticketId}] ingame erstellt - {ticketArray[0]} | https://ucp.nemesus-world.de/showTicket/"+ticketId);
+                        Helper.DiscordWebhook(Settings._Settings.AdminNotificationWebHook, $"{account.name} hat ein neues Ticket[{ticketId}] ingame erstellt - {ticketArray[0]} | https://ucp.nemesus-world.de/showTicket/"+ticketId);
                         break;
                     }
             }

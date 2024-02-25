@@ -990,17 +990,20 @@ namespace NemesusWorld.Controllers
                                 oldTempName = character.name;
                                 character.name = player.GetSharedData<string>("Client:OldName");
                             }
-                            if (character.name != null)
-                            {
-                                db.Save(character);
-                            }
                             NAPI.Task.Run(() =>
                             {
-                                if (tempData.undercover.Length > 3 && oldTempName != "n/A")
+                                if (character.name != null)
                                 {
-                                    character.name = oldTempName;
+                                    db.Save(character);
                                 }
-                            }, delayTime: 1250);
+                                NAPI.Task.Run(() =>
+                                {
+                                    if (tempData.undercover.Length > 3 && oldTempName != "n/A")
+                                    {
+                                        character.name = oldTempName;
+                                    }
+                                }, delayTime: 515);
+                            }, delayTime: 515);
                         }
                         else
                         {

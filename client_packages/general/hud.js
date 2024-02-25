@@ -8348,7 +8348,7 @@ function UpdateNameTags1(nametags) {
 
                 let nname = 'Unbekannt';
                 if (admindutynt == 0) {
-                    if (nametag == 2 || (nameTagList.length > 0 && nameTagList.includes(player.name))) {
+                    if (nametagSystem == 2 || (nameTagList.length > 0 && nameTagList.includes(player.name))) {
                         nname = player.name;
                     }
                 } else {
@@ -8504,7 +8504,7 @@ function UpdateNameTags2(nametags) {
 
                 let nname = 'Unbekannt';
                 if (admindutynt == 0) {
-                    if (nametag == 2 || (nameTagList.length > 0 && nameTagList.includes(player.name))) {
+                    if (nametagSystem == 2 || (nameTagList.length > 0 && nameTagList.includes(player.name))) {
                         nname = player.name;
                     }
                 } else {

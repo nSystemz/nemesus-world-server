@@ -3912,13 +3912,12 @@ namespace NemesusWorld
                 if (!e.ToString().ToLower().Contains("setandgetweather"))
                 {
                     Helper.ConsoleLog("error", $"[OnUnhandledException]: " + e.ToString());
-                    if (NAPI.Server.GetServerPort() == 22005)
-                    {
-                        Helper.DiscordWebhook(Helper.ErrorWebhook, e.ToString(), "nMonitoring");
-                    }
+                    Helper.DiscordWebhook(Settings._Settings.ErrorWebhook, e.ToString(), "nMonitoring");
                 }
             }
-            catch (Exception) { }
+            catch (Exception e2) {
+                Helper.ConsoleLog("error", $"[OnUnhandledException2]: " + e2.ToString());
+            }
         }
     }
 }

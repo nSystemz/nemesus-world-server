@@ -3199,7 +3199,7 @@ CREATE TABLE `namechanges` (
 
 CREATE TABLE `outfits` (
   `id` int(11) NOT NULL,
-  `name` varchar(35) NOT NULL,
+  `name` varchar(125) NOT NULL,
   `owner` varchar(35) NOT NULL,
   `json1` longtext NOT NULL,
   `json2` longtext NOT NULL,

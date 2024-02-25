@@ -556,6 +556,7 @@ namespace NemesusWorld.Database
         {
             try
             {
+                player.SetData<bool>("Player:FirstLogin", firstlogin);
                 LoadAccount(this);
                 logged_in = true;
                 player.SetData(Helper.GetAccountKey(), this);

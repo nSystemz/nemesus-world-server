@@ -2081,7 +2081,7 @@ namespace NemesusWorld
 
                 Helper.SendAdminMessage3($"{account2.name} wurde ins Prison gesteckt, Grund: {text}!");
 
-                Helper.DiscordWebhook(Helper.AdminNotificationWebHook, discordMessage, "Gameserver");
+                Helper.DiscordWebhook(Settings._Settings.AdminNotificationWebHook, discordMessage, "Gameserver");
 
                 string message3 = $"{account2.name} wurde von/m {account.name} für {checkpoints} Checkpoints ins Prison gesteckt, Grund: {text}!";
                 Helper.CreateAdminLog("prisonlog", message3);
@@ -2289,7 +2289,7 @@ namespace NemesusWorld
 
                 Helper.SendAdminMessage3($"{account.name} wurde aus dem Prison geholt, Grund: {text}!");
 
-                Helper.DiscordWebhook(Helper.AdminNotificationWebHook, discordMessage, "Gameserver");
+                Helper.DiscordWebhook(Settings._Settings.AdminNotificationWebHook, discordMessage, "Gameserver");
 
                 string message3 = $"{account2.name} wurde von/m {account.name} aus dem Prison geholt, Grund: {text}!";
                 Helper.CreateAdminLog("prisonlog", message3);
@@ -3193,7 +3193,7 @@ namespace NemesusWorld
                 }
                 if (player.Vehicle != null)
                 {
-                    Helper.SendNotificationWithoutButton(player, "Du kannst diesen Befehl nur zu Fuß benutzen!", "error", "top-end");
+                    Helper.SendNotificationWithoutButton(player, "Du kannst diesen Befehl nur zu Fuss benutzen!", "error", "top-end");
                     return;
                 }
                 player.TriggerEvent("Client:CreateTaxiPosition");
@@ -6518,7 +6518,7 @@ namespace NemesusWorld
                 Helper.SendNotificationWithoutButton(player, "Unzureichende Adminrechte!", "error", "top-end");
                 return;
             }
-            string status = (player.IsInVehicle) ? "Im Fahrzeug" : "Zu Fuß";
+            string status = (player.IsInVehicle) ? "Im Fahrzeug" : "Zu Fuss";
             Vector3 pos = (player.IsInVehicle) ? player.Vehicle.Position : player.Position;
             Vector3 rot = (player.IsInVehicle) ? player.Vehicle.Rotation : player.Rotation;
 
@@ -8162,7 +8162,7 @@ namespace NemesusWorld
                     Helper.SendNotificationWithoutButton(player, "Du hast deinen Account noch nicht mit dem Forum verifiziert!", "error", "top-left");
                     return;
                 }
-                if (Helper.UnixTimestamp() < account.forumupdate)
+                if (Helper.UnixTimestamp() < account.forumupdate && account.forumupdate > 0)
                 {
                     Helper.SendNotificationWithoutButton(player, "Du kannst deine Forumrechte nur alle 25 Minuten updaten!", "error", "top-left");
                     return;
@@ -8172,7 +8172,7 @@ namespace NemesusWorld
             }
             catch (Exception e)
             {
-                Helper.ConsoleLog("error", $"[cmd_fuel]: " + e.ToString());
+                Helper.ConsoleLog("error", $"[cmd_updateforum]: " + e.ToString());
             }
         }
 
@@ -8752,6 +8752,11 @@ namespace NemesusWorld
                 if (tempData.adminduty == true)
                 {
                     Helper.SendNotificationWithoutButton(player, "Du musst zuerst deinen Admindienst beenden!", "error", "top-end");
+                    return;
+                }
+                if (player.GetData<bool>("Player:FirstLogin") == true)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Bei deinem ersten Login/kurz nach der Registrierung kannst du diesen Befehl nicht benutzen!", "error", "top-end");
                     return;
                 }
                 CharacterController.SaveCharacter(player);

@@ -141,11 +141,14 @@ namespace NemesusWorld.Database
                 TempData tempData = Helper.GetCharacterTempData(player);
                 if (tempData != null)
                 {
-                    foreach (Items item in tempData.itemlist)
+                    if (tempData.itemlist.Count > 0)
                     {
-                        if (item != null && (Account.IsAdminOnDuty(player, (int)Account.AdminRanks.Administrator) || (item.description == "Bizzschlüssel" && item.props.Contains("Bizzschlüssel: " + bizzid)) || item.description == "Bizzschlüssel" && item.props.Contains("Bizzschlüssel: " + bizzid)))
+                        foreach (Items item in tempData.itemlist)
                         {
-                            return true;
+                            if (item != null && (Account.IsAdminOnDuty(player, (int)Account.AdminRanks.Administrator) || (item.description == "Bizzschlüssel" && item.props.Contains("Bizzschlüssel: " + bizzid)) || item.description == "Bizzschlüssel" && item.props.Contains("Bizzschlüssel: " + bizzid)))
+                            {
+                                return true;
+                            }
                         }
                     }
                 }
@@ -174,6 +177,10 @@ namespace NemesusWorld.Database
                     bizz.funds = business.funds;
                     bizz.funds = 0;
                     bizz.elec = business.elec;
+                    if(bizz.elec != 50 && bizz.elec != 51)
+                    {
+                        bizz.elec = 50;
+                    }
                     bizz.products = business.products;
                     if (business.multiplier < 1.0 || business.multiplier > 3.0)
                     {
@@ -335,7 +342,7 @@ namespace NemesusWorld.Database
             {
                 foreach (Business bizz in businessList)
                 {
-                    if (bizz.id == id)
+                    if (bizz != null && bizz.id == id)
                     {
                         bizzTemp = bizz;
                         break;
@@ -681,7 +688,7 @@ namespace NemesusWorld.Database
                     bizzLoad.selled = bizz.selled;
                     bizzLoad.getmoney = bizz.getmoney;
                     bizzLoad.elec = bizz.elec;
-                    bizzLoad.elecname = Business.GetBusinessById(bizz.elec).name;
+                    bizzLoad.elecname = Business.GetBusinessById(bizz.elec) != null ? Business.GetBusinessById(bizz.elec).name : "Kein Strombieter";
 
                     if (updatehud == false)
                     {

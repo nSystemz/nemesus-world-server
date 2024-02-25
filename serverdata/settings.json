@@ -1,8 +1,11 @@
 {
-	"Servername": "Nemesus World",
-	"Servertag":  "[NW]",
-	"Host":       "localhost",
-	"Username":   "nworldtest",
-	"Password":   "nworldtest",
-	"Database":   "nworldtest"
+	"Servername": 			"Nemesus World",
+	"Servertag":  			"[NW]",
+	"Host":       			"localhost",
+	"Username":   			"",
+	"Password":   			"",
+	"Database":   			"",
+	"AdminNotificationWebHook":	"",
+	"ErrorWebhook":			"",
+	"ScreenshotWebhook":		""
 }

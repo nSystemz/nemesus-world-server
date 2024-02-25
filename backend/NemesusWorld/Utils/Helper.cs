@@ -55,10 +55,6 @@ namespace NemesusWorld.Utils
         public static int MatsImVersteck = 0;
         public static double gamemodeVersion = 1.1;
         public static bool whitelist = false; //False = Whitelist aus, True = Whitelist an
-        //ToDo: Discord Webhooks setzen
-        public static string AdminNotificationWebHook = "TODO";
-        public static string ErrorWebhook = "TODO";
-        public static string ScreenshotWebhook = "TODO";
         //Fuelpositions
         public static Vector3[] fuelPositions = new Vector3[62]
                                 { 
@@ -413,7 +409,7 @@ namespace NemesusWorld.Utils
         //Discord Webhooks
         public static void DiscordWebhook(string webhookid, string content, string username = "Gameserver")
         {
-            if (webhookid.ToLower() == "todo") return;
+            if (webhookid.ToLower() == "todo" || webhookid.Length <= 0) return;
             try
             {
                 HTTP.Post(webhookid, new System.Collections.Specialized.NameValueCollection()
@@ -1339,7 +1335,7 @@ namespace NemesusWorld.Utils
                                 foreach (Player p in NAPI.Pools.GetAllPlayers())
                                 {
                                     Character character2 = Helper.GetCharacterData(player);
-                                    if (character2 != null && character2.faction == character.faction && character2.factionduty == true)
+                                    if (p != null && character != null && character2 != null && character2.faction == character.faction && character2.factionduty == true)
                                     {
                                         p.TriggerEvent("Client:SetMDCBlip", x, y, z);
                                     }
@@ -1832,7 +1828,7 @@ namespace NemesusWorld.Utils
                 if (player.GetData<string>("Player:DiscordUpload").Length >= 3)
                 {
                     string text = "[Screenshot Upload - " + player.GetData<string>("Player:DiscordUpload") + "]: " + screenshot;
-                    DiscordWebhook(ScreenshotWebhook, text, "nScreens");
+                    DiscordWebhook(Settings._Settings.ScreenshotWebhook, text, "nScreens");
                     player.SetData("Player:DiscordUpload", "");
                 }
                 if (screenName.Contains("Char-"))
@@ -1919,10 +1915,7 @@ namespace NemesusWorld.Utils
                     NAPI.Util.ConsoleOutput(text, ConsoleColor.Red);
                     if (trace == true)
                     {
-                        if (NAPI.Server.GetServerPort() == 22005)
-                        {
-                            DiscordWebhook(ErrorWebhook, text, "nMonitoring");
-                        }
+                        DiscordWebhook(Settings._Settings.ErrorWebhook, text, "nMonitoring");
                         DateTime localDate = DateTime.Now;
                         using (StreamWriter file = new StreamWriter(@"./serverdata/logs/errorlog.txt", true))
                         {
@@ -2763,6 +2756,8 @@ namespace NemesusWorld.Utils
         public static void SendRadiusMessage(string message, int radius, Player player, bool cancelOwnPlayer = false)
         {
             Helper.CreateAdminLog($"chatlog", message);
+            TempData tempData2 = Helper.GetCharacterTempData(player);
+            if (tempData2 == null) return;
             foreach (Player p in NAPI.Pools.GetAllPlayers())
             {
                 if (Account.IsPlayerLoggedIn(p) && IsInRangeOfPoint(p.Position, player.Position, radius))
@@ -2787,13 +2782,13 @@ namespace NemesusWorld.Utils
                         {
                             if (player.HasSharedData("Client:OldName") && player.GetSharedData<string>("Client:OldName") != "n/A")
                             {
-                                if (p == player && !tempData.undercover.Contains("Unbekannt"))
+                                if (p == player && tempData.undercover.Contains("Unbekannt"))
                                 {
-                                    SendChatMessage(p, Helper.ReplaceFirst(message, player.Name, tempData.undercover));
+                                    SendChatMessage(p, Helper.ReplaceFirst(message, player.Name, player.GetSharedData<string>("Client:OldName")));
                                 }
                                 else
                                 {
-                                    SendChatMessage(p, Helper.ReplaceFirst(message, player.Name, player.GetSharedData<string>("Client:OldName")));
+                                    SendChatMessage(p, message);
                                 }
                             }
                             else
@@ -2865,7 +2860,7 @@ namespace NemesusWorld.Utils
             Helper.CreateAdminLog($"chatlog", message);
         }
 
-        public static void SendChatMessage(Player player, string message, bool removefirst = false) //hier
+        public static void SendChatMessage(Player player, string message, bool removefirst = false)
         {
             Character character = GetCharacterData(player);
             Account account = GetAccountData(player);
@@ -2932,7 +2927,7 @@ namespace NemesusWorld.Utils
             }
             if (todiscord == true)
             {
-                DiscordWebhook(AdminNotificationWebHook, message, "Gameserver");
+                DiscordWebhook(Settings._Settings.AdminNotificationWebHook, message, "Gameserver");
             }
             Helper.CreateAdminLog($"chatlog", text2);
         }
@@ -2966,7 +2961,7 @@ namespace NemesusWorld.Utils
             }
             if (sendtodiscord == true)
             {
-                DiscordWebhook(AdminNotificationWebHook, message, "Gameserver");
+                DiscordWebhook(Settings._Settings.AdminNotificationWebHook, message, "Gameserver");
             }
             Helper.CreateAdminLog($"chatlog", message);
         }
@@ -7136,7 +7131,7 @@ namespace NemesusWorld.Utils
                     Helper.SendNotificationWithoutButton(player, $"Du hast die Klingel betätigt!", "success", "top-left", 1250);
                     foreach (Player p in NAPI.Pools.GetAllPlayers())
                     {
-                        if (p != null && p.GetOwnSharedData<bool>("Player:Spawned") == true && p.GetSharedData<bool>("Player:Death") == false && p.Position.DistanceTo(player.Position) <= 25.5 && !p.IsInVehicle)
+                        if (p != null && Account.IsPlayerLoggedIn(p) && p.GetOwnSharedData<bool>("Player:Spawned") == true && p.GetSharedData<bool>("Player:Death") == false && p.Position.DistanceTo(player.Position) <= 25.5 && !p.IsInVehicle)
                         {
                             p.TriggerEvent("Client:PlaySound", "klingel.wav", 0);
                         }
@@ -11492,7 +11487,7 @@ namespace NemesusWorld.Utils
                 account.prison = 0;
                 if (check == 0)
                 {
-                    Helper.DiscordWebhook(Helper.AdminNotificationWebHook, $"{account.name} hat alle Checkpoints abgelaufen!", "Gameserver");
+                    Helper.DiscordWebhook(Settings._Settings.AdminNotificationWebHook, $"{account.name} hat alle Checkpoints abgelaufen!", "Gameserver");
                     Helper.CreateAdminLog("prisonlog", $"{account.name} hat alle Checkpoints abgelaufen!");
                 }
                 string[] spawnCharAfterReconnect = new string[5];

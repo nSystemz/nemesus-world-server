@@ -138,6 +138,7 @@ namespace NemesusWorld.Database
         {
             try
             {
+                if (Account.IsAdminOnDuty(player, (int)Account.AdminRanks.Administrator)) return true;
                 TempData tempData = Helper.GetCharacterTempData(player);
                 if (tempData != null)
                 {
@@ -145,7 +146,7 @@ namespace NemesusWorld.Database
                     {
                         foreach (Items item in tempData.itemlist)
                         {
-                            if (item != null && (Account.IsAdminOnDuty(player, (int)Account.AdminRanks.Administrator) || (item.description == "Bizzschlüssel" && item.props.Contains("Bizzschlüssel: " + bizzid)) || item.description == "Bizzschlüssel" && item.props.Contains("Bizzschlüssel: " + bizzid)))
+                            if (item != null && ((item.description == "Bizzschlüssel" && item.props.Contains("Bizzschlüssel: " + bizzid)) || (item.description == "Bizzschlüssel" && item.props.Contains("Bizzschlüssel: " + bizzid))))
                             {
                                 return true;
                             }

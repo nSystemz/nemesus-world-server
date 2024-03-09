@@ -3614,8 +3614,14 @@ namespace NemesusWorld
                 {
                     obj = Helper.TorsosWoman;
                 }
-                int draw = (int)obj[$"{drawable}"][$"{variation}"]["BestTorsoDrawable"];
-                int vari = (int)obj[$"{drawable}"][$"{variation}"]["BestTorsoTexture"];
+                int draw = -1;
+                int vari = 0;
+                try
+                {
+                    draw = (int)obj[$"{drawable}"][$"{variation}"]["BestTorsoDrawable"];
+                    vari = (int)obj[$"{drawable}"][$"{variation}"]["BestTorsoTexture"];
+                }
+                catch (Exception) { }
                 if (draw == -1)
                 {
                     if (show == true)

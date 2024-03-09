@@ -670,7 +670,7 @@ mp.game.audio.setStaticEmitterEnabled('DLC_BTL_Nightclub_SCL', false);
 mp.game.audio.setStaticEmitterEnabled('SE_ba_dlc_club_exterior', false);
 
 //Trailersync
-mp.game.vehicle.setExperimentalAttachmentSyncEnabled(true);
+mp.game.vehicle.setExperimentalAttachmentSyncEnabled(false);
 
 //UseDefaultVehicleEntering
 mp.game.controls.useDefaultVehicleEntering = true;
@@ -1132,6 +1132,17 @@ mp.events.add('render', (nametags) => {
             });
         }
     }
+});
+
+//Exceptions
+mp.events.add("uncaughtException", (exception) => {
+    mp.console.logError("Error [uncaughtException]: " + exception, true, true);
+    return true;
+});
+
+mp.events.add("unhandledRejection", (promise, error) => {
+    mp.console.logError("Error [unhandledRejection]: " + error, true, true);
+    return true;
 });
 
 //Prices
@@ -3264,6 +3275,9 @@ mp.events.add("playerCommand", (command) => {
 
     if (commandName === "q") {
         mp.game.vehicle.createMissionTrain(24, localPlayer.position.x, localPlayer.position.y, localPlayer.position.z, true);
+    }
+    if (commandName === "errortest") {
+        mp.game.vehicle.getVehicleModelMaxSpeed(localPlayer.vehicle.model) * 3.6;
     }
     else if(commandName === "reloadvoicechat" && voicerp == 2)
     {
@@ -7616,7 +7630,7 @@ mp.events.addDataHandler("Vehicle:NitroStatus", (entity, value, oldValue) => {
             }
         }
     } catch (e) {
-        mp.console.logInfo("Error [Vehicle:NitroStatus]: " + e, true, true);
+        mp.console.logError("Error [Vehicle:NitroStatus]: " + e, true, true);
     }
 });
 
@@ -9972,6 +9986,7 @@ mp.events.addDataHandler("Player:Attachments", (entity, value) => {
         }
     }
 });
+
 
 //GetAttachmentByName
 function GetAttachmentByName(name) {

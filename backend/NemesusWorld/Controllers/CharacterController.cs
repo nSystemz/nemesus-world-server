@@ -436,10 +436,7 @@ namespace NemesusWorld.Controllers
 
                 NAPI.Task.Run(() =>
                 {
-                    player.TriggerEvent("Client:HideCharacterSwitch");
-                    player.TriggerEvent("Client:DestroyLoginCamera");
-                    player.TriggerEvent("Client:ActivateControls");
-
+                    player.TriggerEvent("Client:HideCursor");
                     player.SetOwnSharedData("Player:Needs", character.hunger + "," + character.thirst + "," + character.afk);
 
                     if (GangController.gangzoneList.Count > 0)
@@ -475,6 +472,9 @@ namespace NemesusWorld.Controllers
                                     Helper.SetPlayerPosition(player, new Vector3(-545.3484, -205.04977, 38.215366 + 0.1));
                                     player.Rotation = new Vector3(0.0, 0.0, 72.3077);
                                 }
+                                player.TriggerEvent("Client:HideCharacterSwitch");
+                                player.TriggerEvent("Client:DestroyLoginCamera");
+                                player.TriggerEvent("Client:ActivateControls");
                                 player.TriggerEvent("Client:ShowBlackFadeOut", character.tutorialstep);
                             }, delayTime: 15500);
                         }
@@ -489,6 +489,9 @@ namespace NemesusWorld.Controllers
                                 Helper.SetPlayerPosition(player, new Vector3(156.36731, -3308.6594, 6.0219297 + 0.1));
                                 player.Heading = 26.385115f;
                                 player.Rotation = new Vector3(0.0, 0.0, 24.786564);
+                                player.TriggerEvent("Client:HideCharacterSwitch");
+                                player.TriggerEvent("Client:DestroyLoginCamera");
+                                player.TriggerEvent("Client:ActivateControls");
                                 player.TriggerEvent("Client:ShowBlackFadeOut", character.tutorialstep);
                             }, delayTime: 15500);
                         }
@@ -504,6 +507,9 @@ namespace NemesusWorld.Controllers
                             Helper.SetPlayerPosition(player, new Vector3(-540.5015, -205.55278, 3022 + 0.1));
                             player.Heading = -141.01595f;
                             player.Rotation = new Vector3(0.0, 0.0, -141.01595);
+                            player.TriggerEvent("Client:HideCharacterSwitch");
+                            player.TriggerEvent("Client:DestroyLoginCamera");
+                            player.TriggerEvent("Client:ActivateControls");
                         }
                         else
                         {
@@ -520,6 +526,12 @@ namespace NemesusWorld.Controllers
                                 NAPI.Task.Run(() =>
                                 {
                                     Helper.SetPlayerPosition(player, new Vector3(float.Parse(spawnCharAfterReconnect[0]), float.Parse(spawnCharAfterReconnect[1]), float.Parse(spawnCharAfterReconnect[2])));
+                                    NAPI.Task.Run(() =>
+                                    {                                 
+                                        player.TriggerEvent("Client:HideCharacterSwitch");
+                                        player.TriggerEvent("Client:DestroyLoginCamera");
+                                        player.TriggerEvent("Client:ActivateControls");
+                                    }, delayTime: 105);
                                 }, delayTime: 155);
                                 player.Heading = float.Parse(spawnCharAfterReconnect[3]);
                                 player.Rotation = new Vector3(0.0, 0.0, float.Parse(spawnCharAfterReconnect[3]));
@@ -529,6 +541,9 @@ namespace NemesusWorld.Controllers
                                 Helper.SetPlayerPosition(player, new Vector3(-1999.6619, 1113.5583, -27.363804));
                                 player.Dimension = (uint)(player.Id + 500);
                                 player.TriggerEvent("Client:StartPrison", account.prison);
+                                player.TriggerEvent("Client:HideCharacterSwitch");
+                                player.TriggerEvent("Client:DestroyLoginCamera");
+                                player.TriggerEvent("Client:ActivateControls");
                             }
                         }
                         if (character.arrested > 0)
@@ -971,7 +986,7 @@ namespace NemesusWorld.Controllers
                     {
                         inBandito = true;
                     }
-                    if (player.Dimension != 125000 && player.GetData<bool>("Player:InShop") == false && account.prison == 0 && player.GetData<bool>("Player:Spectate") == false && inBandito == false)
+                    if (player.Dimension != 125000 && player.GetData<bool>("Player:InShop") == false && account.prison == 0 && player.GetData<bool>("Player:Spectate") == false && inBandito == false && !Helper.IsInRangeOfPoint(new Vector3(226.29927, 7452.966, 22.658815), player.Position, 5.0f))
                     {
                         character.lastpos = $"{player.Position.X}|{player.Position.Y}|{player.Position.Z}|{player.Rotation.Z}|{player.Dimension}";
                     }

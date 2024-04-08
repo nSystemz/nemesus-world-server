@@ -1,0 +1,11 @@
+{
+	"maxplayers" : 5,
+	"name" : "Nemesus World Testserver by Nemesus.de", 
+	"gamemode" : "roleplay", 
+	"stream-distance" : 750.0,
+	"announce" : false,
+	"csharp" : "enabled",
+	"port": 22005,
+	"voice-chat": true,
+  	"voice-chat-sample-rate": 48000 
+}

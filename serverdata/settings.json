@@ -1,10 +1,10 @@
 {
-	"Servername": 			"Nemesus World",
+	"Servername": 			"Nemesus World Testserver by Nemesus.de",
 	"Servertag":  			"[NW]",
-	"Host":       			"localhost",
-	"Username":   			"",
-	"Password":   			"",
-	"Database":   			"",
+	"Host":       			"mariadb",
+	"Username":   			"root",
+	"Password":   			"root",
+	"Database":   			"nworld2",
 	"AdminNotificationWebHook":	"",
 	"ErrorWebhook":			"",
 	"ScreenshotWebhook":		""

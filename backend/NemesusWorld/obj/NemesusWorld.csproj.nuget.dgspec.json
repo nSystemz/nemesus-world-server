@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\NemesusWorld.csproj": {}
+    "C:\\Users\\tschn\\Desktop\\Neuer Ordner (2)\\backend\\NemesusWorld\\NemesusWorld.csproj": {}
   },
   "projects": {
-    "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\NemesusWorld.csproj": {
+    "C:\\Users\\tschn\\Desktop\\Neuer Ordner (2)\\backend\\NemesusWorld\\NemesusWorld.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\NemesusWorld.csproj",
+        "projectUniqueName": "C:\\Users\\tschn\\Desktop\\Neuer Ordner (2)\\backend\\NemesusWorld\\NemesusWorld.csproj",
         "projectName": "NemesusWorld",
-        "projectPath": "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\NemesusWorld.csproj",
+        "projectPath": "C:\\Users\\tschn\\Desktop\\Neuer Ordner (2)\\backend\\NemesusWorld\\NemesusWorld.csproj",
         "packagesPath": "C:\\Users\\tschn\\.nuget\\packages\\",
-        "outputPath": "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\obj\\",
+        "outputPath": "C:\\Users\\tschn\\Desktop\\Neuer Ordner (2)\\backend\\NemesusWorld\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\tschn\\AppData\\Roaming\\NuGet\\NuGet.Config",

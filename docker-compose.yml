@@ -1,0 +1,54 @@
+version: "1.0"
+
+volumes:
+  mariadb:
+    driver: local
+
+networks:
+  db:
+    driver: bridge
+
+services:
+  mariadb:
+    image: mariadb:10.6
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER:  user
+      MYSQL_PASSWORD: user
+      MYSQL_DATABASE: nworld
+    ports:
+        - "3306:3306"
+    volumes:
+     - mariadb:/var/lib/mysql
+     - ./mysql-dump:/docker-entrypoint-initdb.d
+    networks:
+      db:
+
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    expose:
+      - "8080"
+    ports:
+      - "8080:80"
+    environment:
+      - PMA_HOST=mariadb
+      - PMA_PORT=3306 
+    networks:
+      db:
+
+  ragemp_server:
+   build: .
+   hostname: "ragemp_server"
+   container_name: "ragemp_server"
+   ports:
+     - "22005:22005/udp"
+     - "22006:22006"
+   tty: true
+   environment:
+     - DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1
+   restart: always
+   networks:
+    db:

@@ -37,7 +37,9 @@ J:\Tutorials\nemesus-world-server\dotnet\resources\NemesusWorld\NemesusWorld.pdb
 J:\Tutorials\nemesus-world-server\backend\NemesusWorld\obj\Debug\NemesusWorld.AssemblyInfoInputs.cache
 J:\Tutorials\nemesus-world-server\backend\NemesusWorld\obj\Debug\NemesusWorld.AssemblyInfo.cs
 J:\Tutorials\nemesus-world-server\backend\NemesusWorld\obj\Debug\NemesusWorld.csproj.CoreCompileInputs.cache
-J:\Tutorials\nemesus-world-server\backend\NemesusWorld\obj\Debug\NemesusWorld.csproj.CopyComplete
 J:\Tutorials\nemesus-world-server\backend\NemesusWorld\obj\Debug\NemesusWorld.dll
 J:\Tutorials\nemesus-world-server\backend\NemesusWorld\obj\Debug\NemesusWorld.pdb
 J:\Tutorials\nemesus-world-server\backend\NemesusWorld\obj\Debug\NemesusWorld.csproj.AssemblyReference.cache
+J:\Tutorials\nemesus-world-server\backend\NemesusWorld\obj\Debug\NemesusWorld.GeneratedMSBuildEditorConfig.editorconfig
+J:\Tutorials\nemesus-world-server\backend\NemesusWorld\obj\Debug\NemesusWorld.sourcelink.json
+J:\Tutorials\nemesus-world-server\backend\NemesusWorld\obj\Debug\NemesusW.23E9D2E4.Up2Date

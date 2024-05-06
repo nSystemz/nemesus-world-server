@@ -499,7 +499,7 @@ CREATE TABLE `banksettings` (
 
 CREATE TABLE `bans` (
   `id` int(11) NOT NULL,
-  `userid` int(11) NOT NULL,
+  `userid` int(11) NOT NULL DEFAULT -1,
   `banname` varchar(35) NOT NULL,
   `banfrom` varchar(35) NOT NULL,
   `ip` varchar(128) NOT NULL,

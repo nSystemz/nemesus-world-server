@@ -397,8 +397,8 @@ namespace NemesusWorld.Database
                                 House.SetHouseHandle(house);
                                 House.NewHouseKey(house.id, "n/A");
 
-                                command.CommandText = $"UPDATE vehicles SET garage = 'n/A' WHERE garage = @garage";
-                                command.Parameters.AddWithValue("@garage", house.id);
+                                command.CommandText = $"UPDATE vehicles SET garage = 'n/A' WHERE garage = @garagecheck";
+                                command.Parameters.AddWithValue("@garagecheck", "house-"+house.id);
                                 command.ExecuteNonQuery();
 
                                 int money = Furniture.SellAllFurniture(house.id);

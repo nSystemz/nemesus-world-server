@@ -13,6 +13,8 @@ require('./misc/helicam');
 require('./misc/flatbed');
 require('./misc/gangzones');
 
+require('./helper/disable_ambient_sounds');
+
 require('more-immersive-emergency-lights-client/index');
 
 require('./dev/devmodus');

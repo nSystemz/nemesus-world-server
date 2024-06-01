@@ -2792,7 +2792,7 @@ namespace NemesusWorld
                             Helper.weatherTimestamp = 0;
                             try
                             {
-                                Helper.SetAndGetWeather("https://nemesus-world.de/WetterInfo.php", true);
+                                Helper.SetAndGetWeather("https://wetterapi.nemesus-world.de", true);
                             }
                             catch (Exception)
                             {

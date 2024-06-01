@@ -215,12 +215,12 @@ namespace NemesusWorld
                             command.ExecuteNonQuery();
                             //Materialversteck befüllen
                             Helper.MatsImVersteck += 20;
-                            //Call2Home, kann gelöscht werden dient nur zur Statistik
-                            Helper.Call2Home();
+                            //Call2Home, kann für Statistiken aktiviert werden
+                            //Helper.Call2Home();
                             //Weather
                             try
                             {
-                                Helper.SetAndGetWeather("https://nemesus-world.de/WetterInfo.php", true);
+                                Helper.SetAndGetWeather("https://wetterapi.nemesus-world.de", true);
                             }
                             catch (Exception)
                             {
@@ -281,7 +281,7 @@ namespace NemesusWorld
                         //Weather
                         try
                         {
-                            Helper.SetAndGetWeather("https://nemesus-world.de/WetterInfo.php", true);
+                            Helper.SetAndGetWeather("https://wetterapi.nemesus-world.de", true);
                         }
                         catch (Exception)
                         {

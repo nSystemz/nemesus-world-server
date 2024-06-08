@@ -1879,23 +1879,7 @@ namespace NemesusWorld.Utils
         public static Int32 UnixTimestamp()
         {
 
-            string timeZoneBerlin = "(GMT+01:00) Deutschland/Berlin Time";
-            TimeZoneInfo str_Berlin = TimeZoneInfo.CreateCustomTimeZone("Berlin Time", new TimeSpan(01, 00, 00), timeZoneBerlin, "Berlin Time");
-            string data_Berlin = TimeZoneInfo.ConvertTime(DateTime.Now, TimeZoneInfo.Local, str_Berlin).ToString();
-            DateTime dt = DateTime.Parse(s: data_Berlin);
-#pragma warning disable CS0618 // Typ oder Element ist veraltet
-            bool winterSummerTime = dt.Equals(TimeZone.CurrentTimeZone.GetDaylightChanges(dt.Year).Start);
-#pragma warning restore CS0618 // Typ oder Element ist veraltet
-            Int32 unixTimestamp;
-            if (winterSummerTime == true) //Sommerzeit
-            {
-                unixTimestamp = (Int32)(DateTime.Now.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
-            }
-            else
-            {
-                unixTimestamp = (Int32)(DateTime.Now.Subtract(new DateTime(1970, 1, 1))).TotalSeconds - 3600;
-            }
-            return unixTimestamp;
+            return (int)new DateTimeOffset(DateTime.UtcNow).ToUnixTimeSeconds();
         }
 
         public static DateTime UnixTimeStampToDateTime(double unixTimeStamp)

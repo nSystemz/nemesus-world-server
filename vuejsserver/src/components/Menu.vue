@@ -725,7 +725,7 @@
                                                                     </li>
                                                                     <li class="list-group-item">
                                                                         <b>Letzte Speicherung</b> <a
-                                                                            class="float-right">{{timeConverter(accountinfos.last_save)}}</a>
+                                                                            class="float-right">{{timeConverter(accountinfos.last_saved)}}</a>
                                                                     </li>
                                                                     <li class="list-group-item">
                                                                         <b>Namechanges</b> <a

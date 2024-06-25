@@ -1,4 +1,4 @@
-🎮 Roleplay Gamemode für RageMP (GTA 5) 🎮
+🎮 Roleplay Gamemode por RageMP (GTA 5) 🎮
 
 También hay que agradecer a Hrred la creación de muchos mapas y otras actividades, así como a YunaLable.
 

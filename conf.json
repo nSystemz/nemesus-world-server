@@ -1,8 +1,10 @@
 {
 	"maxplayers" : 5,
-	"name" : "Nemesus World Testserver by Nemesus.de", 
+	"name" : "UNIVERSO RP", 
 	"gamemode" : "roleplay", 
 	"stream-distance" : 750.0,
+	"voice-chat": true
+        "voice-chat-sample-rate": 48000
 	"announce" : false,
 	"csharp" : "enabled",
 	"port": 22005,

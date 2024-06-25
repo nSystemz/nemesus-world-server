@@ -2,12 +2,6 @@
 
 También hay que agradecer a Hrred la creación de muchos mapas y otras actividades, así como a YunaLable.
 
-Información previa: Este modo de juego se puede utilizar como modo de juego Voice-RP (Salty-Chat o RageMP Voice) o Text-RP.
-
-Para RageMP Voice, por favor agregue la siguiente configuración a su conf.json:
-- "voice-chat": true
-- "voice-chat-sample-rate": 48000 
-
 Este modo de juego es un modo de juego para la modificación multijugador GTA 5/RageMP, los créditos se indican en el modo de juego o en la respectiva función/MLO etc.
 
 Información: El modo de juego se ejecuta en Linux y Windows, pero he tenido mejores experiencias en Windows. Por favor, copie los respectivos tiempos de ejecución actuales (de Rage) en la carpeta dotnet, ¡los tiempos de ejecución para Windows están incluidos!

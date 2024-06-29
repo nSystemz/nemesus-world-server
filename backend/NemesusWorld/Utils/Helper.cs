@@ -8963,12 +8963,15 @@ namespace NemesusWorld.Utils
                             SendNotificationWithTimer(player, "Bestanden!", "Herzlichen Glückwunsch, du hast die Prüfung bestanden! Hier dein Flugschein!", 3250);
                             player.TriggerEvent("Client:PlaySoundPeep2");
                         }
-                        if (tempData.jobVehicle.HasSharedData("Vehicle:Text3D"))
+                        if (tempData.jobVehicle != null)
                         {
-                            tempData.jobVehicle.ResetSharedData("Vehicle:Text3D");
+                            if (tempData.jobVehicle.HasSharedData("Vehicle:Text3D"))
+                            {
+                                tempData.jobVehicle.ResetSharedData("Vehicle:Text3D");
+                            }
+                            tempData.jobVehicle.Delete();
+                            tempData.jobVehicle = null;
                         }
-                        tempData.jobVehicle.Delete();
-                        tempData.jobVehicle = null;
                     }, delayTime: 215);
                 }
             }

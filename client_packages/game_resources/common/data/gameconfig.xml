@@ -87,7 +87,7 @@
                         </Item>
                         <Item>
                             <PoolName>CGameScriptResource</PoolName>
-                            <PoolSize value="3067"/>
+                            <PoolSize value="3084"/>
                         </Item>
                         <Item>
                             <PoolName>ClothStore</PoolName>
@@ -175,7 +175,7 @@
                         </Item>
                         <Item>
                             <PoolName>DrawableStore</PoolName>
-                            <PoolSize value="76700"/>
+                            <PoolSize value="77400"/>
                         </Item>
                         <Item>
                             <PoolName>Dummy Object</PoolName>
@@ -183,7 +183,7 @@
                         </Item>
                         <Item>
                             <PoolName>DwdStore</PoolName>
-                            <PoolSize value="19300"/>
+                            <PoolSize value="19500"/>
                         </Item>
                         <Item>
                             <PoolName>EntityBatch</PoolName>
@@ -203,7 +203,7 @@
                         </Item>
                         <Item>
                             <PoolName>FragmentStore</PoolName>
-                            <PoolSize value="36200"/>
+                            <PoolSize value="37600"/>
                         </Item>
                         <Item>
                             <PoolName>GamePlayerBroadcastDataHandler_Remote</PoolName>
@@ -219,7 +219,7 @@
                         </Item>
                         <Item>
                             <PoolName>InteriorProxy</PoolName>
-                            <PoolSize value="1160"/>
+                            <PoolSize value="1165"/>
                         </Item>
                         <Item>
                             <PoolName>IplStore</PoolName>
@@ -263,7 +263,7 @@
                         </Item>
                         <Item>
                             <PoolName>MetaDataStore</PoolName>
-                            <PoolSize value="3100"/>
+                            <PoolSize value="3150"/>
                         </Item>
                         <Item>
                             <PoolName>NavMeshes</PoolName>
@@ -355,7 +355,7 @@
                         </Item>
                         <Item>
                             <PoolName>ScaleformStore</PoolName>
-                            <PoolSize value="790"/>
+                            <PoolSize value="800"/>
                         </Item>
                         <Item>
                             <PoolName>ScaleformMgrArray</PoolName>
@@ -399,7 +399,7 @@
                         </Item>
                         <Item>
                             <PoolName>HandlingData</PoolName>
-                            <PoolSize value="1600"/>
+                            <PoolSize value="1650"/>
                         </Item>
                         <Item>
                             <!-- Size of the CWaypointRecording streaming module. -->
@@ -432,7 +432,7 @@
                         </Item>
                         <Item>
                             <PoolName>fwDynamicArchetypeComponent</PoolName>
-                            <PoolSize value="65521"/>
+                            <PoolSize value="15000"/>
                         </Item>
                         <Item>
                             <PoolName>fwDynamicEntityComponent</PoolName>
@@ -504,7 +504,7 @@
                         </Item>
                         <Item>
                             <PoolName>fwArchetypePooledMap</PoolName>
-                            <PoolSize value="65521"/>
+                            <PoolSize value="64000"/>
                         </Item>
                         <Item>
                             <PoolName>CTaskConversationHelper</PoolName>
@@ -528,11 +528,11 @@
                         </Item>
                         <Item>
                             <PoolName>ActionTable_Definitions</PoolName>
-                            <PoolSize value="310"/>
+                            <PoolSize value="336"/>
                         </Item>
                         <Item>
                             <PoolName>ActionTable_Results</PoolName>
-                            <PoolSize value="478"/>
+                            <PoolSize value="503"/>
                         </Item>
                         <Item>
                             <PoolName>ActionTable_Impulses</PoolName>
@@ -792,8 +792,8 @@
                     <MaxTimeModelInfos value="1800"/>
                     <MaxVehicleModelInfos value="320"/>
                     <MaxWeaponModelInfos value="115"/>
-                    <MaxExtraPedModelInfos value="375"/>
-                    <MaxExtraVehicleModelInfos value="560"/>
+                    <MaxExtraPedModelInfos value="390"/>
+                    <MaxExtraVehicleModelInfos value="580"/>
                     <MaxExtraWeaponModelInfos value="610"/>
                 </ConfigModelInfo>
 
@@ -1084,17 +1084,17 @@
                         </Item>
                         <Item>
                             <StackName>FMMC_LAUNCHER</StackName>
-                            <SizeOfStack value="26000"/>
+                            <SizeOfStack value="27000"/>
                             <NumberOfStacksOfThisSize value="1"/>
                         </Item>
                         <Item>
                             <StackName>MULTIPLAYER_FREEMODE</StackName>
-                            <SizeOfStack value="82500"/>
+                            <SizeOfStack value="85000"/>
                             <NumberOfStacksOfThisSize value="1"/>
                         </Item>
                         <Item>
                             <StackName>MISSION</StackName>
-                            <SizeOfStack value="60500"/>
+                            <SizeOfStack value="62500"/>
                             <NumberOfStacksOfThisSize value="1"/>
                         </Item>
                         <Item>
@@ -1781,7 +1781,7 @@
                         </Item>
                         <Item>
                             <ResourceTypeName>PEDGROUP</ResourceTypeName>
-                            <ExpectedMaximum value="16"/>
+                            <ExpectedMaximum value="33"/>
                         </Item>
                         <Item>
                             <ResourceTypeName>SEQUENCE_TASK</ResourceTypeName>

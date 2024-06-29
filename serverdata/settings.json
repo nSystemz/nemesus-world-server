@@ -4,7 +4,7 @@
 	"Host":       			"mariadb",
 	"Username":   			"root",
 	"Password":   			"root",
-	"Database":   			"nworld2",
+	"Database":   			"nworld",
 	"AdminNotificationWebHook":	"",
 	"ErrorWebhook":			"",
 	"ScreenshotWebhook":		""

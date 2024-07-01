@@ -194,7 +194,7 @@
                             </li>
                             <li class="nav-item" v-on:click="startHelp()">
                                 <a class="nav-link">
-                                    <i class="nav-icon fas fa-question-circle"
+                                    <i class="nav-icon fas fa-question-circle"</i>
                                     <p style="color:white">
                                         Befehle & Tasten
                                     </p>

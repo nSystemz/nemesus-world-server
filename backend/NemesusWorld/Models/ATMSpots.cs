@@ -1,25 +1,23 @@
 ﻿using GTANetworkAPI;
-using NemesusWorld.Utils;
 using System;
 using System.Collections.Generic;
-using System.Reflection.Emit;
 using System.Text;
 
 namespace NemesusWorld.Models
 {
-    class AddInfoBox
+    class ATMSpots
     {
         public int id { get; set; }
         public Vector3 position { get; set; }
-        public GTANetworkAPI.TextLabel label { get; set; }
-        public String creator { get; set; }
-        public int created { get; set; }
+        public int value { get; set; }
+        public int dist { get; set; }
 
-        public AddInfoBox()
+        public ATMSpots()
         {
             id = 0;
-            creator = "n/A";
-            created = Helper.UnixTimestamp();
+            position = null;
+            value = 50000;
+            dist = 0;
         }
     }
 }

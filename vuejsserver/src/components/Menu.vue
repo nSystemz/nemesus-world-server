@@ -194,7 +194,7 @@
                             </li>
                             <li class="nav-item" v-on:click="startHelp()">
                                 <a class="nav-link">
-                                    <i class="nav-icon fas fa-question-circle"></i>
+                                    <i class="nav-icon fas fa-question-circle"
                                     <p style="color:white">
                                         Befehle & Tasten
                                     </p>
@@ -4962,6 +4962,14 @@
                                                                     <td>Zustand setzen/entfernen</td>
                                                                 </tr>
                                                                 <tr v-if="voicerp == 0">
+                                                                    <td>/addinfo</td>
+                                                                    <td>Hinweis erstellen</td>
+                                                                </tr>
+                                                                <tr v-if="voicerp == 0">
+                                                                    <td>/deleteinfo</td>
+                                                                    <td>Hinweis löschen</td>
+                                                                </tr>
+                                                                <tr v-if="voicerp == 0">
                                                                     <td>/me - /do</td>
                                                                     <td>Roleplay Befehle</td>
                                                                 </tr>
@@ -5141,6 +5149,11 @@
                                                                 <tr>
                                                                     <td>/nametag</td>
                                                                     <td>Nametag verstecken</td>
+                                                                    <td>Probe Moderator</td>
+                                                                </tr>
+                                                                <tr v-if="voicerp == 0">
+                                                                    <td>/checkinfo</td>
+                                                                    <td>Hinweis checken</td>
                                                                     <td>Probe Moderator</td>
                                                                 </tr>
                                                             </tbody>

@@ -1,4 +1,5 @@
 ﻿using GTANetworkAPI;
+using GTANetworkMethods;
 using MySqlConnector;
 using NemesusWorld.Controllers;
 using NemesusWorld.Database;
@@ -12,6 +13,10 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Ped = GTANetworkAPI.Ped;
+using Player = GTANetworkAPI.Player;
+using Task = System.Threading.Tasks.Task;
+using Vehicle = GTANetworkAPI.Vehicle;
 
 namespace NemesusWorld
 {
@@ -2468,7 +2473,7 @@ namespace NemesusWorld
                 }
                 MySqlCommand command = General.Connection.CreateCommand();
                 command = General.Connection.CreateCommand();
-                command.CommandText = "SELECT userid FROM bans where banname = @banname or identifier = @identifier LIMIT 1";
+                command.CommandText = "SELECT userid FROM bans WHERE banname = @banname or identifier = @identifier LIMIT 1";
                 command.Parameters.AddWithValue("@banname", text);
                 command.Parameters.AddWithValue("@identifier", text);
 
@@ -8927,6 +8932,126 @@ namespace NemesusWorld
             catch (Exception e)
             {
                 Helper.ConsoleLog("error", $"[CMD_me]: " + e.ToString());
+            }
+        }
+
+        [Command("addinfo", "Befehl: /addinfo [Reichweite 1-30(m)] [Zeit in Minuten] [Text]", GreedyArg = true)]
+        public void cmd_addinfo(Player player, int distance, int time, String infoText)
+        {
+            try
+            {
+                Account account = Helper.GetAccountData(player);
+                if (!Account.IsPlayerLoggedIn(player)) return;
+                if (player.GetSharedData<bool>("Player:Death") == true) return;
+                TempData tempData = Helper.GetCharacterTempData(player);
+                if (tempData == null) return;
+                if (Helper.adminSettings.voicerp > 0)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Der Text-RP Modus muss zuerst aktiviert werden!", "error", "top-end");
+                    return;
+                }
+                if (time < 1 || time > 1440)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Ungültige Zeitangabe - (Min. 1 Minute, Max. 1440 Minuten)!", "error", "top-end");
+                    return;
+                }
+                if (infoText.Length < 3 || infoText.Length > 128)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Ungültige Textlänge!", "error", "top-end");
+                    return;
+                }
+                Random rand = new Random();
+                AddInfoBox addInfoBox = new AddInfoBox();
+                addInfoBox.id = rand.Next(1, 99999);
+                addInfoBox.position = new Vector3(player.Position.X, player.Position.Y, player.Position.Z + 0.45);
+                addInfoBox.label = NAPI.TextLabel.CreateTextLabel("*Hinweis: " + infoText, new Vector3(player.Position.X, player.Position.Y, player.Position.Z+0.45), distance, 0.5f, 4, new Color(255, 0, 255), false, player.Dimension);
+                addInfoBox.creator = account.name;
+                addInfoBox.created = Helper.UnixTimestamp() + (time);
+                Helper.infoTextList.Add(addInfoBox);
+                Helper.SendNotificationWithoutButton(player, "Der Hinweis wurde erfolgreich erstellt und kann mit /deleteinfo gelöscht werden!", "success", "top-end");
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[cmd_addinfo]: " + e.ToString());
+            }
+        }
+
+        [Command("deleteinfo", "Befehl: /deleteinfo")]
+        public void cmd_deleteinfo(Player player)
+        {
+            try
+            {
+                if (!Account.IsPlayerLoggedIn(player)) return;
+                if (player.GetSharedData<bool>("Player:Death") == true) return;
+                TempData tempData = Helper.GetCharacterTempData(player);
+                Account account = Helper.GetAccountData(player);
+                if (tempData == null || account == null) return;
+                if (Helper.adminSettings.voicerp > 0)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Der Text-RP Modus muss zuerst aktiviert werden!", "error", "top-end");
+                    return;
+                }
+                if (Helper.infoTextList.Count > 0)
+                {
+                    foreach (AddInfoBox addInfoBox in Helper.infoTextList.ToList())
+                    {
+                        if (player.Position.DistanceTo(addInfoBox.position) <= 1.85)
+                        {
+                            Helper.SendNotificationWithoutButton(player, "Du hast den Hinweis erfolgreich gelöscht", "success", "top-end");
+                            if(tempData.adminduty == true)
+                            {
+                                Helper.SendNotificationWithoutButton(player, $"Der Hinweis wurde von {addInfoBox.creator} erstellt!", "success", "top-end");
+                            }
+                            addInfoBox.label.Delete();
+                            Helper.infoTextList.Remove(addInfoBox);
+                            return;
+                        }
+                    }
+                    Helper.SendNotificationWithoutButton(player, $"Hier ist kein Hinweis in der Nähe!", "error", "top-end");
+                }
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[cmd_deleteinfo]: " + e.ToString());
+            }
+        }
+
+        [Command("checkinfo", "Befehl: /checkinfo")]
+        public void cmd_checkinfo(Player player)
+        {
+            try
+            {
+                if (!Account.IsPlayerLoggedIn(player)) return;
+                if (player.GetSharedData<bool>("Player:Death") == true) return;
+                TempData tempData = Helper.GetCharacterTempData(player);
+                Account account = Helper.GetAccountData(player);
+                if (tempData == null || account == null) return;
+                if (Helper.adminSettings.voicerp > 0)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Der Text-RP Modus muss zuerst aktiviert werden!", "error", "top-end");
+                    return;
+                }
+                if (!Account.IsAdminOnDuty(player, (int)Account.AdminRanks.Moderator))
+                {
+                    Helper.SendNotificationWithoutButton(player, "Unzureichende Adminrechte!", "error", "top-end");
+                    return;
+                }
+                if (Helper.infoTextList.Count > 0)
+                {
+                    foreach (AddInfoBox addInfoBox in Helper.infoTextList.ToList())
+                    {
+                        if (player.Position.DistanceTo(addInfoBox.position) <= 1.85)
+                        {
+                            Helper.SendNotificationWithoutButton(player, $"Der Hinweis wurde von {addInfoBox.creator} erstellt!", "success", "top-end");
+                            return;
+                        }
+                    }
+                }
+                Helper.SendNotificationWithoutButton(player, $"Hier ist kein Hinweis in der Nähe!", "error", "top-end");
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[cmd_checkinfo]: " + e.ToString());
             }
         }
 

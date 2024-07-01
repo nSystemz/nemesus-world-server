@@ -18,6 +18,7 @@ using Blip = GTANetworkAPI.Blip;
 using Ped = GTANetworkAPI.Ped;
 using Vector3 = GTANetworkAPI.Vector3;
 using Color = GTANetworkAPI.Color;
+using System.Reflection.Emit;
 
 namespace NemesusWorld.Utils
 {
@@ -49,6 +50,7 @@ namespace NemesusWorld.Utils
         public static List<CCTV> cctvList = new List<CCTV>();
         public static List<SpikeStrip> spikeStripList = new List<SpikeStrip>();
         public static List<PoliceProps> policePropList = new List<PoliceProps>();
+        public static List<AddInfoBox> infoTextList = new List<AddInfoBox>();
         public static Vector3 RathausPosition = null;
         public static JObject TorsosMen;
         public static JObject TorsosWoman;

@@ -87,7 +87,7 @@
                 </div>
             </div>
         </div>
-        <div class="weapon mb-5" v-if="showhud4">
+        <div class="weapon mb-5" style="margin-top: -0.8vw" v-if="showhud4">
             <div class="row">
                 <img src="../assets/images/inventory/Faust.png"
                     :class="[(actualWeapon == 'faust') ? 'weaponimg1 mr-3' : 'weaponimg2 mr-3']">
@@ -102,7 +102,7 @@
             </div>
             <div class="weapon mt-4" v-else>
                 <span style="font-size: 9px; font-family: 'Exo', sans-serif; text-shadow: 0 0 2px #000;">Nemesus-World
-                    Gamemode by Nemesus.de</span>
+                    Gamemode by Nemesus</span>
             </div>
         </div>
         <div style="height: 100%; Width: 100%; background-color: transparent;" v-if="showhud2">
@@ -214,7 +214,7 @@
                 speedometershow: false,
                 showhud2: false,
                 showhud3: false,
-                showhud4: false,
+                showhud4: true,
                 checkspeedo: false,
                 speedProgress: 0,
                 speed: 0,
@@ -606,9 +606,9 @@ template,
 
     .kmhtext {
         color: white;
-        font-size: 29.5px;
+        font-size: 1.35vw;
         font-family: 'Exo', sans-serif;
-        margin-top: -1.3em;
+        margin-top: -2.5vw;
         text-shadow: 0 0 9px #000;
         text-align: center;
     }

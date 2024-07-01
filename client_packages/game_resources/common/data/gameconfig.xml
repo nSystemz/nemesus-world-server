@@ -488,7 +488,7 @@ in this file and decrease the value.
 						<Item>
 							<!-- Storage for .ytyp files -->
 							<PoolName>MapTypesStore</PoolName>
-							<PoolSize value="375000" />
+							<PoolSize value="600000" />
 						</Item>
 						<Item>
 							<!-- Storage for metadata files, .ymt files -->

@@ -36,9 +36,14 @@ using MySqlConnector;
 using System.Linq;
 using System.Data;
 using System.IO;
-using System.Text.Json;
 using Newtonsoft.Json.Linq;
-using Newtonsoft.Json;  
+using GTANetworkMethods;
+using System.Numerics;
+using Player = GTANetworkAPI.Player;
+using Vehicle = GTANetworkAPI.Vehicle;
+using Vector3 = GTANetworkAPI.Vector3;
+using Ped = GTANetworkAPI.Ped;
+using Blip = GTANetworkAPI.Blip;
 
 namespace NemesusWorld
 {
@@ -57,12 +62,12 @@ namespace NemesusWorld
         //ToDo: Restartzeit einstellen
         public static int RestartHour = -1; //Um wieviel Uhr soll der Server neustarten (-1 = garnicht), bitte Service einrichten welcher den Server automatisch wieder startet
         public static bool InitRestart = false;
-        public static ColShape ammuCol = null;
-        public static TextLabel busLabel = null;
+        public static GTANetworkAPI.ColShape ammuCol = null;
+        public static GTANetworkAPI.TextLabel busLabel = null;
         public static int busCount = 0;
-        public static Blip closesZone = null;
+        public static GTANetworkAPI.Blip closesZone = null;
         public static bool lottoStart = false;
-        public static TextLabel labelCheck = null;
+        public static GTANetworkAPI.TextLabel labelCheck = null;
 
         [ServerEvent(Event.ResourceStart)]
         public void OnResourceStart()
@@ -587,6 +592,18 @@ namespace NemesusWorld
                         {
                             halfMinuteCounter = 0;
                             //One minute
+                            //AddinfoBox
+                            if (Helper.infoTextList.Count > 0)
+                            {
+                                foreach (AddInfoBox addInfoBox in Helper.infoTextList.ToList())
+                                {
+                                    if(addInfoBox.created <= Helper.UnixTimestamp())
+                                    {
+                                        addInfoBox.label.Delete();
+                                        Helper.infoTextList.Remove(addInfoBox);
+                                    }
+                                }
+                            }
                             //Drugplants
                             DrugController.DrugPlantsCheck();
                             //Animals
@@ -1008,6 +1025,14 @@ namespace NemesusWorld
             try
             {
                 SaveAll();
+                if (Helper.infoTextList.Count > 0)
+                {
+                    foreach (AddInfoBox addInfoBox in Helper.infoTextList.ToList())
+                    {
+                        addInfoBox.label.Delete();
+                        Helper.infoTextList.Remove(addInfoBox);
+                    }
+                }
                 foreach (Player player in NAPI.Pools.GetAllPlayers())
                 {
                     //Secruity check
@@ -3250,7 +3275,7 @@ namespace NemesusWorld
 
         //Colshapes
         [ServerEvent(Event.PlayerEnterColshape)]
-        public void OnPlayerEnterColshape(ColShape shape, Player player)
+        public void OnPlayerEnterColshape(GTANetworkAPI.ColShape shape, Player player)
         {
             try
             {

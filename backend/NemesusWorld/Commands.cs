@@ -8966,7 +8966,7 @@ namespace NemesusWorld
                 addInfoBox.position = new Vector3(player.Position.X, player.Position.Y, player.Position.Z + 0.45);
                 addInfoBox.label = NAPI.TextLabel.CreateTextLabel("*Hinweis: " + infoText, new Vector3(player.Position.X, player.Position.Y, player.Position.Z+0.45), distance, 0.5f, 4, new Color(255, 0, 255), false, player.Dimension);
                 addInfoBox.creator = account.name;
-                addInfoBox.created = Helper.UnixTimestamp() + (time);
+                addInfoBox.created = Helper.UnixTimestamp() + (time*60);
                 Helper.infoTextList.Add(addInfoBox);
                 Helper.SendNotificationWithoutButton(player, "Der Hinweis wurde erfolgreich erstellt und kann mit /deleteinfo gelöscht werden!", "success", "top-end");
             }

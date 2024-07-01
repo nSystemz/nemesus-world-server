@@ -214,7 +214,7 @@
                 speedometershow: false,
                 showhud2: false,
                 showhud3: false,
-                showhud4: true,
+                showhud4: false,
                 checkspeedo: false,
                 speedProgress: 0,
                 speed: 0,

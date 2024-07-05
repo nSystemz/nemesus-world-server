@@ -1283,7 +1283,7 @@ namespace NemesusWorld.Utils
                             character.inhouse = -1;
                             player.SetOwnSharedData("Player:InHouse", -1);
                         }
-                        if (vehid != -1)
+                        if (vehid != -1 && Cars.carList.Count > 0)
                         {
                             foreach (Cars car in Cars.carList)
                             {
@@ -1363,7 +1363,7 @@ namespace NemesusWorld.Utils
                     {
                         foreach (Player p in NAPI.Pools.GetAllPlayers())
                         {
-                            if (p != null && p.IsInVehicle && p.Vehicle == player.Vehicle && player != p)
+                            if (p != null && p.Exists && p.IsInVehicle && p.Vehicle == player.Vehicle && player != p)
                             {
                                 p.TriggerEvent("Client:CreateWaypoint", x, y, -1);
                                 Helper.SendNotificationWithoutButton(p, "Es wurde eine neue Kartenmarkierung geteilt!", "success", "top-left", 1850);
@@ -2936,12 +2936,15 @@ namespace NemesusWorld.Utils
 
             foreach (Player player in NAPI.Pools.GetAllPlayers())
             {
-                TempData tempData = Helper.GetCharacterTempData(player);
-                if (tempData != null)
+                if(player != null && player.Exists)
                 {
-                    if (player != null && player.Exists && Account.IsPlayerLoggedIn(player) && tempData.achat == true)
+                    TempData tempData = Helper.GetCharacterTempData(player);
+                    if (tempData != null)
                     {
-                        player.TriggerEvent("Client:AdminInfoMessage", message, time);
+                        if (Account.IsPlayerLoggedIn(player) && tempData.achat == true)
+                        {
+                            player.TriggerEvent("Client:AdminInfoMessage", message, time);
+                        }
                     }
                 }
             }

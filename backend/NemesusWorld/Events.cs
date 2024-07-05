@@ -37,8 +37,6 @@ using System.Linq;
 using System.Data;
 using System.IO;
 using Newtonsoft.Json.Linq;
-using GTANetworkMethods;
-using System.Numerics;
 using Player = GTANetworkAPI.Player;
 using Vehicle = GTANetworkAPI.Vehicle;
 using Vector3 = GTANetworkAPI.Vector3;
@@ -509,15 +507,15 @@ namespace NemesusWorld
         {
             try
             {
+                Helper.SendAdminMessage3($"Alle Daten vom Server wurden gespeichert!");
                 NAPI.Task.Run(() =>
                 {
-                    Helper.SendAdminMessage3($"Alle Daten vom Server wurden gespeichert!");
                     Events.SaveAll();
                 });
             }
             catch (Exception e)
             {
-                Helper.ConsoleLog("error", $"[saveTimer]: " + e.ToString());
+                Helper.ConsoleLog("error", $"[OnServerSave]: " + e.ToString());
             }
         }
 

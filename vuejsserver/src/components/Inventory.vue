@@ -1,74 +1,162 @@
 <template>
-<div class="inventory">
-    <div style="z-index: 1; overflow-x: hidden; overflow-x: hidden; background-color:transparent; scrollbar-width: none;" v-if="inventoryshow1||inventoryshow2">
-        <div style="height: 100%; background-color: transparent;">
-            <div class="row justify-content-center centering">
-                <div class="col-md-12 mt-1 animate__animated animate__bounceInUp">
-                    <div class="col-md-12 mt-1">
-                        <div class="box box-default">
-                            <div class="row">
-                                <div class="card card-primary card-outline" v-if="inventoryshow1">
-                                    <div class="card-header" style="font-family: 'Exo', sans-serif; font-size: 1.2vw">
-                                        Deine Taschen
-                                        <div class="progress">
-                                            <div class="progress-bar progress-bar-striped bg-primary" role="progressbar" id="progress-bar" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+    <div class="inventory">
+        <div style="z-index: 1; overflow-x: hidden; background-color:transparent; scrollbar-width: none;"
+            v-if="inventoryshow1||inventoryshow2">
+            <div style="height: 100%; background-color: transparent;">
+                <div class="row justify-content-center centering">
+                    <div class="col-md-12 mt-1 animate__animated animate__bounceInUp">
+                        <div class="col-md-12 mt-1">
+                            <div class="box box-default">
+                                <div class="row">
+                                    <div class="container-fluid2 float-left mt-1 mb-2 animate__animated animate__fadeInLeft"
+                                        style="scrollbar-width: none; background-color: #343A40; border-top: solid #3c6a99;"
+                                        v-if="inventoryshow1">
+                                        <h3 class="mt-1 ml-2" style="font-family: 'Exo', sans-serif; font-size: 1.2vw;">
+                                            Deine Taschen
+                                            <span class="ml-5" style="font-size: 0.75vw; margin-left: 1.5vw"
+                                                v-if="itemSelect!=null">{{itemSelect.description}}<span
+                                                    class="ml-1 badge badge-dark" style="font-size: 0.45vw"><span
+                                                        v-if="(itemSelect.type != 3 && itemSelect.type != 4 && itemSelect.type != 5) || itemSelect.description == 'Dietrich' || itemSelect.description == 'Zigaretten' || itemSelect.description == '55$-Prepaidkarte' || itemSelect.description == 'Handyvertrag' || itemSelect.description == 'Grippofein-C' || itemSelect.description == 'Antibiotika' || itemSelect.description == 'Ibuprofee-400mg' || itemSelect.description == 'Ibuprofee-800mg' || itemSelect.description == 'Morphin-10mg' || itemSelect.description == 'Bandage' || itemSelect.description == 'Materialien' || itemSelect.description == 'Marihuanasamen' || itemSelect.description == 'Marihuana' || itemSelect.description == 'Papes' || itemSelect.description == 'Joint' || itemSelect.description == 'Kokain' || itemSelect.description == 'Kokablatt' || itemSelect.description == 'Kokainsamen' || itemSelect.description == 'Space-Cookies'">{{itemSelect.amount}}</span><span
+                                                        v-if="(itemSelect.props && itemSelect.props.length > 3 && itemSelect.type != 5 && itemSelect.type != 6) || itemSelect.description == 'Feuerzeug'">{{itemSelect.props}}</span><span
+                                                        v-if="itemSelect.props && itemSelect.props.length > 2 && itemSelect.type == 5 && !IsNoMelee(itemSelect.description) && itemSelect.description != 'Taser'">{{itemSelect.props.split(',')[0]}}</span></span></span>
+                                            <div v-if="itemSelect!=null" class="mr-2 float-right">
+                                                <i style="font-size: 0.75vw;"
+                                                    v-if="itemSelect.description == 'L-Schein' || itemSelect.description == 'Haustier' || !itemSelect.props.split(',')[1] || itemSelect.props.split(',')[1] == 0"
+                                                    class="icon fas fas fa-trash float-right"
+                                                    @click="trashItem(itemSelect)"></i>
+                                                <i style="font-size: 0.75vw;"
+                                                    v-if="itemSelect.type != 5 && itemSelect.type != 6 && (!itemSelect.props.split(',')[1] || itemSelect.props.split(',')[1] == 0 || itemSelect.description == 'Haustier')"
+                                                    class="iconresponsive icon fas fas fa-play float-right"
+                                                    @click="useItem(itemSelect.itemid)"></i>
+                                                <i style="font-size: 0.75vw;" v-if="itemSelect.type == 6"
+                                                    class="iconresponsive icon fas fas fa-play float-right"
+                                                    @click="useItem2(itemSelect)"></i>
+                                                <i style="font-size: 0.75vw;"
+                                                    v-if="(!itemSelect.props.split(',')[1] || itemSelect.props.split(',')[1] == 0 || itemSelect.description == 'Haustier') && itemSelect.description != 'Snowball'"
+                                                    class="iconresponsive icon fas fa-hand-paper float-right"
+                                                    @click="giveItem(itemSelect)"></i>
+                                                <i style="font-size: 0.75vw;"
+                                                    v-if="itemSelect.type == 5 && itemSelect.description != 'Snowball' && itemSelect.props && itemSelect.description.toLowerCase() != 'feuerlöscher'"
+                                                    class="icon3 fa-solid fa-eye"
+                                                    @click="showGun(itemSelect.props)"></i>
+                                                <i style="font-size: 0.75vw;"
+                                                    v-if="itemSelect.type == 5 && itemSelect.props.split(',')[1] == 0"
+                                                    class="icon fa-solid fa-gun"
+                                                    @click="selectGun(itemSelect.itemid)"></i>
+                                                <i style="font-size: 0.75vw;"
+                                                    v-if="itemSelect.type == 5 && itemSelect.props.split(',')[1] == 1"
+                                                    class="icon2 fa-solid fa-gun"
+                                                    @click="selectGun(itemSelect.itemid)"></i>
+                                            </div>
+                                        </h3>
+                                        <div class="col-md-12 mb-2">
+                                            <div class="progress" style="margin-right: 0.8vw">
+                                                <div style="display: flex; justify-content: center; align-items: center;"
+                                                    class="mt-1">
+                                                    <div class="progress-bar progress-bar-striped bg-primary"
+                                                        role="progressbar" id="progress-bar" style="width: 0%"
+                                                        aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div style="display: flex; justify-content: center; align-items: center; margin-top:0.65vw">
-                                            <button type="button" @click="selectItems1(-1)" :class="[(itemselect1 == -1) ? 'active btn btn-primary btn-sm mr-1':'btn btn-primary btn-sm mr-1']" style="display: flex; justify-content: center; align-items: center;font-size:0.725vw">Alles</button>
-                                            <button type="button" @click="selectItems1(0)" style="font-size:0.725vw" :class="[(itemselect1 == 0) ? 'active btn btn-primary btn-sm mr-1':'btn btn-primary btn-sm mr-1']">Nahrung</button>
-                                            <button type="button" @click="selectItems1(1)" style="font-size:0.725vw" :class="[(itemselect1 == 1) ? 'active btn btn-primary btn-sm mr-1':'btn btn-primary btn-sm mr-1']">Schlüssel</button>
-                                            <button type="button" @click="selectItems1(2)" style="font-size:0.725vw" :class="[(itemselect1 == 2) ? 'active btn btn-primary btn-sm mr-1':'btn btn-primary btn-sm mr-1']">Waffen</button>
-                                            <button type="button" @click="selectItems1(3)" style="font-size:0.725vw" :class="[(itemselect1 == 3) ? 'active btn btn-primary btn-sm mr-1':'btn btn-primary btn-sm mr-1']">Sonstiges</button>
+                                        <div class="col-md-12 mb-3">
+                                            <div style="display: flex; justify-content: center; align-items: center; font-family: 'Exo'"
+                                                class="mt-1">
+                                                <button type="button" @click="selectItems1(-1)"
+                                                    style="font-size:0.925vw"
+                                                    :class="[(itemselect1 == -1) ? 'active btn btn-primary btn-sm mr-4':'btn btn-primary btn-sm mr-4']"><i
+                                                        class="fa-solid fa-border-all"></i></button>
+                                                <button type="button" @click="selectItems1(0)" style="font-size:0.925vw"
+                                                    :class="[(itemselect1 == 0) ? 'active btn btn-primary btn-sm mr-4':'btn btn-primary btn-sm mr-4']"><i
+                                                        class="fa-solid fa-apple-whole"></i></button>
+                                                <button type="button" @click="selectItems1(1)" style="font-size:0.925vw"
+                                                    :class="[(itemselect1 == 1) ? 'active btn btn-primary btn-sm mr-4':'btn btn-primary btn-sm mr-4']"><i
+                                                        class="fa-solid fa-key"></i></button>
+                                                <button type="button" @click="selectItems1(2)" style="font-size:0.925vw"
+                                                    :class="[(itemselect1 == 2) ? 'active btn btn-primary btn-sm mr-4':'btn btn-primary btn-sm mr-4']"><i
+                                                        class="fa-solid fa-gun"></i></button>
+                                                <button type="button" @click="selectItems1(3)" style="font-size:0.925vw"
+                                                    :class="[(itemselect1 == 3) ? 'active btn btn-primary btn-sm mr-4':'btn btn-primary btn-sm mr-4']"><i
+                                                        class="fa-solid fa-microchip"></i></button>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="responsivcard card-body">
-                                        <div class="row">
-                                            <div class="col-md-12 col-md-offset-6">
-                                                <div class="card2 card card-primary" style="max-height:2vw;" v-for="item in inventory1selected" :key="item.itemid" @click="moveItem2(item, 'left')">
-                                                    <div class="inventorytext">
-                                                        <img v-if="item.description != 'Granate' && item.description != 'BZGas' && item.description != 'Rauchgranate' && item.description != 'Molotowcocktail' && item.description != 'Snowball'" :src="getImgUrl(item.description)" width="5%" class="ml-2" style="transform: translateY(-0.1vw);" data-toggle="offcanvas">
-                                                        <img v-else :src="getImgUrl(item.description)" width="3.25%" class="grenade" style="transform: translateY(-0.1vw);" data-toggle="offcanvas">
-                                                        <span class="inventorytext2" style="color:white;font-size:1vw;padding-left: 0.4vw">{{item.description}}<span class="propsresponsive badge badge-dark" style="margin-left: 0.35vw">
-                                                                <span v-if="(item.type != 3 && item.type != 4 && item.type != 5) || item.description == 'Dietrich' || item.description == 'Zigaretten' || item.description == '55$-Prepaidkarte' || item.description == 'Handyvertrag' || item.description == 'Grippofein-C' || item.description == 'Antibiotika' || item.description == 'Ibuprofee-400mg' || item.description == 'Ibuprofee-800mg' || item.description == 'Morphin-10mg' || item.description == 'Bandage' || item.description == 'Materialien' || item.description == 'Marihuanasamen' || item.description == 'Marihuana' || item.description == 'Papes' || item.description == 'Joint' || item.description == 'Kokain' || item.description == 'Kokablatt' || item.description == 'Kokainsamen' || item.description == 'Space-Cookies'">{{item.amount}}</span><span v-if="(item.props && item.props.length > 3 && item.type != 5 && item.type != 6) || item.description == 'Feuerzeug'">({{item.props}})</span><span v-if="item.props && item.props.length > 2 && item.type == 5 && !IsNoMelee(item.description) && item.description != 'Taser'">{{item.props.split(',')[0]}}</span></span></span>
-                                                        <i v-if="item.description == 'L-Schein' || item.description == 'Haustier' || !item.props.split(',')[1] || item.props.split(',')[1] == 0" class="iconresponsive icon fas fas fa-trash float-right" @click="trashItem(item)"></i>
-                                                        <i v-if="item.type != 5 && item.type != 6 && (!item.props.split(',')[1] || item.props.split(',')[1] == 0 || item.description == 'Haustier')" class="iconresponsive icon fas fas fa-play float-right" @click="useItem(item.itemid)"></i>
-                                                        <i v-if="item.type == 6" class="iconresponsive icon fas fas fa-play float-right" @click="useItem2(item)"></i>
-                                                        <i v-if="(!item.props.split(',')[1] || item.props.split(',')[1] == 0 || item.description == 'Haustier') && item.description != 'Snowball'" class="iconresponsive icon fas fa-hand-paper float-right" @click="giveItem(item)"></i>
-                                                        <i v-if="item.type == 5 && item.description != 'Snowball' && item.props && item.description.toLowerCase() != 'feuerlöscher'" class="icon3 fa-solid fa-eye" @click="showGun(item.props)"></i>
-                                                        <i v-if="item.type == 5 && item.props.split(',')[1] == 0" class="icon fa-solid fa-gun" @click="selectGun(item.itemid)"></i>
-                                                        <i v-if="item.type == 5 && item.props.split(',')[1] == 1" class="icon2 fa-solid fa-gun" @click="selectGun(item.itemid)"></i>
-                                                    </div>
+                                        <div class="box2 text-center mb-2" v-for="item in inventory1selected"
+                                            :key="item.itemid" @click="itemSelected(item)">
+                                            <img style="height: 1.5vw;max-width: 4vw" class="mt-2 text-center"
+                                                :src="getImgUrl(item.description)" />
+                                            <div class="row text-center">
+                                                <div class="col-md-12">
+                                                    <span v-if="itemSelect == item"
+                                                        style="font-size: 0.52vw; color:#eee;text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000; font-family: 'Exo';border-bottom: 1px solid #3c6a99;">{{cutString(item.description)}}</span>
+                                                    <span v-else
+                                                        style="font-size: 0.52vw; color:#eee;text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000; font-family: 'Exo';">{{cutString(item.description)}}</span>
+                                                    <span
+                                                        style="font-size: 0.9vw; color:#eee;text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;margin-left:0.1vw;padding-top:1.7vw"><strong
+                                                            style="font-size: 0.38vw; font-family: 'Exo'"
+                                                            class="badge badge-dark">{{item.amount}}</strong></span>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="card card-primary card-outline ml-4 animate__animated animate__bounceInUp" v-if="inventoryshow2">
-                                    <div class="card-header" style="font-family: 'Exo', sans-serif; font-size: 1.2vw;">
-                                        {{textinv2}}
-                                        <div class="progress">
-                                            <div class="progress-bar2 progress-bar-striped bg-primary" role="progressbar" id="progress-bar2" style="width: 0%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
-                                        <div style="display: flex; justify-content: center; align-items: center;" class="mt-2">
-                                            <button type="button" @click="selectItems2(-1)" :class="[(itemselect2 == -1) ? 'active btn btn-primary btn-sm mr-1':'btn btn-primary btn-sm mr-1']" style="display: flex; justify-content: center; align-items: center;font-size:0.725vw">Alles</button>
-                                            <button type="button" @click="selectItems2(0)" style="font-size:0.725vw" :class="[(itemselect2 == 0) ? 'active btn btn-primary btn-sm mr-1':'btn btn-primary btn-sm mr-1']">Nahrung</button>
-                                            <button type="button" @click="selectItems2(1)" style="font-size:0.725vw" :class="[(itemselect2 == 1) ? 'active btn btn-primary btn-sm mr-1':'btn btn-primary btn-sm mr-1']">Schlüssel</button>
-                                            <button type="button" @click="selectItems2(2)" style="font-size:0.725vw" :class="[(itemselect2 == 2) ? 'active btn btn-primary btn-sm mr-1':'btn btn-primary btn-sm mr-1']">Waffen</button>
-                                            <button type="button" @click="selectItems2(3)" style="font-size:0.725vw" :class="[(itemselect2 == 3) ? 'active btn btn-primary btn-sm mr-1':'btn btn-primary btn-sm mr-1']">Sonstiges</button>
+                            </div>
+                            <div class="container-fluid2 float-left mt-1 mb-2 animate__animated animate__fadeInLeft"
+                                style="scrollbar-width: none; background-color: #343A40; border-top: solid #3c6a99; margin-left: 26vw"
+                                v-if="inventoryshow2">
+                                <h3 class="mt-1 ml-2" style="font-family: 'Exo', sans-serif; font-size: 1.2vw;">
+                                    {{textinv2}}
+                                    <span class="ml-5" style="font-size: 0.75vw; margin-left: 1.5vw"
+                                        v-if="itemSelect2!=null">{{itemSelect2.description}}<span
+                                            class="ml-1 badge badge-dark" style="font-size: 0.45vw"><span
+                                                v-if="(itemSelect2.type != 3 && itemSelect2.type != 4 && itemSelect2.type != 5) || itemSelect2.description == 'Dietrich' || itemSelect2.description == 'Zigaretten' || itemSelect2.description == '55$-Prepaidkarte' || itemSelect2.description == 'Handyvertrag' || itemSelect2.description == 'Grippofein-C' || itemSelect2.description == 'Antibiotika' || itemSelect2.description == 'Ibuprofee-400mg' || itemSelect2.description == 'Ibuprofee-800mg' || itemSelect2.description == 'Morphin-10mg' || itemSelect2.description == 'Bandage' || itemSelect2.description == 'Materialien' || itemSelect2.description == 'Marihuanasamen' || itemSelect2.description == 'Marihuana' || itemSelect2.description == 'Papes' || itemSelect2.description == 'Joint' || itemSelect2.description == 'Kokain' || itemSelect2.description == 'Kokablatt' || itemSelect2.description == 'Kokainsamen' || itemSelect2.description == 'Space-Cookies'">{{itemSelect2.amount}}</span><span
+                                                v-if="(itemSelect2.props && itemSelect2.props.length > 3 && itemSelect2.type != 5 && itemSelect2.type != 6) || itemSelect2.description == 'Feuerzeug'">{{itemSelect2.props}}</span><span
+                                                v-if="itemSelect2.props && itemSelect2.props.length > 2 && itemSelect2.type == 5 && !IsNoMelee(itemSelect2.description) && itemSelect2.description != 'Taser'">{{itemSelect2.props.split(',')[0]}}</span></span></span>
+                                </h3>
+                                <div class="col-md-12 mb-2">
+                                    <div class="progress" style="margin-right: 0.8vw">
+                                        <div style="display: flex; justify-content: center; align-items: center;"
+                                            class="mt-1">
+                                            <div class="progress-bar progress-bar-striped bg-primary" role="progressbar"
+                                                id="progress-bar" style="width: 0%" aria-valuenow="25" aria-valuemin="0"
+                                                aria-valuemax="100"></div>
                                         </div>
                                     </div>
-                                    <div class="card-body responsivcard">
-                                        <div class="row">
-                                            <div class="col-md-12">
-                                                <div class="card2 card card-primary" style="max-height:2vw" v-for="item in inventory2selected" :key="item.itemid" @click="moveItem2(item, 'right')">
-                                                    <div class="inventorytext">
-                                                        <img v-if="item.description != 'Granate' && item.description != 'BZGas' && item.description != 'Rauchgranate' && item.description != 'Molotowcocktail' && item.description != 'Snowball'" :src="getImgUrl(item.description)" width="5%" class="ml-2" style="transform: translateY(-0.1vw);" data-toggle="offcanvas">
-                                                        <img v-else :src="getImgUrl(item.description)" width="3.25%" class="grenade" style="transform: translateY(-0.1vw);" data-toggle="offcanvas">
-                                                        <span class="inventorytext2" style="color:white;font-size:1vw;padding-left: 0.4vw">{{item.description}}<span class="propsresponsive badge badge-dark" style="margin-left: 0.35vw">
-                                                                <span v-if="(item.type != 3 && item.type != 4 && item.type != 5) || item.description == 'Dietrich' || item.description == 'Zigaretten' || item.description == '55$-Prepaidkarte' || item.description == 'Handyvertrag' || item.description == 'Grippofein-C' || item.description == 'Antibiotika' || item.description == 'Ibuprofee-400mg' || item.description == 'Ibuprofee-800mg' || item.description == 'Morphin-10mg' || item.description == 'Bandage' || item.description == 'Materialien' || item.description == 'Marihuanasamen' || item.description == 'Marihuana' || item.description == 'Papes' || item.description == 'Joint' || item.description == 'Kokain' || item.description == 'Kokablatt' || item.description == 'Kokainsamen' || item.description == 'Space-Cookies'">{{item.amount}}</span><span v-if="(item.props && item.props.length > 3 && item.type != 5 && item.type != 6) || item.description == 'Feuerzeug'">({{item.props}})</span><span v-if="item.props && item.props.length > 2 && item.type == 5 && !IsNoMelee(item.description) && item.description != 'Taser'">{{item.props.split(',')[0]}}</span></span></span>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    <div style="display: flex; justify-content: center; align-items: center; font-family: 'Exo'"
+                                        class="mt-1">
+                                        <button type="button" @click="selectItems2(-1)" style="font-size:0.925vw"
+                                            :class="[(itemselect2 == -1) ? 'active btn btn-primary btn-sm mr-4':'btn btn-primary btn-sm mr-4']"><i
+                                                class="fa-solid fa-border-all"></i></button>
+                                        <button type="button" @click="selectItems2(0)" style="font-size:0.925vw"
+                                            :class="[(itemselect2 == 0) ? 'active btn btn-primary btn-sm mr-4':'btn btn-primary btn-sm mr-4']"><i
+                                                class="fa-solid fa-apple-whole"></i></button>
+                                        <button type="button" @click="selectItems2(1)" style="font-size:0.925vw"
+                                            :class="[(itemselect2 == 1) ? 'active btn btn-primary btn-sm mr-4':'btn btn-primary btn-sm mr-4']"><i
+                                                class="fa-solid fa-key"></i></button>
+                                        <button type="button" @click="selectItems2(2)" style="font-size:0.925vw"
+                                            :class="[(itemselect2 == 2) ? 'active btn btn-primary btn-sm mr-4':'btn btn-primary btn-sm mr-4']"><i
+                                                class="fa-solid fa-gun"></i></button>
+                                        <button type="button" @click="selectItems2(3)" style="font-size:0.925vw"
+                                            :class="[(itemselect2 == 3) ? 'active btn btn-primary btn-sm mr-4':'btn btn-primary btn-sm mr-4']"><i
+                                                class="fa-solid fa-microchip"></i></button>
+                                    </div>
+                                </div>
+                                <div class="box2 text-center mb-2" v-for="item in inventory2selected" :key="item.itemid"
+                                    :style="[(itemSelect2 == item) ? 'border: 2px solid #3c6a99;':'']"
+                                    @click="itemSelected2(item)">
+                                    <img style="height: 1.5vw;max-width: 4vw" class="mt-2 text-center"
+                                        :src="getImgUrl(item.description)" />
+                                    <div class="row text-center">
+                                        <div class="col-md-12">
+                                            <span v-if="itemSelect2 == item"
+                                                style="font-size: 0.47vw; color:#eee;text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000; font-family: 'Exo';border-bottom: 1px solid #3c6a99;">{{cutString(item.description)}}</span>
+                                            <span v-else
+                                                style="font-size: 0.47vw; color:#eee;text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000; font-family: 'Exo';">{{cutString(item.description)}}</span>
+                                            <span
+                                                style="font-size: 0.9vw; color:#eee;text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;margin-left:0.1vw;padding-top:1.7vw"><strong
+                                                    style="font-size: 0.38vw; font-family: 'Exo'"
+                                                    class="badge badge-dark">{{item.amount}}</strong></span>
                                         </div>
                                     </div>
                                 </div>
@@ -79,7 +167,6 @@
             </div>
         </div>
     </div>
-</div>
 </template>
 
 <script>
@@ -91,6 +178,8 @@ export default {
         return {
             inventoryshow1: false,
             inventoryshow2: false,
+            itemSelect: null,
+            itemSelect2: null,
             itemselect1: -1,
             itemselect2: -1,
             inventory1: [],
@@ -108,8 +197,17 @@ export default {
     components: {},
     mounted() {},
     methods: {
+        cutString(text) {
+            if(text.length > 12)
+            {
+                return text.substr(0, 12) + '...';            }
+            else
+            {
+                return text;
+            }
+        },
         copyToClipboard(text) {
-            var dummy = document.createElement("textarea");
+            let dummy = document.createElement("textarea");
             document.body.appendChild(dummy);
             dummy.value = text;
             dummy.select();
@@ -124,7 +222,7 @@ export default {
             }
         },
         coverInventory() {
-            var self = this;
+            let self = this;
             //Inventory 1
             self.inventory1selected = [];
             if (self.itemselect1 <= -1) {
@@ -189,6 +287,14 @@ export default {
             }
             self.$forceUpdate();
         },
+        itemSelected(item) {
+            this.itemSelect = item;
+            this.moveItem2(item, 'left');
+        },
+        itemSelected2(item) {
+            this.itemSelect2 = item;
+            this.moveItem2(item, 'right');
+        },
         selectItems1(select) {
             this.itemselect1 = select;
             this.coverInventory();
@@ -198,9 +304,9 @@ export default {
             this.coverInventory();
         },
         countweightinventory1() {
-            var count = 0.0;
+            let count = 0.0;
             if (this.inventory1) {
-                var value = 0;
+                let value = 0;
                 this.inventory1.forEach(function (element) {
                     value = element.props.split(",")[0];
                     if (value > 5000) {
@@ -220,7 +326,7 @@ export default {
             return count;
         },
         countweightinventory2() {
-            var count = 0.0;
+            let count = 0.0;
             if (this.inventory2) {
                 this.inventory2.forEach(function (element) {
                     if (element.type != 5) {
@@ -239,7 +345,6 @@ export default {
         moveItem2(item, from) {
             if ((Date.now() / 1000) > this.clicked) {
                 this.moveItem(item, from);
-                this.clicked = (Date.now() / 1000) + (3);
             }
         },
         async moveItem(item, from) {
@@ -259,6 +364,9 @@ export default {
                                 autocorrect: 'off'
                             }
                         })
+                        this.itemSelect = null;
+                        this.itemSelect2 = null;
+                        this.clicked = (Date.now() / 1000) + (1);
                         if (!dropvalue) {
                             // eslint-disable-next-line no-undef
                             mp.trigger("Client:UseInventory", "move", item.itemid, 0, "left");
@@ -285,6 +393,8 @@ export default {
                                 autocorrect: 'off'
                             }
                         })
+                        this.itemSelect = null;
+                        this.itemSelect2 = null;
                         if (!dropvalue) {
                             // eslint-disable-next-line no-undef
                             mp.trigger("Client:UseInventory", "move", item.itemid, 0, "right");
@@ -300,6 +410,8 @@ export default {
             }
         },
         showInventory(json, maxweight, toogle, json2, maxweight2, textinv2) {
+            this.itemSelect = null;
+            this.itemSelect2 = null;
             this.clicked = 0;
             this.inventoryshow1 = !this.inventoryshow1;
             if (this.inventoryshow2 == true) {
@@ -675,4 +787,28 @@ template,
         margin-right: 0.355vh;
     }
 }
+.container-fluid2 {
+    scrollbar-width: none !important;
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    bottom: 0.25vw;
+    padding-left: 0.65vw;
+    width: 25vw;
+    max-height: 33.6vw;
+    background-color: transparent;
+    overflow: auto;
+}
+.box2 { 
+	float: left; 
+	width: 5.5vw; 
+	height: 4vw; 
+	margin-right: 0.55vw; 
+	padding: 0.5vw; 
+	margin-top: 0.5vw; 
+	background: #3F474E; 
+	box-sizing: border-box; 
+}
+.box2:last-child { margin-right: 0; }
+.box2:hover { border: 2px solid #3c6a99; }
 </style>

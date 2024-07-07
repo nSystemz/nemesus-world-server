@@ -325,12 +325,21 @@ h1 {
     }
 }
 
-@media (min-width: 2560px) {
+@media (min-width: 2260px) {
     .wheel .arc img {
         position: absolute;
-        height: 1.15vw;
-        top: 4.6vh;
-        left: 1.4vh;
+        height: 1.65vw;
+        top: 3.7vw;
+        left: 1.3vw;
+    }
+}
+
+@media (min-width: 3000px) {
+    .wheel .arc img {
+        position: absolute;
+        height: 1.25vw;
+        top: 2.5vw;
+        left: 0.9vw;
     }
 }
 

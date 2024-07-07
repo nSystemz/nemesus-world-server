@@ -178,7 +178,7 @@
                                 style="font-family: 'Exo', sans-serif;">Verwaltungsmenü</span></strong>
                         <strong><span class="brand-text font-weight floag-right text-muted"
                                 style="font-family: 'Exo', sans-serif; font-size: 0.5vw">&nbsp;&nbsp;&nbsp;&nbsp;by
-                                Nemesus.de</span></strong>
+                                Nemesus</span></strong>
                     </div>
                     <nav class="mt-2">
                         <ul class="mt-1 nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"

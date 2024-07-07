@@ -2936,12 +2936,12 @@ namespace NemesusWorld.Utils
 
             foreach (Player player in NAPI.Pools.GetAllPlayers())
             {
-                if(player != null && player.Exists)
+                if(player != null && Account.IsPlayerLoggedIn(player))
                 {
                     TempData tempData = Helper.GetCharacterTempData(player);
                     if (tempData != null)
                     {
-                        if (Account.IsPlayerLoggedIn(player) && tempData.achat == true)
+                        if (tempData.achat == true)
                         {
                             player.TriggerEvent("Client:AdminInfoMessage", message, time);
                         }

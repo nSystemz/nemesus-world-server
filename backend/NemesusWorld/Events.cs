@@ -56,7 +56,7 @@ namespace NemesusWorld
         public static Timer secondTimer = null;
         public static Timer saveTimer = null;
         //ToDo: Speicherzeit einstellen (Es wird alles gespeichert)
-        public static int saveMinutes = 15; //Speicherzeit in Minuten
+        public static int saveMinutes = 30; //Speicherzeit in Minuten
         //ToDo: Restartzeit einstellen
         public static int RestartHour = -1; //Um wieviel Uhr soll der Server neustarten (-1 = garnicht), bitte Service einrichten welcher den Server automatisch wieder startet
         public static bool InitRestart = false;
@@ -508,10 +508,7 @@ namespace NemesusWorld
             try
             {
                 Helper.SendAdminMessage3($"Alle Daten vom Server wurden gespeichert!");
-                NAPI.Task.Run(() =>
-                {
-                    Events.SaveAll();
-                });
+                Events.SaveAll();
             }
             catch (Exception e)
             {

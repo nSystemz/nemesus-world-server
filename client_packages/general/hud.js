@@ -7037,13 +7037,13 @@ mp.events.add("playerCreateWaypoint", (position) => {
                 getGroundZ = position.z + 0.15;
             }
             localPlayer.freezePosition(false);
-            mp.events.callRemote('Server:Teleport', position.x, position.y, getGroundZ + 0.25, false);
+            mp.events.callRemote('Server:Teleport', position.x, position.y, getGroundZ + 0.25, true, false, -1);
             setteleport = false;
         }, 2850);
     }
     let faction = localPlayer.getVariable('Player:Faction');
     if (localPlayer.vehicle || faction == 1 || faction == 2) {
-        mp.events.callRemote('Server:Teleport', position.x, position.y, position.z, false);
+        mp.events.callRemote('Server:Teleport', position.x, position.y, position.z, false, false, -1);
     }
 });
 

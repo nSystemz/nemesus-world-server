@@ -19,6 +19,8 @@ Bei diesem Gamemode handelt es sich um einen Gamemode für die Multiplayer Modif
 Info: Der Gamemode läuft auf Linux und Windows, auf Windows habe ich aber bessere Erfahrungen gemacht.
 Kopiert euch bitte die jeweiligen aktuellen Runtimes (von Rage) in den dotnet Ordner, es liegen die runtimes für Windows dabei!
 
+☕ Ihr wollt uns unterstützen? https://ko-fi.com/nemesustv ☕
+
 Weitere Abhängigkeiten:
 - NPM 8.5.0
 - NodeJS 16.14.2
@@ -88,7 +90,5 @@ Beachtet bitte die ToDos im Code und die Installationsanleitung auf Youtube:
 - https://youtu.be/0j1qmqTB8qA (ZAP-Hosting als Gameserver)
 - https://youtu.be/vZP-QDRra64 (Text-RP)
 - https://youtu.be/R4jcu1xuCVo (ForumConnect/PostChangelog System)
-
-☕ Ihr wollt uns unterstützen? https://ko-fi.com/nemesustv ☕
 
 Weitere Infos gibt es auf https://nemesus.de

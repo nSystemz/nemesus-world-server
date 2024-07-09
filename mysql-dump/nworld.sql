@@ -3747,15 +3747,16 @@ CREATE TABLE `users` (
   `givepremium` int(1) NOT NULL DEFAULT 0,
   `houseslots` int(2) NOT NULL DEFAULT 0,
   `vehicleslots` int(2) NOT NULL DEFAULT 0,
-  `epboost` int(11) NOT NULL DEFAULT 0
+  `epboost` int(11) NOT NULL DEFAULT 0,
+  `tester` int(1) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Daten für Tabelle `users`
 --
 
-INSERT INTO `users` (`id`, `name`, `adminlevel`, `password`, `remember_token`, `admin_since`, `selectedcharacter`, `selectedcharacterintern`, `last_login`, `account_created`, `last_save`, `level`, `play_time`, `play_points`, `kills`, `deaths`, `crimes`, `premium`, `premium_time`, `coins`, `warns`, `warns_text`, `online`, `namechanges`, `geworben`, `theme`, `ban`, `bantext`, `admin_rang`, `prison`, `last_ip`, `identifier`, `login_bonus`, `login_bonus_before`, `google2fa_secret`, `dsgvo_closed`, `forumaccount`, `forumcode`, `forumupdate`, `autologin`, `rpquizfinish`, `timestampchat`, `crosshair`, `shootingrange`, `faq`, `givepremium`, `houseslots`, `vehicleslots`, `epboost`) VALUES
-(1, 'Testuser', 8, '$2y$10$6n4eP023KIEGINK1j6XE5Op3EDlh.t0BLMm4fXjEyh5CIbA6ra4t6', 'mpBECbLt2fRNcEiSMCVzNB1APnDOki1wdbulTsL6iikfzBxaLccd44IN8Kkg', 1633797716, 0, 1, 1633357259, 1633357259, 0, 1, 1, 8, 0, 0, 0, 1, 1633357259, 0, 1, 'test|testt|n/A|n/A|n/A', 1, 2, 'Keiner', 'dark', 0, 'testtt', 'Testrang', 0, 'n/A', 18021891, 1, '10-10-2022', NULL, 0, -1, 0, 1682087207, 0, 1, 1, 17, 0, '1,0,0,0,0,0,0,0,0,0', 0, 0, 0, 0);
+INSERT INTO `users` (`id`, `name`, `adminlevel`, `password`, `remember_token`, `admin_since`, `selectedcharacter`, `selectedcharacterintern`, `last_login`, `account_created`, `last_save`, `level`, `play_time`, `play_points`, `kills`, `deaths`, `crimes`, `premium`, `premium_time`, `coins`, `warns`, `warns_text`, `online`, `namechanges`, `geworben`, `theme`, `ban`, `bantext`, `admin_rang`, `prison`, `last_ip`, `identifier`, `login_bonus`, `login_bonus_before`, `google2fa_secret`, `dsgvo_closed`, `forumaccount`, `forumcode`, `forumupdate`, `autologin`, `rpquizfinish`, `timestampchat`, `crosshair`, `shootingrange`, `faq`, `givepremium`, `houseslots`, `vehicleslots`, `epboost`, `tester`) VALUES
+(1, 'Testuser', 8, '$2y$10$6n4eP023KIEGINK1j6XE5Op3EDlh.t0BLMm4fXjEyh5CIbA6ra4t6', 'mpBECbLt2fRNcEiSMCVzNB1APnDOki1wdbulTsL6iikfzBxaLccd44IN8Kkg', 1633797716, 0, 1, 1633357259, 1633357259, 0, 1, 1, 8, 0, 0, 0, 1, 1633357259, 0, 1, 'test|testt|n/A|n/A|n/A', 1, 2, 'Keiner', 'dark', 0, 'testtt', 'Testrang', 0, 'n/A', 18021891, 1, '10-10-2022', NULL, 0, -1, 0, 1682087207, 0, 1, 1, 17, 0, '1,0,0,0,0,0,0,0,0,0', 0, 0, 0, 0, 0);
 
 -- --------------------------------------------------------
 

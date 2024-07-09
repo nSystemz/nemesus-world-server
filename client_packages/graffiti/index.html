@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Graffiti</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+        }
+        #canvas {
+            display: none;
+        }
+    </style>
+    <script>
+        function setGraffitiText(text) {
+            document.getElementById('graffitiText').innerText = text;
+        }
+
+        function renderGraffiti() {
+            const canvas = document.getElementById('canvas');
+            const context = canvas.getContext('2d');
+
+            context.fillStyle = 'white';
+            context.fillRect(0, 0, canvas.width, canvas.height);
+
+            context.font = '30px Arial';
+            context.fillStyle = 'black';
+            context.fillText(document.getElementById('graffitiText').innerText, 10, 50);
+
+            const imageData = canvas.toDataURL('image/png');
+            mp.trigger('graffitiRendered', imageData);
+        }
+    </script>
+</head>
+<body>
+    <canvas id="canvas" width="512" height="512"></canvas>
+    <div id="graffitiText" style="display:none;"></div>
+</body>
+</html>

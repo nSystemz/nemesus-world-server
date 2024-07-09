@@ -2870,7 +2870,7 @@ namespace NemesusWorld.Utils
             {
                 Account cacc = Helper.GetAccountData(c);
                 TempData tempData = Helper.GetCharacterTempData(c);
-                if (Account.IsPlayerLoggedIn(c) && (c.GetOwnSharedData<bool>("Player:Testmodus") == true || cacc.adminlevel >= 1) && tempData.achat == true)
+                if (Account.IsPlayerLoggedIn(c) && (c.GetOwnSharedData<int>("Player:Tester") == 1 || cacc.adminlevel >= 1) && tempData.achat == true)
                 {
                     text = "!{#07C71B}[Testchat] " + account.name + ": " + message;
                     SendChatMessage(c, text, false);

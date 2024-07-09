@@ -2364,9 +2364,10 @@ mp.events.add("Client:ShowCars", (json, set) => {
             let faction = localPlayer.getVariable('Player:Faction');
             let factionrang = localPlayer.getVariable('Player:FactionRang');
             let job = localPlayer.getVariable('Player:Job');
+            let tester = localPlayer.getVariable('Player:Tester');
             showMenu = !showMenu;
             localPlayer.freezePosition(showMenu);
-            hudWindow.execute(`gui.menu.showMenu('${admin}','${adminduty}','${group}','${grouprang}','${faction}','${factionrang}','${job}');`)
+            hudWindow.execute(`gui.menu.showMenu('${admin}','${adminduty}','${group}','${grouprang}','${faction}','${factionrang}','${job}','${tester}');`)
             mp.gui.cursor.show(true, true);
         }
         hudWindow.execute(`gui.menu.showCars('${json}');`)
@@ -3854,10 +3855,11 @@ mp.events.add("Client:PressF2", () => {
     let faction = localPlayer.getVariable('Player:Faction');
     let factionrang = localPlayer.getVariable('Player:FactionRang');
     let job = localPlayer.getVariable('Player:Job');
+    let tester = localPlayer.getVariable('Player:Tester');
     showMenu = !showMenu;
     localPlayer.freezePosition(showMenu);
     mp.events.call('Client:StopAllNotifications');
-    hudWindow.execute(`gui.menu.showMenu('${admin}','${adminduty}','${group}','${grouprang}','${faction}','${factionrang}','${job}','${level}');`)
+    hudWindow.execute(`gui.menu.showMenu('${admin}','${adminduty}','${group}','${grouprang}','${faction}','${factionrang}','${job}','${level}','${tester}');`)
     if (ticketCooldown == 0 || (Date.now() / 1000) > ticketCooldown) {
         mp.events.callRemote('Server:LoadAllTickets', false);
         ticketCooldown = (Date.now() / 1000) + (30);
@@ -7248,7 +7250,7 @@ mp.events.add('Client:EnableSaltyError', () => {
             mp.events.call("Client:SetTalkstate", -1);
             hideMenus();
             if (showMenu) {
-                hudWindow.execute(`gui.menu.showMenu('0','0','0','0','0','0','0','0');`)
+                hudWindow.execute(`gui.menu.showMenu('0','0','0','0','0','0','0','0','0');`)
             }
             if (showInventory == true) {
                 mp.events.call("Client:ShowInventory");
@@ -7919,6 +7921,7 @@ function hideMenus(check = true) {
     let faction = localPlayer.getVariable('Player:Faction');
     let factionrang = localPlayer.getVariable('Player:FactionRang');
     let job = localPlayer.getVariable('Player:Job');
+    let tester = localPlayer.getVariable('Player:Tester');
     if (cctvShow == true) {
         mp.events.call('Client:StartStopCCTV');
     }
@@ -7943,7 +7946,7 @@ function hideMenus(check = true) {
     if (showMenu == true) {
         mp.events.call("Client:HideMenu");
         if (hudWindow != null) {
-            hudWindow.execute(`gui.menu.showMenu('${admin}','${adminduty}','${group}','${grouprang}','${faction}','${factionrang}','${job}');`)
+            hudWindow.execute(`gui.menu.showMenu('${admin}','${adminduty}','${group}','${grouprang}','${faction}','${factionrang}','${job}','${tester}');`)
         }
         localPlayer.freezePosition(false);
     }

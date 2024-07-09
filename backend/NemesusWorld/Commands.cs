@@ -34,7 +34,7 @@ namespace NemesusWorld
                 {
                     if (!Account.IsPlayerLoggedIn(player)) return;
                     Account account = Helper.GetAccountData(player);
-                    if (player.GetOwnSharedData<bool>("Player:Testmodus") == false && !Account.IsAdminOnDuty(player, (int)Account.AdminRanks.HighAdministrator))
+                    if (player.GetOwnSharedData<int>("Player:Tester") == 0 && !Account.IsAdminOnDuty(player, (int)Account.AdminRanks.HighAdministrator))
                     {
                         Helper.SendNotificationWithoutButton(player, "Unzureichende Adminrechte!", "error", "top-end");
                         return;
@@ -1159,7 +1159,7 @@ namespace NemesusWorld
                 bool error = true;
                 Account account = Helper.GetAccountData(player);
                 if (!Account.IsPlayerLoggedIn(player)) return;
-                if (player.GetOwnSharedData<bool>("Player:Testmodus") == false && !Account.IsAdminOnDuty(player, (int)Account.AdminRanks.Administrator))
+                if (player.GetOwnSharedData<int>("Player:Tester") == 0 && !Account.IsAdminOnDuty(player, (int)Account.AdminRanks.Administrator))
                 {
                     Helper.SendNotificationWithoutButton(player, "Unzureichende Adminrechte!", "error", "top-end");
                     return;
@@ -1317,7 +1317,7 @@ namespace NemesusWorld
             {
                 if (!Account.IsPlayerLoggedIn(player)) return;
                 Player ntarget = Helper.GetPlayerByNameOrID(target);
-                if (player.GetOwnSharedData<bool>("Player:Testmodus") == false && !Account.IsAdminOnDuty(player, (int)Account.AdminRanks.Administrator))
+                if (player.GetOwnSharedData<int>("Player:Tester") == 0 && !Account.IsAdminOnDuty(player, (int)Account.AdminRanks.Administrator))
                 {
                     Helper.SendNotificationWithoutButton(player, "Unzureichende Adminrechte!", "error", "top-end");
                     return;
@@ -1325,7 +1325,7 @@ namespace NemesusWorld
                 if (target == "n/A")
                 {
                     player.SendChatMessage("~w~Befehl: /set [Spieler/ID] [Option] [Menge]");
-                    player.SendChatMessage("~y~Verfügbare Aktionen: Leben, Geld, Dimension, GruppierungsMember, GruppierungsLeader, FraktionsMember, FraktionsLeader, FraktionsKick, Truckerskill, Diebesskill, Craftingskill, Angelskill, Busskill, Landwirtskill, Premium-Bronze, Premium-Silber, Premium-Gold, Level, Spielstunden, Erfahrungspunkte, Krankheit, Coins");
+                    player.SendChatMessage("~y~Verfügbare Aktionen: Leben, Geld, Dimension, GruppierungsMember, GruppierungsLeader, FraktionsMember, FraktionsLeader, FraktionsKick, Truckerskill, Diebesskill, Craftingskill, Angelskill, Busskill, Landwirtskill, Premium-Bronze, Premium-Silber, Premium-Gold, Level, Spielstunden, Erfahrungspunkte, Krankheit, Coins, Payday, Tester");
                     return;
                 }
                 if (ntarget == null || !ntarget.Exists || !Account.IsPlayerLoggedIn(ntarget))
@@ -1402,7 +1402,18 @@ namespace NemesusWorld
                                 return;
                             }
                             accounttarget.play_points = 60;
-                            Helper.CheckPayday(player);
+                            Helper.CheckPayday(ntarget);
+                            break;
+                        }
+                    case "tester":
+                        {
+                            if (number < 0 || number > 1)
+                            {
+                                Helper.SendNotificationWithoutButton(player, "Ungültige Menge!", "error", "top-end");
+                                return;
+                            }
+                            accounttarget.tester = number;
+                            ntarget.SetOwnSharedData("Player:Tester", number);
                             break;
                         }
                     case "erfahrungspunkte":
@@ -1963,7 +1974,7 @@ namespace NemesusWorld
                     default:
                         {
                             player.SendChatMessage("~w~Befehl: /set [Spieler/ID] [Option] [Menge]");
-                            player.SendChatMessage("~y~Verfügbare Aktionen: Leben, Geld, Dimension, GruppierungsMember, GruppierungsLeader, FraktionsMember, FraktionsLeader, FraktionsKick, Truckerskill, Diebesskill, Angelskill, Busskill, Landwirtskill, Craftingskill, Premium-Bronze, Premium-Silber, Premium-Gold, Level, Spielstunden, Erfahrungspunkte, Krankheit, Coins, Payday");
+                            player.SendChatMessage("~y~Verfügbare Aktionen: Leben, Geld, Dimension, GruppierungsMember, GruppierungsLeader, FraktionsMember, FraktionsLeader, FraktionsKick, Truckerskill, Diebesskill, Angelskill, Busskill, Landwirtskill, Craftingskill, Premium-Bronze, Premium-Silber, Premium-Gold, Level, Spielstunden, Erfahrungspunkte, Krankheit, Coins, Payday, Tester");
                             return;
                         }
                 }
@@ -1975,7 +1986,7 @@ namespace NemesusWorld
             catch (Exception)
             {
                 player.SendChatMessage("~w~Befehl: /set [Spieler/ID] [Option] [Menge]");
-                player.SendChatMessage("~y~Verfügbare Aktionen: Leben, Geld, Dimension, GruppierungsMember, GruppierungsLeader, FraktionsMember, FraktionsLeader, FraktionsKick, Truckerskill, Diebesskill, Angelskill, Busskill, Landwirtskill, Premium-Bronze, Premium-Silber, Premium-Gold, Level, Spielstunden, Erfahrungspunkte, Krankheit, Coins, Payday");
+                player.SendChatMessage("~y~Verfügbare Aktionen: Leben, Geld, Dimension, GruppierungsMember, GruppierungsLeader, FraktionsMember, FraktionsLeader, FraktionsKick, Truckerskill, Diebesskill, Angelskill, Busskill, Landwirtskill, Premium-Bronze, Premium-Silber, Premium-Gold, Level, Spielstunden, Erfahrungspunkte, Krankheit, Coins, Payday, Tester");
             }
         }
 
@@ -2846,7 +2857,7 @@ namespace NemesusWorld
             {
                 if (!Account.IsPlayerLoggedIn(player)) return;
                 Account account = Helper.GetAccountData(player);
-                if (player.GetOwnSharedData<bool>("Player:Testmodus") == false && !Account.IsAdminOnDuty(player, (int)Account.AdminRanks.Moderator))
+                if (player.GetOwnSharedData<int>("Player:Tester") == 0 && !Account.IsAdminOnDuty(player, (int)Account.AdminRanks.Moderator))
                 {
                     Helper.SendNotificationWithoutButton(player, "Unzureichende Adminrechte!", "error", "top-end");
                     return;
@@ -5144,7 +5155,7 @@ namespace NemesusWorld
                 if (!Account.IsPlayerLoggedIn(player)) return;
                 Account account = Helper.GetAccountData(player);
                 Character character = Helper.GetCharacterData(player);
-                if (player.GetOwnSharedData<bool>("Player:Testmodus") == false && !Account.IsAdminOnDuty(player, (int)Account.AdminRanks.ProbeModerator))
+                if (player.GetOwnSharedData<int>("Player:Tester") == 0 && !Account.IsAdminOnDuty(player, (int)Account.AdminRanks.ProbeModerator))
                 {
                     Helper.SendNotificationWithoutButton(player, "Unzureichende Adminrechte!", "error", "top-end");
                     return;
@@ -6226,7 +6237,7 @@ namespace NemesusWorld
         public void CMD_fixveh(Player player)
         {
             if (!Account.IsPlayerLoggedIn(player)) return;
-            if (player.GetOwnSharedData<bool>("Player:Testmodus") == false && !Account.IsAdminOnDuty(player, (int)Account.AdminRanks.Moderator))
+            if (player.GetOwnSharedData<int>("Player:Tester") == 0 && !Account.IsAdminOnDuty(player, (int)Account.AdminRanks.Moderator))
             {
                 Helper.SendNotificationWithoutButton(player, "Unzureichende Adminrechte!", "error", "top-end");
                 return;
@@ -6254,7 +6265,7 @@ namespace NemesusWorld
         public void CMD_fillveh(Player player)
         {
             if (!Account.IsPlayerLoggedIn(player)) return;
-            if (player.GetOwnSharedData<bool>("Player:Testmodus") == false && !Account.IsAdminOnDuty(player, (int)Account.AdminRanks.Moderator))
+            if (player.GetOwnSharedData<int>("Player:Tester") == 0 && !Account.IsAdminOnDuty(player, (int)Account.AdminRanks.Moderator))
             {
                 Helper.SendNotificationWithoutButton(player, "Unzureichende Adminrechte!", "error", "top-end");
                 return;
@@ -6335,7 +6346,7 @@ namespace NemesusWorld
                 TempData tempData = Helper.GetCharacterTempData(player);
                 if (tempData.adminvehicle == null)
                 {
-                    if (player.GetOwnSharedData<bool>("Player:Testmodus") == false && !Account.IsAdminOnDuty(player, (int)Account.AdminRanks.ProbeModerator))
+                    if (player.GetOwnSharedData<int>("Player:Tester") == 0 && !Account.IsAdminOnDuty(player, (int)Account.AdminRanks.ProbeModerator))
                     {
                         Helper.SendNotificationWithoutButton(player, "Unzureichende Adminrechte!", "error", "top-end");
                         return;
@@ -6878,7 +6889,7 @@ namespace NemesusWorld
         [Command("funmodus", "Befehl: /funmodus")]
         public void CMD_funmodus(Player player)
         {
-            if (player.GetOwnSharedData<bool>("Player:Testmodus") == false && !Account.IsAdminOnDuty(player, (int)Account.AdminRanks.HighAdministrator))
+            if (player.GetOwnSharedData<int>("Player:Tester") == 0 && !Account.IsAdminOnDuty(player, (int)Account.AdminRanks.HighAdministrator))
             {
                 Helper.SendNotificationWithoutButton(player, "Unzureichende Adminrechte!", "error", "top-end");
                 return;
@@ -6894,16 +6905,22 @@ namespace NemesusWorld
             }
         }
 
+        //TODO: Entfernen wenn man keinen Testmodus braucht
         [Command("testmodus", "Befehl: /testmodus")]
         public void CMD_testmodus(Player player)
         {
-            player.SetOwnSharedData("Player:Testmodus", !player.GetOwnSharedData<bool>("Player:Testmodus"));
-            if (player.GetOwnSharedData<bool>("Player:Testmodus"))
+            Account account = Helper.GetAccountData(player);
+            if (account == null) return;
+            if(player.GetOwnSharedData<int>("Player:Tester") == 0)
             {
+                account.tester = 1;
+                player.SetOwnSharedData("Player:Tester", 1);
                 Helper.SendNotificationWithoutButton(player, "Testmodus wurde aktiviert!", "success", "top-end");
             }
             else
             {
+                account.tester = 0;
+                player.SetOwnSharedData("Player:Tester", 0);
                 Helper.SendNotificationWithoutButton(player, "Testmodus wurde deaktiviert!", "success", "top-end");
             }
         }

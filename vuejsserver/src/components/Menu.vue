@@ -39,7 +39,7 @@
                     </div>
                 </div>
             </div>
-        </div> 
+        </div>
         <div class="centering5" style="height: 100%;" v-if="showgov">
             <div class="row d-flex justify-content-center"
                 style="margin-left: 15rem !important; margin-top: 12.0vh; height:83vh; overflow: none; scrollbar-width: none;">
@@ -194,10 +194,9 @@
                             </li>
                             <li class="nav-item" v-on:click="startHelp()">
                                 <a class="nav-link">
-                                    <i class="nav-icon fas fa-question-circle"</i>
-                                    <p style="color:white">
+                                    <i class="nav-icon fas fa-question-circle" </i> <p style="color:white">
                                         Befehle & Tasten
-                                    </p>
+                                        </p>
                                 </a>
                             </li>
                             <li class="nav-item" v-on:click="startSettings()">
@@ -208,7 +207,15 @@
                                     </p>
                                 </a>
                             </li>
-                            <li class="nav-item" v-if="admin >= 1" v-on:click="startAdminHelp()">
+                            <li class="nav-item" v-if="admin == 0 && tester >= 1" v-on:click="startAdminHelp()">
+                                <a class="nav-link">
+                                    <i class="nav-icon fas fa-question"></i>
+                                    <p style="color:white">
+                                        Testerbefehle
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item" v-if="admin >= 1 && tester >= 1" v-on:click="startAdminHelp()">
                                 <a class="nav-link">
                                     <i class="nav-icon fas fa-question"></i>
                                     <p style="color:white">
@@ -769,7 +776,8 @@
                                         <div class="card-header" style="font-family: 'Exo', sans-serif;">NW Shop</div>
                                         <div class="card-body">
                                             <div style="display: flex; justify-content: center; align-items: center">
-                                                <h4 style="font-family: 'Exo', sans-serif;">Verfügbare Coins: {{shopCoins}}
+                                                <h4 style="font-family: 'Exo', sans-serif;">Verfügbare Coins:
+                                                    {{shopCoins}}
                                                     Coins</h4>
                                             </div>
                                             <hr />
@@ -1781,11 +1789,10 @@
                                                                     v-if="car.tuev > 5 && car.tuev >= (Date.now() / 1000)"
                                                                     class="float-right"
                                                                     style="color:green">{{timeConverter(car.tuev)}}</a>
-                                                                    <a
-                                                                    v-if="car.tuev > 5 && car.tuev < (Date.now() / 1000)"
+                                                                <a v-if="car.tuev > 5 && car.tuev < (Date.now() / 1000)"
                                                                     class="float-right" style="color:red">Kein TÜV</a>
-                                                                <a v-if="car.tuev == 2"
-                                                                    class="float-right" style="color:green">Ja</a>
+                                                                <a v-if="car.tuev == 2" class="float-right"
+                                                                    style="color:green">Ja</a>
                                                                 <b
                                                                     v-if="(car.tuev != 2 && car.tuev <= 5) || car.tuev < (Date.now() / 1000)">TÜV</b>
                                                                 <a v-if="car.tuev != 2 && car.tuev <= 5"
@@ -1807,19 +1814,23 @@
                                                                         :placeholder="car.rang" v-model="car.rang"
                                                                         maxlength="2" autocomplete="off"></a>
                                                             </li>
-                                                            <button v-if="car.garage != 'admin'" class="btn btn-primary btn-sm mt-2" type="submit"
+                                                            <button v-if="car.garage != 'admin'"
+                                                                class="btn btn-primary btn-sm mt-2" type="submit"
                                                                 v-on:click="setCarName(car.id,car.ownname,car.owner)">Ind.
                                                                 Name
                                                                 setzen</button>
-                                                            <button v-if="!car.owner.includes('character') && car.garage != 'admin'"
+                                                            <button
+                                                                v-if="!car.owner.includes('character') && car.garage != 'admin'"
                                                                 class="btn btn-primary btn-sm mt-2" type="submit"
                                                                 v-on:click="setCarRang(car.id,car.rang,car.owner)">Rang
                                                                 setzen</button>
                                                             <button v-if="car.battery > 0 && car.garage != 'admin'"
                                                                 class="btn btn-primary btn-sm mt-2" type="submit"
-                                                                v-on:click="gpsCar(car.position, car.id)">GPS Ortung</button>
+                                                                v-on:click="gpsCar(car.position, car.id)">GPS
+                                                                Ortung</button>
                                                             <button v-if="car.garage == 'admin'" disabled
-                                                                class="btn btn-danger btn-sm mt-2" type="submit">Gesperrt</button>
+                                                                class="btn btn-danger btn-sm mt-2"
+                                                                type="submit">Gesperrt</button>
                                                         </ul>
                                                     </div>
                                                 </div>
@@ -4047,7 +4058,8 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td>M</td>
-                                                                        <td>Fraktionaktionsmenü/Interaktionsmenü öffnen</td>
+                                                                        <td>Fraktionaktionsmenü/Interaktionsmenü öffnen
+                                                                        </td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>Q</td>
@@ -4196,7 +4208,8 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td>M</td>
-                                                                        <td>Fraktionaktionsmenü/Interaktionsmenü öffnen</td>
+                                                                        <td>Fraktionaktionsmenü/Interaktionsmenü öffnen
+                                                                        </td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>Q</td>
@@ -4312,7 +4325,8 @@
                                                                     </tr>
                                                                     <tr>
                                                                         <td>M</td>
-                                                                        <td>Fraktionaktionsmenü/Interaktionsmenü öffnen</td>
+                                                                        <td>Fraktionaktionsmenü/Interaktionsmenü öffnen
+                                                                        </td>
                                                                     </tr>
                                                                     <tr>
                                                                         <td>Q</td>
@@ -5020,8 +5034,72 @@
                         <div class="col-md-12 mt-1">
                             <div class="box box-default">
                                 <div class="card card-primary card-outline">
-                                    <div class="card-header" style="font-family: 'Exo', sans-serif;">Adminbefehle</div>
-                                    <div class="card-body">
+                                    <div class="card-header" style="font-family: 'Exo', sans-serif;" v-if="tester>=1">
+                                        Testerbefehle</div>
+                                    <div class="card-body" v-if="tester>=1">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="card card-primary">
+                                                    <div class="card-header">
+                                                        <h3 class="card-title">Testerbefehle</h3>
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <table id="logtable" name="logtable"
+                                                            class="table table-bordered" style="width:100%">
+                                                            <thead class="table-primary">
+                                                                <tr id="tablehead" class="tablehead">
+                                                                    <th>Befehl/Taste</th>
+                                                                    <th>Beschreibung</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td>? Nachricht</td>
+                                                                    <td>Testerchat benutzen</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>/revive</td>
+                                                                    <td>Spieler wiederbeleben</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>/set</td>
+                                                                    <td>Sachen, Eigenschaften setzen</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>/giveitem</td>
+                                                                    <td>Items vergeben</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>/agl</td>
+                                                                    <td>Lizenzen vergeben</td>
+
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>/teleport</td>
+                                                                    <td>Zu einer Position teleportieren</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>/veh</td>
+                                                                    <td>Ein Fahrzeug spawnen</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>/fixveh</td>
+                                                                    <td>Fahrzeug reparieren</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>/fillveh</td>
+                                                                    <td>Fahrzeugtank befüllen</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card-header" style="font-family: 'Exo', sans-serif;" v-if="admin>=1">
+                                        Adminbefehle</div>
+                                    <div class="card-body" v-if="admin>=1">
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="card card-primary">
@@ -5046,7 +5124,8 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td>/toggleachat</td>
-                                                                    <td>Admin-Benachrichtigungen aktivieren/deaktivieren</td>
+                                                                    <td>Admin-Benachrichtigungen aktivieren/deaktivieren
+                                                                    </td>
                                                                     <td>Probe Moderator</td>
                                                                 </tr>
                                                                 <tr>
@@ -8241,10 +8320,11 @@
                 this.menushowfaction = false;
                 this.menushowfactionhelp = !this.menushowfactionhelp;
             },
-            showMenu: function(admin, adminduty, group, grouprang, faction, factionrang, job, level) {
+            showMenu: function(admin, adminduty, group, grouprang, faction, factionrang, job, level, tester) {
                 Swal.close();
                 // eslint-disable-next-line no-undef
                 this.admin = admin;
+                this.tester = tester;
                 if (adminduty == 0) {
                     this.adminduty = false;
                 } else {

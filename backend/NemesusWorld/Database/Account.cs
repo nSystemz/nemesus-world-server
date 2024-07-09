@@ -58,6 +58,7 @@ namespace NemesusWorld.Database
         public int houseslots { get; set; }
         public int vehicleslots { get; set; }
         public int epboost { get; set; }
+        public int tester { get; set; }
         //Nicht speichern
         public Player _Player;
         public bool logged_in { get; set; }
@@ -109,6 +110,7 @@ namespace NemesusWorld.Database
             givepremium = 0;
             houseslots = 0;
             epboost = 0;
+            tester = 0;
             _Player = null;
             logged_in = false;
 
@@ -160,6 +162,7 @@ namespace NemesusWorld.Database
             givepremium = 0;
             vehicleslots = 0;
             epboost = 0;
+            tester = 0;
             _Player = player;
             logged_in = false;
         }
@@ -327,6 +330,7 @@ namespace NemesusWorld.Database
                         account.houseslots = reader.GetInt16("houseslots");
                         account.vehicleslots = reader.GetInt16("vehicleslots");
                         account.epboost = reader.GetInt32("epboost");
+                        account.tester = reader.GetInt32("tester");
                         reader.Close();
                     }
                 }
@@ -354,7 +358,7 @@ namespace NemesusWorld.Database
                     "last_save=@last_save,level=@level,play_time=@play_time,play_points=@play_points,kills=@kills,deaths=@deaths,crimes=@crimes,premium=@premium,premium_time=@premium_time,coins=@coins,warns=@warns,warns_text=@warns_text," +
                     "online=@online,namechanges=@namechanges,theme=@theme,ban=@ban,bantext=@bantext,admin_rang=@admin_rang,prison=@prison,last_ip=@last_ip,identifier=@identifier,login_bonus=@login_bonus,login_bonus_before=@login_bonus_before," +
                     "dsgvo_closed=@dsgvo_closed,forumaccount=@forumaccount,forumcode=@forumcode,forumupdate=@forumupdate,autologin=@autologin,rpquizfinish=@rpquizfinish,crosshair=@crosshair,shootingrange=@shootingrange,faq=@faq,givepremium=@givepremium," +
-                    "vehicleslots=@vehicleslots,epboost=@epboost" +
+                    "vehicleslots=@vehicleslots,epboost=@epboost,tester=@tester" +
                     " WHERE id=@id";
 
                     command.Parameters.AddWithValue("@name", account.name);
@@ -399,6 +403,7 @@ namespace NemesusWorld.Database
                     command.Parameters.AddWithValue("@givepremium", account.givepremium);
                     command.Parameters.AddWithValue("@vehicleslots", account.vehicleslots);
                     command.Parameters.AddWithValue("@epboost", account.epboost);
+                    command.Parameters.AddWithValue("@tester", account.tester);
                     command.Parameters.AddWithValue("@id", account.id);
                     command.ExecuteNonQuery();
 
@@ -565,6 +570,14 @@ namespace NemesusWorld.Database
                 if(admin_rang != "n/A")
                 {
                     player.SetSharedData("Player:AdminRang", admin_rang);
+                }
+                if(tester == 1)
+                {
+                    player.SetOwnSharedData("Player:Tester", 1);
+                }
+                else
+                {
+                    player.SetOwnSharedData("Player:Tester", 0);
                 }
                 player.TriggerEvent("Client:StopSound");
                 player.TriggerEvent("Client:HideAuth");

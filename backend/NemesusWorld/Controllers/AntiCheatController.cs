@@ -111,7 +111,7 @@ namespace NemesusWorld.Controllers
                     NAPI.Player.RemoveAllPlayerWeapons(player);
                     ItemsController.UpdateInventory(player);
                 }
-                if (cheatname != "Geld Cheat" && cheatname != "Speedhack" && account.adminlevel <= 0 && player.GetOwnSharedData<bool>("Player:Testmodus") == false)
+                if (cheatname != "Geld Cheat" && cheatname != "Speedhack" && account.adminlevel <= 0 && player.GetOwnSharedData<int>("Player:Tester") == 0)
                 {
                     if (screenshot == true)
                     {

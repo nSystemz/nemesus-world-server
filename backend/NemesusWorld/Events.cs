@@ -1306,7 +1306,7 @@ namespace NemesusWorld
                 player.TriggerEvent("Client:PlayerFreeze", true);
                 player.SetOwnSharedData("Player:DevModus", false);
                 player.SetOwnSharedData("Player:Funmodus", false);
-                player.SetOwnSharedData("Player:Testmodus", false);
+                player.SetOwnSharedData("Player:Tester", 0);
                 player.SetData<string>("Player:DiscordUpload", "");
                 player.SetOwnSharedData("Player:Needs", "-1,-1,0");
                 player.SetData("Player:MoebelModus", false);
@@ -1330,7 +1330,7 @@ namespace NemesusWorld
                 player.SetSharedData("Player:AFK", 0);
                 player.SetSharedData("Client:OldName", "n/A");
                 player.SetSharedData("Client:Condition", "n/A");
-                if (Helper.adminSettings.voicerp == 2)
+                if (Helper.adminSettings != null && Helper.adminSettings.voicerp == 2)
                 {
                     player.SetSharedData("Player:VoiceRangeLocal", 25.0);
                     player.SetSharedData("Player:LocalVoiceHandyPlayer", -1);
@@ -1876,7 +1876,7 @@ namespace NemesusWorld
                 NAPI.Data.SetEntitySharedData(player, "Player:AdminLevel", 0);
                 player.SetOwnSharedData("Player:DevModus", false);
                 player.SetOwnSharedData("Player:Funmodus", false);
-                player.SetOwnSharedData("Player:Testmodus", false);
+                player.SetOwnSharedData("Player:Tester", 0);
                 player.SetData<string>("Player:DiscordUpload", "");
                 player.SetData<bool>("Player:InShop", false);
                 player.SetOwnSharedData("Player:Voice", -2);
@@ -3840,7 +3840,7 @@ namespace NemesusWorld
                 //Testchat
                 if (message.StartsWith("?"))
                 {
-                    if (player.GetOwnSharedData<bool>("Player:Testmodus") == true || Account.IsAdmin(player, (int)Account.AdminRanks.ProbeModerator))
+                    if (player.GetOwnSharedData<int>("Player:Tester") == 1 || Account.IsAdmin(player, (int)Account.AdminRanks.ProbeModerator))
                     {
                         if (message.Length <= 1) return;
                         Helper.SendTestMessage(message, player);

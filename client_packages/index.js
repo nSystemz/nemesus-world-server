@@ -25,4 +25,6 @@ require('./general/screenshot');
 require('./general/fire');
 require('./general/misc');
 
+require('./graffiti/index');
+
 require('./localvoice/index')

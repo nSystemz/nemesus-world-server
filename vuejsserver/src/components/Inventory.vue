@@ -435,7 +435,7 @@ export default {
                     this.maxweight2 = 30000;
                     this.textinv2 = '';
                 }
-                var self = this;
+                let self = this;
                 setTimeout(function () {
                     self.updateProgressbar1();
                     if (json2 != null && json2 != 'null') {

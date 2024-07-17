@@ -471,11 +471,11 @@ namespace NemesusWorld.Utils
 
         //ForumUpdate
         //ToDo: Gruppen IDs und Sonstiges anpassen
-        public static void ForumUpdate(Player player, string action, int forumid = -1, string grund = "n/A", int zeit = -1)
+        public static void ForumUpdate(Player player, string action, int forumid = -1, string grund = "n/A", int zeit = -1, bool self = false)
         {
             try
             {
-                return;
+                return; // Löschen wenn ToDo oben erledigt
                 #pragma warning disable CS0162 // Unerreichbarer Code wurde entdeckt - löschen wenn ToDo oben erledigt
                 Character character = Helper.GetCharacterData(player);
                 #pragma warning restore CS0162 // Unerreichbarer Code wurde entdeckt - löschen wenn ToDo oben erledigt
@@ -622,9 +622,9 @@ namespace NemesusWorld.Utils
                     HTTP.Post("HIER/forumConnect.php?id=cu4VUud8EB4TLyfhbSSN589u7&status=settogroups&userid=" + forumid + "&groupids=" + groups, new System.Collections.Specialized.NameValueCollection());
                 }
 
-                if (oldForumID == -1)
+                if (oldForumID == -1 && self == true)
                 {
-                    account.forumupdate = Helper.UnixTimestamp() + (60 * 25);
+                    account.forumupdate = (Helper.UnixTimestamp() + (60 * 25));
                 }
             }
             catch (Exception e)

@@ -100,7 +100,7 @@ namespace NemesusWorld.Database
             dsgvo_closed = 0;
             forumaccount = -1;
             forumcode = 0;
-            forumupdate = 1609462861;
+            forumupdate = 0;
             autologin = 0;
             rpquizfinish = 0;
             crosshair = 17;
@@ -152,7 +152,7 @@ namespace NemesusWorld.Database
             dsgvo_closed = 0;
             forumaccount = -1;
             forumcode = 0;
-            forumupdate = 1609462861;
+            forumupdate = 0;
             autologin = 0;
             rpquizfinish = 0;
             crosshair = 17;
@@ -407,7 +407,7 @@ namespace NemesusWorld.Database
                     command.Parameters.AddWithValue("@id", account.id);
                     command.ExecuteNonQuery();
 
-                    if (account.forumaccount > -1 && (account.forumupdate + 432000) < Helper.UnixTimestamp())
+                    if (account.forumaccount > -1)
                     {
                         Helper.ForumUpdate(player, "all");
                     }

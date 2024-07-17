@@ -8189,7 +8189,7 @@ namespace NemesusWorld
                     Helper.SendNotificationWithoutButton(player, "Du kannst deine Forumrechte nur alle 25 Minuten updaten!", "error", "top-left");
                     return;
                 }
-                Helper.ForumUpdate(player, "all");
+                Helper.ForumUpdate(player, "all", -1, "n/A", -1, true);
                 Helper.SendNotificationWithoutButton(player, "Forumrechte erfolgreich aktualisiert!", "success", "top-left", 3500);
             }
             catch (Exception e)

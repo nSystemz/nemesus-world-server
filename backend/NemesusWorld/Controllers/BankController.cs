@@ -277,47 +277,49 @@ namespace NemesusWorld.Controllers
                 {
                     transferList.Add(transfer);
                 }
-                NAPI.Task.Run(() =>
+                if (transferList != null && transferList.Count > 0)
                 {
-                    foreach (Transfer transfer in transferList)
+                    NAPI.Task.Run(() =>
                     {
-                        if (transfer != null)
+                        foreach (Transfer transfer in transferList)
                         {
-                            foreach (Bank bank in bankList)
+                            if (transfer != null)
                             {
-                                if (bank != null && bank.banknumber == transfer.bankto)
+                                foreach (Bank bank in bankList)
                                 {
-                                    bank2 = bank;
+                                    if (bank != null && bank.banknumber == transfer.bankto)
+                                    {
+                                        bank2 = bank;
+                                    }
+                                    if (bank != null && bank.banknumber == transfer.bankfrom)
+                                    {
+                                        bank1 = bank;
+                                    }
                                 }
-                                if (bank != null && bank.banknumber == transfer.bankfrom)
+                                if (bank1 != null && bank2 != null)
                                 {
-                                    bank1 = bank;
-                                }
-                            }
-                            if (bank1 != null && bank2 != null)
-                            {
-                                if (bank1.bankvalue >= transfer.bankvalue)
-                                {
-                                    bank1.bankvalue -= transfer.bankvalue;
-                                    bank2.bankvalue += transfer.bankvalue;
-                                    Helper.BankSettings(transfer.bankfrom, "Überweisung getätigt", transfer.bankvalue.ToString(), transfer.bankname);
+                                    if (bank1.bankvalue >= transfer.bankvalue)
+                                    {
+                                        bank1.bankvalue -= transfer.bankvalue;
+                                        bank2.bankvalue += transfer.bankvalue;
+                                        Helper.BankSettings(transfer.bankfrom, "Überweisung getätigt", transfer.bankvalue.ToString(), transfer.bankname);
 
-                                    Helper.Bankfile(bank1, bank2, transfer.banktext, transfer.bankvalue);
-                                    Helper.Bankfile(bank1, bank2, transfer.banktext, transfer.bankvalue, true);
+                                        Helper.Bankfile(bank1, bank2, transfer.banktext, transfer.bankvalue);
+                                        Helper.Bankfile(bank1, bank2, transfer.banktext, transfer.bankvalue, true);
 
-                                    string text = $"Überweisung von {transfer.bankfrom} nach {transfer.bankto}, Summe: {transfer.bankvalue}, Verwendungszweck: {transfer.banktext}";
-                                    Helper.CreateAdminLog("banklog", text);
+                                        string text = $"Überweisung von {transfer.bankfrom} nach {transfer.bankto}, Summe: {transfer.bankvalue}, Verwendungszweck: {transfer.banktext}";
+                                        Helper.CreateAdminLog("banklog", text);
 
-                                    db.Delete(transfer);
+                                        db.Delete(transfer);
 
-                                    BankController.SaveBank(bank1);
-                                    BankController.SaveBank(bank2);
+                                        BankController.SaveBank(bank1);
+                                        BankController.SaveBank(bank2);
+                                    }
                                 }
                             }
                         }
-                    }
-                }, delayTime: 6500);
-                transferList = null;
+                    }, delayTime: 6500);
+                }
             }
             catch (Exception e)
             {

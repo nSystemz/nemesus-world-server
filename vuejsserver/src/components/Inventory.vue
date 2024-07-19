@@ -13,9 +13,9 @@
                                         v-if="inventoryshow1">
                                         <h3 class="mt-1 ml-2" style="font-family: 'Exo', sans-serif; font-size: 1.2vw;">
                                             Deine Taschen
-                                            <span class="ml-5" style="font-size: 0.75vw; margin-left: 1.5vw"
+                                            <span class="ml-5" style="font-size: 0.8vw; margin-left: 2.5vw"
                                                 v-if="itemSelect!=null">{{itemSelect.description}}<span
-                                                    class="ml-1 badge badge-dark" style="font-size: 0.45vw"><span
+                                                    class="ml-1 badge badge-dark" style="font-size: 0.55vw"><span
                                                         v-if="(itemSelect.type != 3 && itemSelect.type != 4 && itemSelect.type != 5) || itemSelect.description == 'Dietrich' || itemSelect.description == 'Zigaretten' || itemSelect.description == '55$-Prepaidkarte' || itemSelect.description == 'Handyvertrag' || itemSelect.description == 'Grippofein-C' || itemSelect.description == 'Antibiotika' || itemSelect.description == 'Ibuprofee-400mg' || itemSelect.description == 'Ibuprofee-800mg' || itemSelect.description == 'Morphin-10mg' || itemSelect.description == 'Bandage' || itemSelect.description == 'Materialien' || itemSelect.description == 'Marihuanasamen' || itemSelect.description == 'Marihuana' || itemSelect.description == 'Papes' || itemSelect.description == 'Joint' || itemSelect.description == 'Kokain' || itemSelect.description == 'Kokablatt' || itemSelect.description == 'Kokainsamen' || itemSelect.description == 'Space-Cookies'">{{itemSelect.amount}}</span><span
                                                         v-if="(itemSelect.props && itemSelect.props.length > 3 && itemSelect.type != 5 && itemSelect.type != 6) || itemSelect.description == 'Feuerzeug'">{{itemSelect.props}}</span><span
                                                         v-if="itemSelect.props && itemSelect.props.length > 2 && itemSelect.type == 5 && !IsNoMelee(itemSelect.description) && itemSelect.description != 'Taser'">{{itemSelect.props.split(',')[0]}}</span></span></span>
@@ -51,12 +51,10 @@
                                         </h3>
                                         <div class="col-md-12 mb-2">
                                             <div class="progress" style="margin-right: 0.8vw">
-                                                <div style="display: flex; justify-content: center; align-items: center;"
-                                                    class="mt-1">
                                                     <div class="progress-bar progress-bar-striped bg-primary"
                                                         role="progressbar" id="progress-bar" style="width: 0%"
                                                         aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
+                                         
                                             </div>
                                         </div>
                                         <div class="col-md-12 mb-3">
@@ -182,7 +180,7 @@ export default {
             itemSelect2: null,
             itemselect1: -1,
             itemselect2: -1,
-            inventory1: [],
+            inventory1: null,
             inventory1selected: [],
             maxweight1: 25000,
             inventory2: [],
@@ -198,9 +196,9 @@ export default {
     mounted() {},
     methods: {
         cutString(text) {
-            if(text.length > 12)
+            if(text.length > 10)
             {
-                return text.substr(0, 12) + '...';            }
+                return text.substr(0, 10) + '...';            }
             else
             {
                 return text;
@@ -622,7 +620,7 @@ export default {
         },
         updateProgressbar1: function () {
             // eslint-disable-next-line no-undef
-            var invweight = this.countweightinventory1();
+            var invweight = 500;
             if (invweight > 0) {
                 this.valeur = ((100 / this.maxweight1) * invweight);
             } else {
@@ -810,5 +808,5 @@ template,
 	box-sizing: border-box; 
 }
 .box2:last-child { margin-right: 0; }
-.box2:hover { border: 2px solid #3c6a99; }
+.box2:hover { border: 0.1px solid #3c6a99; }
 </style>

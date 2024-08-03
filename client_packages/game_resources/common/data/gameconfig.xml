@@ -2,7 +2,7 @@
 
 <!--
 DILAPIDATED-REALISM DISPATCH ENHANCED 4.0
- gameconfig.xml for GTA V 2944
+ gameconfig.xml for GTA V 3258
  
  RE by: alexguirre, CamxxCore, and Dilapidated 
  Assistance from: Unknown, PNWParksFan, Cass, Jax765, Stryfaar, and the RDE Team
@@ -309,7 +309,7 @@ in this file and decrease the value.
 						</Item>
 						<Item>
 							<PoolName>CGameScriptResource</PoolName>
-							<PoolSize value="5506" />
+							<PoolSize value="5526" />
 						</Item>
 						<Item>
 							<PoolName>ClothStore</PoolName>
@@ -400,7 +400,7 @@ in this file and decrease the value.
 						<Item>
 							<!-- Storage for drawables, .ydr files -->
 							<PoolName>DrawableStore</PoolName>
-							<PoolSize value="156600" />
+							<PoolSize value="158365" />
 						</Item>
 						<Item>
 							<PoolName>Dummy Object</PoolName>
@@ -409,7 +409,7 @@ in this file and decrease the value.
 						<Item>
 							<!-- Storage for drawable dictionaries, .ydd files -->
 							<PoolName>DwdStore</PoolName>
-							<PoolSize value="151300" />
+							<PoolSize value="152800" />
 						</Item>
 						<Item>
 							<PoolName>EntityBatch</PoolName>
@@ -421,7 +421,7 @@ in this file and decrease the value.
 						</Item>
 						<Item>
 							<PoolName>ExprDictStore</PoolName>
-							<PoolSize value="625" />
+							<PoolSize value="630" />
 						</Item>
 						<Item>
 							<PoolName>FrameFilterStore</PoolName>
@@ -430,7 +430,7 @@ in this file and decrease the value.
 						<Item>
 							<!-- Storage for fragments, .yft files -->
 							<PoolName>FragmentStore</PoolName>
-							<PoolSize value="285800" />
+							<PoolSize value="294600" />
 						</Item>
 						<Item>
 							<PoolName>GamePlayerBroadcastDataHandler_Remote</PoolName>
@@ -441,12 +441,14 @@ in this file and decrease the value.
 							<PoolSize value="20000" />
 						</Item>
 						<Item>
+							<!-- May need to increase for large map mods -->
 							<PoolName>InteriorInst</PoolName>
-							<PoolSize value="400" />
+							<PoolSize value="900" />
 						</Item>
 						<Item>
+							<!-- May need to increase for large map mods -->
 							<PoolName>InteriorProxy</PoolName>
-							<PoolSize value="1150" />
+							<PoolSize value="9115" />
 						</Item>
 						<Item>
 							<PoolName>IplStore</PoolName>
@@ -483,17 +485,17 @@ in this file and decrease the value.
 						<Item>
 							<!-- Storage for imaps, .ymap files -->
 							<PoolName>MapDataStore</PoolName>
-							<PoolSize value="50000" />
+							<PoolSize value="85000" />
 						</Item>
 						<Item>
 							<!-- Storage for .ytyp files -->
 							<PoolName>MapTypesStore</PoolName>
-							<PoolSize value="600000" />
+							<PoolSize value="105000" />
 						</Item>
 						<Item>
 							<!-- Storage for metadata files, .ymt files -->
 							<PoolName>MetaDataStore</PoolName>
-							<PoolSize value="6000" />
+							<PoolSize value="85000" />
 						</Item>
 						<Item>
 							<PoolName>NavMeshes</PoolName>
@@ -588,7 +590,7 @@ in this file and decrease the value.
 						</Item>
 						<Item>
 							<PoolName>ScaleformStore</PoolName>
-							<PoolSize value="1600" />
+							<PoolSize value="900" />
 						</Item>
 						<Item>
 							<PoolName>ScaleformMgrArray</PoolName>
@@ -596,7 +598,7 @@ in this file and decrease the value.
 						</Item>
 						<Item>
 							<PoolName>ScriptStore</PoolName>
-							<PoolSize value="1050" />
+							<PoolSize value="1100" />
 						</Item>
 						<Item>
 							<PoolName>StaticBounds</PoolName>
@@ -633,7 +635,7 @@ in this file and decrease the value.
 						</Item>
 						<Item>
 							<PoolName>HandlingData</PoolName>
-							<PoolSize value="5100" />
+							<PoolSize value="5300" />
 						</Item>
 						<Item>
 							<!-- Size of the CWaypointRecording streaming module. -->
@@ -655,7 +657,7 @@ in this file and decrease the value.
 						</Item>
 						<Item>
 							<PoolName>CMoveObject</PoolName>
-							<PoolSize value="500" />
+							<PoolSize value="620" />
 						</Item>
 						<Item>
 							<PoolName>CMoveAnimatedBuilding</PoolName>
@@ -757,7 +759,7 @@ in this file and decrease the value.
 						</Item>
 						<Item>
 							<PoolName>SyncedScenesMP</PoolName>
-							<PoolSize value="64"/>
+							<PoolSize value="64" />
 						</Item>
 						<Item>
 							<PoolName>AnimScenes</PoolName>
@@ -769,11 +771,11 @@ in this file and decrease the value.
 						</Item>
 						<Item>
 							<PoolName>ActionTable_Definitions</PoolName>
-							<PoolSize value="310" />
+							<PoolSize value="336" />
 						</Item>
 						<Item>
 							<PoolName>ActionTable_Results</PoolName>
-							<PoolSize value="478" />
+							<PoolSize value="503" />
 						</Item>
 						<Item>
 							<PoolName>ActionTable_Impulses</PoolName>
@@ -1034,9 +1036,9 @@ in this file and decrease the value.
 					<MaxTimeModelInfos value="1800" />
 					<MaxVehicleModelInfos value="5000" />
 					<MaxWeaponModelInfos value="5000" />
-					<MaxExtraPedModelInfos value="5110" />
-					<MaxExtraVehicleModelInfos value="5050" />
-					<MaxExtraWeaponModelInfos value="5020" />
+					<MaxExtraPedModelInfos value="5200" />
+					<MaxExtraVehicleModelInfos value="5165" />
+					<MaxExtraWeaponModelInfos value="5130" />
 				</ConfigModelInfo>
 
 				<ConfigExtensions>
@@ -1047,7 +1049,7 @@ in this file and decrease the value.
 				</ConfigExtensions>
 
 				<ConfigStreamingEngine>
-					<ArchiveCount value="5256" />
+					<ArchiveCount value="5512" />
 					<PhysicalStreamingBuffer value="252" />
 					<VirtualStreamingBuffer value="1000" />
 				</ConfigStreamingEngine>
@@ -1246,7 +1248,7 @@ in this file and decrease the value.
 						</Item>
 						<Item>
 							<StackName>CAR_MOD_SHOP</StackName>
-							<SizeOfStack value="3650" />
+							<SizeOfStack value="3750" />
 							<NumberOfStacksOfThisSize value="2" />
 						</Item>
 						<Item>
@@ -1326,22 +1328,22 @@ in this file and decrease the value.
 						</Item>
 						<Item>
 							<StackName>FMMC_LAUNCHER</StackName>
-							<SizeOfStack value="24000" />
+							<SizeOfStack value="27000" />
 							<NumberOfStacksOfThisSize value="1" />
 						</Item>
 						<Item>
 							<StackName>MULTIPLAYER_FREEMODE</StackName>
-							<SizeOfStack value="80000" />
+							<SizeOfStack value="85000" />
 							<NumberOfStacksOfThisSize value="1" />
 						</Item>
 						<Item>
 							<StackName>MISSION</StackName>
-							<SizeOfStack value="57500" />
+							<SizeOfStack value="62500" />
 							<NumberOfStacksOfThisSize value="1" />
 						</Item>
 						<Item>
 							<StackName>MP_LAUNCH_SCRIPT</StackName>
-							<SizeOfStack value="35500" />
+							<SizeOfStack value="37500" />
 							<NumberOfStacksOfThisSize value="1" />
 						</Item>
 
@@ -2023,7 +2025,7 @@ in this file and decrease the value.
 						</Item>
 						<Item>
 							<ResourceTypeName>PEDGROUP</ResourceTypeName>
-							<ExpectedMaximum value="16" />
+							<ExpectedMaximum value="33" />
 						</Item>
 						<Item>
 							<ResourceTypeName>SEQUENCE_TASK</ResourceTypeName>
@@ -2115,7 +2117,7 @@ in this file and decrease the value.
 						</Item>
 						<Item>
 							<ResourceTypeName>WEAPON_ASSET</ResourceTypeName>
-							<ExpectedMaximum value="128" />
+							<ExpectedMaximum value="131" />
 						</Item>
 						<Item>
 							<ResourceTypeName>VEHICLE_ASSET</ResourceTypeName>

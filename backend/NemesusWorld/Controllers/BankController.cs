@@ -273,7 +273,7 @@ namespace NemesusWorld.Controllers
                 List<Transfer> transferList = new List<Transfer>();
 
                 PetaPoco.Database db = new PetaPoco.Database(General.Connection);
-                foreach (Transfer transfer in db.Fetch<Transfer>("SELECT * FROM transfer"))
+                foreach (Transfer transfer in db.Fetch<Transfer>("SELECT * FROM transfer").ToList())
                 {
                     transferList.Add(transfer);
                 }

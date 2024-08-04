@@ -68,6 +68,10 @@ let speedTime = 0;
 let antiCheatTime = 0;
 //VoiceChat local
 let voiceChatOff = true;
+//Overlay
+let overLayModus = false;
+let overlayList = [];
+let batch;
 //Livestream
 let livestreamfov_max = 70.0
 let livestreamfov_min = 5.0
@@ -962,6 +966,17 @@ mp.events.add('render', (nametags) => {
         });
     }
 
+    //Overlaymodus
+    if(overLayModus)
+    {
+        overlayList.forEach(function (entity) {
+            if (entity != null)
+            {
+                batch.addThisFrame(entity);
+            }
+        });
+    }
+
     //Deathsystem
     let spawned = localPlayer.getVariable('Player:Spawned');
     if (!death && spawned && (getPlayerHealth(localPlayer) - 100) < 10) {
@@ -1167,6 +1182,8 @@ mp.events.add("Client:SyncThings", (pricesCsv, animationhotkeys, chair, gprices,
     if (voicerp == 2) {
         mp.events.call("Client:SetTalkstate2", 0);
         voiceChatOff = true;
+        mp.voiceChat.advancedNoiseSuppression = true;
+ 	mp.voiceChat.networkOptimisations = true;
         mp.voiceChat.muted = voiceChatOff;
     }
 })
@@ -3283,6 +3300,27 @@ mp.events.add("playerCommand", (command) => {
     else if(commandName === "reloadvoicechat" && voicerp == 2)
     {
         mp.voiceChat.cleanupAndReload(true, true, true);
+    }
+    else if(commandName === "overlaymodus")
+    {
+        overLayModus = !overLayModus;
+        mp.game.graphics.setEntityOverlayPassEnabled(overLayModus);
+        if(overLayModus)
+        {
+            let overlayParams = {
+                enableDepth: false,
+                deleteWhenUnused: false,
+                keepNonBlurred: true,
+                processAttachments: true,
+                fill: { enable: false, color: 0xFFFFFFFF },
+                noise: { enable: false, size: 0.0, speed: 0.0, intensity: 0.0 },
+                outline: { enable: true, color: 0xFF9000FF, width: 1.0, blurRadius: 1.0, blurIntensity: 1.0 },
+                wireframe: { enable: false }
+            };
+
+            batch = mp.game.graphics.createEntityOverlayBatch(overlayParams);
+        }
+        hudWindow.execute(`gui.hud.sendNotificationWithoutButton('Overlaymodus aktiviert/deaktiviert!','success','top-left',2500);`)
     }
 });
 
@@ -6388,6 +6426,8 @@ mp.events.add('playerWeaponShot', (targetPosition, targetEntity) => {
 mp.events.add('entityStreamIn', (entity) => {
     try {
         if (mp.vehicles.exists(entity) && 0 !== entity.handle && entity.type == 'vehicle') {
+            //Overlaymodus
+            overlayList.push(entity);
             //Health
             entity.setHealth(entity.getVariable("Vehicle:Health"));
             entity.setEngineHealth(entity.getVariable("Vehicle:EngineHealth"));
@@ -6788,6 +6828,13 @@ mp.events.add('entityStreamOut', (entity) => {
     try {
         let spawned = localPlayer.getVariable('Player:Spawned');
         if (!spawned) return;
+        //Overlay
+        if(overLayModus)
+        {
+            overlayList = overlayList.filter(function (element) {
+                element != entity;
+            });
+        }
         if (mp.vehicles.exists(entity) && 0 !== entity.handle && entity.type == 'vehicle') {
             //DL
             vehicleListDl = vehicleListDl.filter(function (element) {

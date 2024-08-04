@@ -10504,6 +10504,10 @@ namespace NemesusWorld.Utils
                 {
                     return true;
                 }
+                if (IsInRangeOfPoint(player.Position, new Vector3(2555.367, 382.07394, 108.62292), 1.5f))
+                {
+                    return true;
+                }
             }
             catch (Exception e)
             {

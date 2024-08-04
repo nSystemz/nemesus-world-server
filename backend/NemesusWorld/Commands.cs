@@ -7885,6 +7885,19 @@ namespace NemesusWorld
             }
         }
 
+        [Command("overlaymodus", "Befehl: /overlaymodus")]
+        public void cmd_overlaymodus(Player player)
+        {
+            try
+            {
+                if (!Account.IsPlayerLoggedIn(player)) return;
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[cmd_overlaymodus]: " + e.ToString());
+            }
+        }
+
         [Command("lastvehicle", "Befehl: /lastvehicle", Alias = "lv")]
         public void cmd_lastvehicle(Player player)
         {

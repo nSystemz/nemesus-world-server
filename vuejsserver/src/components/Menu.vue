@@ -4965,7 +4965,11 @@
                                                                 </tr>
                                                                 <tr>
                                                                     <td>/clearmychat</td>
-                                                                    <td>Chatverlauf löschenv</td>
+                                                                    <td>Chatverlauf löschen</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>/overlaymodus</td>
+                                                                    <td>Overlaymodus aktivieren/deaktivieren</td>
                                                                 </tr>
                                                                 <tr>
                                                                     <td>/q</td>

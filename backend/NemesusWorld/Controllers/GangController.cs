@@ -881,8 +881,6 @@ namespace NemesusWorld.Controllers
 
                 dealerLabel2 = NAPI.TextLabel.CreateTextLabel("~b~Big. D\n~w~Benutze Taste ~b~[E]~w~ um mit Ihm zu interagieren!", new Vector3(dealerPosition2.X, dealerPosition2.Y, dealerPosition2.Z + 1.2), 6.0f, 0.5f, 4, new Color(255, 255, 255), false, 0);
 
-                Helper.SendAdminMessage2($"Big.D wurde bei/m {position} gespawned!", 1, false);
-
                 foreach (GangZones gangZones in gangzoneList)
                 {
                     if (gangZones.percentages != "n/A" && gangZones.percentages.Length > 3)

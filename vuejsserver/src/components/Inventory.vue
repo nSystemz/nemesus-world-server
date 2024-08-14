@@ -13,9 +13,9 @@
                                         v-if="inventoryshow1">
                                         <h3 class="mt-1 ml-2" style="font-family: 'Exo', sans-serif; font-size: 1.2vw;">
                                             Deine Taschen
-                                            <span class="ml-5" style="font-size: 0.8vw; margin-left: 2.5vw"
+                                            <span class="ml-5" style="font-size: 0.8vw; margin-left: 2.15vw"
                                                 v-if="itemSelect!=null">{{itemSelect.description}}<span
-                                                    class="ml-1 badge badge-dark" style="font-size: 0.55vw"><span
+                                                    class="ml-1 badge badge-dark" style="font-size: 0.5vw"><span
                                                         v-if="(itemSelect.type != 3 && itemSelect.type != 4 && itemSelect.type != 5) || itemSelect.description == 'Dietrich' || itemSelect.description == 'Zigaretten' || itemSelect.description == '55$-Prepaidkarte' || itemSelect.description == 'Handyvertrag' || itemSelect.description == 'Grippofein-C' || itemSelect.description == 'Antibiotika' || itemSelect.description == 'Ibuprofee-400mg' || itemSelect.description == 'Ibuprofee-800mg' || itemSelect.description == 'Morphin-10mg' || itemSelect.description == 'Bandage' || itemSelect.description == 'Materialien' || itemSelect.description == 'Marihuanasamen' || itemSelect.description == 'Marihuana' || itemSelect.description == 'Papes' || itemSelect.description == 'Joint' || itemSelect.description == 'Kokain' || itemSelect.description == 'Kokablatt' || itemSelect.description == 'Kokainsamen' || itemSelect.description == 'Space-Cookies'">{{itemSelect.amount}}</span><span
                                                         v-if="(itemSelect.props && itemSelect.props.length > 3 && itemSelect.type != 5 && itemSelect.type != 6) || itemSelect.description == 'Feuerzeug'">{{itemSelect.props}}</span><span
                                                         v-if="itemSelect.props && itemSelect.props.length > 2 && itemSelect.type == 5 && !IsNoMelee(itemSelect.description) && itemSelect.description != 'Taser'">{{itemSelect.props.split(',')[0]}}</span></span></span>

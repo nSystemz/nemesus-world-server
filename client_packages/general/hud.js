@@ -3945,7 +3945,7 @@ mp.keys.bind(0x46, true, function () {
 mp.keys.bind(0x2D, true, function () {
     if (pressedEinf == 0 || (Date.now() / 1000) > pressedEinf) {
         let spawned = localPlayer.getVariable('Player:Spawned');
-        if (showSaltyError == true || triggerAntiCheat == true || localPlayer.isTypingInTextChat || nokeys == true || death == true || cuffed == true || !spawned || showHandy == true || pointing.active == true || editFurniture == true || startRange == true || showDealer == true || showTab == true || localPlayer.isInAnyVehicle(true) || barberMenu == true || tattooShop == true) return;
+        if (showSaltyError == true || triggerAntiCheat == true || localPlayer.isTypingInTextChat || nokeys == true || death == true || cuffed == true || !spawned || showHandy == true || editFurniture == true || startRange == true || showDealer == true || showTab == true  || barberMenu == true || tattooShop == true) return;
         lastclick = (Date.now() / 1000);
         pressedEinf = (Date.now() / 1000) + (1);
         handsUp = !handsUp;

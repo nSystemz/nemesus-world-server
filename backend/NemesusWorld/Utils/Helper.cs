@@ -5512,14 +5512,16 @@ namespace NemesusWorld.Utils
                 TempData tempData = GetCharacterTempData(player);
                 if (tempData != null)
                 {
-                    if (player.HasData("Player:Use") && player.GetData<bool>("Player:Use") == true) return;
+                    if ((player.HasData("Player:Use") && player.GetData<bool>("Player:Use") == true) || player.Vehicle != null) return;
                     if (tempData.handsUp == false)
                     {
+                        SendNotificationWithoutButton(player, "Hände hoch genommen!", "success");
                         tempData.handsUp = true;
-                        player.SetSharedData("Player:AnimData", $"missminuteman_1ig_2%handsup_base%{50}");
+                        player.SetSharedData("Player:AnimData", $"missminuteman_1ig_2%handsup_base%50");
                     }
                     else
                     {
+                        SendNotificationWithoutButton(player, "Hände runter genommen!", "success");
                         tempData.handsUp = false;
                         OnStopAnimation2(player);
                     }

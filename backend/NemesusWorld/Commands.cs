@@ -7192,7 +7192,7 @@ namespace NemesusWorld
                         break;
                     }
                 }
-                if (animation == null)
+                if (animation == null && !animation.animation.Contains("handsup"))
                 {
                     if (hidemessage == false)
                     {
@@ -7214,6 +7214,11 @@ namespace NemesusWorld
                 }
                 if (animation.animation.Contains("vehicle") && player.Vehicle == null)
                 {
+                    return;
+                }
+                if(animation.animation.Contains("handsup") && player.Vehicle == null)
+                {
+                    Helper.OnPlayerHandsUp(player);
                     return;
                 }
                 player.SetData<bool>("Player:PlayCustomAnimation", true);

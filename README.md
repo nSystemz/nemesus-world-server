@@ -87,7 +87,7 @@ PostChangelog: https://nemesus.de/downloads/nemesusworld/postChangelog.txt
 Beachtet bitte die ToDos im Code und die Installationsanleitung auf Youtube: 
 - https://youtu.be/vBB-E4IgV2Q (Windows)
 - https://youtu.be/ggKe51qOM4w (Linux Debian)
-- https://youtu.be/0j1qmqTB8qA (ZAP-Hosting als Gameserver)
+- https://youtu.be/0j1qmqTB8qA (ZAP-Hosting als Gameserver - ZAP-Hosting bietet aktuell keine Gameserver mehr für RageMP an, ich empfehle euch stattdessen einen Linux VServer s.oben)
 - https://youtu.be/vZP-QDRra64 (Text-RP)
 - https://youtu.be/R4jcu1xuCVo (ForumConnect/PostChangelog System)
 

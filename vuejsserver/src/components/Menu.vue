@@ -215,7 +215,7 @@
                                     </p>
                                 </a>
                             </li>
-                            <li class="nav-item" v-if="admin >= 1 && tester >= 1" v-on:click="startAdminHelp()">
+                            <li class="nav-item" v-if="admin >= 1" v-on:click="startAdminHelp()">
                                 <a class="nav-link">
                                     <i class="nav-icon fas fa-question"></i>
                                     <p style="color:white">

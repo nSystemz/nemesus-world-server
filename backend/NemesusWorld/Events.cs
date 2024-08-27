@@ -338,7 +338,7 @@ namespace NemesusWorld
                                     {
                                         if (character.thirst >= 0 || character.hunger >= 0)
                                         {
-                                            if (character.arrested == 0 && character.cell == 0)
+                                            if (character.arrested == 0)
                                             {
                                                 if (character.thirst >= 3)
                                                 {
@@ -1333,9 +1333,9 @@ namespace NemesusWorld
                 player.SetSharedData("Player:AFK", 0);
                 player.SetSharedData("Client:OldName", "n/A");
                 player.SetSharedData("Client:Condition", "n/A");
+                player.SetSharedData("Player:VoiceRangeLocal", 25);
                 if (Helper.adminSettings != null && Helper.adminSettings.voicerp == 2)
                 {
-                    player.SetSharedData("Player:VoiceRangeLocal", 25.0);
                     player.SetSharedData("Player:LocalVoiceHandyPlayer", -1);
                 }
                 Helper.SetPlayerHealth(player, 100);
@@ -1897,10 +1897,7 @@ namespace NemesusWorld
                 player.SetSharedData("Player:AFK", 0);
                 player.SetSharedData("Client:OldName", "n/A");
                 player.SetSharedData("Client:Condition", "n/A");
-                if (Helper.adminSettings.voicerp == 2)
-                {
-                    player.SetSharedData("Player:VoiceRangeLocal", 25.0);
-                }
+                player.SetSharedData("Player:VoiceRangeLocal", 25);
             }
             catch (Exception e)
             {

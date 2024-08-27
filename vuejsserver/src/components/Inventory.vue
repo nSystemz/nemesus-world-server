@@ -8,12 +8,12 @@
                         <div class="col-md-12 mt-1">
                             <div class="box box-default">
                                 <div class="row">
-                                    <div class="container-fluid2 float-left mt-1 mb-2 animate__animated animate__fadeInLeft"
+                                    <div class="  float-left mt-1 mb-2 animate__animated animate__fadeInLeft"
                                         style="scrollbar-width: none; background-color: #343A40; border-top: solid #3c6a99;"
                                         v-if="inventoryshow1">
-                                        <h3 class="mt-1 ml-2" style="font-family: 'Exo', sans-serif; font-size: 1.2vw;">
+                                        <h3 class="mt-1 ml-2" style="font-family: 'Exo', sans-serif; font-size: 0.85vw;">
                                             Deine Taschen
-                                            <span class="ml-5" style="font-size: 0.8vw; margin-left: 2.15vw"
+                                            <span class="ml-5" style="font-size: 0.8vw; margin-left: 1.5vw"
                                                 v-if="itemSelect!=null">{{itemSelect.description}}<span
                                                     class="ml-1 badge badge-dark" style="font-size: 0.5vw"><span
                                                         v-if="(itemSelect.type != 3 && itemSelect.type != 4 && itemSelect.type != 5) || itemSelect.description == 'Dietrich' || itemSelect.description == 'Zigaretten' || itemSelect.description == '55$-Prepaidkarte' || itemSelect.description == 'Handyvertrag' || itemSelect.description == 'Grippofein-C' || itemSelect.description == 'Antibiotika' || itemSelect.description == 'Ibuprofee-400mg' || itemSelect.description == 'Ibuprofee-800mg' || itemSelect.description == 'Morphin-10mg' || itemSelect.description == 'Bandage' || itemSelect.description == 'Materialien' || itemSelect.description == 'Marihuanasamen' || itemSelect.description == 'Marihuana' || itemSelect.description == 'Papes' || itemSelect.description == 'Joint' || itemSelect.description == 'Kokain' || itemSelect.description == 'Kokablatt' || itemSelect.description == 'Kokainsamen' || itemSelect.description == 'Space-Cookies'">{{itemSelect.amount}}</span><span
@@ -78,20 +78,22 @@
                                                         class="fa-solid fa-microchip"></i></button>
                                             </div>
                                         </div>
-                                        <div class="box2 text-center mb-2" v-for="item in inventory1selected"
-                                            :key="item.itemid" @click="itemSelected(item)">
-                                            <img style="height: 1.5vw;max-width: 4vw" class="mt-2 text-center"
-                                                :src="getImgUrl(item.description)" />
-                                            <div class="row text-center">
-                                                <div class="col-md-12">
-                                                    <span v-if="itemSelect == item"
-                                                        style="font-size: 0.52vw; color:#eee;text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000; font-family: 'Exo';border-bottom: 1px solid #3c6a99;">{{cutString(item.description)}}</span>
-                                                    <span v-else
-                                                        style="font-size: 0.52vw; color:#eee;text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000; font-family: 'Exo';">{{cutString(item.description)}}</span>
-                                                    <span
-                                                        style="font-size: 0.9vw; color:#eee;text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;margin-left:0.1vw;padding-top:1.7vw"><strong
-                                                            style="font-size: 0.38vw; font-family: 'Exo'"
-                                                            class="badge badge-dark">{{item.amount}}</strong></span>
+                                        <div class="container-fluid3">
+                                            <div class="box2 text-center mb-2" v-for="item in inventory1selected"
+                                                :key="item.itemid" @click="itemSelected(item)">
+                                                <img style="height: 1.5vw;max-width: 4vw" class="mt-2 text-center"
+                                                    :src="getImgUrl(item.description)" />
+                                                <div class="row text-center">
+                                                    <div class="col-md-12">
+                                                        <span v-if="itemSelect == item"
+                                                            style="font-size: 0.52vw; color:#eee;text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000; font-family: 'Exo';border-bottom: 1px solid #3c6a99;">{{cutString(item.description)}}</span>
+                                                        <span v-else
+                                                            style="font-size: 0.52vw; color:#eee;text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000; font-family: 'Exo';">{{cutString(item.description)}}</span>
+                                                        <span
+                                                            style="font-size: 0.9vw; color:#eee;text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;margin-left:0.1vw;padding-top:1.7vw"><strong
+                                                                style="font-size: 0.48vw; font-family: 'Exo'"
+                                                                class="badge badge-dark">{{item.amount}}</strong></span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -101,9 +103,9 @@
                             <div class="container-fluid2 float-left mt-1 mb-2 animate__animated animate__fadeInLeft"
                                 style="scrollbar-width: none; background-color: #343A40; border-top: solid #3c6a99; margin-left: 26vw"
                                 v-if="inventoryshow2">
-                                <h3 class="mt-1 ml-2" style="font-family: 'Exo', sans-serif; font-size: 1.2vw;">
+                                <h3 class="mt-1 ml-2" style="font-family: 'Exo', sans-serif; font-size: 0.85vw;">
                                     {{textinv2}}
-                                    <span class="ml-5" style="font-size: 0.75vw; margin-left: 1.5vw"
+                                    <span class="ml-5" style="font-size: 0.8vw; margin-left: 1.5vw"
                                         v-if="itemSelect2!=null">{{itemSelect2.description}}<span
                                             class="ml-1 badge badge-dark" style="font-size: 0.45vw"><span
                                                 v-if="(itemSelect2.type != 3 && itemSelect2.type != 4 && itemSelect2.type != 5) || itemSelect2.description == 'Dietrich' || itemSelect2.description == 'Zigaretten' || itemSelect2.description == '55$-Prepaidkarte' || itemSelect2.description == 'Handyvertrag' || itemSelect2.description == 'Grippofein-C' || itemSelect2.description == 'Antibiotika' || itemSelect2.description == 'Ibuprofee-400mg' || itemSelect2.description == 'Ibuprofee-800mg' || itemSelect2.description == 'Morphin-10mg' || itemSelect2.description == 'Bandage' || itemSelect2.description == 'Materialien' || itemSelect2.description == 'Marihuanasamen' || itemSelect2.description == 'Marihuana' || itemSelect2.description == 'Papes' || itemSelect2.description == 'Joint' || itemSelect2.description == 'Kokain' || itemSelect2.description == 'Kokablatt' || itemSelect2.description == 'Kokainsamen' || itemSelect2.description == 'Space-Cookies'">{{itemSelect2.amount}}</span><span
@@ -140,21 +142,23 @@
                                                 class="fa-solid fa-microchip"></i></button>
                                     </div>
                                 </div>
-                                <div class="box2 text-center mb-2" v-for="item in inventory2selected" :key="item.itemid"
-                                    :style="[(itemSelect2 == item) ? 'border: 2px solid #3c6a99;':'']"
-                                    @click="itemSelected2(item)">
-                                    <img style="height: 1.5vw;max-width: 4vw" class="mt-2 text-center"
-                                        :src="getImgUrl(item.description)" />
-                                    <div class="row text-center">
-                                        <div class="col-md-12">
-                                            <span v-if="itemSelect2 == item"
-                                                style="font-size: 0.47vw; color:#eee;text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000; font-family: 'Exo';border-bottom: 1px solid #3c6a99;">{{cutString(item.description)}}</span>
-                                            <span v-else
-                                                style="font-size: 0.47vw; color:#eee;text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000; font-family: 'Exo';">{{cutString(item.description)}}</span>
-                                            <span
-                                                style="font-size: 0.9vw; color:#eee;text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;margin-left:0.1vw;padding-top:1.7vw"><strong
-                                                    style="font-size: 0.38vw; font-family: 'Exo'"
-                                                    class="badge badge-dark">{{item.amount}}</strong></span>
+                                <div style="container-fluid3">
+                                    <div class="box2 text-center mb-2" v-for="item in inventory2selected" :key="item.itemid"
+                                        :style="[(itemSelect2 == item) ? 'border: 2px solid #3c6a99;':'']"
+                                        @click="itemSelected2(item)">
+                                        <img style="height: 1.5vw;max-width: 4vw" class="mt-2 text-center"
+                                            :src="getImgUrl(item.description)" />
+                                        <div class="row text-center">
+                                            <div class="col-md-12">
+                                                <span v-if="itemSelect2 == item"
+                                                    style="font-size: 0.47vw; color:#eee;text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000; font-family: 'Exo';border-bottom: 1px solid #3c6a99;">{{cutString(item.description)}}</span>
+                                                <span v-else
+                                                    style="font-size: 0.47vw; color:#eee;text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000; font-family: 'Exo';">{{cutString(item.description)}}</span>
+                                                <span
+                                                    style="font-size: 0.9vw; color:#eee;text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;margin-left:0.1vw;padding-top:1.7vw"><strong
+                                                        style="font-size: 0.48vw; font-family: 'Exo'"
+                                                        class="badge badge-dark">{{item.amount}}</strong></span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -795,6 +799,27 @@ template,
     width: 25vw;
     max-height: 33.6vw;
     background-color: transparent;
+    overflow: hidden;
+}
+.container-fluid2 {
+    scrollbar-width: none !important;
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    bottom: 0.25vw;
+    padding-left: 0.65vw;
+    width: 25vw;
+    max-height: 33.6vw;
+    background-color: transparent;
+    overflow: hidden;
+}
+.container-fluid3 {
+    scrollbar-width: none !important;
+    margin: 0;
+    padding: 0;
+    padding-left: 0.65vw;
+    max-height: 30.25vw;
+    width: 25vw;
     overflow: auto;
 }
 .box2 { 

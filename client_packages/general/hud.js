@@ -67,7 +67,7 @@ let speedTrys = 0;
 let speedTime = 0;
 let antiCheatTime = 0;
 //VoiceChat local
-let voiceChatOff = true;
+let voiceChatOff = false;
 //Overlay
 let overLayModus = false;
 let overlayList = [];
@@ -1181,10 +1181,10 @@ mp.events.add("Client:SyncThings", (pricesCsv, animationhotkeys, chair, gprices,
     mp.discord.update('Nemesus-World.de (Nemesus.de)', 'Spielt als ' + name);
     if (voicerp == 2) {
         mp.events.call("Client:SetTalkstate2", 0);
-        voiceChatOff = true;
+        voiceChatOff = false;
         mp.voiceChat.advancedNoiseSuppression = true;
- 	mp.voiceChat.networkOptimisations = true;
-        mp.voiceChat.muted = voiceChatOff;
+ 	    mp.voiceChat.networkOptimisations = true;
+        mp.voiceChat.muted = false;
     }
 })
 
@@ -5385,9 +5385,11 @@ mp.events.add("Client:ShowInventory", (json, maxweight, toggle, json2, weight2, 
         if (toggle == true) {
             enableDisableRadar(false);
             mp.gui.cursor.show(true, true);
+            showHideChat(false);
         } else {
             enableDisableRadar(true);
             mp.gui.cursor.show(false, false);
+            showHideChat(true);
         }
         if (showInventory == false) {
             inventory = JSON.parse(json);
@@ -6146,40 +6148,42 @@ mp.events.add('incomingDamage', (sourceEntity, sourcePlayer, targetEntity, weapo
     if (targetEntity.type === 'player' && boneIndex === 20 && targetEntity.getVariable('Player:AdminLogin') == true) {
         return true;
     }
-    if (damage > 0) {
-        if (death == true || targetEntity.getVariable('Player:AFK') == 1) {
-            return true;
-        }
-        if (weapon != mp.game.joaat('weapon_unarmed')) {
-            weaponDamage++;
-        }
-        if (sourceEntity && sourceEntity.remoteId != localPlayer.remoteId) {
-            lastDamage = sourceEntity.remoteId;
-        } else {
-            lastDamage = -1
-        }
-        if (startLockpicking == true && lastProgress) {
-            if (!lastProgress.includes('mecha') && !lastProgress.includes('cleaning') && !lastProgress.includes('milking') && !lastProgress.includes('tomato')) {
-                mp.events.call('Client:FinishProgress', 'failed');
+    if (weapon != 911657153 && weapon != 1171102963) { //Taser
+        if (damage > 0) {
+            if (death == true || targetEntity.getVariable('Player:AFK') == 1) {
+                return true;
             }
-        }
-        if (hack == true) {
-            mp.events.call('Client:StopHack2');
-        }
-        if (death == false) {
-            if (crystalmeth == true) {
-                if (Math.floor(Math.random() * 11) == 5) {
-                    return true;
+            if (weapon != mp.game.joaat('weapon_unarmed')) {
+                weaponDamage++;
+            }
+            if (sourceEntity && sourceEntity.remoteId != localPlayer.remoteId) {
+                lastDamage = sourceEntity.remoteId;
+            } else {
+                lastDamage = -1
+            }
+            if (startLockpicking == true && lastProgress) {
+                if (!lastProgress.includes('mecha') && !lastProgress.includes('cleaning') && !lastProgress.includes('milking') && !lastProgress.includes('tomato')) {
+                    mp.events.call('Client:FinishProgress', 'failed');
                 }
             }
+            if (hack == true) {
+                mp.events.call('Client:StopHack2');
+            }
+            if (death == false) {
+                if (crystalmeth == true) {
+                    if (Math.floor(Math.random() * 11) == 5) {
+                        return true;
+                    }
+                }
+            }
+            if (targetEntity.getVariable('Player:AdminLogin') == false) {
+                mp.events.callRemote('Server:SyncHealth', 1, sourcePlayer);
+                return true;
+            }
         }
-        if (targetEntity.getVariable('Player:AdminLogin') == false) {
-            mp.events.callRemote('Server:SyncHealth', 1, sourcePlayer);
-            return true;
-        }
-        mp.events.callRemote('Server:SyncHealth', 0);
-        mp.events.call('Player:CheckAG');
     }
+    mp.events.callRemote('Server:SyncHealth', 0, null);
+    mp.events.call('Player:CheckAG');
 });
 
 mp.events.add('Player:CheckAG', (damage) => {

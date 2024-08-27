@@ -864,7 +864,7 @@ namespace NemesusWorld.Utils
             try
             {
                 TempData tempData = Helper.GetCharacterTempData(player);
-                if(tempData == null) return;
+                if (tempData == null) return;
                 if (check == 0)
                 {
                     player.SetSharedData("Player:HealthSync", (NAPI.Player.GetPlayerHealth(player) + 100));
@@ -879,7 +879,7 @@ namespace NemesusWorld.Utils
                     int damage = (WeaponController.GetWeaponDamageFromName(NAPI.Player.GetPlayerCurrentWeapon(fromPlayer)) + randomDamage);
                     if (damage <= 0) return;
                     float health = (NAPI.Player.GetPlayerHealth(player) - damage);
-                    if(health <= 0)
+                    if (health <= 0)
                     {
                         health = 0;
                     }
@@ -899,6 +899,61 @@ namespace NemesusWorld.Utils
                 Helper.ConsoleLog("error", $"[SyncHealth]: " + e.ToString());
             }
         }
+
+        /*[RemoteEvent("Server:SyncHealth")]
+        public static void OnSyncHealth(Player player, int check = 0, Player from = null)
+        {
+            try
+            {
+                TempData tempData = Helper.GetCharacterTempData(player);
+                if(tempData == null) return;
+                if (check == 0)
+                {
+                    player.SetSharedData("Player:HealthSync", (NAPI.Player.GetPlayerHealth(player) + 100));
+                    player.SetOwnSharedData("Player:Health", (NAPI.Player.GetPlayerHealth(player) + 100));
+                }
+                else
+                {
+                    Player fromPlayer = from;
+                    if (fromPlayer == null) return;
+                    Random rand = new Random();
+                    int randomDamage = rand.Next(-3, 3);
+                    int damage = (WeaponController.GetWeaponDamageFromName(NAPI.Player.GetPlayerCurrentWeapon(fromPlayer)) + randomDamage);
+                    if (damage <= 0) return;
+                    if (tempData.adminduty == true) return;
+                    float armor = NAPI.Player.GetPlayerArmor(player) > 0 ? (NAPI.Player.GetPlayerArmor(player) - damage) : 0;
+                    float health = 0;
+                    if(armor <= 0)
+                    {
+                        if (armor < 0)
+                        {
+                            armor = armor * -1;
+                        }
+                        health = (NAPI.Player.GetPlayerHealth(player) - damage - armor);
+                        if (health <= 0)
+                        {
+                            health = 0;
+                        }
+                        if ((NAPI.Player.GetPlayerHealth(player) - damage) > 0)
+                        {
+                            Helper.SetPlayerHealth(player, (int)health);
+                        }
+                        else
+                        {
+                            player.TriggerEvent("Player:CheckAG", damage);
+                        }
+                    }
+                    else
+                    {
+                        Helper.SetPlayerArmor(player, (int)armor);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[SyncHealth]: " + e.ToString());
+            }
+        }*/
 
         [RemoteEvent("Server:ReportPlayer")]
         public static void OnReportPlayer(Player player, int id)
@@ -1113,7 +1168,7 @@ namespace NemesusWorld.Utils
             }
         }
 
-        //Local Voice-Chat
+        //GetCoins
         [RemoteEvent("Server:GetCoins")]
         public static void OnGetCoins(Player player)
         {
@@ -1129,8 +1184,8 @@ namespace NemesusWorld.Utils
             }
         }
 
-            //Local Voice-Chat
-            [RemoteEvent("Server:Add_Voice_Listener")]
+        //Local Voice-Chat
+        [RemoteEvent("Server:Add_Voice_Listener")]
         public static void OnAdd_Voice_Listener(Player player, Player target)
         {
             try

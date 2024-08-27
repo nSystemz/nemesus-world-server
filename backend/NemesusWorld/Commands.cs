@@ -52,7 +52,7 @@ namespace NemesusWorld
                         Helper.SendNotificationWithoutButton(player, "Ungültiger Spieler!", "error", "top-end");
                         return;
                     }
-                    if (account.adminlevel < accounttarget.adminlevel)
+                    if (account.adminlevel < accounttarget.adminlevel && account != accounttarget)
                     {
                         Helper.SendNotificationWithoutButton(player, "Der angegebene Spieler hat ein höheren Adminlevel als du!", "error", "top-end");
                         return;

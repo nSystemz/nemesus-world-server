@@ -24,9 +24,7 @@
                                                 Solltest du weitere Informationen benötigen, findest du diese bei uns im Forum oder im Discord (https://nemesus-world.de). Bitte
                                                 beantworte die unteren Fragen, du musst min. <b style="color:green;font-family: 'Exo', sans-serif;">70%</b> korrekt beantworten!</h6>
                                         </div>
-                                        <b style="color:yellow">Du kennst unsere Regeln noch nicht? Dann schau doch mal auf
-                                            https://regeln.nemesus-world
-                                            vorbei, dort sind alle Regelungen einfach und verständlich aufgelistet!</b>
+                                        <b style="color:yellow">Ihr wollt die Entwicklung dieses Gamemodes unterstützen? Dann lasst mir gerne ein kleines Trinkgeld da: https://trinkgeld.nemesus.de</b>
                                         <hr />
                                         <div class="setBox">
                                             <div v-for="(question, index) in questionArray" :key="index">

@@ -864,48 +864,6 @@ namespace NemesusWorld.Utils
             try
             {
                 TempData tempData = Helper.GetCharacterTempData(player);
-                if (tempData == null) return;
-                if (check == 0)
-                {
-                    player.SetSharedData("Player:HealthSync", (NAPI.Player.GetPlayerHealth(player) + 100));
-                    player.SetOwnSharedData("Player:Health", (NAPI.Player.GetPlayerHealth(player) + 100));
-                }
-                else
-                {
-                    Player fromPlayer = from;
-                    if (fromPlayer == null) return;
-                    Random rand = new Random();
-                    int randomDamage = rand.Next(-3, 3);
-                    int damage = (WeaponController.GetWeaponDamageFromName(NAPI.Player.GetPlayerCurrentWeapon(fromPlayer)) + randomDamage);
-                    if (damage <= 0) return;
-                    float health = (NAPI.Player.GetPlayerHealth(player) - damage);
-                    if (health <= 0)
-                    {
-                        health = 0;
-                    }
-                    if (tempData.adminduty == true) return;
-                    if ((NAPI.Player.GetPlayerHealth(player) - damage) > 0)
-                    {
-                        Helper.SetPlayerHealth(player, (int)health);
-                    }
-                    else
-                    {
-                        player.TriggerEvent("Player:CheckAG", damage);
-                    }
-                }
-            }
-            catch (Exception e)
-            {
-                Helper.ConsoleLog("error", $"[SyncHealth]: " + e.ToString());
-            }
-        }
-
-        /*[RemoteEvent("Server:SyncHealth")]
-        public static void OnSyncHealth(Player player, int check = 0, Player from = null)
-        {
-            try
-            {
-                TempData tempData = Helper.GetCharacterTempData(player);
                 if(tempData == null) return;
                 if (check == 0)
                 {
@@ -925,16 +883,20 @@ namespace NemesusWorld.Utils
                     float health = 0;
                     if(armor <= 0)
                     {
+                        if (NAPI.Player.GetPlayerArmor(player) > 0)
+                        {
+                            Helper.SetPlayerArmor(player, 0);
+                        }
                         if (armor < 0)
                         {
                             armor = armor * -1;
                         }
-                        health = (NAPI.Player.GetPlayerHealth(player) - damage - armor);
+                        health = ((NAPI.Player.GetPlayerHealth(player) - damage) - armor);
                         if (health <= 0)
                         {
                             health = 0;
                         }
-                        if ((NAPI.Player.GetPlayerHealth(player) - damage) > 0)
+                        if (health > 0)
                         {
                             Helper.SetPlayerHealth(player, (int)health);
                         }
@@ -953,7 +915,7 @@ namespace NemesusWorld.Utils
             {
                 Helper.ConsoleLog("error", $"[SyncHealth]: " + e.ToString());
             }
-        }*/
+        }
 
         [RemoteEvent("Server:ReportPlayer")]
         public static void OnReportPlayer(Player player, int id)
@@ -8972,14 +8934,10 @@ namespace NemesusWorld.Utils
                 Account account = Helper.GetAccountData(player);
                 if (character != null)
                 {
-                    if (player.IsInVehicle)
-                    {
-                        player.WarpOutOfVehicle();
-                    }
+                    SetPlayerPosition(player, new Vector3(-710.9736, -1304.975, 5.1126294 + 0.45));
+                    player.Heading = 159.13942f;
                     NAPI.Task.Run(() =>
                     {
-                        SetPlayerPosition(player, new Vector3(-710.9736, -1304.975, 5.1126294 + 0.35));
-                        player.Heading = 159.13942f;
                         player.ResetData("Player:CarQuiz");
                         if (id == -1)
                         {

@@ -86,7 +86,7 @@ setInterval(() => {
 				const playerPos = player.position;
 				let dist = mp.game.system.vdist(playerPos.x, playerPos.y, playerPos.z, localPos.x, localPos.y, localPos.z);
 
-				if (dist <= player.getVariable(getVariable('Player:VoiceRangeLocal'))) {
+				if (dist <= player.getVariable('Player:VoiceRangeLocal')) {
 					g_voiceMgr.add(player);
 				}
 			}
@@ -98,10 +98,10 @@ setInterval(() => {
 			const playerPos = player.position;
 			let dist = mp.game.system.vdist(playerPos.x, playerPos.y, playerPos.z, localPos.x, localPos.y, localPos.z);
 
-			if (dist > player.getVariable(getVariable('Player:VoiceRangeLocal'))) {
+			if (dist > player.getVariable('Player:VoiceRangeLocal')) {
 				g_voiceMgr.remove(player, true);
 			} else if (!UseAutoVolume) {
-				player.voiceVolume = 1 - (dist / player.getVariable(getVariable('Player:VoiceRangeLocal')));
+				player.voiceVolume = 1 - (dist / player.getVariable('Player:VoiceRangeLocal'));
 			}
 		} else {
 			g_voiceMgr.remove(player, true);

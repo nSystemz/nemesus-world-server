@@ -715,6 +715,7 @@ mp.game.player.setAllRandomPedsFlee(true);
 mp.console.clear();
 mp.console.logInfo('Willkommen auf dem Nemesus World Roleplay Server - https://nemesus-world.de!', true, true);
 mp.console.logInfo('Der Gamemode wurde von https://nemesus.de entwickelt!', true, true);
+mp.console.logInfo('Support Discord: https://discord.nemesus.de', true, true);
 //Vehicle control
 const bones = ['door_dside_f', 'door_pside_f', 'door_dside_r', 'door_pside_r', 'bonnet', 'boot'];
 const names = ['Türe', 'Türe', 'Türe', 'Türe', 'Motorhaube', 'Kofferraum'];
@@ -1184,7 +1185,7 @@ mp.events.add("Client:SyncThings", (pricesCsv, animationhotkeys, chair, gprices,
         voiceChatOff = false;
         mp.voiceChat.advancedNoiseSuppression = true;
  	    mp.voiceChat.networkOptimisations = true;
-        mp.voiceChat.muted = false;
+        mp.voiceChat.muted = true;
     }
 })
 
@@ -9864,7 +9865,7 @@ function antiCheatCheck() {
     //Munitions Anticheat
     if (inventory && wait == false && !startRange) {
         for (i = 0; i < inventory.length; i++) {
-            if (inventory[i].type == 5 && !inventory[i].description.toLowerCase().includes("schutzweste") && !inventory[i].description.toLowerCase().includes("snowball") && !inventory[i].description.toLowerCase().includes("feuerlöscher") && inventory[i].props.split(',')[1] == 1) {
+            if (inventory[i].type == 5 && !inventory[i].description.toLowerCase().includes("schutzweste") && !inventory[i].description.toLowerCase().includes("taser") && !inventory[i].description.toLowerCase().includes("snowball") && !inventory[i].description.toLowerCase().includes("feuerlöscher") && inventory[i].props.split(',')[1] == 1) {
                 ammo = localPlayer.getWeaponAmmo(mp.game.joaat(getWeaponByHash(inventory[i].description)));
                 if (ammo > parseInt(inventory[i].props.split(',')[0])) {
                     callAntiCheat("Munitions Cheat", "n/A", true);

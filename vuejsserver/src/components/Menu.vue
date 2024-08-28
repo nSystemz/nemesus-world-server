@@ -5819,7 +5819,7 @@
                 </div>
             </div>
         </div>
-        <div style="height: 100%; background-color: transparent;" v-if="showCenterList">
+        <div style="height: 100%; background-color: transparent; overflow-x: hidden" v-if="showCenterList">
             <div class="row justify-content-center centering4">
                 <div class="col-md-12 mt-1 animate__animated animate__bounceInUp">
                     <div class="col-md-12 mt-1">
@@ -5829,7 +5829,7 @@
                                     <div class="card-header" style="font-family: 'Exo', sans-serif; font-size: 1.2vw">
                                         <span>{{centerHeader}}</span>
                                     </div>
-                                    <div class="card-body" style="max-height:66vh; width: 85vw; overflow-x: auto">
+                                    <div class="card-body" style="max-height:66vh; width: 85vw; overflow-x: hidden">
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <input
@@ -5846,7 +5846,7 @@
                                                                         {{rule}}</th>
                                                                 </tr>
                                                             </thead>
-                                                            <tbody>
+                                                            <tbody style="overflow-x: auto">
                                                                 <tr v-for="(obj, index) in filteredList3" :key="index">
                                                                     <td v-if="obj.var1">{{obj.var1}}</td>
                                                                     <td v-else>{{index}}</td>

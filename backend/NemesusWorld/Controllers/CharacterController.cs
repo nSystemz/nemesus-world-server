@@ -199,6 +199,7 @@ namespace NemesusWorld.Controllers
                         Account.SetAccountKey(player);
                         Helper.SendChatMessage(player, "~b~Willkommen auf Nemesus World " + account.name + ", schau dir doch mal das F2 Menü an, dort findest du auch wichtige Tipps und den Reiter - Erste Schritte für deinen Anfang auf diesem Server!");
                         Helper.SendChatMessage(player, "~b~Dieser Gamemode wurde von Nemesus.de entwickelt!");
+                        Helper.SendChatMessage(player, $"~y~Ihr wollt die Entwicklung dieses Gamemodes unterstützen? Dann lasst mir gerne ein kleines Trinkgeld da: ~w~https://trinkgeld.nemesus.de");
                         if (Helper.adminSettings.voicerp == 1)
                         {
                             Helper.CheckSaltyChat(player);
@@ -645,6 +646,7 @@ namespace NemesusWorld.Controllers
                                 player.TriggerEvent("Client:ClearChat");
                                 Helper.SendNotificationWithoutButton(player, "Willkommen zurück " + account.name + "!", "info", "top-left", 1850);
                                 Helper.SendChatMessage(player, $"~b~Willkommen zurück ~w~{account.name}~b~, du hast Fragen zum Nemesus World Gamemode? Dann besuche gerne unseren Discord: ~w~https://discord.nemesus.de");
+                                Helper.SendChatMessage(player, $"~y~Ihr wollt die Entwicklung dieses Gamemodes unterstützen? Dann lasst mir gerne ein kleines Trinkgeld da: ~w~https://trinkgeld.nemesus.de");
                                 account.online = 1;
                                 Account.SaveAccount(player);
                             }

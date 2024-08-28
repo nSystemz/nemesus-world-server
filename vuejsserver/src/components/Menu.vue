@@ -6275,7 +6275,7 @@
                 centerHeader: '',
                 centerList: [],
                 rules: [],
-                showCenterList: true,
+                showCenterList: false,
                 showTab: [],
                 showTabMenu: false,
                 saltyChatError: false,

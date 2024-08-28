@@ -5828,17 +5828,17 @@
                                 <div class="card card-primary card-outline">
                                     <div class="card-header" style="font-family: 'Exo', sans-serif; font-size: 1.2vw">
                                         <span>{{centerHeader}}</span>
+                                        <input
+                                            v-if="centerHeader.toLowerCase().includes('garage') || centerHeader.toLowerCase().includes('verwahrplatz')"
+                                            type="text" class="form-control mt-1" v-bind:value="searchelement"
+                                            v-on:input="searchelement = $event.target.value" placeholder="Suche"
+                                            maxlength="60">
                                     </div>
                                     <div class="card-body" style="max-height:66vh; width: 85vw; overflow-x: hidden">
                                         <div class="row">
                                             <div class="col-md-12">
-                                                <input
-                                                    v-if="centerHeader.toLowerCase().includes('garage') || centerHeader.toLowerCase().includes('verwahrplatz')"
-                                                    type="text" class="form-control" v-bind:value="searchelement"
-                                                    v-on:input="searchelement = $event.target.value" placeholder="Suche"
-                                                    maxlength="60">
-                                                <div class="card2 card card-primary card-outline text-center mt-2">
-                                                    <div class="table-responsive-md mt-2 mr-2 ml-2">
+                                                <div class="card2 card card-primary card-outline text-center">
+                                                    <div class="table-responsive-md mr-2 ml-2">
                                                         <table class="table table-bordered" style="width:100%">
                                                             <thead class="table-primary ">
                                                                 <tr id="tablehead" class="tablehead">
@@ -5846,7 +5846,7 @@
                                                                         {{rule}}</th>
                                                                 </tr>
                                                             </thead>
-                                                            <tbody style="overflow-x: auto">
+                                                            <tbody style="overflow-x: auto; max-height: 5vw; height: 5vw">
                                                                 <tr v-for="(obj, index) in filteredList3" :key="index">
                                                                     <td v-if="obj.var1">{{obj.var1}}</td>
                                                                     <td v-else>{{index}}</td>
@@ -5867,15 +5867,16 @@
                                                                 </tr>
                                                             </tbody>
                                                         </table>
-                                                        <div
-                                                            v-if="(centerHeader.toLowerCase().includes('garage') || centerHeader.toLowerCase().includes('verwahrplatz')) && !centerHeader.toLowerCase().includes('admingarage')">
-                                                            <button class="btn btn-block btn-primary btn-sm mb-1"
-                                                                type="submit" v-on:click="enterGarage()">Fahrzeug
-                                                                einparken</button>
-                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        v-if="(centerHeader.toLowerCase().includes('garage') || centerHeader.toLowerCase().includes('verwahrplatz')) && !centerHeader.toLowerCase().includes('admingarage')">
+                                        <div class="col-md-8">
+                                        <button class="btn btn-block btn-primary btn-sm mb-3 mt-3 float-right" style="width: 50%; color:white" type="submit"
+                                            v-on:click="enterGarage()">Fahrzeug einparken</button>
                                         </div>
                                     </div>
                                 </div>
@@ -6274,7 +6275,7 @@
                 centerHeader: '',
                 centerList: [],
                 rules: [],
-                showCenterList: false,
+                showCenterList: true,
                 showTab: [],
                 showTabMenu: false,
                 saltyChatError: false,

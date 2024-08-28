@@ -67,7 +67,7 @@ let speedTrys = 0;
 let speedTime = 0;
 let antiCheatTime = 0;
 //VoiceChat local
-let voiceChatOff = false;
+let voiceChatOff = true;
 //Overlay
 let overLayModus = false;
 let overlayList = [];
@@ -1182,10 +1182,10 @@ mp.events.add("Client:SyncThings", (pricesCsv, animationhotkeys, chair, gprices,
     mp.discord.update('Nemesus-World.de (Nemesus.de)', 'Spielt als ' + name);
     if (voicerp == 2) {
         mp.events.call("Client:SetTalkstate2", 0);
-        voiceChatOff = false;
         mp.voiceChat.advancedNoiseSuppression = true;
  	    mp.voiceChat.networkOptimisations = true;
         mp.voiceChat.muted = true;
+        voiceChatOff = true;
     }
 })
 
@@ -3772,6 +3772,11 @@ mp.events.add("Client:StartCar2", (id) => {
                 dimension: 0
             });
         } else {
+            drivingSchoolHandle = mp.checkpoints.new(0, new mp.Vector3(drivingSchoolPositions[drivingSchoolCount].x, drivingSchoolPositions[drivingSchoolCount].y, drivingSchoolPositions[drivingSchoolCount].z), 1.65, {
+                color: [255, 0, 0, 255],
+                visible: true,
+                dimension: 0
+            });
             drivingSchoolHandle2 = mp.colshapes.newCircle(drivingSchoolPositions[drivingSchoolCount].x, drivingSchoolPositions[drivingSchoolCount].y, 15, 0);
         }
 
@@ -10098,6 +10103,11 @@ function EnterDrivingSchoolCP() {
                 dimension: 0
             });
         } else {
+            drivingSchoolHandle = mp.checkpoints.new(0, new mp.Vector3(drivingSchoolPositions[drivingSchoolCount].x, drivingSchoolPositions[drivingSchoolCount].y, drivingSchoolPositions[drivingSchoolCount].z), 1.65, {
+                color: [255, 0, 0, 255],
+                visible: true,
+                dimension: 0
+            });
             drivingSchoolHandle2 = mp.colshapes.newCircle(drivingSchoolPositions[drivingSchoolCount].x, drivingSchoolPositions[drivingSchoolCount].y, 15, 0);
         }
 

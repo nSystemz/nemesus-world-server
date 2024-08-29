@@ -493,6 +493,8 @@ namespace NemesusWorld
                                     }, delayTime: 5000);
                                 }
                             }
+                            //halfHourCounter Reset
+                            halfHourCounter = 0;
                         }
                     });
                 });

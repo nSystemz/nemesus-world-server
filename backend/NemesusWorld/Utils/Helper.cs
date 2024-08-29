@@ -8868,6 +8868,7 @@ namespace NemesusWorld.Utils
                         int index = rand.Next(4);
                         tempData.jobVehicle = Cars.createNewCar("sentinel", spawnVehicle[index], 140.46222f, 28, 28, "LS-S-155" + player.Id, "Fahrschule", true, true, false);
                         tempData.jobVehicle.Dimension = 0;
+                        tempData.jobVehicle.Locked = false;
                         player.SetIntoVehicle(tempData.jobVehicle, (int)VehicleSeat.Driver);
                         tempData.jobVehicle.SetSharedData("Vehicle:Text3D", "~r~Fahrschule");
                         SendNotificationWithTimer(player, "Praktische Führerscheinprüfung", "Willkommen bei der praktischen Führerscheinprüfung, unsere heutige Route habe ich im Navigerät eingegeben. Bitte achte auf deine Geschwindigkeit (/limitspeed) und vorallem auf unsere Sicherheit! Viel Erfolg!", 5250);
@@ -8884,6 +8885,7 @@ namespace NemesusWorld.Utils
                         int index = rand.Next(4);
                         tempData.jobVehicle = Cars.createNewCar("akuma", spawnVehicle[index], 52.38735f, 28, 28, "LS-S-155" + player.Id, "Fahrschule", true, true, false);
                         tempData.jobVehicle.Dimension = 0;
+                        tempData.jobVehicle.Locked = false;
                         player.SetIntoVehicle(tempData.jobVehicle, (int)VehicleSeat.Driver);
                         tempData.jobVehicle.SetSharedData("Vehicle:Text3D", "~r~Fahrschule");
                         SendNotificationWithTimer(player, "Praktische Führerscheinprüfung", "Willkommen bei der praktischen Motorradscheinprüfung, unsere heutige Route habe ich im Navigerät eingegeben. Bitte achte auf deine Geschwindigkeit (/limitspeed) und vorallem auf unsere Sicherheit! Viel Erfolg!", 5250);
@@ -8892,6 +8894,7 @@ namespace NemesusWorld.Utils
                     {
                         tempData.jobVehicle = Cars.createNewCar("pounder", new Vector3(-755.50574, -1283.695, 5.1676626), 119.32717f, 28, 28, "LS-S-155" + player.Id, "Fahrschule", true, true, false);
                         tempData.jobVehicle.Dimension = 0;
+                        tempData.jobVehicle.Locked = false;
                         player.SetIntoVehicle(tempData.jobVehicle, (int)VehicleSeat.Driver);
                         tempData.jobVehicle.SetSharedData("Vehicle:Text3D", "~r~Fahrschule");
                         SendNotificationWithTimer(player, "Praktische Truckerscheinprüfung", "Willkommen bei der praktischen Truckerscheinprüfung, unsere heutige Route habe ich im Navigerät eingegeben. Bitte achte auf deine Geschwindigkeit (/limitspeed) und vorallem auf unsere Sicherheit! Viel Erfolg!", 5250);
@@ -8900,6 +8903,7 @@ namespace NemesusWorld.Utils
                     {
                         tempData.jobVehicle = Cars.createNewCar("dinghy", new Vector3(-742.4566, -1346.8132, 0.12037361), -132.06824f, 28, 28, "LS-S-155" + player.Id, "Fahrschule", true, true, false);
                         tempData.jobVehicle.Dimension = 0;
+                        tempData.jobVehicle.Locked = false;
                         player.SetIntoVehicle(tempData.jobVehicle, (int)VehicleSeat.Driver);
                         tempData.jobVehicle.SetSharedData("Vehicle:Text3D", "~r~Fahrschule");
                         SendNotificationWithTimer(player, "Praktische Bootsscheinprüfung", "Willkommen bei der praktischen Bootsscheinprüfung, unsere heutige Route habe ich im Navigerät eingegeben. Bitte achte auf deine Geschwindigkeit (/limitspeed) und vorallem auf unsere Sicherheit! Viel Erfolg!", 5250);
@@ -8911,6 +8915,7 @@ namespace NemesusWorld.Utils
                         {
                             tempData.jobVehicle = Cars.createNewCar("havok", new Vector3(-1704.8922, -2851.095, 14.265111), -31.0317f, 28, 28, "LS-S-155" + player.Id, "Fahrschule", true, true, false);
                             tempData.jobVehicle.Dimension = 0;
+                            tempData.jobVehicle.Locked = false;
                             player.SetIntoVehicle(tempData.jobVehicle, (int)VehicleSeat.Driver);
                             tempData.jobVehicle.SetSharedData("Vehicle:Text3D", "~r~Fahrschule");
                         }, delayTime: 375);

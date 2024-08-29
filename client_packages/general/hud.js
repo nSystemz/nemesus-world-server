@@ -3772,7 +3772,7 @@ mp.events.add("Client:StartCar2", (id) => {
                 dimension: 0
             });
         } else {
-            drivingSchoolHandle = mp.checkpoints.new(0, new mp.Vector3(drivingSchoolPositions[drivingSchoolCount].x, drivingSchoolPositions[drivingSchoolCount].y, drivingSchoolPositions[drivingSchoolCount].z), 1.65, {
+            drivingSchoolHandle = mp.checkpoints.new(0, new mp.Vector3(drivingSchoolPositions[drivingSchoolCount].x, drivingSchoolPositions[drivingSchoolCount].y, drivingSchoolPositions[drivingSchoolCount].z), 2.65, {
                 color: [255, 0, 0, 255],
                 visible: true,
                 dimension: 0
@@ -10103,7 +10103,7 @@ function EnterDrivingSchoolCP() {
                 dimension: 0
             });
         } else {
-            drivingSchoolHandle = mp.checkpoints.new(0, new mp.Vector3(drivingSchoolPositions[drivingSchoolCount].x, drivingSchoolPositions[drivingSchoolCount].y, drivingSchoolPositions[drivingSchoolCount].z), 1.65, {
+            drivingSchoolHandle = mp.checkpoints.new(0, new mp.Vector3(drivingSchoolPositions[drivingSchoolCount].x, drivingSchoolPositions[drivingSchoolCount].y, drivingSchoolPositions[drivingSchoolCount].z), 2.65, {
                 color: [255, 0, 0, 255],
                 visible: true,
                 dimension: 0
@@ -10117,6 +10117,11 @@ function EnterDrivingSchoolCP() {
         if (drivingSchoolHandle != null) {
             drivingSchoolHandle.destroy();
             drivingSchoolHandle = null;
+        }
+
+        if (drivingSchoolHandle2 != null) {
+            drivingSchoolHandle2.destroy();
+            drivingSchoolHandle2 = null;
         }
 
         drivingSchoolCount = 0;

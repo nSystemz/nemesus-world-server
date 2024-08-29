@@ -1170,7 +1170,7 @@ namespace NemesusWorld
                     player.SendChatMessage("~y~Verfügbare Lizenzen: Führerschein, Motorradschein, Truckerschein, Bootsschein, Flugschein, Waffenschein");
                     return;
                 }
-                Player ntarget = Helper.GetPlayerByAccountName(target);
+                Player ntarget = Helper.GetPlayerByNameOrID(target);
                 if (ntarget == null || !ntarget.Exists || !Account.IsPlayerLoggedIn(ntarget))
                 {
                     Helper.SendNotificationWithoutButton(player, "Ungültiger Spieler!", "error", "top-end");

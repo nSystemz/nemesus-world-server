@@ -5,8 +5,6 @@ let pressedRollen = 0;
 
 let playerOnPhone = -1;
 
-mp.voiceChat.muted = true;
-
 mp.keys.bind(0x91, true, function () {
     if (pressedRollen == 0 || (Date.now() / 1000) > pressedRollen) {
         let spawned = mp.players.local.getVariable('Player:Spawned');

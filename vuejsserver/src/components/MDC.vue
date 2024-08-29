@@ -1153,9 +1153,9 @@
                                                                                         <td>Motorradschein</td>
                                                                                         <td><span class="badge badge-primary">{{getLicStatus(this.licStatus[1])}}</span>
                                                                                         </td>
-                                                                                        <td><i class="fa-solid fa-ban ml-2 iconred" @click="setLic(0, 0, selectedPersonalInfo.name)"></i>
-                                                                                            <i class="fa-solid fa-circle-plus ml-2 iconred" @click="setLic(0, 1, selectedPersonalInfo.name)"></i>
-                                                                                            <i class="fa-solid fa-circle-minus ml-2 icongreen" @click="setLic(0, 2, selectedPersonalInfo.name)"></i>
+                                                                                        <td><i class="fa-solid fa-ban ml-2 iconred" @click="setLic(1, 0, selectedPersonalInfo.name)"></i>
+                                                                                            <i class="fa-solid fa-circle-plus ml-2 iconred" @click="setLic(1, 1, selectedPersonalInfo.name)"></i>
+                                                                                            <i class="fa-solid fa-circle-minus ml-2 icongreen" @click="setLic(1, 2, selectedPersonalInfo.name)"></i>
                                                                                         </td>
                                                                                     </tr>
                                                                                     <tr>

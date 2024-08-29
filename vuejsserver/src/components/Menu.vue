@@ -5846,7 +5846,7 @@
                                                                         {{rule}}</th>
                                                                 </tr>
                                                             </thead>
-                                                            <tbody style="overflow-x: auto; max-height: 5vw; height: 5vw">
+                                                            <tbody style="overflow-x: auto; max-height: 5vw;">
                                                                 <tr v-for="(obj, index) in filteredList3" :key="index">
                                                                     <td v-if="obj.var1">{{obj.var1}}</td>
                                                                     <td v-else>{{index}}</td>
@@ -5875,7 +5875,7 @@
                                     <div
                                         v-if="(centerHeader.toLowerCase().includes('garage') || centerHeader.toLowerCase().includes('verwahrplatz')) && !centerHeader.toLowerCase().includes('admingarage')">
                                         <div class="col-md-8">
-                                        <button class="btn btn-block btn-primary btn-sm mb-3 mt-3 float-right" style="width: 50%; color:white" type="submit"
+                                        <button class="btn btn-block btn-primary btn-sm mb-2 mt-2 float-right" style="width: 50%; color:white" type="submit"
                                             v-on:click="enterGarage()">Fahrzeug einparken</button>
                                         </div>
                                     </div>

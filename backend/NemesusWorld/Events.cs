@@ -479,18 +479,18 @@ namespace NemesusWorld
                                     }
                                 }
                                 fullHourTimer = 0;
-                            }
-                            //Auto Restart
-                            if (Events.RestartHour > -1 && moment.Hour == Events.RestartHour)
-                            {
-                                if (Events.InitRestart == false)
+                                //Auto Restart
+                                if (Events.RestartHour > -1 && moment.Hour == Events.RestartHour)
                                 {
-                                    Helper.SendAdminMessageToAll($"Der Server wird in ca. 5 Sekunden neugestartet ...");
-                                    Events.InitRestart = true;
-                                    NAPI.Task.Run(() =>
+                                    if (Events.InitRestart == false)
                                     {
-                                        System.Environment.Exit(1);
-                                    }, delayTime: 5000);
+                                        Helper.SendAdminMessageToAll($"Der Server wird in ca. 5 Sekunden neugestartet ...");
+                                        Events.InitRestart = true;
+                                        NAPI.Task.Run(() =>
+                                        {
+                                            System.Environment.Exit(1);
+                                        }, delayTime: 5000);
+                                    }
                                 }
                             }
                             //halfHourCounter Reset

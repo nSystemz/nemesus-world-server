@@ -218,6 +218,8 @@ namespace NemesusWorld
                             command.ExecuteNonQuery();
                             //Materialversteck befüllen
                             Helper.MatsImVersteck += 20;
+                            //Waffendealer
+                            GangController.dealerSpawned = false;
                             //Call2Home, kann für Statistiken aktiviert werden
                             //Helper.Call2Home();
                             //Weather
@@ -411,21 +413,21 @@ namespace NemesusWorld
                             //Factions reloaden
                             Helper.GetAllFactions(1);
                             //Waffendealer
-                            System.DateTime waffendealerTime = new System.DateTime(Helper.UnixTimestamp());
-                            if (GangController.dealerPosition == null && (waffendealerTime.Hour == 10 || waffendealerTime.Hour == 13 || waffendealerTime.Hour == 16 || waffendealerTime.Hour == 18 || waffendealerTime.Hour == 20 || waffendealerTime.Hour == 23))
+                            DateTime dateTime = DateTime.Now;
+                            if (GangController.dealerSpawned == false && (dateTime.Hour == 10 || dateTime.Hour == 13 || dateTime.Hour == 16 || dateTime.Hour == 18 || dateTime.Hour == 20 || dateTime.Hour == 23))
                             {
                                 GangController.CreateWaffendealer();
                             }
-                            if (waffendealerTime.Hour == 11 || waffendealerTime.Hour == 14 || waffendealerTime.Hour == 17 || waffendealerTime.Hour == 19 || waffendealerTime.Hour == 21 || waffendealerTime.Hour == 24 || waffendealerTime.Hour == 0)
+                            if (dateTime.Hour == 11 || dateTime.Hour == 14 || dateTime.Hour == 17 || dateTime.Hour == 19 || dateTime.Hour == 21 || dateTime.Hour == 24 || dateTime.Hour == 0)
                             {
                                 GangController.DeleteWaffendealer();
                             }
                             //Drogendealer
-                            if (GangController.dealerPosition2 == null && (waffendealerTime.Hour == 11 || waffendealerTime.Hour == 14 || waffendealerTime.Hour == 17 || waffendealerTime.Hour == 19 || waffendealerTime.Hour == 21 || waffendealerTime.Hour == 24 || waffendealerTime.Hour == 0))
+                            if (GangController.dealerPosition2 == null && (dateTime.Hour == 11 || dateTime.Hour == 14 || dateTime.Hour == 17 || dateTime.Hour == 19 || dateTime.Hour == 21 || dateTime.Hour == 24 || dateTime.Hour == 0))
                             {
                                 GangController.CreateDrugDealer();
                             }
-                            if (waffendealerTime.Hour == 12 || waffendealerTime.Hour == 15 || waffendealerTime.Hour == 18 || waffendealerTime.Hour == 20 || waffendealerTime.Hour == 22 || waffendealerTime.Hour == 1)
+                            if (dateTime.Hour == 12 || dateTime.Hour == 15 || dateTime.Hour == 18 || dateTime.Hour == 20 || dateTime.Hour == 22 || dateTime.Hour == 1)
                             {
                                 GangController.DeleteDrugDealer();
                             }

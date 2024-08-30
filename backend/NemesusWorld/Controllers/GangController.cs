@@ -19,6 +19,7 @@ namespace NemesusWorld.Controllers
     {
         public static List<GangZones> gangzoneList = new List<GangZones>();
         public static Vector3 dealerPosition = null;
+        public static bool dealerSpawned = false;
         public static Vehicle dealerVehicle = null;
         public static TextLabel dealerLabel = null;
         public static Ped dealerPed = null;
@@ -633,6 +634,8 @@ namespace NemesusWorld.Controllers
                     DeleteWaffendealer();
                 }
 
+                dealerSpawned = true;
+
                 Random rnd = new Random();
                 int random = rnd.Next(1, 5);
 
@@ -793,6 +796,8 @@ namespace NemesusWorld.Controllers
                     MDCController.SendPoliceMDCMessage(null, $"Neuer Dispatch verfügbar - DSPTH-{dispatch.id}!");
                 }
 
+                Helper.ConsoleLog("info", $"Der Waffendealer wurde gespawned - {position}!");
+
             }
             catch (Exception e)
             {
@@ -805,6 +810,7 @@ namespace NemesusWorld.Controllers
             try
             {
                 if (dealerPosition == null) return;
+                dealerSpawned = false;
                 dealerPosition = null;
                 dealerVehicle.Delete();
                 dealerVehicle = null;
@@ -812,6 +818,8 @@ namespace NemesusWorld.Controllers
                 dealerPed = null;
                 dealerLabel.Delete();
                 dealerLabel = null;
+
+                Helper.ConsoleLog("info", $"Der Waffendealer wurde gelöscht!");
             }
             catch (Exception e)
             {
@@ -924,6 +932,8 @@ namespace NemesusWorld.Controllers
                     MDCController.SendPoliceMDCMessage(null, $"Neuer Dispatch verfügbar - DSPTH-{dispatch.id}!");
                 }
 
+                Helper.ConsoleLog("info", $"Der Drogendealer wurde gespawned - {position}!");
+
             }
             catch (Exception e)
             {
@@ -942,6 +952,8 @@ namespace NemesusWorld.Controllers
                 dealerLabel2.Delete();
                 dealerLabel2 = null;
                 drugAmount = 0;
+
+                Helper.ConsoleLog("info", $"Der Drogendealer wurde gelöscht!");
             }
             catch (Exception e)
             {

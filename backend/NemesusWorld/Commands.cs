@@ -2736,6 +2736,21 @@ namespace NemesusWorld
             return;
         }
 
+        [Command("halfhourtimertest", "Befehl: /halfhourtimertest")]
+        public void cmd_halfhourtimertest(Player player)
+        {
+            Account account = Helper.GetAccountData(player);
+            if (!Account.IsPlayerLoggedIn(player)) return;
+            if (!Account.IsAdminOnDuty(player, (int)Account.AdminRanks.HighAdministrator))
+            {
+                Helper.SendNotificationWithoutButton(player, "Unzureichende Adminrechte!", "error", "top-end");
+                return;
+            }
+            Events.OnHalfHourTimer(null);
+            Helper.SendNotificationWithoutButton(player, "Timer Test gestartet!", "success", "top-end");
+            return;
+        }
+
         [Command("setweather", "Befehl: /setweather [Wetterart] [Dauer in h]")]
         public void CMD_setweather(Player player, string wetter = "n/A", int hour = 1)
         {

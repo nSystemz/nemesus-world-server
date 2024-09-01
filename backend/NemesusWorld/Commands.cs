@@ -6,6 +6,7 @@ using NemesusWorld.Database;
 using NemesusWorld.Models;
 using NemesusWorld.Utils;
 using Newtonsoft.Json.Linq;
+using Org.BouncyCastle.Ocsp;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -2139,6 +2140,7 @@ namespace NemesusWorld
                 Account account2 = Helper.GetAccountData(ntarget);
                 Character character = Helper.GetCharacterData(player);
                 Character character2 = Helper.GetCharacterData(ntarget);
+                TempData tempData = Helper.GetCharacterTempData(player);
                 if (account.adminlevel < account2.adminlevel)
                 {
                     Helper.SendNotificationWithoutButton(player, "Ungültiger Spieler!", "error");
@@ -2201,6 +2203,7 @@ namespace NemesusWorld
                 Helper.SetPlayerPosition(player, ntarget.Position.Add(new Vector3(0, 4.5, -4.5)));
                 NAPI.Task.Run(() =>
                 {
+                    tempData.spectate = ntarget;
                     player.TriggerEvent("Client:StartSpectate", ntarget, target);
                     player.SetData<bool>("Player:Spectate", true);
                 }, delayTime: 125);
@@ -2220,6 +2223,7 @@ namespace NemesusWorld
             {
                 if (!Account.IsPlayerLoggedIn(player)) return;
                 Character character = Helper.GetCharacterData(player);
+                TempData tempData = Helper.GetCharacterTempData(player);
                 if (character == null) return;
                 if (!Account.IsAdminOnDuty(player, (int)Account.AdminRanks.ProbeModerator))
                 {
@@ -2231,6 +2235,7 @@ namespace NemesusWorld
                     Helper.SendNotificationWithoutButton(player, "Du beobachtest gerade keinen Spieler!", "error", "top-end");
                     return;
                 }
+                tempData.spectate = null;
                 player.TriggerEvent("Client:StopSpectate", 2);
                 player.SetData<bool>("Player:Spectate", false);
                 player.SetSharedData("Player:Adminsettings", "1,0,0");

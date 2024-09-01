@@ -76,6 +76,8 @@ namespace NemesusWorld.Database
         public int petTask { get; set; }
         public bool achat { get; set; }
 
+        public Player spectate { get; set; }
+
         public TempData()
         {
             rangname = "";
@@ -144,6 +146,7 @@ namespace NemesusWorld.Database
             pet = null;
             petTask = 0;
             achat = true;
+            spectate = null;
         }
     }
 }

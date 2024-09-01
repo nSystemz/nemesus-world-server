@@ -2763,40 +2763,43 @@ namespace NemesusWorld.Utils
             if (tempData2 == null) return;
             foreach (Player p in NAPI.Pools.GetAllPlayers())
             {
-                if (Account.IsPlayerLoggedIn(p) && IsInRangeOfPoint(p.Position, player.Position, radius))
+                if (Account.IsPlayerLoggedIn(p))
                 {
                     if (cancelOwnPlayer == true && p == player) continue;
                     Character character = Helper.GetCharacterData(p);
                     TempData tempData = Helper.GetCharacterTempData(p);
-                    if (character != null && tempData != null)
+                    if(IsInRangeOfPoint(p.Position, player.Position, radius) || tempData.spectate == player)
                     {
-                        if (Helper.adminSettings.nametag == 1 && p != player && tempData.adminduty == false)
+                        if (character != null && tempData != null)
                         {
-                            if (character.friends.ToLower().Contains(player.Name.ToLower()))
+                            if (Helper.adminSettings.nametag == 1 && p != player && tempData.adminduty == false)
                             {
-                                SendChatMessage(p, message);
+                                if (character.friends.ToLower().Contains(player.Name.ToLower()))
+                                {
+                                    SendChatMessage(p, message);
+                                }
+                                else
+                                {
+                                    SendChatMessage(p, Helper.ReplaceFirst(message, player.Name, "Unbekannt"));
+                                }
                             }
                             else
                             {
-                                SendChatMessage(p, Helper.ReplaceFirst(message, player.Name, "Unbekannt"));
-                            }
-                        }
-                        else
-                        {
-                            if (player.HasSharedData("Client:OldName") && player.GetSharedData<string>("Client:OldName") != "n/A")
-                            {
-                                if (p == player && tempData.undercover.Contains("Unbekannt"))
+                                if (player.HasSharedData("Client:OldName") && player.GetSharedData<string>("Client:OldName") != "n/A")
                                 {
-                                    SendChatMessage(p, Helper.ReplaceFirst(message, player.Name, player.GetSharedData<string>("Client:OldName")));
+                                    if (p == player && tempData.undercover.Contains("Unbekannt"))
+                                    {
+                                        SendChatMessage(p, Helper.ReplaceFirst(message, player.Name, player.GetSharedData<string>("Client:OldName")));
+                                    }
+                                    else
+                                    {
+                                        SendChatMessage(p, message);
+                                    }
                                 }
                                 else
                                 {
                                     SendChatMessage(p, message);
                                 }
-                            }
-                            else
-                            {
-                                SendChatMessage(p, message);
                             }
                         }
                     }
@@ -2874,6 +2877,22 @@ namespace NemesusWorld.Utils
                     message = message.Remove(0, 1);
                 }
                 NAPI.Chat.SendChatMessageToPlayer(player, message);
+                SendAdminSpecMessage(player, message);
+            }
+        }
+
+        public static void SendAdminSpecMessage(Player player, string message)
+        {
+            foreach(Player p in NAPI.Pools.GetAllPlayers())
+            {
+                if(p != player && Account.IsPlayerLoggedIn(p))
+                {
+                    TempData tempData = Helper.GetCharacterTempData(p);
+                    if(tempData != null && tempData.spectate == player)
+                    {
+                        NAPI.Chat.SendChatMessageToPlayer(p, message);
+                    }
+                }
             }
         }
 

@@ -673,6 +673,10 @@ mp.game.audio.setStaticEmitterEnabled('DLC_BTL_Nightclub_Queue_SCL', false);
 mp.game.audio.setStaticEmitterEnabled('DLC_BTL_Nightclub_SCL', false);
 mp.game.audio.setStaticEmitterEnabled('SE_ba_dlc_club_exterior', false);
 
+//Local Voicechat
+mp.voiceChat.muted = true;
+voiceChatOff = true;
+
 //Trailersync
 mp.game.vehicle.setExperimentalAttachmentSyncEnabled(false);
 

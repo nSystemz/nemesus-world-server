@@ -18246,7 +18246,7 @@ namespace NemesusWorld.Utils
                 }
                 catch (Exception)
                 {
-                    ConsoleLog("error", $"[WETTER-API]: Fehler beim lesen der Wetterdaten, probiere es nochmal ...");
+                    ConsoleLog("error", $"[WETTER-API]: Fehler beim lesen der Wetterdaten, Wetterdaten später erneut laden ...");
                     weatherstring = "clear sky";
                     SetWeather();
                     weatherObj = null;
@@ -18257,77 +18257,80 @@ namespace NemesusWorld.Utils
 
         public static void SetWeather()
         {
-            try
+            NAPI.Task.Run(() =>
             {
-                switch (weatherstring)
+                try
                 {
-                    case "clear sky":
-                        {
-                            NAPI.World.SetWeather("CLEAR");
-                            break;
-                        }
-                    case "few clouds":
-                        {
-                            NAPI.World.SetWeather("CLOUDS");
-                            break;
-                        }
-                    case "scattered clouds":
-                        {
-                            NAPI.World.SetWeather("OVERCAST");
-                            break;
-                        }
-                    case "broken clouds":
-                        {
-                            NAPI.World.SetWeather("OVERCAST");
-                            break;
-                        }
-                    case "overcast clouds":
-                        {
-                            NAPI.World.SetWeather("OVERCAST");
-                            break;
-                        }
-                    case "shower rain":
-                        {
-                            NAPI.World.SetWeather("RAIN");
-                            break;
-                        }
-                    case "light rain":
-                        {
-                            NAPI.World.SetWeather("RAIN");
-                            break;
-                        }
-                    case "rain":
-                        {
-                            NAPI.World.SetWeather("RAIN");
-                            break;
-                        }
-                    case "thunderstorm":
-                        {
-                            NAPI.World.SetWeather("THUNDER");
-                            break;
-                        }
-                    case "snow":
-                        {
-                            NAPI.World.SetWeather("SNOW");
-                            break;
-                        }
-                    case "mist":
-                        {
-                            NAPI.World.SetWeather("FOGGY");
-                            break;
-                        }
-                    default:
-                        {
-                            NAPI.World.SetWeather("CLEAR");
-                            break;
-                        }
+                    switch (weatherstring)
+                    {
+                        case "clear sky":
+                            {
+                                NAPI.World.SetWeather("CLEAR");
+                                break;
+                            }
+                        case "few clouds":
+                            {
+                                NAPI.World.SetWeather("CLOUDS");
+                                break;
+                            }
+                        case "scattered clouds":
+                            {
+                                NAPI.World.SetWeather("OVERCAST");
+                                break;
+                            }
+                        case "broken clouds":
+                            {
+                                NAPI.World.SetWeather("OVERCAST");
+                                break;
+                            }
+                        case "overcast clouds":
+                            {
+                                NAPI.World.SetWeather("OVERCAST");
+                                break;
+                            }
+                        case "shower rain":
+                            {
+                                NAPI.World.SetWeather("RAIN");
+                                break;
+                            }
+                        case "light rain":
+                            {
+                                NAPI.World.SetWeather("RAIN");
+                                break;
+                            }
+                        case "rain":
+                            {
+                                NAPI.World.SetWeather("RAIN");
+                                break;
+                            }
+                        case "thunderstorm":
+                            {
+                                NAPI.World.SetWeather("THUNDER");
+                                break;
+                            }
+                        case "snow":
+                            {
+                                NAPI.World.SetWeather("SNOW");
+                                break;
+                            }
+                        case "mist":
+                            {
+                                NAPI.World.SetWeather("FOGGY");
+                                break;
+                            }
+                        default:
+                            {
+                                NAPI.World.SetWeather("CLEAR");
+                                break;
+                            }
+                    }
                 }
-            }
-            catch (Exception)
-            {
-                weatherstring = "clear sky";
-                NAPI.World.SetWeather("CLEAR");
-            }
+                catch (Exception)
+                {
+                    weatherstring = "clear sky";
+                    NAPI.World.SetWeather("CLEAR");
+                }
+            });
         }
 
         public static bool CheckForAttachment(Player player, string propname)

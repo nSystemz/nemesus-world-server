@@ -32,7 +32,6 @@ namespace NemesusWorld.Utils
         public static int FishPrice = 125 + rnd.Next(0, 55);
         public static JObject weatherObj = null;
         public static String weatherstring = "clear sky";
-        public static int weatherErrors = 0;
         public static int weatherTimestamp = 0;
         public static List<SpedVehicles> spedVehiclesList = new List<SpedVehicles>();
         public static List<ShopItems> shopItemList = new List<ShopItems>();
@@ -18184,84 +18183,76 @@ namespace NemesusWorld.Utils
             return new Vector3(nx, ny, position.Z);
         }
 
-        public static async Task SetAndGetWeather(string apiLink, bool initial = false)
+        public static Task SetAndGetWeather(string apiLink, bool initial = false)
         {
-            try
+            NAPI.Task.Run(async () =>
             {
-                // Überprüfen, ob der aktuelle Zeitpunkt das Wetter-Update zulässt
-                if (weatherTimestamp != 0 && weatherTimestamp > UnixTimestamp() && !initial)
-                {
-                    return;
-                }
-
-                JObject weatherObjTemp2 = null;
-                var content = string.Empty;
-
-                using (var client = new HttpClient())
-                {
-                    // API-Call durchführen
-                    var response = await client.GetAsync(apiLink);
-                    response.EnsureSuccessStatusCode();
-
-                    content = await response.Content.ReadAsStringAsync();
-                }
-
-                Weather weather = new Weather();
-
                 try
                 {
-                    // Verarbeite die API-Antwort
-                    var weatherObj = JObject.Parse(content);
-                    var tempstring2 = weatherObj["current"].ToString();
-                    weatherObjTemp2 = JObject.Parse(tempstring2);
-                }
-                catch (Exception)
-                {
-                    if (weatherErrors <= 2)
+                    if (weatherTimestamp != 0 && weatherTimestamp > UnixTimestamp() && !initial)
                     {
-                        weatherErrors++;
-                        await SetAndGetWeather("https://nemesus-world.de/WetterInfoBackup.php");
+                        return;
                     }
-                    else
+
+                    JObject weatherObjTemp2 = null;
+                    var content = string.Empty;
+
+                    using (var client = new HttpClient())
+                    {
+                        var response = await client.GetAsync(apiLink);
+                        response.EnsureSuccessStatusCode();
+
+                        content = await response.Content.ReadAsStringAsync();
+                    }
+
+                    Weather weather = new Weather();
+
+                    try
+                    {
+                        var weatherObj = JObject.Parse(content);
+                        var tempstring2 = weatherObj["current"].ToString();
+                        weatherObjTemp2 = JObject.Parse(tempstring2);
+                    }
+                    catch (Exception)
                     {
                         weatherstring = "clear sky";
                         SetWeather();
                         weatherObj = null;
                     }
-                }
 
-                if (weatherObjTemp2 != null)
-                {
-                    var tempstring = weatherObjTemp2["weather"].ToString();
-                    tempstring = tempstring.Substring(2);
-                    tempstring = tempstring.Substring(0, tempstring.Length - 1);
-
-                    if (tempstring.Length > 10)
+                    if (weatherObjTemp2 != null)
                     {
-                        var weatherObjTemp = JObject.Parse(tempstring);
-                        weatherstring = weatherObjTemp["description"].ToString().ToLower();
+                        var tempstring = weatherObjTemp2["weather"].ToString();
+                        tempstring = tempstring.Substring(2);
+                        tempstring = tempstring.Substring(0, tempstring.Length - 1);
+
+                        if (tempstring.Length > 10)
+                        {
+                            var weatherObjTemp = JObject.Parse(tempstring);
+                            weatherstring = weatherObjTemp["description"].ToString().ToLower();
+                        }
+                        else
+                        {
+                            weatherstring = "clear sky";
+                        }
                     }
                     else
                     {
                         weatherstring = "clear sky";
                     }
-                }
-                else
-                {
-                    weatherstring = "clear sky";
-                }
 
-                Helper.ConsoleLog("success", $"[WETTER-API]: {weatherstring}");
-                SetWeather();
-                weatherErrors = 0;
-            }
-            catch (Exception)
-            {
-                Helper.ConsoleLog("error", $"[WETTER-API]: Fehler beim lesen der Wetterdaten, probiere es nochmal ...");
-                weatherstring = "clear sky";
-                SetWeather();
-                weatherObj = null;
-            }
+                    ConsoleLog("success", $"[WETTER-API]: {weatherstring}");
+                    SetWeather();
+                }
+                catch (Exception)
+                {
+                    ConsoleLog("error", $"[WETTER-API]: Fehler beim lesen der Wetterdaten, probiere es nochmal ...");
+                    weatherstring = "clear sky";
+                    SetWeather();
+                    weatherObj = null;
+                }
+            });
+            return Task.CompletedTask;
         }
 
         public static void SetWeather()

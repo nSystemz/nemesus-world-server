@@ -284,16 +284,6 @@ namespace NemesusWorld
                         halfHourCounter++;
                         //Onlinebanking transfer
                         BankController.RunTransfer();
-                        //Weather
-                        try
-                        {
-                            await Helper.SetAndGetWeather("https://wetterapi.nemesus-world.de", true);
-                        }
-                        catch (Exception)
-                        {
-                            Helper.weatherstring = "clear sky";
-                            Helper.SetWeather();
-                        }
                         //Smartphone capacity
                         foreach (Smartphone smartphone in SmartphoneController.smartphoneList)
                         {
@@ -498,6 +488,16 @@ namespace NemesusWorld
                             }
                             //halfHourCounter Reset
                             halfHourCounter = 0;
+                        }
+                        //Weather jede 30 Minuten checken
+                        try
+                        {
+                            await Helper.SetAndGetWeather("https://wetterapi.nemesus-world.de", true);
+                        }
+                        catch (Exception)
+                        {
+                            Helper.weatherstring = "clear sky";
+                            Helper.SetWeather();
                         }
                     });
                 });

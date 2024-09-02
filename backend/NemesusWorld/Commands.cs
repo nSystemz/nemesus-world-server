@@ -2757,7 +2757,7 @@ namespace NemesusWorld
         }
 
         [Command("setweather", "Befehl: /setweather [Wetterart] [Dauer in h]")]
-        public void CMD_setweather(Player player, string wetter = "n/A", int hour = 1)
+        public async void CMD_setweather(Player player, string wetter = "n/A", int hour = 1)
         {
             try
             {
@@ -2828,7 +2828,7 @@ namespace NemesusWorld
                             Helper.weatherTimestamp = 0;
                             try
                             {
-                                Helper.SetAndGetWeather("https://wetterapi.nemesus-world.de", true);
+                                await Helper.SetAndGetWeather("https://wetterapi.nemesus-world.de", true);
                             }
                             catch (Exception)
                             {

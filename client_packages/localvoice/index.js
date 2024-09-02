@@ -78,20 +78,24 @@ mp.events.add("playerQuit", (player) => {
 setInterval(() => {
 	let localPlayer = mp.players.local;
 	let localPos = localPlayer.position;
+	let spawned = localPlayer.getVariable('Player:Spawned');
 	playerOnPhone = localPlayer.getVariable('Player:LocalVoiceHandyPlayer');
 
-	mp.players.forEachInStreamRange(player => {
-		if (player != localPlayer && player.remoteId != playerOnPhone) {
-			if (!player.isListening) {
-				const playerPos = player.position;
-				let dist = mp.game.system.vdist(playerPos.x, playerPos.y, playerPos.z, localPos.x, localPos.y, localPos.z);
+	if(spawned)
+	{
+		mp.players.forEachInStreamRange(player => {
+			if (player != localPlayer && player.remoteId != playerOnPhone) {
+				if (!player.isListening) {
+					const playerPos = player.position;
+					let dist = mp.game.system.vdist(playerPos.x, playerPos.y, playerPos.z, localPos.x, localPos.y, localPos.z);
 
-				if (dist <= player.getVariable('Player:VoiceRangeLocal')) {
-					g_voiceMgr.add(player);
+					if (dist <= player.getVariable('Player:VoiceRangeLocal')) {
+						g_voiceMgr.add(player);
+					}
 				}
 			}
-		}
-	});
+		});
+	}
 
 	g_voiceMgr.listeners.forEach((player) => {
 		if (player.handle !== 0 && player.remoteId != playerOnPhone) {

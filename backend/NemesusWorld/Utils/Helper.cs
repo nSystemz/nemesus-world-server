@@ -19,6 +19,8 @@ using Ped = GTANetworkAPI.Ped;
 using Vector3 = GTANetworkAPI.Vector3;
 using Color = GTANetworkAPI.Color;
 using System.Reflection.Emit;
+using System.Threading.Tasks;
+using System.Net.Http;
 
 namespace NemesusWorld.Utils
 {
@@ -2768,7 +2770,7 @@ namespace NemesusWorld.Utils
                     if (cancelOwnPlayer == true && p == player) continue;
                     Character character = Helper.GetCharacterData(p);
                     TempData tempData = Helper.GetCharacterTempData(p);
-                    if(IsInRangeOfPoint(p.Position, player.Position, radius) || tempData.spectate == player)
+                    if(IsInRangeOfPoint(p.Position, player.Position, radius) && tempData.spectate != player)
                     {
                         if (character != null && tempData != null)
                         {
@@ -2888,7 +2890,7 @@ namespace NemesusWorld.Utils
                 if(p != player && Account.IsPlayerLoggedIn(p))
                 {
                     TempData tempData = Helper.GetCharacterTempData(p);
-                    if(tempData != null && tempData.spectate == player)
+                    if(tempData != null && tempData.spectate != null && tempData.spectate == player)
                     {
                         NAPI.Chat.SendChatMessageToPlayer(p, message);
                     }
@@ -18182,73 +18184,76 @@ namespace NemesusWorld.Utils
             return new Vector3(nx, ny, position.Z);
         }
 
-        public static void SetAndGetWeather(String apiLink, bool initial = false)
+        public static async Task SetAndGetWeather(string apiLink, bool initial = false)
         {
             try
             {
-                NAPI.Task.Run(() =>
+                // Überprüfen, ob der aktuelle Zeitpunkt das Wetter-Update zulässt
+                if (weatherTimestamp != 0 && weatherTimestamp > UnixTimestamp() && !initial)
                 {
-                    if (weatherTimestamp != 0 && weatherTimestamp > UnixTimestamp() && initial == false) return;
-                    JObject weatherObjTemp2 = null;
-                    var request = (HttpWebRequest)WebRequest.Create(apiLink);
-                    request.Method = "GET";
-                    var content = string.Empty;
-                    using (var response = (HttpWebResponse)request.GetResponse())
+                    return;
+                }
+
+                JObject weatherObjTemp2 = null;
+                var content = string.Empty;
+
+                using (var client = new HttpClient())
+                {
+                    // API-Call durchführen
+                    var response = await client.GetAsync(apiLink);
+                    response.EnsureSuccessStatusCode();
+
+                    content = await response.Content.ReadAsStringAsync();
+                }
+
+                Weather weather = new Weather();
+
+                try
+                {
+                    // Verarbeite die API-Antwort
+                    var weatherObj = JObject.Parse(content);
+                    var tempstring2 = weatherObj["current"].ToString();
+                    weatherObjTemp2 = JObject.Parse(tempstring2);
+                }
+                catch (Exception)
+                {
+                    if (weatherErrors <= 2)
                     {
-                        using (var stream = response.GetResponseStream())
-                        {
-                            using (var sr = new StreamReader(stream))
-                            {
-                                string tempstring2;
-                                content = sr.ReadToEnd();
-                                Weather weather = new Weather();
-                                try
-                                {
-                                    weatherObj = JObject.Parse(content);
-                                    tempstring2 = weatherObj["current"].ToString();
-                                    weatherObjTemp2 = JObject.Parse(tempstring2);
-                                }
-                                catch (Exception)
-                                {
-                                    if (weatherErrors <= 2)
-                                    {
-                                        weatherErrors++;
-                                        Helper.SetAndGetWeather("https://nemesus-world.de/WetterInfoBackup.php");
-                                    }
-                                    else
-                                    {
-                                        weatherstring = "clear sky";
-                                        SetWeather();
-                                        weatherObj = null;
-                                    }
-                                }
-                                if (weatherObjTemp2 != null)
-                                {
-                                    string tempstring;
-                                    tempstring = weatherObjTemp2["weather"].ToString();
-                                    tempstring = tempstring.Substring(2);
-                                    tempstring = tempstring.Substring(0, tempstring.Length - 1);
-                                    if (tempstring.Length > 10)
-                                    {
-                                        JObject weatherObjTemp = JObject.Parse(tempstring);
-                                        weatherstring = weatherObjTemp["description"].ToString().ToLower();
-                                    }
-                                    else
-                                    {
-                                        weatherstring = "clear sky";
-                                    }
-                                }
-                                else
-                                {
-                                    weatherstring = "clear sky";
-                                }
-                                Helper.ConsoleLog("success", $"[WETTER-API]: {weatherstring}");
-                                SetWeather();
-                                weatherErrors = 0;
-                            }
-                        }
+                        weatherErrors++;
+                        await SetAndGetWeather("https://nemesus-world.de/WetterInfoBackup.php");
                     }
-                });
+                    else
+                    {
+                        weatherstring = "clear sky";
+                        SetWeather();
+                        weatherObj = null;
+                    }
+                }
+
+                if (weatherObjTemp2 != null)
+                {
+                    var tempstring = weatherObjTemp2["weather"].ToString();
+                    tempstring = tempstring.Substring(2);
+                    tempstring = tempstring.Substring(0, tempstring.Length - 1);
+
+                    if (tempstring.Length > 10)
+                    {
+                        var weatherObjTemp = JObject.Parse(tempstring);
+                        weatherstring = weatherObjTemp["description"].ToString().ToLower();
+                    }
+                    else
+                    {
+                        weatherstring = "clear sky";
+                    }
+                }
+                else
+                {
+                    weatherstring = "clear sky";
+                }
+
+                Helper.ConsoleLog("success", $"[WETTER-API]: {weatherstring}");
+                SetWeather();
+                weatherErrors = 0;
             }
             catch (Exception)
             {

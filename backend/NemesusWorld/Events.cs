@@ -42,6 +42,7 @@ using Vehicle = GTANetworkAPI.Vehicle;
 using Vector3 = GTANetworkAPI.Vector3;
 using Ped = GTANetworkAPI.Ped;
 using Blip = GTANetworkAPI.Blip;
+using System.Threading.Tasks;
 
 namespace NemesusWorld
 {
@@ -68,7 +69,7 @@ namespace NemesusWorld
         public static GTANetworkAPI.TextLabel labelCheck = null;
 
         [ServerEvent(Event.ResourceStart)]
-        public void OnResourceStart()
+        public async Task OnResourceStartAsync()
         {
             try
             {
@@ -225,7 +226,7 @@ namespace NemesusWorld
                             //Weather
                             try
                             {
-                                Helper.SetAndGetWeather("https://wetterapi.nemesus-world.de", true);
+                                await Helper.SetAndGetWeather("https://wetterapi.nemesus-world.de", true);
                             }
                             catch (Exception)
                             {
@@ -278,7 +279,7 @@ namespace NemesusWorld
             {
                 System.Threading.Tasks.Task.Run(() =>
                 {
-                    NAPI.Task.Run(() =>
+                    NAPI.Task.Run(async () =>
                     {
                         halfHourCounter++;
                         //Onlinebanking transfer
@@ -286,7 +287,7 @@ namespace NemesusWorld
                         //Weather
                         try
                         {
-                            Helper.SetAndGetWeather("https://wetterapi.nemesus-world.de", true);
+                            await Helper.SetAndGetWeather("https://wetterapi.nemesus-world.de", true);
                         }
                         catch (Exception)
                         {

@@ -29,6 +29,7 @@ let pressedB = 0;
 let pressedE = 0;
 let pressedO = 0;
 let pressedM = 0;
+let pressedN = 0;
 let pressed0 = 0;
 let pressed1 = 0;
 let pressed2 = 0;
@@ -4258,6 +4259,35 @@ mp.keys.bind(0x4D, true, function () {
             return;
         }
         pressedM = (Date.now() / 1000) + (2);
+    }
+});
+
+//Key N (Gedrückt halten)
+mp.keys.bind(0x4E, true, function() {
+    if (pressedN == 0 || (Date.now() / 1000) > pressedN) {
+        let spawned = localPlayer.getVariable('Player:Spawned');
+        if (showSaltyError == true || triggerAntiCheat == true || localPlayer.isTypingInTextChat || !spawned || nokeys == true || death == true || cuffed == true || showMenu == true || showHandy == true) return;
+        if(voicerp == 2)
+        {
+            mp.events.callRemote('Server:StartTalkingOnRadio'); 
+            mp.game.audio.playSoundFrontend(-1, "Start_Squelch", "CB_RADIO_SFX", true);
+        }
+        pressedN = (Date.now() / 1000) + (1);
+    }
+});
+
+//Key N (Loslassen)
+mp.keys.bind(0x4E, false, function() {
+    let spawned = localPlayer.getVariable('Player:Spawned');
+    if (showSaltyError == true || triggerAntiCheat == true || localPlayer.isTypingInTextChat || !spawned || nokeys == true || cuffed == true || showMenu == true || showHandy == true) return;
+    if(voicerp == 2)
+    {
+        let talking = localPlayer.getVariable('Player:TalkingOnRadio')
+        if(talking)
+        {
+            mp.events.callRemote('Server:StopTalkingOnRadio'); 
+            mp.game.audio.playSoundFrontend(-1, "End_Squelch", "CB_RADIO_SFX", true);
+        }
     }
 });
 

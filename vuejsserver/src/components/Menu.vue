@@ -194,7 +194,7 @@
                             </li>
                             <li class="nav-item" v-on:click="startHelp()">
                                 <a class="nav-link">
-                                    <i class="nav-icon fas fa-question-circle" </i> <p style="color:white">
+                                    <i class="nav-icon fas fa-question-circle"></i> <p style="color:white">
                                         Befehle & Tasten
                                         </p>
                                 </a>
@@ -4052,6 +4052,10 @@
                                                                         <td>N (GTA 5 Push to Talk Taste)</td>
                                                                         <td>Funk (gedrückt halten)</td>
                                                                     </tr>
+                                                                    <tr v-if="voicerp == 2">
+                                                                        <td>N</td>
+                                                                        <td>Funk (gedrückt halten)</td>
+                                                                    </tr>
                                                                     <tr v-if="voicerp == 0">
                                                                         <td>/radio</td>
                                                                         <td>Funk</td>
@@ -4198,6 +4202,10 @@
                                                                         <td>N (GTA 5 Push to Talk Taste)</td>
                                                                         <td>Funk (gedrückt halten)</td>
                                                                     </tr>
+                                                                    <tr v-if="voicerp == 2">
+                                                                        <td>N</td>
+                                                                        <td>Funk (gedrückt halten)</td>
+                                                                    </tr>
                                                                     <tr v-if="voicerp == 0">
                                                                         <td>/radio</td>
                                                                         <td>Funk</td>
@@ -4317,6 +4325,10 @@
                                                                     </tr>
                                                                     <tr v-if="voicerp == 1">
                                                                         <td>N (GTA 5 Push to Talk Taste)</td>
+                                                                        <td>Funk (gedrückt halten)</td>
+                                                                    </tr>
+                                                                    <tr v-if="voicerp == 2">
+                                                                        <td>N</td>
                                                                         <td>Funk (gedrückt halten)</td>
                                                                     </tr>
                                                                     <tr v-if="voicerp == 0">
@@ -4442,6 +4454,10 @@
                                                                     </tr>
                                                                     <tr v-if="voicerp == 1">
                                                                         <td>N (GTA 5 Push to Talk Taste)</td>
+                                                                        <td>Funk (gedrückt halten)</td>
+                                                                    </tr>
+                                                                     <tr v-if="voicerp == 2">
+                                                                        <td>N</td>
                                                                         <td>Funk (gedrückt halten)</td>
                                                                     </tr>
                                                                     <tr v-if="voicerp == 0">
@@ -4808,6 +4824,10 @@
                                                                     </tr>
                                                                     <tr v-if="voicerp == 1">
                                                                         <td>N (GTA 5 Push to Talk Taste)</td>
+                                                                        <td>Funk (gedrückt halten)</td>
+                                                                    </tr>
+                                                                    <tr v-if="voicerp == 2">
+                                                                        <td>N</td>
                                                                         <td>Funk (gedrückt halten)</td>
                                                                     </tr>
                                                                     <tr>

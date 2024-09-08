@@ -18,9 +18,9 @@ using Blip = GTANetworkAPI.Blip;
 using Ped = GTANetworkAPI.Ped;
 using Vector3 = GTANetworkAPI.Vector3;
 using Color = GTANetworkAPI.Color;
-using System.Reflection.Emit;
 using System.Threading.Tasks;
 using System.Net.Http;
+using System.Threading.Channels;
 
 namespace NemesusWorld.Utils
 {
@@ -58,6 +58,7 @@ namespace NemesusWorld.Utils
         public static int MatsImVersteck = 0;
         public static double gamemodeVersion = 1.1;
         public static bool whitelist = false; //False = Whitelist aus, True = Whitelist an
+        public static Dictionary<int, List<Player>> radioChannels = new Dictionary<int, List<Player>>();
         //Fuelpositions
         public static Vector3[] fuelPositions = new Vector3[62]
                                 { 
@@ -1465,14 +1466,32 @@ namespace NemesusWorld.Utils
                 }
                 if (freqNumeric != -1)
                 {
+                    if(Helper.adminSettings.voicerp == 2 && tempData.radio != "")
+                    {
+                        Helper.RemoveFromRadioChannel(player, Convert.ToInt32(tempData.radio));
+                    }
                     SendNotificationWithoutButton(player, $"Die Frequenz {freqNumeric}mHz wurde erfolgreich eingestellt!", "success", "top-left", 2750);
                     tempData.radio = freq;
-                    player.TriggerEvent("Client:Joinradio", tempData.radio);
+                    if (Helper.adminSettings.voicerp == 1)
+                    {
+                        player.TriggerEvent("Client:Joinradio", tempData.radio);
+                    }
+                    if(Helper.adminSettings.voicerp == 2)
+                    {
+                        Helper.AddToRadioChannel(player, freqNumeric);
+                    }
                 }
                 else
                 {
                     SendNotificationWithoutButton(player, $"Das Funkgerät wurde ausgeschaltet!", "success", "top-left", 2750);
-                    player.TriggerEvent("Client:Leaveradio", tempData.radio);
+                    if (Helper.adminSettings.voicerp == 1)
+                    {
+                        player.TriggerEvent("Client:Leaveradio", tempData.radio);
+                    }
+                    if (Helper.adminSettings.voicerp == 2)
+                    {
+                        Helper.RemoveFromRadioChannel(player, Convert.ToInt32(tempData.radio));
+                    }
                     tempData.radio = "";
                 }
                 player.TriggerEvent("Client:ShowRadioSystem", freq);
@@ -18246,7 +18265,7 @@ namespace NemesusWorld.Utils
                 }
                 catch (Exception)
                 {
-                    ConsoleLog("error", $"[WETTER-API]: Fehler beim lesen der Wetterdaten, Wetterdaten später erneut laden ...");
+                    ConsoleLog("error", $"[WETTER-API]: Fehler beim lesen der Wetterdaten, Wetterdaten werden später neu geladen ...");
                     weatherstring = "clear sky";
                     SetWeather();
                     weatherObj = null;
@@ -18447,6 +18466,81 @@ namespace NemesusWorld.Utils
                 Helper.ConsoleLog("error", $"[CheckSaltyChat]: " + e.ToString());
             }
         }
+
+        //Funk LocalVoice
+        [RemoteEvent("Server:StartTalkingOnRadio")]
+        public void OnPlayerStartTalking(Player player)
+        {
+            TempData tempData = Helper.GetCharacterTempData(player);
+            if (tempData != null && tempData.radio != "")
+            {
+                int channel = Convert.ToInt32(tempData.radio);
+                player.SetSharedData("Player:AnimData", $"random@arrests%generic_radio_chatter%{(int)(AnimFlags.AnimationFlags.Loop | AnimFlags.AnimationFlags.AllowPlayerControl | AnimFlags.AnimationFlags.OnlyAnimateUpperBody)}");
+                player.SetOwnSharedData("Player:TalkingOnRadio", true);
+                if (radioChannels.ContainsKey(channel))
+                {
+                    foreach (var target in radioChannels[channel])
+                    {
+                        if (target != player)
+                        {
+                            Helper.OnAdd_Voice_Listener(player, target);
+                            Helper.OnAdd_Voice_Listener(target, player);
+                        }
+                    }
+                }
+            }
+        }
+
+        [RemoteEvent("Server:StopTalkingOnRadio")]
+        public void OnPlayerStopTalking(Player player)
+        {
+            TempData tempData = Helper.GetCharacterTempData(player);
+            if (tempData != null && tempData.radio != "")
+            {
+                int channel = Convert.ToInt32(tempData.radio);
+                if (radioChannels.ContainsKey(channel))
+                {
+                    OnStopAnimation(player);
+                    player.SetOwnSharedData("Player:TalkingOnRadio", false);
+                    foreach (var target in radioChannels[channel])
+                    {
+                        if (target != player)
+                        {
+                            if(player.Position.DistanceTo(target.Position) > player.GetSharedData<int>("Player:VoiceRangeLocal"))
+                            {
+                                Helper.OnRemove_Voice_Listener(player, target);
+                            }
+                            if (target.Position.DistanceTo(player.Position) > target.GetSharedData<int>("Player:VoiceRangeLocal"))
+                            {
+                                Helper.OnRemove_Voice_Listener(target, player);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public static void AddToRadioChannel(Player player, int channel)
+        {
+            if (!radioChannels.ContainsKey(channel))
+            {
+                radioChannels[channel] = new List<Player>();
+            }
+
+            if (!radioChannels[channel].Contains(player))
+            {
+                radioChannels[channel].Add(player);
+            }
+        }
+
+        public static void RemoveFromRadioChannel(Player player, int channel)
+        {
+            if (radioChannels.ContainsKey(channel) && radioChannels[channel].Contains(player))
+            {
+                radioChannels[channel].Remove(player);
+            }
+        }
+
 
         public static string GenerateRandomString(int length)
         {

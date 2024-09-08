@@ -1721,7 +1721,7 @@ export default {
                 this.startSound2 = null;
             }
             var soundata = {
-                soundurl: 'https://nemesus-world.de/nwsounds/' + name
+                soundurl: 'https://nemesus-world.de/ragenwsounds/' + name
             }
             this.startSound2 = new Audio(soundata.soundurl);
             this.startSound2.volume = 0.50;
@@ -1736,7 +1736,7 @@ export default {
                 if (check == 1 && this.playringtone == name) return;
             }
             var soundata = {
-                soundurl: 'https://nemesus-world.de/nwsounds/' + name
+                soundurl: 'https://nemesus-world.de/ragenwsounds/' + name
             }
             this.playringtone = name;
             this.startSound = new Audio(soundata.soundurl);

@@ -4484,7 +4484,7 @@ export default {
     },
     showBlackFadeIn: function (blacktext) {
       var soundata = {
-        soundurl: 'https://nemesus-world.de/nwsounds/tutorial.mp3'
+        soundurl: 'https://nemesus-world.de/ragenwsounds/tutorial.mp3'
       }
       this.startSound = new Audio(soundata.soundurl);
       this.startSound.volume = 0.05;
@@ -4606,7 +4606,7 @@ export default {
       if(name != 'technobase')
       {
         soundata = {
-          soundurl: 'https://nemesus-world.de/nwsounds/' + name
+          soundurl: 'https://nemesus-world.de/ragenwsounds/' + name
         }
       }
       else

@@ -187,11 +187,11 @@ namespace NemesusWorld.Controllers
                                     {
                                         if(drugPlants.drugname == "Marihuana")
                                         {
-                                            drugPlants.value += random.Next(0, 2);
+                                            drugPlants.value += random.Next(0, 3);
                                         }
                                         else
                                         {
-                                            drugPlants.value += random.Next(0, 1);
+                                            drugPlants.value += random.Next(0, 2);
                                         }
                                     }
                                 }

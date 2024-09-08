@@ -1339,6 +1339,7 @@ namespace NemesusWorld
                 player.SetSharedData("Client:OldName", "n/A");
                 player.SetSharedData("Client:Condition", "n/A");
                 player.SetSharedData("Player:VoiceRangeLocal", 25);
+                player.SetOwnSharedData("Player:TalkingOnRadio", false);
                 if (Helper.adminSettings != null && Helper.adminSettings.voicerp == 2)
                 {
                     player.SetSharedData("Player:LocalVoiceHandyPlayer", -1);
@@ -1431,6 +1432,23 @@ namespace NemesusWorld
                                 tempData.drunk = 0;
                                 player.SetSharedData("Player:WalkingStyle", character.walkingstyle);
                                 player.TriggerEvent("Client:SetDrunk", false);
+                            }
+                        }
+                        //Funk LocalVoice
+                        if(Helper.adminSettings.voicerp == 2)
+                        {
+                            foreach (var channel in Helper.radioChannels.Keys)
+                            {
+                                if (Helper.radioChannels[channel].Contains(player))
+                                {
+                                    Helper.RemoveFromRadioChannel(player, channel);
+
+                                    foreach (var target in Helper.radioChannels[channel])
+                                    {
+                                        Helper.OnRemove_Voice_Listener(player, target);
+                                        Helper.OnRemove_Voice_Listener(target, player);
+                                    }
+                                }
                             }
                         }
                         //Bizzmusic
@@ -1903,6 +1921,7 @@ namespace NemesusWorld
                 player.SetSharedData("Client:OldName", "n/A");
                 player.SetSharedData("Client:Condition", "n/A");
                 player.SetSharedData("Player:VoiceRangeLocal", 25);
+                player.SetOwnSharedData("Player:TalkingOnRadio", false);
             }
             catch (Exception e)
             {
@@ -1992,6 +2011,8 @@ namespace NemesusWorld
                 }
                 if (tempData != null)
                 {
+                    //TalkOnRadio
+                    player.SetOwnSharedData("Player:TalkingOnRadio", false);
                     //Condition
                     player.SetSharedData("Client:Condition", "n/A");
                     //Pet
@@ -2450,7 +2471,7 @@ namespace NemesusWorld
                 {
                     tempData.inrob = false;
                     //ToDo: Soundlink anpassen
-                    player.TriggerEvent("Client:Play3DSound", "https://nemesus-world.de/nwsounds/alarm.wav", -3);
+                    player.TriggerEvent("Client:Play3DSound", "https://nemesus-world.de/ragenwsounds/alarm.wav", -3);
                 }
                 //Accept Call + Smartphone
                 player.SetData<bool>("Player:AcceptCall", false);

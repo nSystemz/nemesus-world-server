@@ -9059,6 +9059,7 @@ namespace NemesusWorld
                                 Helper.SendNotificationWithoutButton(player, $"Der Hinweis wurde von {addInfoBox.creator} erstellt!", "success", "top-end");
                             }
                             addInfoBox.label.Delete();
+                            addInfoBox.marker.Delete();
                             Helper.infoTextList.Remove(addInfoBox);
                             return;
                         }

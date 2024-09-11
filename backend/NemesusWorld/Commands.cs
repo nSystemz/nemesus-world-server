@@ -9020,6 +9020,7 @@ namespace NemesusWorld
                 addInfoBox.id = rand.Next(1, 99999);
                 addInfoBox.position = new Vector3(player.Position.X, player.Position.Y, player.Position.Z + 0.45);
                 addInfoBox.label = NAPI.TextLabel.CreateTextLabel("*Hinweis: " + infoText, new Vector3(player.Position.X, player.Position.Y, player.Position.Z+0.45), distance, 0.5f, 4, new Color(255, 0, 255), false, player.Dimension);
+                addInfoBox.marker = NAPI.Marker.CreateMarker(32, new Vector3(player.Position.X, player.Position.Y, player.Position.Z - 0.35), new Vector3(), new Vector3(), 0.4f, new Color(255, 255, 0, 100), false);
                 addInfoBox.creator = account.name;
                 addInfoBox.created = Helper.UnixTimestamp() + (time*60);
                 Helper.infoTextList.Add(addInfoBox);

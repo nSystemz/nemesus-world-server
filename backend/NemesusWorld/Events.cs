@@ -603,6 +603,7 @@ namespace NemesusWorld
                                     if(addInfoBox.created <= Helper.UnixTimestamp())
                                     {
                                         addInfoBox.label.Delete();
+                                        addInfoBox.marker.Delete();
                                         Helper.infoTextList.Remove(addInfoBox);
                                     }
                                 }
@@ -1033,6 +1034,7 @@ namespace NemesusWorld
                     foreach (AddInfoBox addInfoBox in Helper.infoTextList.ToList())
                     {
                         addInfoBox.label.Delete();
+                        addInfoBox.marker.Delete();
                         Helper.infoTextList.Remove(addInfoBox);
                     }
                 }

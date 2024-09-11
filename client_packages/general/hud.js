@@ -4266,7 +4266,7 @@ mp.keys.bind(0x4D, true, function () {
 mp.keys.bind(0x4E, true, function() {
     if (pressedN == 0 || (Date.now() / 1000) > pressedN) {
         let spawned = localPlayer.getVariable('Player:Spawned');
-        if (showSaltyError == true || triggerAntiCheat == true || localPlayer.isTypingInTextChat || !spawned || nokeys == true || death == true || cuffed == true || showMenu == true || showHandy == true) return;
+        if (showSaltyError == true || triggerAntiCheat == true || voiceChatOff == true || localPlayer.isTypingInTextChat || !spawned || nokeys == true || death == true || cuffed == true || showMenu == true || showHandy == true) return;
         if(voicerp == 2)
         {
             mp.events.callRemote('Server:StartTalkingOnRadio'); 

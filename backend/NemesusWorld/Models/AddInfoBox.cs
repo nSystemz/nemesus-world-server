@@ -12,6 +12,7 @@ namespace NemesusWorld.Models
         public int id { get; set; }
         public Vector3 position { get; set; }
         public GTANetworkAPI.TextLabel label { get; set; }
+        public GTANetworkAPI.Marker marker { get; set; }
         public String creator { get; set; }
         public int created { get; set; }
 

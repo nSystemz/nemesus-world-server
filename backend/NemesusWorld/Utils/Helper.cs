@@ -852,11 +852,11 @@ namespace NemesusWorld.Utils
                 Character character = Helper.GetCharacterData(player);
                 if (character == null) return;
 
-                player.SetSharedData("Player:VoiceRangeLocal", maxRange);
+                player.SetSharedData("Player:VoiceRangeLocal", Convert.ToInt32(maxRange));
             }
             catch (Exception e)
             {
-                Helper.ConsoleLog("error", $"[OnPlayerCrouch]: " + e.ToString());
+                Helper.ConsoleLog("error", $"[OnSetVoiceRangeLocal]: " + e.ToString());
             }
         }
 

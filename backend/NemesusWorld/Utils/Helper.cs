@@ -3814,7 +3814,7 @@ namespace NemesusWorld.Utils
                                 tempData.tempValue = 0;
                                 foreach (Items item in tempData.itemlist.ToList())
                                 {
-                                    if (item.description == "Dorsch" || item.description == "Makrele" || item.description == "Forelle" || item.description == "Wildkarpfen" || item.description == "Teufelskärpfling")
+                                    if (item.description == "Dorsch" || item.description == "Makrele" || item.description == "Forelle" || item.description == "Wildkarpfen" || item.description == "Teufelskaerpfling")
                                     {
                                         ItemsController.RemoveItem(player, item.itemid);
                                     }
@@ -13922,7 +13922,7 @@ namespace NemesusWorld.Utils
                                 {
                                     price += (Helper.FishPrice + 30) * item.amount;
                                 }
-                                else if (item.description == "Teufelskärpfling")
+                                else if (item.description == "Teufelskaerpfling")
                                 {
                                     price += (Helper.FishPrice + 45) * item.amount;
                                 }
@@ -17333,8 +17333,8 @@ namespace NemesusWorld.Utils
                                 }
                                 else
                                 {
-                                    SendNotificationWithoutButton(player, $"Du hast einen Teufelskärpfling geangelt!", "success", "top-left", 3500);
-                                    newitem = ItemsController.CreateNewItem(player, character.id, "Teufelskärpfling", "Player", 1, ItemsController.GetFreeItemID(player));
+                                    SendNotificationWithoutButton(player, $"Du hast einen Teufelskaerpfling geangelt!", "success", "top-left", 3500);
+                                    newitem = ItemsController.CreateNewItem(player, character.id, "Teufelskaerpfling", "Player", 1, ItemsController.GetFreeItemID(player));
                                     player.TriggerEvent("Client:PlaySoundSuccessExtra");
                                 }
                             }

@@ -3077,7 +3077,7 @@ INSERT INTO `itemmodels` (`id`, `hash`, `description`, `type`, `weight`) VALUES
 (80, '-1158162337', 'Köder', 1, 25),
 (81, '-1158162337', 'Dorsch', 1, 225),
 (82, '-1158162337', 'Wildkarpfen', 1, 250),
-(83, '-1158162337', 'Teufelskärpfling', 1, 275),
+(83, '-1158162337', 'Teufelskaerpfling', 1, 275),
 (84, '-1158162337', 'Makrele', 1, 235),
 (85, '-1158162337', 'Forelle', 1, 245),
 (86, '-1158162337', 'Busticket', 3, 50),

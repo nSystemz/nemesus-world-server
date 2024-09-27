@@ -11106,11 +11106,11 @@ namespace NemesusWorld.Utils
                             Payday lohnsteuer = new Payday();
                             lohnsteuer.modus = "Steuern";
                             lohnsteuer.setting = "Lohnsteuer " + adminSettings.lsteuer + "%";
-                            lohnsteuer.value = (int)(cash / 100 * adminSettings.lsteuer);
+                            lohnsteuer.value = -(int)(cash / 100 * adminSettings.lsteuer);
                             if (lohnsteuer.value > 0)
                             {
                                 charbank.bankvalue -= lohnsteuer.value;
-                                total -= lohnsteuer.value;
+                                total += lohnsteuer.value;
                                 cash = 0;
                                 paydayList.Add(lohnsteuer);
                                 Helper.SetGovMoney(lohnsteuer.value, "Lohnsteuer Einzahlung");
@@ -11183,6 +11183,7 @@ namespace NemesusWorld.Utils
                                     bizzmoney2.setting = "Gewerbesteuern " + adminSettings.gsteuer + "%" + " für " + business.name;
                                     bizzmoney2.value = -business.govcash;
                                     paydayList.Add(bizzmoney2);
+                                    total += bizzmoney2.value;
                                     Helper.SetGovMoney(business.govcash, "Gewerbesteuern " + business.name);
                                     business.govcash = 0;
                                 }

@@ -642,6 +642,11 @@ namespace NemesusWorld.Controllers
                                         account.login_bonus_before = today;
                                     }
                                 }
+                                else
+                                {
+                                    account.login_bonus = 1;
+                                    account.login_bonus_before = today;
+                                }
                                 player.SetOwnSharedData("Player:Spawned", true);
                                 player.TriggerEvent("Client:ClearChat");
                                 Helper.SendNotificationWithoutButton(player, "Willkommen zurück " + account.name + "!", "info", "top-left", 1850);

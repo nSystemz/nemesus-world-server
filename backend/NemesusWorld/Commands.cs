@@ -8660,7 +8660,7 @@ namespace NemesusWorld
                 if (!Account.IsPlayerLoggedIn(player)) return;
                 if (!player.IsInVehicle)
                 {
-                    Helper.SendNotificationWithoutButton2(player, "Du sitzt in keinem Fahrzeug!", "error", "top-end");
+                    Helper.SendNotificationWithoutButton(player, "Du sitzt in keinem Fahrzeug!", "error", "top-end");
                     return;
                 }
                 SpedVehicles spedVehicle = Helper.GetSpedVehicleByModel(player.Vehicle.GetSharedData<string>("Vehicle:Name"));

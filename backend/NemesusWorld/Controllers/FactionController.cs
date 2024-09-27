@@ -954,14 +954,14 @@ namespace NemesusWorld.Controllers
                                     {
                                         character2.swat = 1;
                                         Helper.SendNotificationWithoutButton2(player, "SWAT-Status gesetzt!", "success", "center");
-                                        Helper.CreateGroupLog(faction.id, $"{character.name} hat {charactername} den SWAT-Status gesetzt!");
+                                        Helper.CreateFactionLog(faction.id, $"{character.name} hat {charactername} den SWAT-Status gesetzt!");
 
                                     }
                                     else
                                     {
                                         character2.swat = 0;
                                         Helper.SendNotificationWithoutButton2(player, "SWAT-Status entzogen!", "success", "center");
-                                        Helper.CreateGroupLog(faction.id, $"{character.name} hat {charactername} den SWAT-Status entzogen!");
+                                        Helper.CreateFactionLog(faction.id, $"{character.name} hat {charactername} den SWAT-Status entzogen!");
                                     }
 
                                     PetaPoco.Database db = new PetaPoco.Database(General.Connection);
@@ -1015,7 +1015,7 @@ namespace NemesusWorld.Controllers
                                         Helper.SendNotificationWithoutButton2(player, "Der Spieler wurde befördert!", "success", "center");
 
                                         string charactername = Helper.GetCharacterName(number);
-                                        Helper.CreateGroupLog(faction.id, $"{character.name} hat {charactername} befördert - (Neuer Rang: {character2.rang})!");
+                                        Helper.CreateFactionLog(faction.id, $"{character.name} hat {charactername} befördert - (Neuer Rang: {character2.rang})!");
 
                                         PetaPoco.Database db = new PetaPoco.Database(General.Connection);
                                         db.Save(character2);
@@ -1063,7 +1063,7 @@ namespace NemesusWorld.Controllers
                                 }
                                 if (character2.id == character.id)
                                 {
-                                    Helper.SendNotificationWithoutButton2(player, "Du kannst dich nicht selber aus der Fraktion werfen!", "success", "center");
+                                    Helper.SendNotificationWithoutButton2(player, "Du kannst dich nicht selber aus der Fraktion werfen!", "error", "center");
                                     return;
                                 }
                                 if (character2 == null || character.faction != character2.faction)
@@ -1087,7 +1087,7 @@ namespace NemesusWorld.Controllers
                                     Helper.SendNotificationWithoutButton2(player, "Der Spieler wurde aus der Fraktion geworfen!", "success", "center");
 
                                     string charactername = Helper.GetCharacterName(number);
-                                    Helper.CreateGroupLog(faction.id, $"{character.name} hat {charactername} aus der Fraktion geworfen!");
+                                    Helper.CreateFactionLog(faction.id, $"{character.name} hat {charactername} aus der Fraktion geworfen!");
 
                                     character2.faction = 0;
                                     character2.rang = 0;
@@ -1160,7 +1160,7 @@ namespace NemesusWorld.Controllers
                                         Helper.SendNotificationWithoutButton2(player, "Der Spieler wurde degradiert!", "success", "center");
 
                                         string charactername = Helper.GetCharacterName(number);
-                                        Helper.CreateGroupLog(faction.id, $"{character.name} hat {charactername} degradiert - (Neuer Rang: {character2.rang})!");
+                                        Helper.CreateFactionLog(faction.id, $"{character.name} hat {charactername} degradiert - (Neuer Rang: {character2.rang})!");
 
                                         PetaPoco.Database db = new PetaPoco.Database(General.Connection);
                                         db.Save(character2);

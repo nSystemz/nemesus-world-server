@@ -1894,6 +1894,11 @@ namespace NemesusWorld
                                 return;
                             }
                             FactionsModel faction = FactionController.GetFactionById(character.faction);
+                            if(faction == null)
+                            {
+                                Helper.SendNotificationWithoutButton(player, "Der Spieler befindet sich in keiner Fraktion!", "error", "top-end");
+                                return;
+                            }
                             if (faction != null)
                             {
                                 if (character.factionduty == true)
@@ -1968,9 +1973,9 @@ namespace NemesusWorld
                             }
                             else
                             {
-                                Helper.SendNotificationWithoutButton(player, "Der Spieler befindet sich in keiner Fraktion!", "error", "top-end");
+                                Helper.SendNotificationWithoutButton(player, "Ungültige Operation!", "error", "top-end");
                             }
-                            break;
+                            return;
                         }
                     default:
                         {

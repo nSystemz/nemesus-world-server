@@ -277,15 +277,15 @@
                                                         </div>
                                                     </div>
                                                     <div class="active tab-pane" style="overflow-x: auto" v-if="showbanksetting == 7 && selectedKonto.owner != myid">
-                                                        <label v-if="selectBank.kontotyp == 0 || selectBank.kontotyp == 2">Kontotyp: <span class="badge badge-primary">Maze</span></label>
-                                                        <label v-else>Kontotyp: <span class="badge badge-primary">Fleeca</span></label>
+                                                        <label v-if="selectedKonto.banktype == 0 || selectedKonto.banktype == 2">Kontotyp: <span class="badge badge-primary">Maze</span></label>
+                                                        <label  v-if="selectedKonto.banktype == 1">Kontotyp: <span class="badge badge-primary">Fleeca</span></label>
                                                         <br /><label>Standardkonto:</label>
                                                         <button v-if="defaultKonto != selectedKonto.number" v-on:click="setDefaultKonto()" type="submit" class="btn btn-block btn-primary">Als Standardkonto setzen</button>
                                                         <button v-if="defaultKonto == selectedKonto.number" type="submit" class="btn btn-block btn-primary" disabled>Als Standardkonto setzen</button>
                                                     </div>
                                                     <div class="active tab-pane" v-if="showbanksetting == 7 && selectedKonto.owner == myid">
-                                                        <label v-if="selectBank.kontotyp == 0 || selectBank.kontotyp == 2">Kontotyp: <span class="badge badge-primary">Maze</span></label>
-                                                        <label v-else>Kontotyp: <span class="badge badge-primary">Fleeca</span></label>
+                                                        <label v-if="selectedKonto.banktype == 0 || selectedKonto.banktype == 2">Kontotyp: <span class="badge badge-primary">Maze</span></label>
+                                                        <label v-if="selectedKonto.banktype == 1">Kontotyp: <span class="badge badge-primary">Fleeca</span></label>
                                                         <br /><label>Standardkonto:</label>
                                                         <button v-if="defaultKonto != selectedKonto.number" v-on:click="setDefaultKonto()" type="submit" class="btn btn-block btn-primary">Als Standardkonto setzen</button>
                                                         <button v-if="defaultKonto == selectedKonto.number" type="submit" class="btn btn-block btn-primary" disabled>Als Standardkonto setzen</button>

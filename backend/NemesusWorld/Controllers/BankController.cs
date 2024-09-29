@@ -484,6 +484,11 @@ namespace NemesusWorld.Controllers
                 {
                     case "new":
                         {
+                            if (Helper.IsAtBank(player) == -1)
+                            {
+                                Helper.SendNotificationWithoutButton(player, "Fehler, bitte nochmal probieren!", "error");
+                                return;
+                            }
                             List<Bank> tempBankList = GetMyBankAccounts(player);
                             if(tempBankList.Count >= 5)
                             {
@@ -502,7 +507,7 @@ namespace NemesusWorld.Controllers
                                 }
                             }
                             newBank.bankvalue = 0;
-                            newBank.banktype = (int)obj["bankat"];
+                            newBank.banktype = Helper.IsAtBank(player);
                             newBank.pincode = Helper.GeneratePin(4);
                             newBank.ownercharid = character.id;
                             newBank.groupid = 0;
@@ -588,7 +593,12 @@ namespace NemesusWorld.Controllers
                                 Helper.SendNotificationWithoutButton(player, "Du hast keine Gruppierung ausgewählt!", "error");
                                 return;
                             }
-                            if(group.leader != character.id)
+                            if (group.banknumber != "n/A")
+                            {
+                                Helper.SendNotificationWithoutButton(player, "Deine Gruppierung besitzt bereits ein Firmenkonto!", "error");
+                                return;
+                            }
+                            if (group.leader != character.id)
                             {
                                 Helper.SendNotificationWithoutButton(player, "Du bist nicht der Leader der Gruppierung!", "error");
                                 return;
@@ -763,11 +773,16 @@ namespace NemesusWorld.Controllers
                     case "newpartnercard":
                         {
                             banknumber = (string)obj["banknumber"];
-                            int atbank = (int)obj["bankat"];
+                            int atbank = Helper.IsAtBank(player);
                             bank = GetBankByBankNumber(banknumber);
                             if (bank == null || bank.ownercharid != character.id)
                             {
                                 Helper.SendNotificationWithoutButton(player, "Du bist nicht der Inhaber von diesem Konto!", "error");
+                                return;
+                            }
+                            if (banknumber == "SA3701-100000")
+                            {
+                                Helper.SendNotificationWithoutButton(player, "Für dieses Konto können keine Partnerkarten ausgestellt werden!", "error");
                                 return;
                             }
                             if (character.cash < 85 && atbank == 0)
@@ -815,6 +830,11 @@ namespace NemesusWorld.Controllers
                             if (bank == null || bank.ownercharid != character.id || bank.banknumber == "n/A")
                             {
                                 Helper.SendNotificationWithoutButton(player, "Du bist nicht der Inhaber von diesem Konto!", "error");
+                                return;
+                            }
+                            if (banknumber == "SA3701-100000")
+                            {
+                                Helper.SendNotificationWithoutButton(player, "Für dieses Konto gibt es keine Partnerkarten!", "error");
                                 return;
                             }
 
@@ -1134,7 +1154,7 @@ namespace NemesusWorld.Controllers
                             bank = GetBankByBankNumber(banknumber);
                             if(bank != null && HasBankRights(player, banknumber))
                             {
-                                if ((int)obj["bankat"] != bank.banktype)
+                                if (Helper.IsAtBank(player) != bank.banktype)
                                 {
                                     if (bank.banktype == 0)
                                     {
@@ -1145,7 +1165,7 @@ namespace NemesusWorld.Controllers
                                         gebuehr = value / 100 * 5;
                                     }
                                     if (gebuehr <= 0) gebuehr = 1;
-                                    if(gebuehr > 0 && bank.banktype == 0 && (int)obj["bankat"] == 2)
+                                    if(gebuehr > 0 && bank.banktype == 0 && Helper.IsAtBank(player) == 2)
                                     {
                                         gebuehr = 0;
                                     }

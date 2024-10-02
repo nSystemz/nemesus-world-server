@@ -456,9 +456,9 @@ namespace NemesusWorld.Controllers
                                         CharacterController.SetMoney(player, -Convert.ToInt32(Helper.adminSettings.grouparray[9]));
                                         Helper.SetGovMoney(Convert.ToInt32(Helper.adminSettings.grouparray[9]), "Lizenzverkauf");
                                         player.TriggerEvent("Client:HideStadthalle");
-                                        Helper.SendNotificationWithoutButton2(player, "Speditionslizenz erfolgreich erworben, alle weiteren Infos findest du im F2 Menü!", "success", "center", 5000);
                                         CharacterController.SaveCharacter(player);
                                         GroupsController.SaveGroup(mygroup);
+                                        Helper.SendNotificationWithoutButton2(player, "Speditionslizenz erfolgreich erworben, alle weiteren Infos findest du im F2 Menü!", "success", "center", 5000);
                                     }
                                     else
                                     {
@@ -511,9 +511,9 @@ namespace NemesusWorld.Controllers
                                         CharacterController.SetMoney(player, -Convert.ToInt32(Helper.adminSettings.grouparray[10]));
                                         Helper.SetGovMoney(Convert.ToInt32(Helper.adminSettings.grouparray[10]), "Lizenzverkauf");
                                         player.TriggerEvent("Client:HideStadthalle");
-                                        Helper.SendNotificationWithoutButton2(player, "Tuninglizenz erfolgreich erworben, alle weiteren Infos findest du im F2 Menü!", "success", "center", 5000);
                                         CharacterController.SaveCharacter(player);
                                         GroupsController.SaveGroup(mygroup);
+                                        Helper.SendNotificationWithoutButton2(player, "Tuninglizenz erfolgreich erworben, alle weiteren Infos findest du im F2 Menü!", "success", "center", 5000);
                                     }
                                     else
                                     {
@@ -556,9 +556,9 @@ namespace NemesusWorld.Controllers
                                         CharacterController.SetMoney(player, -Convert.ToInt32(Helper.adminSettings.grouparray[11]));
                                         Helper.SetGovMoney(Convert.ToInt32(Helper.adminSettings.grouparray[11]), "Lizenzverkauf");
                                         player.TriggerEvent("Client:HideStadthalle");
-                                        Helper.SendNotificationWithoutButton2(player, "Mechatronikerlizenz erfolgreich erworben, alle weiteren Infos findest du im F2 Menü!", "success", "center", 5000);
                                         CharacterController.SaveCharacter(player);
                                         GroupsController.SaveGroup(mygroup);
+                                        Helper.SendNotificationWithoutButton2(player, "Mechatronikerlizenz erfolgreich erworben, alle weiteren Infos findest du im F2 Menü!", "success", "center", 5000);
                                     }
                                     else
                                     {
@@ -616,9 +616,9 @@ namespace NemesusWorld.Controllers
                                         CharacterController.SetMoney(player, -Convert.ToInt32(Helper.adminSettings.grouparray[12]));
                                         Helper.SetGovMoney(Convert.ToInt32(Helper.adminSettings.grouparray[12]), "Lizenzverkauf");
                                         player.TriggerEvent("Client:HideStadthalle");
-                                        Helper.SendNotificationWithoutButton2(player, "Personenbeförderungslizenz erfolgreich erworben, alle weiteren Infos findest du im F2 Menü!", "success", "center", 5000);
                                         CharacterController.SaveCharacter(player);
                                         GroupsController.SaveGroup(mygroup);
+                                        Helper.SendNotificationWithoutButton2(player, "Personenbeförderungslizenz erfolgreich erworben, alle weiteren Infos findest du im F2 Menü!", "success", "center", 5000);
                                     }
                                     else
                                     {
@@ -671,9 +671,9 @@ namespace NemesusWorld.Controllers
                                         CharacterController.SetMoney(player, -Convert.ToInt32(Helper.adminSettings.grouparray[13]));
                                         Helper.SetGovMoney(Convert.ToInt32(Helper.adminSettings.grouparray[13]), "Lizenzverkauf");
                                         player.TriggerEvent("Client:HideStadthalle");
-                                        Helper.SendNotificationWithoutButton2(player, "Sicherheitslizenz erfolgreich erworben, alle weiteren Infos findest du im F2 Menü!", "success", "center", 5000);
                                         CharacterController.SaveCharacter(player);
                                         GroupsController.SaveGroup(mygroup);
+                                        Helper.SendNotificationWithoutButton2(player, "Sicherheitslizenz erfolgreich erworben, alle weiteren Infos findest du im F2 Menü!", "success", "center", 5000);
                                     }
                                     else
                                     {
@@ -758,8 +758,8 @@ namespace NemesusWorld.Controllers
                                     character.mygroup = number;
                                     player.SetOwnSharedData("Player:Group", group.id);
                                     player.SetOwnSharedData("Player:GroupRang", GroupsController.GetGroupRangByCharacterID(character.id, group.id));
-                                    Helper.SendNotificationWithoutButton2(player, "Gruppierung gewechselt!", "success", "center");
                                     GroupsController.UpdateGroupStats(player);
+                                    Helper.SendNotificationWithoutButton2(player, "Gruppierung gewechselt!", "success", "center");
                                     return;
                                 }
                                 Helper.SendNotificationWithoutButton2(player, "Ungültige Gruppierung!", "error", "center");
@@ -779,7 +779,6 @@ namespace NemesusWorld.Controllers
                                     if (groupMember2.rang < 12)
                                     {
                                         groupMember2.rang++;
-                                        Helper.SendNotificationWithoutButton2(player, "Der Spieler wurde befördert!", "success", "center");
                                         SaveGroupMember(groupMember2);
 
                                         string charactername = Helper.GetCharacterName(number);
@@ -797,6 +796,8 @@ namespace NemesusWorld.Controllers
                                                 UpdateGroupStats(newPlayer);
                                             }
                                         }
+
+                                        Helper.SendNotificationWithoutButton2(player, "Der Spieler wurde befördert!", "success", "center");
                                     }
                                     else
                                     {
@@ -827,7 +828,6 @@ namespace NemesusWorld.Controllers
                                     if (groupMember2.rang > 1)
                                     {
                                         groupMember2.rang--;
-                                        Helper.SendNotificationWithoutButton2(player, "Der Spieler wurde degradiert!", "success", "center");
                                         SaveGroupMember(groupMember2);
 
                                         string charactername = Helper.GetCharacterName(number);
@@ -845,6 +845,8 @@ namespace NemesusWorld.Controllers
                                                 UpdateGroupStats(newPlayer);
                                             }
                                         }
+
+                                        Helper.SendNotificationWithoutButton2(player, "Der Spieler wurde degradiert!", "success", "center");
                                     }
                                     else
                                     {
@@ -893,13 +895,14 @@ namespace NemesusWorld.Controllers
                             {
                                 if (groupMember1.rang >= 10)
                                 {
-                                    mygroup.provision = number;
-                                    Helper.SendNotificationWithoutButton2(player, "Neue Provision eingestellt!", "success", "center");
+                                    mygroup.provision = number;                        
                                     SaveGroup(mygroup);
 
                                     Helper.CreateGroupLog(mygroup.id, $"{character.name} hat die Provision angepasst!");
 
                                     UpdateGroupStats(player);
+
+                                    Helper.SendNotificationWithoutButton2(player, "Neue Provision eingestellt!", "success", "center");
                                 }
                                 else
                                 {
@@ -960,8 +963,6 @@ namespace NemesusWorld.Controllers
                                 PetaPoco.Database db = new PetaPoco.Database(General.Connection);
                                 db.Delete(groupMember1);
 
-                                Helper.SendNotificationWithoutButton2(player, "Du hast die Gruppierung verlassen!", "success", "center");
-
                                 CharacterController.SaveCharacter(player);
 
                                 player.TriggerEvent("Client:HideCursor");
@@ -973,6 +974,8 @@ namespace NemesusWorld.Controllers
                                 {
                                     newPlayer.SetOwnSharedData("Player:GroupRang", -1);
                                 }
+
+                                Helper.SendNotificationWithoutButton2(player, "Du hast die Gruppierung verlassen!", "success", "center");
                             }
                             else
                             {
@@ -1011,8 +1014,6 @@ namespace NemesusWorld.Controllers
                                     PetaPoco.Database db = new PetaPoco.Database(General.Connection);
                                     db.Delete(groupMember2);
 
-                                    Helper.SendNotificationWithoutButton2(player, "Der Spieler wurde erfolgreich aus der Gruppierung geworfen!", "success", "center");
-
                                     UpdateGroupStats(player);
 
                                     Player newPlayer = Helper.GetPlayerByCharacterId(number);
@@ -1027,6 +1028,7 @@ namespace NemesusWorld.Controllers
                                         newPlayer.SetOwnSharedData("Player:Group", -1);
                                         newPlayer.TriggerEvent("Client:UpdateGroupRang");
                                     }
+                                    Helper.SendNotificationWithoutButton2(player, "Der Spieler wurde erfolgreich aus der Gruppierung geworfen!", "success", "center");
                                 }
                                 else
                                 {
@@ -1064,8 +1066,6 @@ namespace NemesusWorld.Controllers
                                     SaveGroupMember(groupMember2);
                                     SaveGroup(mygroup);
 
-                                    Helper.SendNotificationWithoutButton2(player, "Der Spieler wurde erfolgreich zum Leader der Gruppierung gemacht!", "success", "center");
-
                                     UpdateGroupStats(player);
 
                                     Player newPlayer = Helper.GetPlayerByCharacterId(number);
@@ -1078,6 +1078,7 @@ namespace NemesusWorld.Controllers
                                             UpdateGroupStats(newPlayer);
                                         }
                                     }
+                                    Helper.SendNotificationWithoutButton2(player, "Der Spieler wurde erfolgreich zum Leader der Gruppierung gemacht!", "success", "center");
                                 }
                                 else
                                 {
@@ -1539,10 +1540,10 @@ namespace NemesusWorld.Controllers
                                     character.mygroup = -1;
                                     player.SetOwnSharedData("Player:Group", -1);
                                     player.SetOwnSharedData("Player:GroupRang", -1);
-
-                                    Helper.SendNotificationWithoutButton2(player, "Die Gruppierung wurde geschlossen!", "success", "center", 2500);
-                                    CharacterController.SaveCharacter(player);
                                     player.TriggerEvent("Client:HideStadthalle");
+                                    CharacterController.SaveCharacter(player);
+
+                                    Helper.SendNotificationWithoutButton2(player, "Die Gruppierung wurde geschlossen!", "success", "center", 3500);
 
                                 }
                                 else
@@ -1600,13 +1601,13 @@ namespace NemesusWorld.Controllers
                             }
                             group.name = groupname;
                             CharacterController.SetMoney(player, -Convert.ToInt32(Helper.adminSettings.grouparray[6]));
-                            Helper.SendNotificationWithoutButton2(player, "Der Gruppierungsname wurde geändert!", "success", "center", 4500);
                             Helper.CreateGroupLog(group.id, $"{character.name} hat den Gruppierungsnamen auf {group.name} geändert!");
                             GroupsController.UpdateGroupStats(player);
                             SaveGroup(group);
                             CharacterController.SaveCharacter(player);
                             Helper.SetGovMoney(Convert.ToInt32(Helper.adminSettings.grouparray[6]), "Gruppierungsname geändert");
                             player.TriggerEvent("Client:HideStadthalle");
+                            Helper.SendNotificationWithoutButton2(player, "Der Gruppierungsname wurde geändert!", "success", "center", 4500);
                             break;
                         }
                     case "creategroup":
@@ -1701,10 +1702,10 @@ namespace NemesusWorld.Controllers
                             player.SetOwnSharedData("Player:Group", newgroup.id);
                             player.SetOwnSharedData("Player:GroupRang", 12);
                             CharacterController.SetMoney(player, -Convert.ToInt32(Helper.adminSettings.grouparray[5]));
-                            Helper.SendNotificationWithoutButton2(player, "Die neue Gruppierung wurde erstellt, du kannst diese im F2 Menü verwalten!", "success", "center", 4500);
                             CharacterController.SaveCharacter(player);
                             Helper.SetGovMoney(Convert.ToInt32(Helper.adminSettings.grouparray[5]), "Gruppierung erstellt");
                             Helper.CreateUserTimeline(account.id, character.id, $"Gruppierung {newgroup.name} erstellt", 4);
+                            Helper.SendNotificationWithoutButton2(player, "Die neue Gruppierung wurde erstellt, du kannst diese im F2 Menü verwalten!", "success", "center", 4500);
                             break;
                         }
                 }

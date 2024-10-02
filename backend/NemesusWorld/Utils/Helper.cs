@@ -11113,7 +11113,7 @@ namespace NemesusWorld.Utils
                                 total += lohnsteuer.value;
                                 cash = 0;
                                 paydayList.Add(lohnsteuer);
-                                Helper.SetGovMoney(lohnsteuer.value, "Lohnsteuer Einzahlung");
+                                Helper.SetGovMoney(lohnsteuer.value*-1, "Lohnsteuer Einzahlung");
                             }
                         }
 

@@ -1956,6 +1956,7 @@ namespace NemesusWorld
                                 ntarget.SetOwnSharedData("Player:FactionRang", 0);
                                 Helper.CreateUserTimeline(accounttarget.id, character.id, $"Fraktion {faction.name} verlassen", 4);
                                 Helper.CreateFactionLog(faction.id, $"{account.name} hat {accounttarget.name} administrativ aus der Fraktion rausgeworfen!");
+                                Helper.SendNotificationWithoutButton(ntarget, "Du wurdest administrativ aus deiner Fraktion geworfen!", "success", "top-end", 5500);
                                 FactionController.UpdateFactionStats(ntarget);
                                 CharacterController.SaveCharacter(ntarget);
 
@@ -1975,6 +1976,7 @@ namespace NemesusWorld
                             {
                                 Helper.SendNotificationWithoutButton(player, "Ungültige Operation!", "error", "top-end");
                             }
+                            Helper.CreateAdminLog("adminlog", $"{accounttarget.name}'s {option} Wert wurde von {account.name} auf {menge} gesetzt!");
                             return;
                         }
                     default:
@@ -2728,9 +2730,12 @@ namespace NemesusWorld
                     return;
                 }
                 List<CenterMenu> centerMenu = new List<CenterMenu>();
+                int count = 0;
                 foreach (Reports report in Helper.reportList)
                 {
+                    count++;
                     CenterMenu cMenu = new CenterMenu();
+                    cMenu.var1 = ""+count;
                     cMenu.var2 = report.text;
                     cMenu.var3 = report.timestamp;
                     centerMenu.Add(cMenu);

@@ -21,7 +21,7 @@ namespace NemesusWorld.Models
             id = 0;
             banknumber = "n/A";
             bankvalue = 0;
-            pincode = "0000";vvvvvvv
+            pincode = "0000";
             ownercharid = 0;
             groupid = 0;
             banktype = 0;

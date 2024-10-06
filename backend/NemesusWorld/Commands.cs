@@ -2733,12 +2733,12 @@ namespace NemesusWorld
                 int count = 0;
                 foreach (Reports report in Helper.reportList)
                 {
-                    count++;
                     CenterMenu cMenu = new CenterMenu();
                     cMenu.var1 = ""+count;
                     cMenu.var2 = report.text;
                     cMenu.var3 = report.timestamp;
                     centerMenu.Add(cMenu);
+                    count++;
                 }
                 String rules = "ID,Meldung,Zeitpunkt";
                 NAPI.Player.SetPlayerCurrentWeapon(player, WeaponHash.Unarmed);

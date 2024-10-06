@@ -245,7 +245,7 @@
                                                                         </td>
                                                                         <td>{{timeConverter(bankfile.banktime)}}
                                                                         </td>
-                                                                        <td v-if="bankfile.bankto != bankfile.number"><span class="badge badge-info right">Gesendet</span>
+                                                                        <td v-if="bankfile.bankto != selectedKonto.number"><span class="badge badge-info right">Gesendet</span>
                                                                         </td>
                                                                         <td v-else><span class="badge badge-info right">Empfangen</span>
                                                                         </td>

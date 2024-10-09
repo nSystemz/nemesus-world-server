@@ -324,7 +324,7 @@ namespace NemesusWorld.Controllers
                                 command.Parameters.AddWithValue("@police", character.name);
                                 command.Parameters.AddWithValue("@text", $"Inhaftierung für {mdcArray[1]} Minuten, Grund: {mdcArray[0]}");
                                 command.Parameters.AddWithValue("@timestamp", Helper.UnixTimestamp());
-                                command.Parameters.AddWithValue("@commentary", 0);
+                                command.Parameters.AddWithValue("@commentary", "n/A");
                                 command.ExecuteNonQuery();
                                 Helper.SendNotificationWithoutButton(player, $"Inhaftierung von {character2.name} erfolgreich vollzogen!", "success", "top-left", 3500);
                                 Helper.SendNotificationWithoutButton(getPlayer, $"Du wurdest für {mdcArray[1]} Minuten inhaftiert, Grund: {mdcArray[0]}!", "success", "top-left", 7500);
@@ -372,7 +372,7 @@ namespace NemesusWorld.Controllers
                                     command.Parameters.AddWithValue("@police", character.name);
                                     command.Parameters.AddWithValue("@text", $"Strafzettel {mdcArray[1]}$, {mdcArray[0]}");
                                     command.Parameters.AddWithValue("@timestamp", Helper.UnixTimestamp());
-                                    command.Parameters.AddWithValue("@commentary", 0);
+                                    command.Parameters.AddWithValue("@commentary", "n/A");
                                     command.ExecuteNonQuery();
 
                                     Invoices invoice = new Invoices();
@@ -411,7 +411,7 @@ namespace NemesusWorld.Controllers
                                 command.Parameters.AddWithValue("@police", character.name);
                                 command.Parameters.AddWithValue("@text", $"Strafzettel {mdcArray[1]}$, {mdcArray[0]}");
                                 command.Parameters.AddWithValue("@timestamp", Helper.UnixTimestamp());
-                                command.Parameters.AddWithValue("@commentary", 0);
+                                command.Parameters.AddWithValue("@commentary", "n/A");
                                 command.ExecuteNonQuery();
 
                                 Invoices invoice = new Invoices();
@@ -696,7 +696,7 @@ namespace NemesusWorld.Controllers
                                         command.Parameters.AddWithValue("@police", character.name);
                                         command.Parameters.AddWithValue("@text", $"14 Tage Sperre für den {GetLicName(value2)}, Grund: {mdcArray[3]}");
                                         command.Parameters.AddWithValue("@timestamp", Helper.UnixTimestamp());
-                                        command.Parameters.AddWithValue("@commentary", 0);
+                                        command.Parameters.AddWithValue("@commentary", "n/A");
                                         command.ExecuteNonQuery();
                                     }
                                     else
@@ -709,7 +709,7 @@ namespace NemesusWorld.Controllers
                                         command.Parameters.AddWithValue("@police", character.name);
                                         command.Parameters.AddWithValue("@text", $"Sperre für den {GetLicName(value2)} aufgehoben, Grund: {mdcArray[3]}");
                                         command.Parameters.AddWithValue("@timestamp", Helper.UnixTimestamp());
-                                        command.Parameters.AddWithValue("@commentary", 0);
+                                        command.Parameters.AddWithValue("@commentary", "n/A");
                                         command.ExecuteNonQuery();
                                     }
                                 }
@@ -730,7 +730,7 @@ namespace NemesusWorld.Controllers
                                         command.Parameters.AddWithValue("@police", character.name);
                                         command.Parameters.AddWithValue("@text", $"+1 Punkt in SA, Grund: {mdcArray[3]}");
                                         command.Parameters.AddWithValue("@timestamp", Helper.UnixTimestamp());
-                                        command.Parameters.AddWithValue("@commentary", 0);
+                                        command.Parameters.AddWithValue("@commentary", "n/A");
                                         command.ExecuteNonQuery();
 
                                         if (getCharacter.sapoints >= 10)
@@ -740,7 +740,7 @@ namespace NemesusWorld.Controllers
                                             command.Parameters.AddWithValue("@police", character.name);
                                             command.Parameters.AddWithValue("@text", $"Führer/Motorradsch/Truckereinsperre (14 Tage), wegen zu vieler Punkte in SA");
                                             command.Parameters.AddWithValue("@timestamp", Helper.UnixTimestamp());
-                                            command.Parameters.AddWithValue("@commentary", 0);
+                                            command.Parameters.AddWithValue("@commentary", "n/A");
                                             command.ExecuteNonQuery();
 
                                             Helper.SetAndGetCharacterLicense(player, 0, Helper.UnixTimestamp() + (14 * 86400), getCharacter);
@@ -766,7 +766,7 @@ namespace NemesusWorld.Controllers
                                         command.Parameters.AddWithValue("@police", character.name);
                                         command.Parameters.AddWithValue("@text", $"-1 Punkt in SA, Grund: {mdcArray[3]}");
                                         command.Parameters.AddWithValue("@timestamp", Helper.UnixTimestamp());
-                                        command.Parameters.AddWithValue("@commentary", 0);
+                                        command.Parameters.AddWithValue("@commentary", "n/A");
                                         command.ExecuteNonQuery();
                                     }
                                 }

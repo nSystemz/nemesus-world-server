@@ -65,9 +65,9 @@ namespace NemesusWorld.Controllers
                 if (characterid > 0)
                 {
                     int bankValue = 0;
-                    foreach(Bank bank in BankController.bankList)
+                    foreach (Bank bank in BankController.bankList)
                     {
-                        if(bank.ownercharid == characterid)
+                        if (bank.ownercharid == characterid)
                         {
                             bankValue += bank.bankvalue;
                         }
@@ -299,7 +299,7 @@ namespace NemesusWorld.Controllers
 
                 using (MySqlDataReader reader = command.ExecuteReader())
                 {
-                    if(reader.HasRows)
+                    if (reader.HasRows)
                     {
                         reader.Read();
                         count = reader.GetInt32("count");
@@ -528,7 +528,7 @@ namespace NemesusWorld.Controllers
                                 {
                                     Helper.SetPlayerPosition(player, new Vector3(float.Parse(spawnCharAfterReconnect[0]), float.Parse(spawnCharAfterReconnect[1]), float.Parse(spawnCharAfterReconnect[2])));
                                     NAPI.Task.Run(() =>
-                                    {                                 
+                                    {
                                         player.TriggerEvent("Client:HideCharacterSwitch");
                                         player.TriggerEvent("Client:DestroyLoginCamera");
                                         player.TriggerEvent("Client:ActivateControls");
@@ -584,10 +584,10 @@ namespace NemesusWorld.Controllers
                             {
                                 Helper.SendNotificationWithoutButton(player, $"Du bist noch für {account.prison} Checkpoints im Prison!", "info", "top-left", 3550);
                             }
-                            else
+                            //Loginbonus
+                            NAPI.Task.Run(() =>
                             {
-                                DateTime timestamp = DateTime.Today.AddDays(-1);
-                                string yesterday = timestamp.ToString("dd-MM-yyyy");
+                                string yesterday = DateTime.Today.AddDays(-1).ToString("dd-MM-yyyy");
                                 string today = DateTime.Today.ToString("dd-MM-yyyy");
                                 if (account.login_bonus_before != today)
                                 {
@@ -597,38 +597,32 @@ namespace NemesusWorld.Controllers
                                         {
                                             account.login_bonus++;
                                             account.login_bonus_before = today;
-                                            if (account.login_bonus % 5 == 0)
+                                            if (Helper.GetRandomPercentage(45))
                                             {
-                                                if (Helper.GetRandomPercentage(45))
-                                                {
-                                                    account.coins += 25;
-                                                    Helper.SendNotificationWithoutButton(player, $"Loginbonus Tag {account.login_bonus} - 25 Coins!", "info", "top-left", 6750);
-                                                }
-                                                else if (Helper.GetRandomPercentage(15))
-                                                {
-                                                    account.epboost += Helper.UnixTimestamp() + (3 * 3600);
-                                                    Helper.SendNotificationWithoutButton(player, $"Loginbonus Tag {account.login_bonus} - +3h Erfahrungspunkte Boost!", "info", "top-left", 6750);
-                                                }
-                                                else if (Helper.GetRandomPercentage(15))
-                                                {
-                                                    account.play_points++;
-                                                    Helper.SendNotificationWithoutButton(player, $"Loginbonus Tag {account.login_bonus} - +2 Erfahrungspunkte!", "info", "top-left", 6750);
-                                                }
-                                                else if (Helper.GetRandomPercentage(20))
-                                                {
-                                                    CharacterController.SetMoney(player, 3750);
-                                                    Helper.SendNotificationWithoutButton(player, $"Loginbonus Tag {account.login_bonus} - 3750$!", "info", "top-left", 6750);
-                                                }
-                                                else
-                                                {
-                                                    account.coins += 10;
-                                                    Helper.SendNotificationWithoutButton(player, $"Loginbonus Tag {account.login_bonus} - 10 Coins!", "info", "top-left", 6750);
-                                                }
+                                                account.coins += 3;
+                                                Helper.SendNotificationWithoutButton(player, $"Loginbonus Tag {account.login_bonus} - 3 Coins!", "info", "top-left", 6750);
+                                            }
+                                            else if (Helper.GetRandomPercentage(15))
+                                            {
+                                                account.epboost += Helper.UnixTimestamp() + (2 * 3600);
+                                                Helper.SendNotificationWithoutButton(player, $"Loginbonus Tag {account.login_bonus} - +2h Erf-Boost!", "info", "top-left", 6750);
+                                            }
+                                            else if (Helper.GetRandomPercentage(15))
+                                            {
+                                                account.play_points++;
+                                                Helper.SendNotificationWithoutButton(player, $"Loginbonus Tag {account.login_bonus} - +1 Erf-Punkte!", "info", "top-left", 6750);
+                                            }
+                                            else if (Helper.GetRandomPercentage(20))
+                                            {
+                                                CharacterController.SetMoney(player, 3150);
+                                                Helper.SendNotificationWithoutButton(player, $"Loginbonus Tag {account.login_bonus} - 3150$!", "info", "top-left", 6750);
                                             }
                                             else
                                             {
-                                                Helper.SendNotificationWithoutButton(player, $"Loginbonus Tag {account.login_bonus}, Bonus in {5 - account.login_bonus % 5} Tag/en!", "info", "top-left", 6750);
+                                                account.coins += 5;
+                                                Helper.SendNotificationWithoutButton(player, $"Loginbonus Tag {account.login_bonus} - 5 Coins!", "info", "top-left", 6750);
                                             }
+
                                         }
                                         else
                                         {
@@ -647,14 +641,15 @@ namespace NemesusWorld.Controllers
                                     account.login_bonus = 1;
                                     account.login_bonus_before = today;
                                 }
-                                player.SetOwnSharedData("Player:Spawned", true);
-                                player.TriggerEvent("Client:ClearChat");
-                                Helper.SendNotificationWithoutButton(player, "Willkommen zurück " + account.name + "!", "info", "top-left", 1850);
-                                Helper.SendChatMessage(player, $"~b~Willkommen zurück ~w~{account.name}~b~, du hast Fragen zum Nemesus World Gamemode? Dann besuche gerne unseren Discord: ~w~https://discord.nemesus.de");
-                                Helper.SendChatMessage(player, $"~y~Ihr wollt die Entwicklung dieses Gamemodes unterstützen? Dann lasst mir gerne ein kleines Trinkgeld da: ~w~https://trinkgeld.nemesus.de");
-                                account.online = 1;
-                                Account.SaveAccount(player);
-                            }
+                            }, delayTime: 2500);
+                            player.SetOwnSharedData("Player:Spawned", true);
+                            player.TriggerEvent("Client:ClearChat");
+                            Helper.SendNotificationWithoutButton(player, "Willkommen zurück " + account.name + "!", "info", "top-left", 1850);
+                            Helper.SendChatMessage(player, $"~b~Willkommen zurück ~w~{account.name}~b~, du hast Fragen zum Nemesus World Gamemode? Dann besuche gerne unseren Discord: ~w~https://discord.nemesus.de");
+                            Helper.SendChatMessage(player, $"~y~Ihr wollt die Entwicklung dieses Gamemodes unterstützen? Dann lasst mir gerne ein kleines Trinkgeld da: ~w~https://trinkgeld.nemesus.de");
+                            account.online = 1;
+                            Account.SaveAccount(player);
+
                         }, delayTime: 3550);
                     }
 
@@ -780,7 +775,7 @@ namespace NemesusWorld.Controllers
                         {
                             NAPI.Player.SetPlayerClothes(player, 1, 0, 0);
                         }
-                        if(character.faction == 1 || character.faction == 2 || character.faction == 3)
+                        if (character.faction == 1 || character.faction == 2 || character.faction == 3)
                         {
                             NAPI.Player.SetPlayerClothes(player, 9, character.armor, character.armorcolor);
                         }
@@ -989,7 +984,7 @@ namespace NemesusWorld.Controllers
                     character.items = NAPI.Util.ToJson(tempData.itemlist);
                     character.health = NAPI.Player.GetPlayerHealth(player);
                     bool inBandito = false;
-                    if(player.IsInVehicle && player.Vehicle.GetSharedData<String>("Vehicle:Name").Contains("rcbandito"))
+                    if (player.IsInVehicle && player.Vehicle.GetSharedData<String>("Vehicle:Name").Contains("rcbandito"))
                     {
                         inBandito = true;
                     }

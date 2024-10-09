@@ -4970,7 +4970,7 @@ namespace NemesusWorld.Utils
                                     command.Parameters.AddWithValue("@police", character.name);
                                     command.Parameters.AddWithValue("@text", $"Aus Inhaftierung freigelassen, Grund: {input}");
                                     command.Parameters.AddWithValue("@timestamp", Helper.UnixTimestamp());
-                                    command.Parameters.AddWithValue("@commentary", 0);
+                                    command.Parameters.AddWithValue("@commentary", "n/A");
                                     command.ExecuteNonQuery();
                                     Helper.SendNotificationWithoutButton(player, $"Du hast die Person aus der Inhaftierung freigelassen!", "success", "top-left", 3500);
                                     Helper.SendNotificationWithoutButton(getPlayer, $"Du wurdest aus der Inhaftierung freigelassen!", "success", "top-left", 7500);
@@ -9147,7 +9147,7 @@ namespace NemesusWorld.Utils
                     command.Parameters.AddWithValue("@police", "Blitzer");
                     command.Parameters.AddWithValue("@text", $"+1 Punkt in SA, Grund: Geblitzt mit {speed} KM/H");
                     command.Parameters.AddWithValue("@timestamp", Helper.UnixTimestamp());
-                    command.Parameters.AddWithValue("@commentary", 0);
+                    command.Parameters.AddWithValue("@commentary", "n/A");
                     command.ExecuteNonQuery();
 
                     if (character.sapoints >= 10)
@@ -9157,7 +9157,7 @@ namespace NemesusWorld.Utils
                         command.Parameters.AddWithValue("@police", "Blitzer");
                         command.Parameters.AddWithValue("@text", $"Führer/Motorradsch/Truckereinsperre (14 Tage), wegen zu vieler Punkte in SA");
                         command.Parameters.AddWithValue("@timestamp", Helper.UnixTimestamp());
-                        command.Parameters.AddWithValue("@commentary", 0);
+                        command.Parameters.AddWithValue("@commentary", "n/A");
                         command.ExecuteNonQuery();
 
                         Helper.SetAndGetCharacterLicense(player, 0, Helper.UnixTimestamp() + (14 * 86400), character);

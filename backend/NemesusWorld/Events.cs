@@ -659,7 +659,7 @@ namespace NemesusWorld
                                                 command.Parameters.AddWithValue("@police", "System");
                                                 command.Parameters.AddWithValue("@text", $"Aus Inhaftierung freigelassen, Grund: Haftzeit abgelaufen");
                                                 command.Parameters.AddWithValue("@timestamp", Helper.UnixTimestamp());
-                                                command.Parameters.AddWithValue("@commentary", "n/A");
+                                                command.Parameters.AddWithValue("@commentary", 0);
                                                 command.ExecuteNonQuery();
                                                 Helper.SendNotificationWithoutButton(player, $"Du wurdest aus der Inhaftierung automatisch freigelassen!", "success", "top-left", 7500);
                                                 Helper.CreateFactionLog(character.faction, $"{character.name} wurde automatisch aus der Inhaftierung freigelassen, Grund: Haftzeit abgelaufen");

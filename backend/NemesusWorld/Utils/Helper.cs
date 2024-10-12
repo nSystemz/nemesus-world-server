@@ -443,21 +443,25 @@ namespace NemesusWorld.Utils
                 command.CommandText = "SELECT * FROM policefile WHERE name = @name AND commentary = 0 ORDER BY timestamp DESC LIMIT 35";
                 command.Parameters.AddWithValue("@name", props);
 
+                int count = 0;
+
                 using (MySqlDataReader reader = command.ExecuteReader())
                 {
                     while (reader.Read())
                     {
                         centerMenu = new CenterMenu();
 
+                        centerMenu.var1 = ""+count;
                         centerMenu.var2 = reader.GetString("text");
                         centerMenu.var3 = Convert.ToString(reader.GetInt32("timestamp"));
                         centerMenuList.Add(centerMenu);
+                        count++;
                     }
                     reader.Close();
                 }
                 if (show == true)
                 {
-                    String rules = "ID,Verbrechen,Kommentar,Zeitpunkt";
+                    String rules = "ID,Verbrechen,Zeitpunkt";
                     ItemsController.OnShowInventory(player, 1);
                     player.TriggerEvent("Client:ShowCenterMenu", rules, NAPI.Util.ToJson(centerMenuList), "Führungszeugnis");
                     player.SetSharedData("Player:AnimData", "WORLD_HUMAN_CLIPBOARD");
@@ -1946,7 +1950,7 @@ namespace NemesusWorld.Utils
                         }
                     }
                 }
-                else if (status == "warning")
+                else if (status == "warning" || status == "debug")
                 {
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     NAPI.Util.ConsoleOutput(text, ConsoleColor.Yellow);
@@ -4970,7 +4974,7 @@ namespace NemesusWorld.Utils
                                     command.Parameters.AddWithValue("@police", character.name);
                                     command.Parameters.AddWithValue("@text", $"Aus Inhaftierung freigelassen, Grund: {input}");
                                     command.Parameters.AddWithValue("@timestamp", Helper.UnixTimestamp());
-                                    command.Parameters.AddWithValue("@commentary", "n/A");
+                                    command.Parameters.AddWithValue("@commentary", 0);
                                     command.ExecuteNonQuery();
                                     Helper.SendNotificationWithoutButton(player, $"Du hast die Person aus der Inhaftierung freigelassen!", "success", "top-left", 3500);
                                     Helper.SendNotificationWithoutButton(getPlayer, $"Du wurdest aus der Inhaftierung freigelassen!", "success", "top-left", 7500);
@@ -9147,18 +9151,19 @@ namespace NemesusWorld.Utils
                     command.Parameters.AddWithValue("@police", "Blitzer");
                     command.Parameters.AddWithValue("@text", $"+1 Punkt in SA, Grund: Geblitzt mit {speed} KM/H");
                     command.Parameters.AddWithValue("@timestamp", Helper.UnixTimestamp());
-                    command.Parameters.AddWithValue("@commentary", "n/A");
+                    command.Parameters.AddWithValue("@commentary", 0);
                     command.ExecuteNonQuery();
 
                     if (character.sapoints >= 10)
                     {
-                        command.CommandText = "INSERT INTO policefile (name, police, text, timestamp, commentary) VALUES (@name, @police, @text, @timestamp, @commentary)";
-                        command.Parameters.AddWithValue("@name", character.name);
-                        command.Parameters.AddWithValue("@police", "Blitzer");
-                        command.Parameters.AddWithValue("@text", $"Führer/Motorradsch/Truckereinsperre (14 Tage), wegen zu vieler Punkte in SA");
-                        command.Parameters.AddWithValue("@timestamp", Helper.UnixTimestamp());
-                        command.Parameters.AddWithValue("@commentary", "n/A");
-                        command.ExecuteNonQuery();
+                        MySqlCommand command2 = General.Connection.CreateCommand();
+                        command2.CommandText = "INSERT INTO policefile (name, police, text, timestamp, commentary) VALUES (@name, @police, @text, @timestamp, @commentary)";
+                        command2.Parameters.AddWithValue("@name", character.name);
+                        command2.Parameters.AddWithValue("@police", "Blitzer");
+                        command2.Parameters.AddWithValue("@text", $"Führer/Motorradsch/Truckereinsperre (14 Tage), wegen zu vieler Punkte in SA");
+                        command2.Parameters.AddWithValue("@timestamp", Helper.UnixTimestamp());
+                        command2.Parameters.AddWithValue("@commentary", 0);
+                        command2.ExecuteNonQuery();
 
                         Helper.SetAndGetCharacterLicense(player, 0, Helper.UnixTimestamp() + (14 * 86400), character);
                         Helper.SetAndGetCharacterLicense(player, 1, Helper.UnixTimestamp() + (14 * 86400), character);
@@ -18266,7 +18271,7 @@ namespace NemesusWorld.Utils
                 }
                 catch (Exception)
                 {
-                    ConsoleLog("error", $"[WETTER-API]: Fehler beim lesen der Wetterdaten, Wetterdaten werden später neu geladen ...");
+                    ConsoleLog("debug", $"[WETTER-API]: Fehler beim lesen der Wetterdaten, Wetterdaten werden später neu geladen ...");
                     weatherstring = "clear sky";
                     SetWeather();
                     weatherObj = null;

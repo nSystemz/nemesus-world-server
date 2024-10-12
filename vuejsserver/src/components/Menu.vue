@@ -5871,7 +5871,8 @@
                                                                     <td v-if="obj.var1">{{obj.var1}}</td>
                                                                     <td v-else>{{index}}</td>
                                                                     <td v-if="obj.var2">{{obj.var2}}</td>
-                                                                    <td v-if="obj.var3">{{obj.var3}}</td>
+                                                                    <td v-if="obj.var3 && centerHeader != 'Führungszeugnis'">{{obj.var3}}</td>
+                                                                    <td v-else>{{timeConverter(obj.var3)}}</td>
                                                                     <td
                                                                         v-if="obj.var4 && !centerHeader.toLowerCase().includes('garage') && !centerHeader.toLowerCase().includes('verwahrplatz')">
                                                                         {{obj.var4}}

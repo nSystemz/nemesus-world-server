@@ -116,30 +116,6 @@
                                                 v-if="(itemSelect2.props && itemSelect2.props.length > 3 && itemSelect2.type != 5 && itemSelect2.type != 6) || itemSelect2.description == 'Feuerzeug'">{{itemSelect2.props}}</span><span
                                                 v-if="itemSelect2.props && itemSelect2.props.length > 2 && itemSelect2.type == 5 && !IsNoMelee(itemSelect2.description) && itemSelect2.description != 'Taser'">{{itemSelect2.props.split(',')[0]}}</span></span></span>
                                     <div v-if="itemSelect2!=null" class="mr-2 float-right">
-                                        <i style="font-size: 0.75vw;"
-                                            v-if="itemSelect2.description == 'L-Schein' || itemSelect2.description == 'Haustier' || !itemSelect2.props.split(',')[1] || itemSelect2.props.split(',')[1] == 0"
-                                            class="icon fas fas fa-trash float-right"
-                                            @click="trashItem(itemSelect2)"></i>
-                                        <i style="font-size: 0.75vw;"
-                                            v-if="itemSelect2.type != 5 && itemSelect2.type != 6 && (!itemSelect2.props.split(',')[1] || itemSelect2.props.split(',')[1] == 0 || itemSelect2.description == 'Haustier')"
-                                            class="iconresponsive icon fas fas fa-play float-right"
-                                            @click="useItem(itemSelect2.itemid)"></i>
-                                        <i style="font-size: 0.75vw;" v-if="itemSelect2.type == 6"
-                                            class="iconresponsive icon fas fas fa-play float-right"
-                                            @click="useItem2(itemSelect2)"></i>
-                                        <i style="font-size: 0.75vw;"
-                                            v-if="(!itemSelect2.props.split(',')[1] || itemSelect2.props.split(',')[1] == 0 || itemSelect2.description == 'Haustier') && itemSelect2.description != 'Snowball'"
-                                            class="iconresponsive icon fas fa-hand-paper float-right"
-                                            @click="giveItem(itemSelect2)"></i>
-                                        <i style="font-size: 0.75vw;"
-                                            v-if="itemSelect2.type == 5 && itemSelect2.description != 'Snowball' && itemSelect2.props && itemSelect2.description.toLowerCase() != 'feuerlöscher'"
-                                            class="icon3 fa-solid fa-eye" @click="showGun(itemSelect2.props)"></i>
-                                        <i style="font-size: 0.75vw;"
-                                            v-if="itemSelect2.type == 5 && itemSelect2.props.split(',')[1] == 0"
-                                            class="icon fa-solid fa-gun" @click="selectGun(itemSelect2.itemid)"></i>
-                                        <i style="font-size: 0.75vw;"
-                                            v-if="itemSelect2.type == 5 && itemSelect2.props.split(',')[1] == 1"
-                                            class="icon2 fa-solid fa-gun" @click="selectGun(itemSelect2.itemid)"></i>
                                         <i style="font-size: 0.75vw;" v-if="inventoryshow2"
                                             class="iconresponsive icon fa-solid fa-arrow-left" @click="moveItem2(itemSelect2, 'right')"></i>
                                     </div>
@@ -179,7 +155,7 @@
                                     <div class="box2 text-center mb-2" v-for="item in inventory2selected"
                                         :key="item.itemid"
                                         :style="[(itemSelect2 == item) ? 'border: 2px solid #3c6a99;':'']"
-                                        @click="itemSelected2(item)" @dblclick="moveItem2(item, 'right')">
+                                        @click="itemSelected2(item)">
                                         <img style="height: 1.5vw;max-width: 4vw" class="mt-2 text-center"
                                             :src="getImgUrl(item.description)" />
                                         <div class="row text-center">

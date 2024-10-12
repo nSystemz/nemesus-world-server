@@ -21,6 +21,7 @@ using Color = GTANetworkAPI.Color;
 using System.Threading.Tasks;
 using System.Net.Http;
 using System.Threading.Channels;
+using Google.Protobuf.WellKnownTypes;
 
 namespace NemesusWorld.Utils
 {
@@ -453,7 +454,7 @@ namespace NemesusWorld.Utils
 
                         centerMenu.var1 = ""+count;
                         centerMenu.var2 = reader.GetString("text");
-                        centerMenu.var3 = reader.GetInt32("timestamp").ToString("de-DE");
+                        centerMenu.var3 = "" + reader.GetInt64("timestamp");
                         centerMenuList.Add(centerMenu);
                         count++;
                     }

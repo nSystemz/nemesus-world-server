@@ -1169,7 +1169,11 @@ namespace NemesusWorld.Controllers
                             List<Policefile> policefiles = new List<Policefile>();
                             foreach (Policefile policefile in db.Fetch<Policefile>("SELECT * FROM policefile WHERE name = @0 ORDER BY timestamp DESC LIMIT 125", getCharacter.name))
                             {
-                                policefiles.Add(policefile);
+                                try
+                                {
+                                    policefiles.Add(policefile);
+                                }
+                                catch(Exception ex) { }
                             }
                             player.TriggerEvent("Client:MDCSettings", "showpolicefile", NAPI.Util.ToJson(policefiles));
 

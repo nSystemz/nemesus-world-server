@@ -702,7 +702,7 @@ namespace NemesusWorld.Controllers
                                     else
                                     {
                                         Helper.SendNotificationWithoutButton(player, $"Sperre für den den {GetLicName(value2)} aufgehoben!", "success", "top-left", 2500);
-                                        Helper.SetAndGetCharacterLicense(player, value2, Helper.UnixTimestamp(), getCharacter);
+                                        Helper.SetAndGetCharacterLicense(player, value2, 1, getCharacter);
 
                                         command.CommandText = "INSERT INTO policefile (name, police, text, timestamp, commentary) VALUES (@name, @police, @text, @timestamp, @commentary)";
                                         command.Parameters.AddWithValue("@name", mdcArray[2]);

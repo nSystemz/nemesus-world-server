@@ -453,7 +453,7 @@ namespace NemesusWorld.Utils
 
                         centerMenu.var1 = ""+count;
                         centerMenu.var2 = reader.GetString("text");
-                        centerMenu.var3 = Convert.ToString(reader.GetInt32("timestamp"));
+                        centerMenu.var3 = reader.GetInt32("timestamp").ToString("de-DE");
                         centerMenuList.Add(centerMenu);
                         count++;
                     }

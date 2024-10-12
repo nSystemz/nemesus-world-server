@@ -2058,6 +2058,11 @@ namespace NemesusWorld.Controllers
                                             Helper.SendNotificationWithoutButton(player, "Keine Einträge vorhanden!", "error");
                                             return;
                                         }
+                                        if(player.Vehicle != null)
+                                        {
+                                            Helper.SendNotificationWithoutButton(player, "Du kannst dein Führungszeugnis nicht in/auf einem Fahrzeug anschauen!", "error");
+                                            return;
+                                        }
                                         Helper.ShowFührungsZeugnis(player, item.props);
                                         return;
                                     }

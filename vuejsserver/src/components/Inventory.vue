@@ -11,7 +11,8 @@
                                     <div class="  float-left mt-1 mb-2 animate__animated animate__fadeInLeft"
                                         style="scrollbar-width: none; background-color: #343A40; border-top: solid #3c6a99;"
                                         v-if="inventoryshow1">
-                                        <h3 class="mt-1 ml-2" style="font-family: 'Exo', sans-serif; font-size: 0.85vw;">
+                                        <h3 class="mt-1 ml-2"
+                                            style="font-family: 'Exo', sans-serif; font-size: 0.85vw;">
                                             Deine Taschen
                                             <span class="ml-5" style="font-size: 0.8vw; margin-left: 1.5vw"
                                                 v-if="itemSelect!=null">{{itemSelect.description}}<span
@@ -47,14 +48,17 @@
                                                     v-if="itemSelect.type == 5 && itemSelect.props.split(',')[1] == 1"
                                                     class="icon2 fa-solid fa-gun"
                                                     @click="selectGun(itemSelect.itemid)"></i>
+                                                <i style="font-size: 0.75vw;" v-if="inventoryshow2"
+                                                    class="iconresponsive icon fa-solid fa-arrow-right"
+                                                    @click="moveItem2(itemSelect, 'left')"></i>
                                             </div>
                                         </h3>
                                         <div class="col-md-12 mb-2">
                                             <div class="progress" style="margin-right: 0.8vw">
-                                                    <div class="progress-bar progress-bar-striped bg-primary"
-                                                        role="progressbar" id="progress-bar" style="width: 0%"
-                                                        aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                         
+                                                <div class="progress-bar progress-bar-striped bg-primary"
+                                                    role="progressbar" id="progress-bar" style="width: 0%"
+                                                    aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+
                                             </div>
                                         </div>
                                         <div class="col-md-12 mb-3">
@@ -111,13 +115,41 @@
                                                 v-if="(itemSelect2.type != 3 && itemSelect2.type != 4 && itemSelect2.type != 5) || itemSelect2.description == 'Dietrich' || itemSelect2.description == 'Zigaretten' || itemSelect2.description == '55$-Prepaidkarte' || itemSelect2.description == 'Handyvertrag' || itemSelect2.description == 'Grippofein-C' || itemSelect2.description == 'Antibiotika' || itemSelect2.description == 'Ibuprofee-400mg' || itemSelect2.description == 'Ibuprofee-800mg' || itemSelect2.description == 'Morphin-10mg' || itemSelect2.description == 'Bandage' || itemSelect2.description == 'Materialien' || itemSelect2.description == 'Marihuanasamen' || itemSelect2.description == 'Marihuana' || itemSelect2.description == 'Papes' || itemSelect2.description == 'Joint' || itemSelect2.description == 'Kokain' || itemSelect2.description == 'Kokablatt' || itemSelect2.description == 'Kokainsamen' || itemSelect2.description == 'Space-Cookies'">{{itemSelect2.amount}}</span><span
                                                 v-if="(itemSelect2.props && itemSelect2.props.length > 3 && itemSelect2.type != 5 && itemSelect2.type != 6) || itemSelect2.description == 'Feuerzeug'">{{itemSelect2.props}}</span><span
                                                 v-if="itemSelect2.props && itemSelect2.props.length > 2 && itemSelect2.type == 5 && !IsNoMelee(itemSelect2.description) && itemSelect2.description != 'Taser'">{{itemSelect2.props.split(',')[0]}}</span></span></span>
+                                    <div v-if="itemSelect2!=null" class="mr-2 float-right">
+                                        <i style="font-size: 0.75vw;"
+                                            v-if="itemSelect2.description == 'L-Schein' || itemSelect2.description == 'Haustier' || !itemSelect2.props.split(',')[1] || itemSelect2.props.split(',')[1] == 0"
+                                            class="icon fas fas fa-trash float-right"
+                                            @click="trashItem(itemSelect2)"></i>
+                                        <i style="font-size: 0.75vw;"
+                                            v-if="itemSelect2.type != 5 && itemSelect2.type != 6 && (!itemSelect2.props.split(',')[1] || itemSelect2.props.split(',')[1] == 0 || itemSelect2.description == 'Haustier')"
+                                            class="iconresponsive icon fas fas fa-play float-right"
+                                            @click="useItem(itemSelect2.itemid)"></i>
+                                        <i style="font-size: 0.75vw;" v-if="itemSelect2.type == 6"
+                                            class="iconresponsive icon fas fas fa-play float-right"
+                                            @click="useItem2(itemSelect2)"></i>
+                                        <i style="font-size: 0.75vw;"
+                                            v-if="(!itemSelect2.props.split(',')[1] || itemSelect2.props.split(',')[1] == 0 || itemSelect2.description == 'Haustier') && itemSelect2.description != 'Snowball'"
+                                            class="iconresponsive icon fas fa-hand-paper float-right"
+                                            @click="giveItem(itemSelect2)"></i>
+                                        <i style="font-size: 0.75vw;"
+                                            v-if="itemSelect2.type == 5 && itemSelect2.description != 'Snowball' && itemSelect2.props && itemSelect2.description.toLowerCase() != 'feuerlöscher'"
+                                            class="icon3 fa-solid fa-eye" @click="showGun(itemSelect2.props)"></i>
+                                        <i style="font-size: 0.75vw;"
+                                            v-if="itemSelect2.type == 5 && itemSelect2.props.split(',')[1] == 0"
+                                            class="icon fa-solid fa-gun" @click="selectGun(itemSelect2.itemid)"></i>
+                                        <i style="font-size: 0.75vw;"
+                                            v-if="itemSelect2.type == 5 && itemSelect2.props.split(',')[1] == 1"
+                                            class="icon2 fa-solid fa-gun" @click="selectGun(itemSelect2.itemid)"></i>
+                                        <i style="font-size: 0.75vw;" v-if="inventoryshow2"
+                                            class="iconresponsive icon fa-solid fa-arrow-left" @click="moveItem2(itemSelect2, 'right')"></i>
+                                    </div>
                                 </h3>
                                 <div class="col-md-12 mb-2">
                                     <div class="progress" style="margin-right: 0.8vw">
                                         <div style="display: flex; justify-content: center; align-items: center;"
                                             class="mt-1">
-                                            <div class="progress-bar progress-bar-striped bg-primary" role="progressbar"
-                                                id="progress-bar" style="width: 0%" aria-valuenow="25" aria-valuemin="0"
+                                            <div class="progress-bar2 progress-bar-striped bg-primary" role="progressbar"
+                                                id="progress-bar2" style="width: 0%" aria-valuenow="25" aria-valuemin="0"
                                                 aria-valuemax="100"></div>
                                         </div>
                                     </div>
@@ -140,12 +172,14 @@
                                         <button type="button" @click="selectItems2(3)" style="font-size:0.925vw"
                                             :class="[(itemselect2 == 3) ? 'active btn btn-primary btn-sm mr-4':'btn btn-primary btn-sm mr-4']"><i
                                                 class="fa-solid fa-microchip"></i></button>
+
                                     </div>
                                 </div>
                                 <div style="container-fluid3">
-                                    <div class="box2 text-center mb-2" v-for="item in inventory2selected" :key="item.itemid"
+                                    <div class="box2 text-center mb-2" v-for="item in inventory2selected"
+                                        :key="item.itemid"
                                         :style="[(itemSelect2 == item) ? 'border: 2px solid #3c6a99;':'']"
-                                        @click="itemSelected2(item)">
+                                        @click="itemSelected2(item)" @dblclick="moveItem2(item, 'right')">
                                         <img style="height: 1.5vw;max-width: 4vw" class="mt-2 text-center"
                                             :src="getImgUrl(item.description)" />
                                         <div class="row text-center">
@@ -291,11 +325,9 @@ export default {
         },
         itemSelected(item) {
             this.itemSelect = item;
-            this.moveItem2(item, 'left');
         },
         itemSelected2(item) {
             this.itemSelect2 = item;
-            this.moveItem2(item, 'right');
         },
         selectItems1(select) {
             this.itemselect1 = select;
@@ -624,27 +656,23 @@ export default {
         },
         updateProgressbar1: function () {
             // eslint-disable-next-line no-undef
-            var invweight = 500;
+            let invweight = this.countweightinventory1();
             if (invweight > 0) {
                 this.valeur = ((100 / this.maxweight1) * invweight);
             } else {
                 this.valeur = 0;
             }
             // eslint-disable-next-line no-undef
-            console.log("updateProgressbar");
-            // eslint-disable-next-line no-undef
             $('.progress-bar').css('width', this.valeur + '%').attr('aria-valuenow', this.valeur);
         },
         updateProgressbar2: function () {
             // eslint-disable-next-line no-undef
-            var invweight = this.countweightinventory2();
-            if (invweight > 0) {
-                this.valeur2 = ((100 / this.maxweight2) * invweight);
+            let invweight2 = this.countweightinventory2();
+            if (invweight2 > 0) {
+                this.valeur2 = ((100 / this.maxweight2) * invweight2);
             } else {
                 this.valeur2 = 0;
             }
-            // eslint-disable-next-line no-undef
-            console.log("updateProgressbar2");
             // eslint-disable-next-line no-undef
             $('.progress-bar2').css('width', this.valeur2 + '%').attr('aria-valuenow', this.valeur2);
         },

@@ -117,16 +117,17 @@
                                                 v-if="itemSelect2.props && itemSelect2.props.length > 2 && itemSelect2.type == 5 && !IsNoMelee(itemSelect2.description) && itemSelect2.description != 'Taser'">{{itemSelect2.props.split(',')[0]}}</span></span></span>
                                     <div v-if="itemSelect2!=null" class="mr-2 float-right">
                                         <i style="font-size: 0.75vw;" v-if="inventoryshow2"
-                                            class="iconresponsive icon fa-solid fa-arrow-left" @click="moveItem2(itemSelect2, 'right')"></i>
+                                            class="iconresponsive icon fa-solid fa-arrow-left"
+                                            @click="moveItem2(itemSelect2, 'right')"></i>
                                     </div>
                                 </h3>
                                 <div class="col-md-12 mb-2">
                                     <div class="progress" style="margin-right: 0.8vw">
                                         <div style="display: flex; justify-content: center; align-items: center;"
                                             class="mt-1">
-                                            <div class="progress-bar2 progress-bar-striped bg-primary" role="progressbar"
-                                                id="progress-bar2" style="width: 0%" aria-valuenow="25" aria-valuemin="0"
-                                                aria-valuemax="100"></div>
+                                            <div class="progress-bar2 progress-bar-striped bg-primary"
+                                                role="progressbar2" id="progress-bar2" style="width: 0%"
+                                                aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -151,24 +152,21 @@
 
                                     </div>
                                 </div>
-                                <div style="container-fluid3">
-                                    <div class="box2 text-center mb-2" v-for="item in inventory2selected"
-                                        :key="item.itemid"
-                                        :style="[(itemSelect2 == item) ? 'border: 2px solid #3c6a99;':'']"
-                                        @click="itemSelected2(item)">
-                                        <img style="height: 1.5vw;max-width: 4vw" class="mt-2 text-center"
-                                            :src="getImgUrl(item.description)" />
-                                        <div class="row text-center">
-                                            <div class="col-md-12">
-                                                <span v-if="itemSelect2 == item"
-                                                    style="font-size: 0.47vw; color:#eee;text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000; font-family: 'Exo';border-bottom: 1px solid #3c6a99;">{{cutString(item.description)}}</span>
-                                                <span v-else
-                                                    style="font-size: 0.47vw; color:#eee;text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000; font-family: 'Exo';">{{cutString(item.description)}}</span>
-                                                <span
-                                                    style="font-size: 0.9vw; color:#eee;text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;margin-left:0.1vw;padding-top:1.7vw"><strong
-                                                        style="font-size: 0.48vw; font-family: 'Exo'"
-                                                        class="badge badge-dark">{{item.amount}}</strong></span>
-                                            </div>
+                                <div class="box2 text-center mb-2" v-for="item in inventory2selected" :key="item.itemid"
+                                    :style="[(itemSelect2 == item) ? 'border: 2px solid #3c6a99;':'']"
+                                    @click="itemSelected2(item)">
+                                    <img style="height: 1.5vw;max-width: 4vw" class="mt-2 text-center"
+                                        :src="getImgUrl(item.description)" />
+                                    <div class="row text-center">
+                                        <div class="col-md-12">
+                                            <span v-if="itemSelect2 == item"
+                                                style="font-size: 0.47vw; color:#eee;text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000; font-family: 'Exo';border-bottom: 1px solid #3c6a99;">{{cutString(item.description)}}</span>
+                                            <span v-else
+                                                style="font-size: 0.47vw; color:#eee;text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000; font-family: 'Exo';">{{cutString(item.description)}}</span>
+                                            <span
+                                                style="font-size: 0.9vw; color:#eee;text-shadow: 1px 0 0 #000, 0 -1px 0 #000, 0 1px 0 #000, -1px 0 0 #000;margin-left:0.1vw;padding-top:1.7vw"><strong
+                                                    style="font-size: 0.48vw; font-family: 'Exo'"
+                                                    class="badge badge-dark">{{item.amount}}</strong></span>
                                         </div>
                                     </div>
                                 </div>

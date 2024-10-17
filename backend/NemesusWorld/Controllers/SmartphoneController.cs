@@ -177,11 +177,6 @@ namespace NemesusWorld.Controllers
         {
             try
             {
-                if(Helper.weatherObj == null)
-                {
-                    Helper.SendNotificationWithoutButton(player, "Es gibt keine aktuellen Wetterdaten, bitte probiere es später nochmal!", "error", "top-left", 3000);
-                    return;
-                }
                 player.TriggerEvent("Client:ShowWeather", Helper.weatherObj.ToString(Newtonsoft.Json.Formatting.None));
             }
             catch (Exception e)

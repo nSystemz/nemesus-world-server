@@ -31,7 +31,7 @@ namespace NemesusWorld.Utils
         public static Random rnd = new Random();
         public static int MeatPrice = 115 + rnd.Next(0, 45);
         public static int FishPrice = 125 + rnd.Next(0, 55);
-        public static JObject weatherObj = null;
+        public static String WeatherObjStr = null;
         public static String weatherstring = "clear sky";
         public static int weatherTimestamp = 0;
         public static List<SpedVehicles> spedVehiclesList = new List<SpedVehicles>();
@@ -18208,8 +18208,7 @@ namespace NemesusWorld.Utils
             double ny = position.Y + (dist * Math.Cos(radians));
             return new Vector3(nx, ny, position.Z);
         }
-
-        public static Task SetAndGetWeather(string apiLink, bool initial = false)
+        public static async Task SetAndGetWeather(string apiLink, bool initial = false)
         {
             NAPI.Task.Run(async () =>
             {
@@ -18220,65 +18219,36 @@ namespace NemesusWorld.Utils
                         return;
                     }
 
-                    JObject weatherObjTemp2 = null;
-                    var content = string.Empty;
-
                     using (var client = new HttpClient())
                     {
                         var response = await client.GetAsync(apiLink);
                         response.EnsureSuccessStatusCode();
 
-                        content = await response.Content.ReadAsStringAsync();
-                    }
+                        var content = await response.Content.ReadAsStringAsync();
+                        Helper.WeatherObjStr = content.ToString();
+                        JObject weatherObj = JObject.Parse(Helper.WeatherObjStr);
 
-                    Weather weather = new Weather();
-
-                    try
-                    {
-                        var weatherObj = JObject.Parse(content);
-                        var tempstring2 = weatherObj["current"].ToString();
-                        weatherObjTemp2 = JObject.Parse(tempstring2);
-                    }
-                    catch (Exception)
-                    {
-                        weatherstring = "clear sky";
-                        SetWeather();
-                        weatherObj = null;
-                    }
-
-                    if (weatherObjTemp2 != null)
-                    {
-                        var tempstring = weatherObjTemp2["weather"].ToString();
-                        tempstring = tempstring.Substring(2);
-                        tempstring = tempstring.Substring(0, tempstring.Length - 1);
-
-                        if (tempstring.Length > 10)
+                        var currentWeather = weatherObj["current"]["weather"]?.FirstOrDefault();
+                        if (currentWeather != null)
                         {
-                            var weatherObjTemp = JObject.Parse(tempstring);
-                            weatherstring = weatherObjTemp["description"].ToString().ToLower();
+                            weatherstring = currentWeather["description"].ToString().ToLower();
                         }
                         else
                         {
                             weatherstring = "clear sky";
                         }
                     }
-                    else
-                    {
-                        weatherstring = "clear sky";
-                    }
 
                     ConsoleLog("success", $"[WETTER-API]: {weatherstring}");
                     SetWeather();
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    ConsoleLog("debug", $"[WETTER-API]: Fehler beim lesen der Wetterdaten, Wetterdaten werden später neu geladen ...");
+                    ConsoleLog("debug", $"[WETTER-API]: Fehler beim Lesen der Wetterdaten: {ex.Message}. Wetterdaten werden später neu geladen ...");
                     weatherstring = "clear sky";
                     SetWeather();
-                    weatherObj = null;
                 }
             });
-            return Task.CompletedTask;
         }
 
         public static void SetWeather()

@@ -177,7 +177,15 @@ namespace NemesusWorld.Controllers
         {
             try
             {
-                player.TriggerEvent("Client:ShowWeather", Helper.weatherObj.ToString(Newtonsoft.Json.Formatting.None));
+                if (Helper.WeatherObjStr.Length > 15)
+                {
+                    player.TriggerEvent("Client:ShowWeather", Helper.WeatherObjStr);
+                }
+                else
+                {
+                    Helper.SendNotificationWithoutButton(player, "Keine Wetterdaten verfügbar!", "error", "top-left", 3000);
+                    SmartphoneController.ShowSmartphone(player, null, "0");
+                }
             }
             catch (Exception e)
             {

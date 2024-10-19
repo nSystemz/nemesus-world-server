@@ -123,12 +123,10 @@
                                 </h3>
                                 <div class="col-md-12 mb-2">
                                     <div class="progress" style="margin-right: 0.8vw">
-                                        <div style="display: flex; justify-content: center; align-items: center;"
-                                            class="mt-1">
-                                            <div class="progress-bar2 progress-bar-striped bg-primary"
-                                                role="progressbar2" id="progress-bar2" style="width: 0%"
-                                                aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
-                                        </div>
+                                        <div class="progress-bar2 progress-bar-striped bg-primary" role="progressbar"
+                                            id="progress-bar2" style="width: 0%" aria-valuenow="25" aria-valuemin="0"
+                                            aria-valuemax="100"></div>
+
                                     </div>
                                 </div>
                                 <div class="col-md-12 mb-3">

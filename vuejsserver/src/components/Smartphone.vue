@@ -2252,17 +2252,8 @@ export default {
             }
         },
         setWeatherInfo: function (weatherjson) {
-            if(weatherjson != null && weatherJson.length > 15)
-            {
-                this.weather = JSON.parse(weatherjson);
-                this.setting = 7;
-                mp.trigger("Client:SendNotificationWithoutButton", 'Keine Wetterdaten verfügbar!', 'error', 'top-left', '4250');
-            }
-            else
-            {
-                this.weather = null;
-                this.setting = 0;
-            }
+            this.weather = JSON.parse(weatherjson);
+            this.setting = 7;
         },
         showWeather: function () {
             if (this.smartphone.prepaid != -1 && this.smartphone.prepaid < 1) {

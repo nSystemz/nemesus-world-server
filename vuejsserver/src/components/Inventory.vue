@@ -350,6 +350,8 @@ export default {
         },
         moveItem2(item, from) {
             if ((Date.now() / 1000) > this.clicked) {
+                this.itemSelect = null;
+                this.itemSelect2 = null;
                 this.moveItem(item, from);
             }
         },

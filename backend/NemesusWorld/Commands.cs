@@ -8893,7 +8893,7 @@ namespace NemesusWorld
                             if (Helper.GetRandomPercentage(65))
                             {
                                 Helper.SetPlayerHealth(player, NAPI.Player.GetPlayerHealth(player) - 5);
-                                Helper.SendNotificationWithoutButton(player, "Du hast nur saures bekommen!", "warning", "top-left", 2500);
+                                Helper.SendNotificationWithoutButton(player, "Du hast nur saures bekommen!", "info", "top-left", 2500);
                             }
                             else
                             {

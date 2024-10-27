@@ -140,7 +140,7 @@
               "RelativeDocumentMoniker": "Commands.cs",
               "ToolTip": "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\Commands.cs",
               "RelativeToolTip": "Commands.cs",
-              "ViewState": "AQIAAJoiAAAAAAAAAAAmwLQiAAAfAAAA",
+              "ViewState": "AQIAAKAiAAAAAAAAAAAmwL8iAAByAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-10-12T17:38:29.638Z",
               "EditorCaption": ""
@@ -153,7 +153,7 @@
               "RelativeDocumentMoniker": "Utils\\Helper.cs",
               "ToolTip": "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\Utils\\Helper.cs",
               "RelativeToolTip": "Utils\\Helper.cs",
-              "ViewState": "AQIAABsPAAAAAAAAAAAmwEAPAAAgAAAA",
+              "ViewState": "AQIAAJkHAAAAAAAAAAAmwLgHAAANAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-09-29T09:37:30.527Z",
               "EditorCaption": ""
@@ -168,8 +168,7 @@
               "RelativeToolTip": "Controllers\\DealerShipController.cs",
               "ViewState": "AQIAAPAAAAAAAAAAAAAqwA4BAABhAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2023-12-01T10:26:53.597Z",
-              "EditorCaption": ""
+              "WhenOpened": "2023-12-01T10:26:53.597Z"
             },
             {
               "$type": "Document",
@@ -181,8 +180,7 @@
               "RelativeToolTip": "Events.cs",
               "ViewState": "AQIAAG4AAAAAAAAAAAAAAIsAAAAuAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-07T07:00:08.485Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-07T07:00:08.485Z"
             },
             {
               "$type": "Document",
@@ -194,8 +192,7 @@
               "RelativeToolTip": "Controllers\\SmartphoneController.cs",
               "ViewState": "AQIAAJgAAAAAAAAAAAAiwLAAAAAJAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-16T11:23:31.082Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-16T11:23:31.082Z"
             },
             {
               "$type": "Document",
@@ -207,8 +204,7 @@
               "RelativeToolTip": "Controllers\\CharacterController.cs",
               "ViewState": "AQIAADsCAAAAAAAAAOBvwGgCAABbAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2023-12-01T08:15:49.926Z",
-              "EditorCaption": ""
+              "WhenOpened": "2023-12-01T08:15:49.926Z"
             },
             {
               "$type": "Document",
@@ -220,8 +216,7 @@
               "RelativeToolTip": "Controllers\\AntiCheatController.cs",
               "ViewState": "AQIAADkBAAAAAAAAAAAqwFcBAAAqAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-29T17:50:57.298Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-29T17:50:57.298Z"
             },
             {
               "$type": "Document",
@@ -233,8 +228,7 @@
               "RelativeToolTip": "Controllers\\ItemsController.cs",
               "ViewState": "AQIAABMIAAAAAAAAACBjwEcIAAAlAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-15T14:17:00.429Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-15T14:17:00.429Z"
             },
             {
               "$type": "Document",
@@ -246,8 +240,7 @@
               "RelativeToolTip": "Controllers\\FactionController.cs",
               "ViewState": "AQIAAG0GAAAAAAAAAAAqwHwGAAAvAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-11T06:11:33.733Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-11T06:11:33.733Z"
             },
             {
               "$type": "Document",
@@ -259,8 +252,7 @@
               "RelativeToolTip": "Models\\Bank.cs",
               "ViewState": "AQIAABEAAAAAAAAAAAAIwB4AAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-28T09:52:50.929Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-28T09:52:50.929Z"
             },
             {
               "$type": "Document",
@@ -272,8 +264,7 @@
               "RelativeToolTip": "Controllers\\GroupsController.cs",
               "ViewState": "AQIAAJIBAAAAAAAAAOB/wMQBAAApAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-29T10:51:39.947Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-29T10:51:39.947Z"
             },
             {
               "$type": "Document",
@@ -285,8 +276,7 @@
               "RelativeToolTip": "Controllers\\RobController.cs",
               "ViewState": "AQIAAE0AAAAAAAAAACCDwLIAAAA7AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2023-12-01T08:15:57.341Z",
-              "EditorCaption": ""
+              "WhenOpened": "2023-12-01T08:15:57.341Z"
             },
             {
               "$type": "Document",
@@ -298,8 +288,7 @@
               "RelativeToolTip": "Database\\Account.cs",
               "ViewState": "AQIAAEIAAAAAAAAAAAAuwEAAAAAaAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-08T18:00:52.586Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-08T18:00:52.586Z"
             },
             {
               "$type": "Document",
@@ -311,8 +300,7 @@
               "RelativeToolTip": "Controllers\\BankController.cs",
               "ViewState": "AQIAAHoBAAAAAAAAAAAqwJYBAABAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-28T09:54:44.163Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-28T09:54:44.163Z"
             },
             {
               "$type": "Document",
@@ -324,8 +312,7 @@
               "RelativeToolTip": "Controllers\\MDCController.cs",
               "ViewState": "AQIAAGgEAAAAAAAAAMBtwJUEAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-28T17:23:24.967Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-28T17:23:24.967Z"
             },
             {
               "$type": "Document",
@@ -337,8 +324,7 @@
               "RelativeToolTip": "Database\\ItemsGlobal.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAACcAAAAWAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-15T14:19:42.588Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-15T14:19:42.588Z"
             },
             {
               "$type": "Document",
@@ -350,8 +336,7 @@
               "RelativeToolTip": "Controllers\\DrugController.cs",
               "ViewState": "AQIAAIwAAAAAAAAAAAAgwKkAAAAuAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-09-05T17:04:56.298Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-09-05T17:04:56.298Z"
             },
             {
               "$type": "Document",
@@ -363,8 +348,7 @@
               "RelativeToolTip": "Database\\Furniture.cs",
               "ViewState": "AQIAAJgAAAAAAAAAAAAIwLUAAABVAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-15T14:17:41.323Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-15T14:17:41.323Z"
             },
             {
               "$type": "Document",
@@ -376,8 +360,7 @@
               "RelativeToolTip": "Models\\AddInfoBox.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAABIAAAAWAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-01T15:54:41.265Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-01T15:54:41.265Z"
             },
             {
               "$type": "Document",
@@ -389,8 +372,7 @@
               "RelativeToolTip": "Models\\ATMSpots.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAASAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-01T15:54:45.808Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-01T15:54:45.808Z"
             },
             {
               "$type": "Document",
@@ -402,8 +384,7 @@
               "RelativeToolTip": "Controllers\\GangController.cs",
               "ViewState": "AQIAANABAAAAAAAAAIiRwCoCAAARAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-30T07:48:36.818Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-08-30T07:48:36.818Z"
             },
             {
               "$type": "Document",
@@ -415,8 +396,7 @@
               "RelativeToolTip": "Database\\Business.cs",
               "ViewState": "AQIAALgBAAAAAAAAAAAqwNQBAAAnAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2023-12-28T16:01:57.857Z",
-              "EditorCaption": ""
+              "WhenOpened": "2023-12-28T16:01:57.857Z"
             },
             {
               "$type": "Document",
@@ -428,8 +408,7 @@
               "RelativeToolTip": "Database\\AdminSettings.cs",
               "ViewState": "AQIAAA0AAAAAAAAAAAAgwBkAAAAoAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-29T07:36:27.05Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-29T07:36:27.05Z"
             },
             {
               "$type": "Document",
@@ -441,8 +420,7 @@
               "RelativeToolTip": "Models\\Animations.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-06-29T18:02:58.598Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-29T18:02:58.598Z"
             },
             {
               "$type": "Document",
@@ -454,8 +432,7 @@
               "RelativeToolTip": "Controllers\\TicketController.cs",
               "ViewState": "AQIAAIsBAAAAAAAAAFagwA8CAABZAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-05T05:35:28.875Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-05T05:35:28.875Z"
             },
             {
               "$type": "Document",
@@ -467,8 +444,7 @@
               "RelativeToolTip": "Utils\\Settings.cs",
               "ViewState": "AQIAAAcAAAAAAAAAAAAYwBQAAAAvAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-05T05:34:49.813Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-05T05:34:49.813Z"
             },
             {
               "$type": "Document",
@@ -480,8 +456,7 @@
               "RelativeToolTip": "NemesusWorld.csproj",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAADIAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2024-06-29T18:24:00.063Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-06-29T18:24:00.063Z"
             },
             {
               "$type": "Document",
@@ -504,8 +479,7 @@
               "RelativeToolTip": "Database\\Cars.cs",
               "ViewState": "AQIAAHQAAAAAAAAAAAApwIQAAAA+AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2023-12-01T10:34:05.389Z",
-              "EditorCaption": ""
+              "WhenOpened": "2023-12-01T10:34:05.389Z"
             },
             {
               "$type": "Document",

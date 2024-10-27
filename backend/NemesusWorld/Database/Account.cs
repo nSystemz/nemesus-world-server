@@ -62,6 +62,7 @@ namespace NemesusWorld.Database
         //Nicht speichern
         public Player _Player;
         public bool logged_in { get; set; }
+        public int eventcd { get; set; }
 
         public Account()
         {
@@ -113,6 +114,7 @@ namespace NemesusWorld.Database
             tester = 0;
             _Player = null;
             logged_in = false;
+            eventcd = 0;
 
         }
 
@@ -165,6 +167,7 @@ namespace NemesusWorld.Database
             tester = 0;
             _Player = player;
             logged_in = false;
+            eventcd = 0;
         }
 
         public static bool IsAdmin(Player player, int alvl)

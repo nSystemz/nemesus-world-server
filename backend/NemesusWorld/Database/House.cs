@@ -39,6 +39,7 @@ namespace NemesusWorld.Database
         public GTANetworkAPI.Marker markerHandle { get; set; }
         public GTANetworkAPI.TextLabel textHandle { get; set; }
         public GTANetworkAPI.Blip blipHandle { get; set; }
+        public int trt { get; set; }
 
         public House()
         {
@@ -63,6 +64,7 @@ namespace NemesusWorld.Database
             markerHandle = null;
             textHandle = null;
             blipHandle = null;
+            trt = 0;
         }
 
         public static House GetClosestHouse(Player player, float distance = 1.5f)

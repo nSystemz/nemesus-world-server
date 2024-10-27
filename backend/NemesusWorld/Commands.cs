@@ -8861,6 +8861,69 @@ namespace NemesusWorld
             }
         }
 
+        //Halloween
+        [Command("trickortreat", "Befehl: /trickortreat", Alias = "trt")]
+        public void CMD_trt(Player player)
+        {
+            try
+            {
+                if (!Account.IsPlayerLoggedIn(player)) return;
+                if (player.GetSharedData<bool>("Player:Death") == true) return;
+                Account account = Helper.GetAccountData(player);
+                if (account == null) return;
+                int day = DateTime.Now.Day;
+                if (day >= 27 && day <= 31)
+                {
+                    if (Helper.UnixTimestamp() < account.eventcd)
+                    {
+                        Helper.SendNotificationWithoutButton(player, "Du kannst diesen Befehl nur alle 3 Minuten verwenden!", "error", "top-left", 3500);
+                        return;
+                    }
+                    if(player.IsInVehicle)
+                    {
+                        Helper.SendNotificationWithoutButton(player, "Du kannst diesen Befehl jetzt nicht verwenden!", "error", "top-left", 3500);
+                        return;
+                    }
+                    House house = House.GetClosestHouse(player, 2.75f);
+                    if(house != null)
+                    {
+                        Helper.PlayShortAnimation(player, "timetable@jimmy@doorknock@", "knockdoor_idle", 1550);
+                        if (house.owner != "n/A" && Helper.UnixTimestamp() > house.trt)
+                        {
+                            if (Helper.GetRandomPercentage(65))
+                            {
+                                Helper.SetPlayerHealth(player, NAPI.Player.GetPlayerHealth(player) - 5);
+                                Helper.SendNotificationWithoutButton(player, "Du hast nur saures bekommen!", "warning", "top-left", 2500);
+                            }
+                            else
+                            {
+                                account.coins += 2;
+                                Helper.SendNotificationWithoutButton(player, "Du hast 2 Coins bekommen!", "success", "top-left", 3500);
+                            }
+                            house.trt = Helper.UnixTimestamp() + (60 * 15);
+                            account.eventcd = Helper.UnixTimestamp() + (60 * 3);
+                        }
+                        else
+                        {
+                            Helper.SendNotificationWithoutButton(player, "Du kannst hier jetzt nicht nach Süßes oder Saures fragen!", "error", "top-left", 3500);
+                        }
+                    }
+                    else
+                    {
+                        Helper.SendNotificationWithoutButton(player, "Du befindest dich bei keinem Haus!", "error", "top-left", 3500);
+                    }
+                }
+                else
+                {
+                    Helper.SendNotificationWithoutButton(player, "Wir befinden uns nicht in der Halloween Zeit!", "error", "top-left", 3500);
+                }
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[CMD_trt]: " + e.ToString());
+            }
+        }
+
         //Text RP Befehle
         [Command("addfriend", "Befehl: /addfriend [Name]", GreedyArg = true)]
         public void cmd_addfriend(Player player, string name)

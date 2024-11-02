@@ -11115,7 +11115,7 @@ namespace NemesusWorld.Utils
                             lohnsteuer.value = -(int)(cash / 100 * adminSettings.lsteuer);
                             if (lohnsteuer.value > 0)
                             {
-                                charbank.bankvalue -= lohnsteuer.value;
+                                charbank.bankvalue -= (int)(cash / 100 * adminSettings.lsteuer);
                                 total += lohnsteuer.value;
                                 cash = 0;
                                 paydayList.Add(lohnsteuer);
@@ -11139,7 +11139,7 @@ namespace NemesusWorld.Utils
                                     }
                                     kfzsteuer.setting = "KFZ-Steuer " + adminSettings.ksteuer + "%" + " für " + vehiclename;
                                     kfzsteuer.value = -(int)(vehicleShop.price / 100 * adminSettings.ksteuer);
-                                    charbank.bankvalue -= kfzsteuer.value;
+                                    charbank.bankvalue -= (int)(vehicleShop.price / 100 * adminSettings.ksteuer);
                                     paydayList.Add(kfzsteuer);
                                     Helper.SetGovMoney((int)(vehicleShop.price / 100 * adminSettings.ksteuer), "KFZ-Steuer Einzahlung");
                                     total += kfzsteuer.value;

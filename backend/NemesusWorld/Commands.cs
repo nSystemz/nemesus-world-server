@@ -8872,7 +8872,8 @@ namespace NemesusWorld
                 Account account = Helper.GetAccountData(player);
                 if (account == null) return;
                 int day = DateTime.Now.Day;
-                if (day >= 27 && day <= 31)
+                int month = DateTime.Now.Month;
+                if (day >= 27 && day <= 31 && month == 10)
                 {
                     if (Helper.UnixTimestamp() < account.eventcd)
                     {

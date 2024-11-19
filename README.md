@@ -8,7 +8,7 @@ Weitere Credits gehen an Hrred für die Erstellung von vielen Maps und sonstigen
 
 (Euch gefällt der Gamemode? Dann lasst doch gerne ein Stern hier auf Github da ;))
 
-Info Vorab: Dieser Gamemode kann als Voice-RP (Salty-Chat oder RageMP Voice) oder Text-RP Gamemode verwendet werden.
+Info Vorab: Dieser Gamemode kann als Voice-RP (Salty-Chat (Muss selbstständig installiert werden) oder RageMP Voice) oder Text-RP Gamemode verwendet werden.
 
 Bei RageMP Voice bitte folgende Einstellungen zu deiner conf.json hinzufügen:
 - "voice-chat": true

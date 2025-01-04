@@ -120,4 +120,29 @@ body,
     width: .1rem;
     height: .1rem;
 }
+
+body {
+    background: transparent;
+    margin: 0;
+    height: 100vh;
+    overflow: hidden;
+}
+
+@keyframes firework {
+    0% {
+        transform: translate(var(--x), var(--initialY));
+        width: var(--initialSize);
+        opacity: 1;
+    }
+
+    50% {
+        width: 0.5vmin;
+        opacity: 1;
+    }
+
+    100% {
+        width: var(--finalSize);
+        opacity: 0;
+    }
+}
 </style>

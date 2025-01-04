@@ -1,7 +1,7 @@
 <template>
 <div class="selectwheel" style="z-index: 1; overflow-x: hidden; overflow-x: hidden; background-color:transparent; scrollbar-width: none;">
     <div class="wheel" ref="wheel" v-if="whichwheel == 1">
-        <div class="arc"><i @click="setWheel(1,whichwheel)" class="fas fa-money" style="color:#3F6791;text-shadow: 0 0 2px #000;"></i></div>
+        <div class="arc"><i @click="setWheel(1,whichwheel)" class="fa-solid fa-money-bill" style="color:#3F6791;text-shadow: 0 0 2px #000;"></i></div>
         <div class="arc"><i @click="setWheel(2,whichwheel)" class="fas fa-key" style="color:#3F6791;text-shadow: 0 0 2px #000;"></i></div>
         <div class="arc"><i @click="setWheel(3,whichwheel)" class="fas fa-play-circle" style="color:#3F6791;text-shadow: 0 0 2px #000;"></i></div>
         <div class="arc"><i @click="setWheel(4,whichwheel)" class="fas fa-car" style="color:#3F6791;text-shadow: 0 0 2px #000;"></i></div>

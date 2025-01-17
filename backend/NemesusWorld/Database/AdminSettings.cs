@@ -9,7 +9,6 @@ namespace NemesusWorld.Database
     class AdminSettings
     {
         public int id { get; set; }
-        [ResultColumn]
         public string adminpassword { get; set; }
         public int server_created { get; set; }
         public int punishments { get; set; }

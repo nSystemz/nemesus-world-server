@@ -4993,7 +4993,7 @@ namespace NemesusWorld.Utils
                             {
                                 if (input.Length <= 0) return;
                                 string adminpw = input;
-                                if (account != null && account.adminlevel > 0 && adminpw.Length >= 8 && adminpw.Length <= 36)
+                                if (account != null && account.adminlevel > 0 && adminpw.Length >= 8 && adminpw.Length <= 30)
                                 {
                                     string inputpw = adminpw + Pepper;
                                     if (BCrypt.Net.BCrypt.Verify(inputpw, adminSettings.adminpassword))

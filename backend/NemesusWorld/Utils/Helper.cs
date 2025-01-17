@@ -60,6 +60,7 @@ namespace NemesusWorld.Utils
         public static double gamemodeVersion = 1.1;
         public static bool whitelist = false; //False = Whitelist aus, True = Whitelist an
         public static Dictionary<int, List<Player>> radioChannels = new Dictionary<int, List<Player>>();
+        public static String Pepper = "(8wgwWoRld136="; //Eigenen Pepper aussuchen (Random String) - muss auch im UCP geändert werden und das gleiche wie hier sein
         //Fuelpositions
         public static Vector3[] fuelPositions = new Vector3[62]
                                 { 
@@ -4992,9 +4993,9 @@ namespace NemesusWorld.Utils
                             {
                                 if (input.Length <= 0) return;
                                 string adminpw = input;
-                                if (account != null && account.adminlevel > 0 && adminpw.Length >= 8 && adminpw.Length <= 15)
+                                if (account != null && account.adminlevel > 0 && adminpw.Length >= 8 && adminpw.Length <= 36)
                                 {
-                                    string inputpw = adminpw + "(8wgwWoRld136=";
+                                    string inputpw = adminpw + Pepper;
                                     if (BCrypt.Net.BCrypt.Verify(inputpw, adminSettings.adminpassword))
                                     {
                                         if (tempData.undercover != "")
@@ -12552,7 +12553,7 @@ namespace NemesusWorld.Utils
                         }
                     case "register3":
                         {
-                            string plate = numberinput;
+                            string plate = input;
 
                             MySqlCommand command = General.Connection.CreateCommand();
 

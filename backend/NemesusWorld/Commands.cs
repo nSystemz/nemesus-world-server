@@ -9049,7 +9049,7 @@ namespace NemesusWorld
                     Helper.SendNotificationWithoutButton(player, "Ungültiger Zustand!", "error", "top-end");
                     return;
                 }
-                if(condition.ToLower() == "n/A" || condition.ToLower() == "keinen")
+                if(condition.ToLower() == "n/a" || condition.ToLower() == "keinen")
                 {
                     player.SetSharedData("Client:Condition", "n/A");
                     Helper.SendNotificationWithoutButton(player, "Der Zustand wurde entfernt!", "success", "top-end");

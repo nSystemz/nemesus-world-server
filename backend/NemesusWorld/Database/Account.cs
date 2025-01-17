@@ -228,7 +228,7 @@ namespace NemesusWorld.Database
 
         public static bool CreateNewAccount(Account account, string name, string password, string playerip, ulong identifier)
         {
-            string saltedpw = BCrypt.Net.BCrypt.HashPassword(password + "(8wgwWoRld136=");
+            string saltedpw = BCrypt.Net.BCrypt.HashPassword(password + Helper.Pepper);
 
             account.name = name;
             account.last_ip = playerip;
@@ -440,7 +440,7 @@ namespace NemesusWorld.Database
                 }
             }
 
-            string oldpassword = passwordinput + "(8wgwWoRld136=";
+            string oldpassword = passwordinput + Helper.Pepper;
 
             if (BCrypt.Net.BCrypt.Verify(oldpassword, password)) return true;
             return false;

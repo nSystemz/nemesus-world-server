@@ -12547,6 +12547,7 @@ namespace NemesusWorld.Utils
                                     {
                                         Helper.CreateGroupLog(character.mygroup, $"{character.name} hat das Fahrzeug {car.vehicleData.vehiclename}[{car.vehicleData.id}] angemeldet - {plate}!");
                                     }
+                                    DealerShipController.SaveOneVehicleData(car);
                                     break;
                                 }
                             }
@@ -12593,6 +12594,7 @@ namespace NemesusWorld.Utils
                                     {
                                         Helper.CreateGroupLog(character.mygroup, $"{character.name} hat das Fahrzeug {car.vehicleData.vehiclename}[{car.vehicleData.id}] angemeldet - {plate}!");
                                     }
+                                    DealerShipController.SaveOneVehicleData(car);
                                     break;
                                 }
                             }

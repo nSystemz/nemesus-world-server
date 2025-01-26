@@ -47,6 +47,8 @@ let pressedUp = 0;
 let pressedG = 0;
 let pressedESC = 0;
 let pressedNum = 0;
+//SoundUrl
+let SoundUrl = null;
 //Crosshair
 let crosshair = 17;
 //Pet
@@ -1167,7 +1169,7 @@ mp.events.add("unhandledRejection", (promise, error) => {
 });
 
 //Prices
-mp.events.add("Client:SyncThings", (pricesCsv, animationhotkeys, chair, gprices, level, name = 'n/A', vrp, nametag) => {
+mp.events.add("Client:SyncThings", (pricesCsv, animationhotkeys, chair, gprices, level, name = 'n/A', vrp, nametag, soundurl) => {
     prices = pricesCsv.split(',');
     crosshair = chair;
     groupprices = gprices;
@@ -1181,6 +1183,7 @@ mp.events.add("Client:SyncThings", (pricesCsv, animationhotkeys, chair, gprices,
     level = level;
     voicerp = vrp;
     nametagSystem = nametag;
+    soundUrl = soundurl
     hudWindow.execute(`gui.menu.setvoicerp('${voicerp}');`);
     hudWindow.execute(`gui.hud.setvoicerp('${voicerp}');`);
     hudWindow.execute(`gui.speedometer.setvoicerp('${voicerp}');`);

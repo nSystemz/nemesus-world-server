@@ -7,5 +7,6 @@
 	"Database":   			"nworld",
 	"AdminNotificationWebHook":	"",
 	"ErrorWebhook":			"",
-	"ScreenshotWebhook":		""
+	"ScreenshotWebhook":		"",
+	"SoundUrl":			""
 }

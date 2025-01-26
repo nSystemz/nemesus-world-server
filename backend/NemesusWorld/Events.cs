@@ -1350,7 +1350,7 @@ namespace NemesusWorld
                 Helper.SetPlayerArmor(player, 0);
                 NAPI.Task.Run(() =>
                 {
-                    player.TriggerEvent("Client:PlaySound", "spacemen.wav", 1);
+                    player.TriggerEvent("Client:PlaySound", Settings._Settings.SoundUrl + "login.wav", 1);
                 }, delayTime: 85);
                 NAPI.Task.Run(() =>
                 {

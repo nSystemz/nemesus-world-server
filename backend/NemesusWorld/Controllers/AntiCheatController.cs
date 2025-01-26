@@ -317,7 +317,7 @@ namespace NemesusWorld.Controllers
                 }
                 else
                 {
-                    account.ban = time;
+                    account.ban = 1;
                 }
                 account.bantext = text;
                 command = General.Connection.CreateCommand();
@@ -336,6 +336,8 @@ namespace NemesusWorld.Controllers
                 Helper.adminSettings.punishments++;
 
                 player.TriggerEvent("Client:PlayerFreeze", true);
+
+                Account.SaveAccount(player);
 
                 NAPI.Task.Run(() =>
                 {

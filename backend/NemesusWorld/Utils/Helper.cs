@@ -7192,7 +7192,7 @@ namespace NemesusWorld.Utils
                     {
                         if (p != null && Account.IsPlayerLoggedIn(p) && p.GetOwnSharedData<bool>("Player:Spawned") == true && p.GetSharedData<bool>("Player:Death") == false && p.Position.DistanceTo(player.Position) <= 25.5 && !p.IsInVehicle)
                         {
-                            p.TriggerEvent("Client:PlaySound", "klingel.wav", 0);
+                            p.TriggerEvent("Client:PlaySound", Settings._Settings.SoundUrl + "klingel.wav", 0);
                         }
                     }
                 }
@@ -10343,7 +10343,7 @@ namespace NemesusWorld.Utils
                         if (!player.IsInVehicle && vclass != 13 && vclass != 8 && !vehicle.GetSharedData<String>("Vehicle:Name").Contains("nrg500"))
                         {
                             Helper.PlayShortAnimation(player, "anim@mp_player_intmenu@key_fob@", "fob_click_fp", 550);
-                            player.TriggerEvent("Client:PlaySound", "carlock.mp3", 0);
+                            player.TriggerEvent("Client:PlaySound", Settings._Settings.SoundUrl + "carlock.mp3", 0);
                         }
                         if (vehicle.Locked == true)
                         {
@@ -10470,7 +10470,7 @@ namespace NemesusWorld.Utils
                     {
                         if (House.HasPlayerHouseKey(player, house.id))
                         {
-                            player.TriggerEvent("Client:PlaySound", "doorlock.mp3", 0);
+                            player.TriggerEvent("Client:PlaySound", Settings._Settings.SoundUrl + "doorlock.mp3", 0);
                             if (house.locked == 0)
                             {
                                 house.locked = 1;
@@ -10494,7 +10494,7 @@ namespace NemesusWorld.Utils
                     {
                         if (House.HasPlayerHouseKey(player, house.id))
                         {
-                            player.TriggerEvent("Client:PlaySound", "doorlock.mp3", 0);
+                            player.TriggerEvent("Client:PlaySound", Settings._Settings.SoundUrl + "doorlock.mp3", 0);
                             if (house.locked == 0)
                             {
                                 house.locked = 1;
@@ -18576,7 +18576,7 @@ namespace NemesusWorld.Utils
                 if (sprunk != null && character != null && account != null)
                 {
                     string prices = $"{Convert.ToInt32(30 * sprunk.multiplier)},";
-                    player.TriggerEvent("Client:SyncThings", prices, character.animations, account.crosshair, adminSettings.groupsettings, account.level, character.name, Helper.adminSettings.voicerp, Helper.adminSettings.nametag);
+                    player.TriggerEvent("Client:SyncThings", prices, character.animations, account.crosshair, adminSettings.groupsettings, account.level, character.name, Helper.adminSettings.voicerp, Helper.adminSettings.nametag, Settings._Settings.SoundUrl);
                 }
             }
             catch (Exception e)

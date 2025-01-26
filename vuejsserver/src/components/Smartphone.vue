@@ -1202,6 +1202,7 @@ export default {
     name: 'Smartphone',
     data: function () {
         return {
+            soundurl: '',
             showsmartphoneset: false,
             setting: -2, //-2
             lastsetting: 0,
@@ -1714,29 +1715,29 @@ export default {
                 this.smartphone.ringtone = ringtone;
             }
         },
-        playMessageSound: function (name) {
+        playMessageSound: function (url) {
             if (this.startSound2 != null) {
                 this.startSound2.pause();
                 this.startSound2.currentTime = 0;
                 this.startSound2 = null;
             }
-            var soundata = {
-                soundurl: 'https://nemesus-world.de/ragenwsounds/' + name
+            let soundata = {
+                soundurl: this.soundurl + url
             }
             this.startSound2 = new Audio(soundata.soundurl);
             this.startSound2.volume = 0.50;
             this.startSound2.loop = false;
             this.startSound2.play();
         },
-        playRingtone: function (name, check) {
+        playRingtone: function (url, check) {
             if (this.startSound != null) {
                 this.stopSound();
                 this.stopSound.currentTime = 0;
                 this.startstopSoundSound2 = null;
                 if (check == 1 && this.playringtone == name) return;
             }
-            var soundata = {
-                soundurl: 'https://nemesus-world.de/ragenwsounds/' + name
+            let soundata = {
+                soundurl: this.soundurl + url
             }
             this.playringtone = name;
             this.startSound = new Audio(soundata.soundurl);
@@ -1759,7 +1760,7 @@ export default {
                 this.save = 1;
                 this.setting = -3;
                 this.playMessageSound("startsoundsmartphone.mp3");
-                var self = this;
+                let self = this;
                 setTimeout(function () {
                     self.setting = -1;
                     self.smartphone.phonestatus = 1;
@@ -1830,7 +1831,7 @@ export default {
         showSmartphone2() {
             this.showsmartphoneset = !this.showsmartphoneset;
         },
-        showSmartphone(json, json2, json3, json4, capacity, hide, premium, prepaid, faction) {
+        showSmartphone(json, json2, json3, json4, capacity, hide, premium, prepaid, faction, soundurl) {
             if (hide == 0) {
                 this.showsmartphoneset = !this.showsmartphoneset;
             }
@@ -1847,6 +1848,7 @@ export default {
                 this.smartphone = JSON.parse(json);
                 this.premium = premium;
                 this.faction = faction;
+                this.soundurl = soundurl;
                 if (this.smartphone.wallpaper >= 10 && this.premium <= 0) {
                     this.smartphone.wallpaper = 2;
                     this.save = 1;

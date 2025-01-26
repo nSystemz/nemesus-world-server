@@ -16,8 +16,9 @@ namespace NemesusWorld.Utils
         public string AdminNotificationWebHook { get; set; }
         public string ErrorWebhook { get; set; }
         public string ScreenshotWebhook { get; set; }
+        public string SoundUrl { get; set; }
 
-        //ToDo: settings.json anpassen im Ordner serverdata
+        //ToDo: settings.json anpassen im Ordner serverdata, bei der SoundUrl muss immer am Ende ein / sein
         public static bool LoadServerSettings()
         {
             try

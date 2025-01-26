@@ -461,6 +461,7 @@ namespace NemesusWorld.Controllers
                             Helper.SetPlayerPosition(player, new Vector3(-1375.683, -817.50415f, 19.111004 - 1.5));
                             player.Dimension = 1;
                             player.TriggerEvent("Client:ShowBlackFadeIn", "Du bist in Los-Santos angekommen und fährst mit dem Taxi zum Rathaus, um dich um deine neuen Papiere zu kümmern ...", character.tutorialstep);
+                            player.TriggerEvent("Client:PlaySound", Settings._Settings.SoundUrl + "tutorial.mp3", 0);
                             NAPI.Task.Run(() =>
                             {
                                 if (Helper.adminSettings.mlosloaded == true)
@@ -485,6 +486,7 @@ namespace NemesusWorld.Controllers
                             Helper.SetPlayerPosition(player, new Vector3(73.97, -3396.195, 11.157 - 1.5));
                             player.Dimension = 1;
                             player.TriggerEvent("Client:ShowBlackFadeIn", "Als blinder Passagier bist du in Los-Santos angekommen und triffst dich mit deiner Kontaktperson ...", character.tutorialstep);
+                            player.TriggerEvent("Client:PlaySound", Settings._Settings.SoundUrl + "tutorial.mp3", 0);
                             NAPI.Task.Run(() =>
                             {
                                 Helper.SetPlayerPosition(player, new Vector3(156.36731, -3308.6594, 6.0219297 + 0.1));

@@ -4483,15 +4483,8 @@ export default {
       });
     },
     showBlackFadeIn: function (blacktext) {
-      var soundata = {
-        soundurl: 'https://nemesus-world.de/ragenwsounds/tutorial.mp3'
-      }
-      this.startSound = new Audio(soundata.soundurl);
-      this.startSound.volume = 0.05;
-      this.startSound.play();
       this.showBlack = true;
       this.blackText = blacktext;
-      return;
     },
     showTutorialStadthalle: function (legal, name) {
       if (this.startSound != null) {
@@ -4598,15 +4591,15 @@ export default {
         timer: timer
       })
     },
-    playSound: function (name, lower) {
+    playSound: function (url, lower) {
       if (this.startSound != null) {
         this.stopSound();
       }
-      var soundata;
-      if(name != 'technobase')
+      let soundata;
+      if(url != 'technobase')
       {
         soundata = {
-          soundurl: 'https://nemesus-world.de/ragenwsounds/' + name
+          soundurl: url
         }
       }
       else

@@ -96,7 +96,7 @@ namespace NemesusWorld.Controllers
                             {
                                 tempData.speaker = false;
                             }
-                            player.TriggerEvent("Client:ShowSmartphone", smartphone.phoneprops, smartphone.contacts, NAPI.Util.ToJson(messageList), NAPI.Util.ToJson(phoneCallList), smartphone.akku, hide, smartphone.prepaid, account.premium);
+                            player.TriggerEvent("Client:ShowSmartphone", smartphone.phoneprops, smartphone.contacts, NAPI.Util.ToJson(messageList), NAPI.Util.ToJson(phoneCallList), smartphone.akku, hide, smartphone.prepaid, account.premium, Settings._Settings.SoundUrl);
                         }
                         else
                         {
@@ -721,7 +721,7 @@ namespace NemesusWorld.Controllers
                                                     if (tempData2.inCall == true || account2.prison > 0 || character2.arrested > 0)
                                                     {
                                                         player.SetData<bool>("Client:Besetzt", true);
-                                                        player.TriggerEvent("Client:PlaySound", "besetzt.mp3", 0);
+                                                        player.TriggerEvent("Client:PlaySound", Settings._Settings.SoundUrl + "besetzt.mp3", 0);
                                                         return;
                                                     }
                                                     player.SetData<bool>("Client:Besetzt", false);

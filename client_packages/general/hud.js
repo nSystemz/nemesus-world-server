@@ -1789,14 +1789,14 @@ mp.events.addDataHandler("Player:Adminsettings", (entity, value) => {
 });
 
 //Smartphone
-mp.events.add("Client:ShowSmartphone", (json, json2, json3, json4, capacity, hide, prepaid, premium) => {
+mp.events.add("Client:ShowSmartphone", (json, json2, json3, json4, capacity, hide, prepaid, premium, soundurl) => {
     if (hudWindow != null) {
         if (hide == 0) {
             mp.events.call('Client:UpdateHud3');
             showHandy = !showHandy;
         }
         let faction = localPlayer.getVariable('Player:Faction');
-        hudWindow.execute(`gui.smartphone.showSmartphone('${json}','${json2}','${json3}','${json4}','${capacity}','${hide}','${premium}','${prepaid}','${faction}');`)
+        hudWindow.execute(`gui.smartphone.showSmartphone('${json}','${json2}','${json3}','${json4}','${capacity}','${hide}','${premium}','${prepaid}','${faction}','${soundurl}');`)
         if (showHandy == true) {
             if (hide == 0) {
                 mp.events.call("Client:SetSmartphoneObj");

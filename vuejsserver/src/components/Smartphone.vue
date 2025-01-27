@@ -1277,7 +1277,6 @@ export default {
             lastcheck13: (Date.now() / 1000),
             save: 0,
             newmessages: 0,
-            playringtone: 0,
             callnumber: '',
             lastnumber: '',
             phonecount: 0,
@@ -1502,14 +1501,14 @@ export default {
         },
         getCall: function (number1, number2, hidden, json, emergency) {
             if (this.inCall == 1 || this.smartphone.phonestatus == 0 || this.capacity <= 0) return;
-            var tempdata = [];
+            let tempdata = [];
             this.emergency = emergency;
             tempdata = JSON.parse(json);
             if (tempdata.phonestatus == 1) {
-                let ringtone = "ringtone" + tempdata.ringtone + ".mp3";
+                let ringtone = this.soundurl + "ringtone" + tempdata.ringtone + ".mp3";
                 this.playRingtone(ringtone);
                 if (tempdata.phonestatus == 2) {
-                    this.playRingtone("vibration.mp3");
+                    this.playRingtone(this.soundurl + "vibration.mp3");
                 }
             }
             if (number2 == this.smartphone.phonenumber) {
@@ -1715,14 +1714,14 @@ export default {
                 this.smartphone.ringtone = ringtone;
             }
         },
-        playMessageSound: function (url) {
+        playMessageSound: function (name) {
             if (this.startSound2 != null) {
                 this.startSound2.pause();
                 this.startSound2.currentTime = 0;
                 this.startSound2 = null;
             }
             let soundata = {
-                soundurl: this.soundurl + url
+                soundurl: this.soundurl + name
             }
             this.startSound2 = new Audio(soundata.soundurl);
             this.startSound2.volume = 0.50;
@@ -1739,7 +1738,6 @@ export default {
             let soundata = {
                 soundurl: this.soundurl + url
             }
-            this.playringtone = name;
             this.startSound = new Audio(soundata.soundurl);
             this.startSound.volume = 0.55;
             this.startSound.loop = true;

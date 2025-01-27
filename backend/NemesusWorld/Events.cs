@@ -2472,8 +2472,7 @@ namespace NemesusWorld
                 if (tempData.inrob == true)
                 {
                     tempData.inrob = false;
-                    //ToDo: Soundlink anpassen
-                    player.TriggerEvent("Client:Play3DSound", "https://nemesus-world.de/ragenwsounds/alarm.wav", -3);
+                    player.TriggerEvent("Client:Play3DSound", Settings._Settings.SoundUrl + "alarm.wav", -3);
                 }
                 //Accept Call + Smartphone
                 player.SetData<bool>("Player:AcceptCall", false);

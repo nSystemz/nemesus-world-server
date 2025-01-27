@@ -47,8 +47,6 @@ let pressedUp = 0;
 let pressedG = 0;
 let pressedESC = 0;
 let pressedNum = 0;
-//SoundUrl
-let SoundUrl = null;
 //Crosshair
 let crosshair = 17;
 //Pet

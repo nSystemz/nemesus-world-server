@@ -261,7 +261,7 @@ export default {
     name: 'CharacterCreator',
     data: function () {
         return {
-            charactercreatorshow: true,
+            charactercreatorshow: false,
             firstname: '',
             lastname: '',
             legal: 1,

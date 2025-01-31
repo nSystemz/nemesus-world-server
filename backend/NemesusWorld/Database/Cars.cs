@@ -61,7 +61,7 @@ namespace NemesusWorld.Database
                         car.vehicleHandle.SetData<int>("Vehicle:Jobid", spedVehicle.id);
                     }
                     car.vehicleHandle.SetData<int>("Vehicle:Products", 0);
-                    car.vehicleHandle.SetData<int>("Vehicle:Tuev", Helper.UnixTimestamp() + (93 * 86400));
+                    car.vehicleHandle.SetSharedData<int>("Vehicle:Tuev", Helper.UnixTimestamp() + (93 * 86400));
                     car.vehicleHandle.SetData<Vector3>("Vehicle:Position", position);
                     car.vehicleHandle.SetData<float>("Vehicle:Rotation", heading);
                     car.vehicleHandle.SetSharedData("Vehicle:Speedlimit", 0);
@@ -178,7 +178,7 @@ namespace NemesusWorld.Database
                                 car.vehicleHandle.SetData<int>("Vehicle:Jobid", spedVehicle.id);
                             }
                             car.vehicleHandle.SetData<int>("Vehicle:Products", vehicleData.products);
-                            car.vehicleHandle.SetData<int>("Vehicle:Tuev", vehicleData.tuev);
+                            car.vehicleHandle.SetSharedData<int>("Vehicle:Tuev", vehicleData.tuev);
                             car.vehicleHandle.SetData<Vector3>("Vehicle:Position", postionsVector);
                             car.vehicleHandle.SetData<float>("Vehicle:Rotation", float.Parse(vehiclePosition[3], System.Globalization.CultureInfo.InvariantCulture));
                             car.vehicleHandle.SetSharedData("Vehicle:Speedlimit", 0);
@@ -238,7 +238,7 @@ namespace NemesusWorld.Database
                                 vehicleData.sync = car.vehicleHandle.GetSharedData<string>("Vehicle:Sync");
                             }
                             car.vehicleHandle.SetData<bool>("Vehicle:EngineStatus", vehicleData.engine == 1 ? true : false);
-                            car.vehicleHandle.SetData<int>("Vehicle:Tuev", vehicleData.tuev);
+                            car.vehicleHandle.SetSharedData<int>("Vehicle:Tuev", vehicleData.tuev);
                             vehicleData.doors = vehicleData.doors != null ? vehicleData.doors : "[false,false,false,false,false,false]";
                             vehicleData.windows = vehicleData.windows != null ? vehicleData.windows : "[false,false,false,false]";
                             car.vehicleHandle.SetSharedData("Vehicle:Doors", vehicleData.doors);

@@ -84,6 +84,13 @@
                     <div style="bottom: 0" class="mt-2">
                         <div style="display: flex; justify-content: center; align-items: center;"></div>
                         <span class="text-center">
+                            <p>Taste [K] = Kameraeinstellung</p>
+                        </span>
+                    </div>
+                    <hr/>
+                    <div style="bottom: 0" class="mt-2">
+                        <div style="display: flex; justify-content: center; align-items: center;"></div>
+                        <span class="text-center">
                             <p>Gamemode mit ❤️ erstellt von Nemesus.de!</p>
                         </span>
                     </div>
@@ -254,7 +261,7 @@ export default {
     name: 'CharacterCreator',
     data: function () {
         return {
-            charactercreatorshow: false,
+            charactercreatorshow: true,
             firstname: '',
             lastname: '',
             legal: 1,

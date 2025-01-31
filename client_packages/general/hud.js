@@ -1,7 +1,7 @@
 //Chat
 const chat = mp.browsers.new('package://misc/chat/index.html');
 //GUI
-var hudWindow = mp.browsers.new('package://web/index.html');
+let hudWindow = mp.browsers.new('package://web/index.html');
 //Imports
 const Camera = require('./helper/camera');
 //Cam

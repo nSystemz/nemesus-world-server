@@ -443,7 +443,6 @@ namespace NemesusWorld.Controllers
         {
             try
             {
-                PetaPoco.Database db = new PetaPoco.Database(General.Connection);
                 foreach (Cars car in Cars.carList)
                 {
                     if (car.vehicleData != null && car.vehicleData != null)

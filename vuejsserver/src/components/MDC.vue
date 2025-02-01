@@ -2303,7 +2303,7 @@ export default {
                     mp.trigger("Client:SendNotificationWithoutButton", 'Bitte einen Grund eingeben!', 'error', 'top-left', '2250');
                     return;
                 }
-                var params = lic + ',' + status + ',' + name + ',' + this.fahndungText;
+                let params = lic + ',' + status + ',' + name + ',' + this.fahndungText;
                 // eslint-disable-next-line no-undef
                 mp.trigger('Client:MDCSettings', 'setlic', params);
                 this.clicked = (Date.now() / 1000) + (1);

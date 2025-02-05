@@ -1208,6 +1208,7 @@ mp.events.add("Client:ClearChat", () => {
 mp.events.add("Client:FontSize", (size) => {
     if (chat) {
         mp.storage.data.fontSize = size;
+        fontSize = size;
         mp.storage.flush();
         chat.execute(`chatAPI.fontsize(${size});`);
     }

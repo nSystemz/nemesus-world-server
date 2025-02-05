@@ -703,6 +703,11 @@ if (typeof checkChat == "undefined") {
     mp.storage.flush();
     checkChat = 1;
 }
+let fontSize = mp.storage.data.fontSize;
+if(typeof fontSize == "undefined" || fontSize < 0.1 || fontSize > 2.0)
+{
+    fontSize = 1.3;
+}
 //Minimap Zoom
 mp.game.ui.setRadarZoom(1100);
 //Nametags
@@ -973,11 +978,9 @@ mp.events.add('render', (nametags) => {
     }
 
     //Overlaymodus
-    if(overLayModus)
-    {
+    if (overLayModus) {
         overlayList.forEach(function (entity) {
-            if (entity != null)
-            {
+            if (entity != null) {
                 batch.addThisFrame(entity);
             }
         });
@@ -1189,7 +1192,7 @@ mp.events.add("Client:SyncThings", (pricesCsv, animationhotkeys, chair, gprices,
     if (voicerp == 2) {
         mp.events.call("Client:SetTalkstate2", 0);
         mp.voiceChat.advancedNoiseSuppression = true;
- 	    mp.voiceChat.networkOptimisations = true;
+        mp.voiceChat.networkOptimisations = true;
         mp.voiceChat.muted = true;
         voiceChatOff = true;
     }
@@ -1199,6 +1202,14 @@ mp.events.add("Client:SyncThings", (pricesCsv, animationhotkeys, chair, gprices,
 mp.events.add("Client:ClearChat", () => {
     if (chat) {
         chat.execute(`chatAPI.clear();`);
+    }
+});
+
+mp.events.add("Client:FontSize", (size) => {
+    if (chat) {
+        mp.storage.data.fontSize = size;
+        mp.storage.flush();
+        chat.execute(`chatAPI.fontsize(${size});`);
     }
 });
 
@@ -3303,26 +3314,37 @@ mp.events.add("playerCommand", (command) => {
     }
     if (commandName === "errortest") {
         mp.game.vehicle.getVehicleModelMaxSpeed(localPlayer.vehicle.model) * 3.6;
-    }
-    else if(commandName === "reloadvoicechat" && voicerp == 2)
-    {
+    } else if (commandName === "reloadvoicechat" && voicerp == 2) {
         mp.voiceChat.cleanupAndReload(true, true, true);
-    }
-    else if(commandName === "overlaymodus")
-    {
+    } else if (commandName === "overlaymodus") {
         overLayModus = !overLayModus;
         mp.game.graphics.setEntityOverlayPassEnabled(overLayModus);
-        if(overLayModus)
-        {
+        if (overLayModus) {
             let overlayParams = {
                 enableDepth: false,
                 deleteWhenUnused: false,
                 keepNonBlurred: true,
                 processAttachments: true,
-                fill: { enable: false, color: 0xFFFFFFFF },
-                noise: { enable: false, size: 0.0, speed: 0.0, intensity: 0.0 },
-                outline: { enable: true, color: 0xFF9000FF, width: 1.0, blurRadius: 1.0, blurIntensity: 1.0 },
-                wireframe: { enable: false }
+                fill: {
+                    enable: false,
+                    color: 0xFFFFFFFF
+                },
+                noise: {
+                    enable: false,
+                    size: 0.0,
+                    speed: 0.0,
+                    intensity: 0.0
+                },
+                outline: {
+                    enable: true,
+                    color: 0xFF9000FF,
+                    width: 1.0,
+                    blurRadius: 1.0,
+                    blurIntensity: 1.0
+                },
+                wireframe: {
+                    enable: false
+                }
             };
 
             batch = mp.game.graphics.createEntityOverlayBatch(overlayParams);
@@ -3957,7 +3979,7 @@ mp.keys.bind(0x46, true, function () {
 mp.keys.bind(0x2D, true, function () {
     if (pressedEinf == 0 || (Date.now() / 1000) > pressedEinf) {
         let spawned = localPlayer.getVariable('Player:Spawned');
-        if (showSaltyError == true || triggerAntiCheat == true || localPlayer.isTypingInTextChat || nokeys == true || death == true || cuffed == true || !spawned || showHandy == true || editFurniture == true || startRange == true || showDealer == true || showTab == true  || barberMenu == true || tattooShop == true) return;
+        if (showSaltyError == true || triggerAntiCheat == true || localPlayer.isTypingInTextChat || nokeys == true || death == true || cuffed == true || !spawned || showHandy == true || editFurniture == true || startRange == true || showDealer == true || showTab == true || barberMenu == true || tattooShop == true) return;
         lastclick = (Date.now() / 1000);
         pressedEinf = (Date.now() / 1000) + (1);
         handsUp = !handsUp;
@@ -4264,13 +4286,12 @@ mp.keys.bind(0x4D, true, function () {
 });
 
 //Key N (Gedrückt halten)
-mp.keys.bind(0x4E, true, function() {
+mp.keys.bind(0x4E, true, function () {
     if (pressedN == 0 || (Date.now() / 1000) > pressedN) {
         let spawned = localPlayer.getVariable('Player:Spawned');
         if (showSaltyError == true || triggerAntiCheat == true || voiceChatOff == true || localPlayer.isTypingInTextChat || !spawned || nokeys == true || death == true || cuffed == true || showMenu == true || showHandy == true) return;
-        if(voicerp == 2)
-        {
-            mp.events.callRemote('Server:StartTalkingOnRadio'); 
+        if (voicerp == 2) {
+            mp.events.callRemote('Server:StartTalkingOnRadio');
             mp.game.audio.playSoundFrontend(-1, "Start_Squelch", "CB_RADIO_SFX", true);
         }
         pressedN = (Date.now() / 1000) + (1);
@@ -4278,15 +4299,13 @@ mp.keys.bind(0x4E, true, function() {
 });
 
 //Key N (Loslassen)
-mp.keys.bind(0x4E, false, function() {
+mp.keys.bind(0x4E, false, function () {
     let spawned = localPlayer.getVariable('Player:Spawned');
     if (showSaltyError == true || triggerAntiCheat == true || localPlayer.isTypingInTextChat || !spawned || nokeys == true || cuffed == true || showMenu == true || showHandy == true) return;
-    if(voicerp == 2)
-    {
+    if (voicerp == 2) {
         let talking = localPlayer.getVariable('Player:TalkingOnRadio')
-        if(talking)
-        {
-            mp.events.callRemote('Server:StopTalkingOnRadio'); 
+        if (talking) {
+            mp.events.callRemote('Server:StopTalkingOnRadio');
             mp.game.audio.playSoundFrontend(-1, "End_Squelch", "CB_RADIO_SFX", true);
         }
     }
@@ -6874,8 +6893,7 @@ mp.events.add('entityStreamOut', (entity) => {
         let spawned = localPlayer.getVariable('Player:Spawned');
         if (!spawned) return;
         //Overlay
-        if(overLayModus)
-        {
+        if (overLayModus) {
             overlayList = overlayList.filter(function (element) {
                 element != entity;
             });
@@ -8531,17 +8549,14 @@ function UpdateNameTags1(nametags) {
                             if (admindutytemp <= 0) {
                                 if (death == false) {
                                     if (afk == 0) {
-                                        if(condition = 'n/A')
-                                        {
+                                        if (condition = 'n/A') {
                                             graphics.drawText(player.name + ' [' + player.remoteId + ']\nLeben: ' + healthplayer + '%, Rüstung: ' + armourplayer + '%\n', [x, y], {
                                                 font: 4,
                                                 color: color,
                                                 scale: [0.45, 0.45],
                                                 outline: true
                                             });
-                                        }
-                                        else
-                                        {
+                                        } else {
                                             graphics.drawText(player.name + ' [' + player.remoteId + ']\nLeben: ' + healthplayer + '%, Rüstung: ' + armourplayer + '%\n~y~' + condition + '\n', [x, y], {
                                                 font: 4,
                                                 color: color,
@@ -8645,17 +8660,14 @@ function UpdateNameTags2(nametags) {
                         if (admindutytemp <= 0) {
                             if (death == false) {
                                 if (afk == 0) {
-                                    if(condition == 'n/A')
-                                    {
+                                    if (condition == 'n/A') {
                                         graphics.drawText(nname + ' [' + player.remoteId + ']\n', [x, y], {
                                             font: 4,
                                             color: color,
                                             scale: [0.45, 0.45],
                                             outline: true
                                         });
-                                    }
-                                    else
-                                    {
+                                    } else {
                                         graphics.drawText(nname + ' [' + player.remoteId + ']\n~y~' + condition + '\n', [x, y], {
                                             font: 4,
                                             color: color,
@@ -8712,17 +8724,14 @@ function UpdateNameTags2(nametags) {
                             if (admindutytemp <= 0) {
                                 if (death == false) {
                                     if (afk == 0) {
-                                        if(condition == 'n/A')
-                                        {
+                                        if (condition == 'n/A') {
                                             graphics.drawText(player.name + ' [' + player.remoteId + ']\nLeben: ' + healthplayer + '%, Rüstung: ' + armourplayer + '%\n', [x, y], {
                                                 font: 4,
                                                 color: color,
                                                 scale: [0.45, 0.45],
                                                 outline: true
                                             });
-                                        }
-                                        else
-                                        {
+                                        } else {
                                             graphics.drawText(player.name + ' [' + player.remoteId + ']\nLeben: ' + healthplayer + '%, Rüstung: ' + armourplayer + '%\n~y~' + condition + '\n', [x, y], {
                                                 font: 4,
                                                 color: color,
@@ -9479,6 +9488,9 @@ function showHideChat(setChat) {
     mp.gui.chat.show(setChat);
     if (setChat) {
         chat.execute(`chatAPI.highlight();`);
+        if (fontSize) {
+            chat.execute(`chatAPI.fontsize(${fontSize});`);
+        }
     }
 }
 

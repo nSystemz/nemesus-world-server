@@ -7019,6 +7019,25 @@ namespace NemesusWorld
             }
         }
 
+        [Command("fontsize", "Befehl: /fontsize [Größe 0.1 - 2.0]")]
+        public void CMD_fontsize(Player player, float size)
+        {
+            try
+            {
+                if(size < 0.1 || size > 2.0)
+                {
+                    Helper.SendNotificationWithoutButton(player, "Ungültige Größe!", "error", "top-end");
+                    return;
+                }
+                Helper.SendNotificationWithoutButton(player, "Du hast die Größe von deinem Chat angepasst!", "success", "top-end");
+                player.TriggerEvent("Client:FontSize", size);
+            }
+            catch (Exception e)
+            {
+                Helper.ConsoleLog("error", $"[CMD_fontsize]: " + e.ToString());
+            }
+        }
+
         //Hausbefehle
         [Command("möbelmodus", "Befehl: /möbelmodus", Alias = "moebelmodus")]
         public void CMD_moebelmodus(Player player)

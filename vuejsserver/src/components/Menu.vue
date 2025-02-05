@@ -4988,6 +4988,10 @@
                                                                     <td>Chatverlauf löschen</td>
                                                                 </tr>
                                                                 <tr>
+                                                                    <td>/fontsize</td>
+                                                                    <td>Chatgröße anpassen</td>
+                                                                </tr>
+                                                                <tr>
                                                                     <td>/overlaymodus</td>
                                                                     <td>Overlaymodus aktivieren/deaktivieren</td>
                                                                 </tr>

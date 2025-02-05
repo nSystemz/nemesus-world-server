@@ -21,13 +21,27 @@ const chatAPI = {
         MESSAGE_LIST.innerHTML = "";
     },
 
+    fontsize: (size) => {
+        const style = document.createElement('style');
+        style.innerHTML = `
+          * {
+            font-family: Ubuntu, sans-serif;
+            font-weight: 700;
+            font-size: ${size}vh;
+            background-color: transparent;
+            user-select: none;
+          }
+        `;
+        document.head.appendChild(style);
+    },
+
     highlight: () => {
-        if(chatActive)
-	        MESSAGE_LIST.scrollTop = MESSAGE_LIST.scrollHeight;
+        if (chatActive)
+            MESSAGE_LIST.scrollTop = MESSAGE_LIST.scrollHeight;
     },
 
     push: (text) => {
-        if(text.length < 1) return;
+        if (text.length < 1) return;
 
         MESSAGE_LIST.innerHTML += `
         <div class="message stroke">
@@ -40,13 +54,13 @@ const chatAPI = {
     },
 
     activate: (toggle) => {
-        if(!toggle && chatActive)
+        if (!toggle && chatActive)
             setChatInputStatus(false);
         chatActive = toggle;
     },
 
     show: (toggle) => {
-        if(!toggle && chatInputStatus)
+        if (!toggle && chatInputStatus)
             setChatInputStatus(false);
 
         toggle ? CHAT_BOX.className = "chatBox" : CHAT_BOX.className = "hide";
@@ -55,25 +69,30 @@ const chatAPI = {
     }
 }
 
-if(typeof mp !== 'undefined') {
-    const api = {"chat:push": chatAPI.push, "chat:clear": chatAPI.clear, "chat:activate": chatAPI.activate, "chat:show": chatAPI.show}; 
+if (typeof mp !== 'undefined') {
+    const api = {
+        "chat:push": chatAPI.push,
+        "chat:clear": chatAPI.clear,
+        "chat:activate": chatAPI.activate,
+        "chat:show": chatAPI.show
+    };
 
-    for(const fn in api) {
+    for (const fn in api) {
         mp.events.add(fn, api[fn]);
     }
 }
 
 const setChatInputStatus = (status) => {
-    if((!chatActive && status) || (status == chatInputStatus))
+    if ((!chatActive && status) || (status == chatInputStatus))
         return;
 
     mp.invoke("focus", status);
     mp.invoke("setTypingInChatState", status);
 
-    if(status) {
+    if (status) {
         chatInputStatus = true;
         CHAT_INPUT.className = "inputBar";
-        if(settings.characterCount)
+        if (settings.characterCount)
             CHAR_COUNT.className = "charCount stroke";
         CHAT_INPUT.focus();
     } else {
@@ -85,13 +104,13 @@ const setChatInputStatus = (status) => {
 
 const getDateString = () => {
     const date = new Date();
-    const h = "0"+date.getHours().toString();
-    const m = "0"+date.getMinutes().toString();
-    const s = "0"+date.getSeconds().toString();
+    const h = "0" + date.getHours().toString();
+    const m = "0" + date.getMinutes().toString();
+    const s = "0" + date.getSeconds().toString();
     return `[${h.substr(h.length-2)}:${m.substr(m.length-2)}:${s.substr(s.length-2)}]`;
 }
 
-String.prototype.lowerCaseFirstWord = function() {
+String.prototype.lowerCaseFirstWord = function () {
     const word = this.split(" ")[0];
     return this.replace(new RegExp(word, "gi"), word.toLowerCase());
 }
@@ -103,16 +122,16 @@ const updateCharCount = () => {
 const sendInput = () => {
     let message = CHAT_INPUT.value.trim();
 
-    if(settings.removeInputColors)
+    if (settings.removeInputColors)
         message = message.replace(/(?=!{).*(?<=})/g, "");
 
-    if(message.length < 1) {
+    if (message.length < 1) {
         setChatInputStatus(false);
         return;
     }
 
-    if(message[0] == "/") {
-        if(message.length < 2) {
+    if (message[0] == "/") {
+        if (message.length < 2) {
             setChatInputStatus(false);
             return;
         }
@@ -130,10 +149,10 @@ const sendInput = () => {
 }
 
 const onArrowUp = () => {
-    if(inputHistoryPosition == inputHistory.length - 1)
+    if (inputHistoryPosition == inputHistory.length - 1)
         return;
 
-    if(inputHistoryPosition == -1)
+    if (inputHistoryPosition == -1)
         inputCache = CHAT_INPUT.value;
 
     inputHistoryPosition++;
@@ -141,10 +160,10 @@ const onArrowUp = () => {
 }
 
 const onArrowDown = () => {
-    if(inputHistoryPosition === -1)
+    if (inputHistoryPosition === -1)
         return;
 
-    if(inputHistoryPosition === 0) {
+    if (inputHistoryPosition === 0) {
         CHAT_INPUT.value = inputCache;
         inputHistoryPosition = -1;
         return;
@@ -162,28 +181,28 @@ const onDocumentReady = () => {
     CHAT_INPUT.oninput = updateCharCount;
     CHAT_INPUT.maxLength = settings.maxLength;
 
-    if(settings.scrollbar) {
+    if (settings.scrollbar) {
         MESSAGE_LIST.style.overflowY = "auto"
     }
 
     updateCharCount();
 
     document.addEventListener("keydown", (e) => {
-        switch(e.which) {
+        switch (e.which) {
             case 84:
-                if(!chatInputStatus && chatActive) {
-                    setChatInputStatus(true); 
+                if (!chatInputStatus && chatActive) {
+                    setChatInputStatus(true);
                     e.preventDefault();
                 }
                 break;
 
             case 13:
-                if(chatInputStatus)
+                if (chatInputStatus)
                     sendInput();
                 break;
 
             case 38:
-                if(chatInputStatus) {
+                if (chatInputStatus) {
                     onArrowUp();
                     updateCharCount();
                     e.preventDefault();
@@ -191,8 +210,8 @@ const onDocumentReady = () => {
                 break;
 
             case 40:
-                if(chatInputStatus) {
-                    onArrowDown(); 
+                if (chatInputStatus) {
+                    onArrowDown();
                     updateCharCount();
                     e.preventDefault();
                 }
@@ -207,7 +226,7 @@ const onDocumentReady = () => {
                 break;
 
             case 27:
-                if(chatInputStatus && chatActive) {
+                if (chatInputStatus && chatActive) {
                     setChatInputStatus(false);
                     e.preventDefault();
                 }

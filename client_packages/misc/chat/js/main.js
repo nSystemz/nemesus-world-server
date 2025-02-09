@@ -22,7 +22,7 @@ const chatAPI = {
     },
 
     timestamp: (modus) => {
-        settings.timestamp = modus;
+        settings.timeStamp = modus;
     },
 
     fontsize: (size) => {

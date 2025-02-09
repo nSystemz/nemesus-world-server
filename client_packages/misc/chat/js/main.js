@@ -1,4 +1,4 @@
-const settings = {
+let settings = {
     timeStamp: true,
     removeInputColors: true,
     characterCount: true,
@@ -19,6 +19,10 @@ let inputCache = "";
 const chatAPI = {
     clear: () => {
         MESSAGE_LIST.innerHTML = "";
+    },
+
+    timestamp: (modus) => {
+        settings.timestamp = modus;
     },
 
     fontsize: (size) => {

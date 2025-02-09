@@ -4992,6 +4992,10 @@
                                                                     <td>Chatgröße anpassen</td>
                                                                 </tr>
                                                                 <tr>
+                                                                    <td>/timestamp</td>
+                                                                    <td>Chat Timestamp an / ausschalten</td>
+                                                                </tr>
+                                                                <tr>
                                                                     <td>/overlaymodus</td>
                                                                     <td>Overlaymodus aktivieren/deaktivieren</td>
                                                                 </tr>

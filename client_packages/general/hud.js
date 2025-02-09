@@ -704,8 +704,7 @@ if (typeof checkChat == "undefined") {
     checkChat = 1;
 }
 let fontSize = mp.storage.data.fontSize;
-if(typeof fontSize == "undefined" || fontSize < 0.1 || fontSize > 2.0)
-{
+if(typeof fontSize == "undefined" || fontSize < 0.1 || fontSize > 2.0) {
     fontSize = 1.3;
 }
 //Minimap Zoom
@@ -1211,6 +1210,12 @@ mp.events.add("Client:FontSize", (size) => {
         fontSize = size;
         mp.storage.flush();
         chat.execute(`chatAPI.fontsize(${size});`);
+    }
+});
+
+mp.events.add("Client:Timestamp", (modus) => {
+    if (chat) {
+        chat.execute(`chatAPI.timestamp(${modus});`);
     }
 });
 

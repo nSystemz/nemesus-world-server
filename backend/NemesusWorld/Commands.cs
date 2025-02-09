@@ -7038,6 +7038,21 @@ namespace NemesusWorld
             }
         }
 
+        [Command("timestamp", "Befehl: /fontsize [true/false]")]
+        public void CMD_timestamp(Player player, Boolean modus)
+        {
+            try
+            {
+                Helper.SendNotificationWithoutButton(player, "Du hast die Timestamp Einstellungen von deinem Chat angepasst!", "success", "top-end");
+                player.TriggerEvent("Client:Timestamp", modus);
+            }
+            catch (Exception e)
+            {
+                Helper.SendNotificationWithoutButton(player, "Ungültige Eingabe!", "error", "top-end");
+                Helper.ConsoleLog("error", $"[CMD_fontsize]: " + e.ToString());
+            }
+        }
+
         //Hausbefehle
         [Command("möbelmodus", "Befehl: /möbelmodus", Alias = "moebelmodus")]
         public void CMD_moebelmodus(Player player)

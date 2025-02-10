@@ -3,7 +3,12 @@
   "WorkspaceRootPath": "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Program Files\\dotnet\\sdk\\9.0.102\\Sdks\\Microsoft.NET.Sdk\\targets\\Microsoft.NET.Sdk.targets||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\Controllers\\CharacterController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Controllers\\CharacterController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{5A3EE769-3CC8-425C-9970-DD29316719D8}|NemesusWorld.csproj|j:\\tutorials\\nemesus-world-server\\backend\\nemesusworld\\nemesusworld.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{5A3EE769-3CC8-425C-9970-DD29316719D8}|NemesusWorld.csproj|solutionrelative:nemesusworld.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\Controllers\\FactionController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -20,14 +25,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\Database\\AdminSettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Database\\AdminSettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5A3EE769-3CC8-425C-9970-DD29316719D8}|NemesusWorld.csproj|j:\\tutorials\\nemesus-world-server\\backend\\nemesusworld\\nemesusworld.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{5A3EE769-3CC8-425C-9970-DD29316719D8}|NemesusWorld.csproj|solutionrelative:nemesusworld.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\Controllers\\CharacterController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|solutionrelative:Controllers\\CharacterController.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\Events.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -129,35 +126,24 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 8,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Microsoft.NET.Sdk.targets",
-              "DocumentMoniker": "C:\\Program Files\\dotnet\\sdk\\9.0.102\\Sdks\\Microsoft.NET.Sdk\\targets\\Microsoft.NET.Sdk.targets",
-              "ToolTip": "C:\\Program Files\\dotnet\\sdk\\9.0.102\\Sdks\\Microsoft.NET.Sdk\\targets\\Microsoft.NET.Sdk.targets*",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAACEAAAARAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003801|",
-              "WhenOpened": "2025-02-09T12:10:19.992Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 1,
               "Title": "NemesusWorld.csproj",
               "DocumentMoniker": "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\NemesusWorld.csproj",
               "RelativeDocumentMoniker": "NemesusWorld.csproj",
               "ToolTip": "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\NemesusWorld.csproj",
               "RelativeToolTip": "NemesusWorld.csproj",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABwAAAAlAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
               "WhenOpened": "2025-02-02T09:01:36.661Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 13,
               "Title": "Settings.cs",
               "DocumentMoniker": "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\Utils\\Settings.cs",
               "RelativeDocumentMoniker": "Utils\\Settings.cs",
@@ -169,7 +155,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 20,
               "Title": "BankController.cs",
               "DocumentMoniker": "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\Controllers\\BankController.cs",
               "RelativeDocumentMoniker": "Controllers\\BankController.cs",
@@ -181,7 +167,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 15,
               "Title": "AntiCheatController.cs",
               "DocumentMoniker": "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\Controllers\\AntiCheatController.cs",
               "RelativeDocumentMoniker": "Controllers\\AntiCheatController.cs",
@@ -193,7 +179,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 21,
               "Title": "MDCController.cs",
               "DocumentMoniker": "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\Controllers\\MDCController.cs",
               "RelativeDocumentMoniker": "Controllers\\MDCController.cs",
@@ -205,7 +191,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 22,
               "Title": "ItemsGlobal.cs",
               "DocumentMoniker": "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\Database\\ItemsGlobal.cs",
               "RelativeDocumentMoniker": "Database\\ItemsGlobal.cs",
@@ -217,7 +203,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 24,
+              "DocumentIndex": 23,
               "Title": "DrugController.cs",
               "DocumentMoniker": "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\Controllers\\DrugController.cs",
               "RelativeDocumentMoniker": "Controllers\\DrugController.cs",
@@ -229,7 +215,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 25,
+              "DocumentIndex": 24,
               "Title": "Furniture.cs",
               "DocumentMoniker": "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\Database\\Furniture.cs",
               "RelativeDocumentMoniker": "Database\\Furniture.cs",
@@ -241,19 +227,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 0,
               "Title": "CharacterController.cs",
               "DocumentMoniker": "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\Controllers\\CharacterController.cs",
               "RelativeDocumentMoniker": "Controllers\\CharacterController.cs",
               "ToolTip": "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\Controllers\\CharacterController.cs",
               "RelativeToolTip": "Controllers\\CharacterController.cs",
-              "ViewState": "AgIAAOUBAAAAAAAAAAAmwAECAABEAAAAAAAAAA==",
+              "ViewState": "AgIAAHMCAAAAAAAAAAAAAIkCAAA9AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2023-12-01T08:15:49.926Z"
+              "WhenOpened": "2023-12-01T08:15:49.926Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 10,
               "Title": "ItemsController.cs",
               "DocumentMoniker": "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\Controllers\\ItemsController.cs",
               "RelativeDocumentMoniker": "Controllers\\ItemsController.cs",
@@ -265,7 +252,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Commands.cs",
               "DocumentMoniker": "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\Commands.cs",
               "RelativeDocumentMoniker": "Commands.cs",
@@ -277,7 +264,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 6,
               "Title": "Events.cs",
               "DocumentMoniker": "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\Events.cs",
               "RelativeDocumentMoniker": "Events.cs",
@@ -289,7 +276,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 8,
               "Title": "DealerShipController.cs",
               "DocumentMoniker": "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\Controllers\\DealerShipController.cs",
               "RelativeDocumentMoniker": "Controllers\\DealerShipController.cs",
@@ -301,7 +288,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 11,
               "Title": "GangController.cs",
               "DocumentMoniker": "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\Controllers\\GangController.cs",
               "RelativeDocumentMoniker": "Controllers\\GangController.cs",
@@ -313,7 +300,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 7,
               "Title": "Cars.cs",
               "DocumentMoniker": "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\Database\\Cars.cs",
               "RelativeDocumentMoniker": "Database\\Cars.cs",
@@ -325,7 +312,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 9,
               "Title": "GroupsController.cs",
               "DocumentMoniker": "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\Controllers\\GroupsController.cs",
               "RelativeDocumentMoniker": "Controllers\\GroupsController.cs",
@@ -337,7 +324,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 19,
               "Title": "Character.cs",
               "DocumentMoniker": "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\Database\\Character.cs",
               "RelativeDocumentMoniker": "Database\\Character.cs",
@@ -349,7 +336,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 18,
               "Title": "BusinessLoad.cs",
               "DocumentMoniker": "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\Models\\BusinessLoad.cs",
               "RelativeDocumentMoniker": "Models\\BusinessLoad.cs",
@@ -361,7 +348,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "Account.cs",
               "DocumentMoniker": "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\Database\\Account.cs",
               "RelativeDocumentMoniker": "Database\\Account.cs",
@@ -373,7 +360,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 17,
               "Title": "RobController.cs",
               "DocumentMoniker": "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\Controllers\\RobController.cs",
               "RelativeDocumentMoniker": "Controllers\\RobController.cs",
@@ -385,7 +372,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 16,
               "Title": "Bank.cs",
               "DocumentMoniker": "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\Models\\Bank.cs",
               "RelativeDocumentMoniker": "Models\\Bank.cs",
@@ -397,7 +384,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "FactionController.cs",
               "DocumentMoniker": "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\Controllers\\FactionController.cs",
               "RelativeDocumentMoniker": "Controllers\\FactionController.cs",
@@ -405,12 +392,11 @@
               "RelativeToolTip": "Controllers\\FactionController.cs",
               "ViewState": "AgIAAIwAAAAAAAAAAAAmwJAAAAAeAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-11T06:11:33.733Z",
-              "EditorCaption": ""
+              "WhenOpened": "2024-07-11T06:11:33.733Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 14,
               "Title": "SmartphoneController.cs",
               "DocumentMoniker": "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\Controllers\\SmartphoneController.cs",
               "RelativeDocumentMoniker": "Controllers\\SmartphoneController.cs",
@@ -422,7 +408,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 26,
+              "DocumentIndex": 25,
               "Title": "AddInfoBox.cs",
               "DocumentMoniker": "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\Models\\AddInfoBox.cs",
               "RelativeDocumentMoniker": "Models\\AddInfoBox.cs",
@@ -434,7 +420,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 27,
+              "DocumentIndex": 26,
               "Title": "ATMSpots.cs",
               "DocumentMoniker": "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\Models\\ATMSpots.cs",
               "RelativeDocumentMoniker": "Models\\ATMSpots.cs",
@@ -446,7 +432,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "AdminSettings.cs",
               "DocumentMoniker": "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\Database\\AdminSettings.cs",
               "RelativeDocumentMoniker": "Database\\AdminSettings.cs",
@@ -458,7 +444,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 28,
+              "DocumentIndex": 27,
               "Title": "Animations.cs",
               "DocumentMoniker": "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\Models\\Animations.cs",
               "RelativeDocumentMoniker": "Models\\Animations.cs",
@@ -470,7 +456,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 29,
+              "DocumentIndex": 28,
               "Title": "TicketController.cs",
               "DocumentMoniker": "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\Controllers\\TicketController.cs",
               "RelativeDocumentMoniker": "Controllers\\TicketController.cs",
@@ -482,7 +468,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 12,
               "Title": "DiscordBot.cs",
               "DocumentMoniker": "J:\\Tutorials\\nemesus-world-server\\backend\\NemesusWorld\\Discord\\DiscordBot.cs",
               "RelativeDocumentMoniker": "Discord\\DiscordBot.cs",

@@ -707,6 +707,11 @@ let fontSize = mp.storage.data.fontSize;
 if(typeof fontSize == "undefined" || fontSize < 0.1 || fontSize > 2.0) {
     fontSize = 1.3;
 }
+let timeStamp = mp.storage.data.timeStamp;
+if(typeof timeStamp == "undefined")
+{
+    timeStamp = true;
+}
 //Minimap Zoom
 mp.game.ui.setRadarZoom(1100);
 //Nametags
@@ -1215,6 +1220,9 @@ mp.events.add("Client:FontSize", (size) => {
 
 mp.events.add("Client:Timestamp", (modus) => {
     if (chat) {
+        mp.storage.data.timeStamp = modus;
+        timeStamp = modus;
+        mp.storage.flush();
         chat.execute(`chatAPI.timestamp(${modus});`);
     }
 });
@@ -9496,6 +9504,7 @@ function showHideChat(setChat) {
         chat.execute(`chatAPI.highlight();`);
         if (fontSize) {
             chat.execute(`chatAPI.fontsize(${fontSize});`);
+            chat.execute(`chatAPI.timestamp(${timeStamp});`);
         }
     }
 }

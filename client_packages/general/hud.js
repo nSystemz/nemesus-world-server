@@ -4819,7 +4819,7 @@ mp.keys.bind(0xA0, true, function () {
             modusFurniture = !modusFurniture;
             mp.events.call('Client:UpdateInfoBox', 'null', 'null', 'null', 'null', 'Möbelaufbau', 'null', 'null', 'null');
         }
-        if (localPlayer.vehicle.getVariable('Vehicle:Speedlimit') == 0 && activateNitro == 0 && localPlayer.vehicle && localPlayer.vehicle.getMod(40) >= 0 && localPlayer.vehicle.getPedInSeat(-1) === localPlayer.handle) {
+        if (localPlayer.vehicle && localPlayer.vehicle.getVariable('Vehicle:Speedlimit') == 0 && activateNitro == 0 && localPlayer.vehicle && localPlayer.vehicle.getMod(40) >= 0 && localPlayer.vehicle.getPedInSeat(-1) === localPlayer.handle) {
             if (nitroCd == 0 || (Date.now() / 1000) > nitroCd) {
                 activateNitro = 1;
                 mp.events.callRemote('Server:NitroSetStatus', activateNitro);

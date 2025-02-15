@@ -859,7 +859,7 @@ mp.events.add('render', (nametags) => {
     //Seatbelt + Locked
     if (localPlayer.vehicle && localPlayer.vehicle.getClass() != 8 && localPlayer.vehicle.getClass() != 13 && localPlayer.vehicle.getClass() != 14 && localPlayer.vehicle.getClass() != 22) {
         let locked = localPlayer.vehicle.getDoorLockStatus();
-        if (locked != 1 && localPlayer.vehicle.getVariable('Vehicle:Name').toLowerCase() != "rcmavic") {
+        if (locked != null && locked != 1 && localPlayer.vehicle.getVariable('Vehicle:Name').toLowerCase() != "rcmavic") {
             mp.game.controls.disableControlAction(32, 75, true);
         }
         if (!localPlayer.getConfigFlag(32, true) && localPlayer.vehicle.getVariable('Vehicle:Name').toLowerCase() != "rcmavic") {
@@ -1061,7 +1061,7 @@ mp.events.add('render', (nametags) => {
     if (!mp.players.local.vehicle && !mp.gui.cursor.visible) {
         const raycast = getLocalTargetVehicle();
 
-        if (raycast && raycast.entity.getDoorLockStatus() == 1 && raycast.entity.doors && raycast.entity.getClass() !== 13 && raycast.entity.getClass() !== 8 && !mp.game.player.isFreeAiming() && mp.game.gameplay.getDistanceBetweenCoords(raycast.entity.position.x, raycast.entity.position.y, raycast.entity.position.z, mp.players.local.position.x, mp.players.local.position.y, mp.players.local.position.z, false) < 3.5) {
+        if (raycast && raycast.entity && raycast.entity.getDoorLockStatus() == 1 && raycast.entity.doors && raycast.entity.getClass() !== 13 && raycast.entity.getClass() !== 8 && !mp.game.player.isFreeAiming() && mp.game.gameplay.getDistanceBetweenCoords(raycast.entity.position.x, raycast.entity.position.y, raycast.entity.position.z, mp.players.local.position.x, mp.players.local.position.y, mp.players.local.position.z, false) < 3.5) {
 
             target = getClosestBone(raycast);
             if (!target) return;
@@ -4564,23 +4564,26 @@ mp.keys.bind(0x45, true, function () {
             }
             if (!set) {
                 let closestVeh = getClosestVehicle(localPlayer.position);
-                let locked = closestVeh.vehicle.getDoorLockStatus();
-                if (closestVeh && locked == 1) {
-                    if (closestVeh.distance <= 5.0) {
-                        let boneIndex = closestVeh.vehicle.getBoneIndexByName('boot');
-                        let bonePos = closestVeh.vehicle.getWorldPositionOfBone(boneIndex);
-                        if (mp.game.gameplay.getDistanceBetweenCoords(bonePos.x, bonePos.y, bonePos.z, localPlayer.position.x, localPlayer.position.y, localPlayer.position.z, false) <= 1.85) {
-                            closestVeh.vehicle.doors[5] = !closestVeh.vehicle.doors[5];
-                            mp.events.callRemote('Server:VehicleControl', closestVeh.vehicle, JSON.stringify(closestVeh.vehicle.doors), 1);
-                            set = true;
-                        }
+                if(closestVeh != null)
+                {
+                    let locked = closestVeh.vehicle.getDoorLockStatus();
+                    if (closestVeh && locked == 1) {
+                        if (closestVeh.distance <= 5.0) {
+                            let boneIndex = closestVeh.vehicle.getBoneIndexByName('boot');
+                            let bonePos = closestVeh.vehicle.getWorldPositionOfBone(boneIndex);
+                            if (mp.game.gameplay.getDistanceBetweenCoords(bonePos.x, bonePos.y, bonePos.z, localPlayer.position.x, localPlayer.position.y, localPlayer.position.z, false) <= 1.85) {
+                                closestVeh.vehicle.doors[5] = !closestVeh.vehicle.doors[5];
+                                mp.events.callRemote('Server:VehicleControl', closestVeh.vehicle, JSON.stringify(closestVeh.vehicle.doors), 1);
+                                set = true;
+                            }
 
-                        boneIndex = closestVeh.vehicle.getBoneIndexByName('bonnet');
-                        bonePos = closestVeh.vehicle.getWorldPositionOfBone(boneIndex);
-                        if (mp.game.gameplay.getDistanceBetweenCoords(bonePos.x, bonePos.y, bonePos.z, localPlayer.position.x, localPlayer.position.y, localPlayer.position.z, false) <= 2.15) {
-                            closestVeh.vehicle.doors[4] = !closestVeh.vehicle.doors[4];
-                            mp.events.callRemote('Server:VehicleControl', closestVeh.vehicle, JSON.stringify(closestVeh.vehicle.doors), 1);
-                            set = true;
+                            boneIndex = closestVeh.vehicle.getBoneIndexByName('bonnet');
+                            bonePos = closestVeh.vehicle.getWorldPositionOfBone(boneIndex);
+                            if (mp.game.gameplay.getDistanceBetweenCoords(bonePos.x, bonePos.y, bonePos.z, localPlayer.position.x, localPlayer.position.y, localPlayer.position.z, false) <= 2.15) {
+                                closestVeh.vehicle.doors[4] = !closestVeh.vehicle.doors[4];
+                                mp.events.callRemote('Server:VehicleControl', closestVeh.vehicle, JSON.stringify(closestVeh.vehicle.doors), 1);
+                                set = true;
+                            }
                         }
                     }
                 }

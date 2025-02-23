@@ -1505,10 +1505,10 @@ export default {
             this.emergency = emergency;
             tempdata = JSON.parse(json);
             if (tempdata.phonestatus == 1) {
-                let ringtone = this.soundurl + "ringtone" + tempdata.ringtone + ".mp3";
+                let ringtone = "ringtone" + tempdata.ringtone + ".mp3";
                 this.playRingtone(ringtone);
                 if (tempdata.phonestatus == 2) {
-                    this.playRingtone(this.soundurl + "vibration.mp3");
+                    this.playRingtone("vibration.mp3");
                 }
             }
             if (number2 == this.smartphone.phonenumber) {
@@ -1525,7 +1525,7 @@ export default {
                 this.calltime = 0;
                 this.getcallnumber = number1;
                 this.getcallnumber2 = number2;
-                var self = this;
+                let self = this;
                 if (this.calltimer != null) {
                     clearInterval(this.calltimer);
                     this.calltimer = null;

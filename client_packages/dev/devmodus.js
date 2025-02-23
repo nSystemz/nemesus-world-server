@@ -157,3 +157,40 @@ mp.events.addDataHandler("Player:DevModus", (entity, value, oldValue) => {
         }
     }
 });
+
+let doorStates = [];
+
+mp.keys.bind(0x4A, true, function () { 
+    if (devModus == false) return;
+    let cameraPos = mp.game.cam.getGameplayCamCoord();
+    let direction = mp.game.cam.getGameplayCamRot(2);
+
+    let farPoint = {
+        x: cameraPos.x + direction.x * 1000,
+        y: cameraPos.y + direction.y * 1000,
+        z: cameraPos.z * 1000
+    };
+
+    let result = mp.raycasting.testPointToPoint(cameraPos, farPoint, [1]);
+
+    if (result && result.entity) {
+        let doorHash = mp.game.entity.getEntityModel(result.entity);
+        let pos = result.position;
+
+        let doorKey = `${doorHash}_${pos.x.toFixed(2)}_${pos.y.toFixed(2)}_${pos.z.toFixed(2)}`;
+
+        if (!(doorKey in doorStates)) {
+            doorStates[doorKey] = false;
+        }
+
+        doorStates[doorKey] = !doorStates[doorKey];
+
+        mp.game.object.doorControl(doorHash, pos.x, pos.y, pos.z, doorStates[doorKey], 0.0, 0.0, 0.0);
+
+        let stateText = doorStates[doorKey] ? "offen" : "geschlossen";
+        let output = `Status ${stateText}: Hash ${doorHash}, Position: { x: ${pos.x.toFixed(2)}, y: ${pos.y.toFixed(2)}, z: ${pos.z.toFixed(2)} }`;
+        mp.console.logInfo(output, true, true);
+    } else {
+        mp.gui.chat.push("Keine Tür gefunden.");
+    }
+});

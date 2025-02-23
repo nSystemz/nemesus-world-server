@@ -19,13 +19,13 @@ mp.events.add("Client:UpdateDoors", (jsondoor) => {
 });
 
 mp.events.add("Client:AddDoor", (ndoor) => {
-    newdoor = JSON.parse(ndoor);
+    let newdoor = JSON.parse(ndoor);
     door.push(newdoor);
     mp.game.object.doorControl(parseInt(newdoor.hash), newdoor.posx, newdoor.posy, newdoor.posz, newdoor.toogle, 0.0, 0.0, 0);
 });
 
 mp.events.add("Client:RemoveDoor", (rdoorpara) => {
-    rdoor = JSON.parse(rdoorpara);
+    let rdoor = JSON.parse(rdoorpara);
     door = door.filter(function (element) {
         return element != rdoor;
     });

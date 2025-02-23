@@ -2054,7 +2054,7 @@ mp.events.add("Client:CreateTwitter", (from, msg, timestamp) => {
 
 mp.events.add("Client:SmartphoneGetCall", (number1, number2, hidden, json, emergency) => {
     if (hudWindow != null) {
-        hudWindow.execute(`gui.smartphone.getCall('${number1}','${number2}','${hidden}','${json}','${emergency}');`)
+        hudWindow.execute(`gui.smartphone.getCall('${number1}','${number2}','${hidden}','${json}','${emergency});`)
     }
 })
 
@@ -4557,17 +4557,17 @@ mp.keys.bind(0x45, true, function () {
         }
         mp.events.callRemote('Server:OnPlayerPressE');
         if (!localPlayer.vehicle && !mp.gui.cursor.visible) {
-            if (target && target.pushTime + 1 >= Date.now() / 1000 && target.veh.doesExist()) {
+            if (target && target.pushTime + 1 >= Date.now() / 1000 && target.veh && target.veh.doesExist()) {
                 target.veh.doors[target.id] = !target.veh.doors[target.id];
                 mp.events.callRemote('Server:VehicleControl', target.veh, JSON.stringify(target.veh.doors), 1);
                 set = true;
             }
             if (!set) {
                 let closestVeh = getClosestVehicle(localPlayer.position);
-                if(closestVeh != null)
+                if(closestVeh && closestVeh.vehicle)
                 {
                     let locked = closestVeh.vehicle.getDoorLockStatus();
-                    if (closestVeh && locked == 1) {
+                    if (closestVeh && locked != null && locked == 1) {
                         if (closestVeh.distance <= 5.0) {
                             let boneIndex = closestVeh.vehicle.getBoneIndexByName('boot');
                             let bonePos = closestVeh.vehicle.getWorldPositionOfBone(boneIndex);
@@ -8386,6 +8386,9 @@ function updateSpeedometer() {
             if (engineHealth > 1000) engineHealth = 1000;
             let speed = localPlayer.vehicle.getSpeed() * 3.6;
             let locked = localPlayer.vehicle.getDoorLockStatus();
+            if(locked == null) {
+                locked = 0;
+            }
             let engine = localPlayer.getVariable('Player:VehicleEngine');
             let belt = localPlayer.getConfigFlag(32, true); //Seatbelt
             let fuel = localPlayer.vehicle.getVariable('Vehicle:Fuel');

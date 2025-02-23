@@ -8273,7 +8273,7 @@ namespace NemesusWorld
                 if (!Account.IsPlayerLoggedIn(player)) return;
                 if (character.faction != 1)
                 {
-                    Helper.SendNotificationWithoutButton(player, $"Du bist kein Mitglied vom {Helper.factionList[character.faction - 1].name}!", "error", "top-left", 2500);
+                    Helper.SendNotificationWithoutButton(player, $"Du bist kein Mitglied vom {Helper.factionList[0].name}!", "error", "top-left", 2500);
                     return;
                 }
                 if (character.factionduty == false)
@@ -8325,7 +8325,7 @@ namespace NemesusWorld
                 if (!Account.IsPlayerLoggedIn(player)) return;
                 if (character.faction != 1)
                 {
-                    Helper.SendNotificationWithoutButton(player, $"Du bist kein Mitglied vom {Helper.factionList[character.faction - 1].name}!", "error", "top-left", 2500);
+                    Helper.SendNotificationWithoutButton(player, $"Du bist kein Mitglied vom {Helper.factionList[0].name}!", "error", "top-left", 2500);
                     return;
                 }
                 if (character.factionduty == false)
@@ -8377,7 +8377,7 @@ namespace NemesusWorld
                 if (!Account.IsPlayerLoggedIn(player)) return;
                 if (character.faction != 1)
                 {
-                    Helper.SendNotificationWithoutButton(player, $"Du bist kein Mitglied vom {Helper.factionList[character.faction - 1].name}!", "error", "top-left", 2500);
+                    Helper.SendNotificationWithoutButton(player, $"Du bist kein Mitglied vom {Helper.factionList[0].name}!", "error", "top-left", 2500);
                     return;
                 }
                 if (character.factionduty == false)
@@ -8436,7 +8436,7 @@ namespace NemesusWorld
                 if (!Account.IsPlayerLoggedIn(player)) return;
                 if (character.faction != 1)
                 {
-                    Helper.SendNotificationWithoutButton(player, $"Du bist kein Mitglied vom {Helper.factionList[character.faction - 1].name}!", "error", "top-left", 2500);
+                    Helper.SendNotificationWithoutButton(player, $"Du bist kein Mitglied vom {Helper.factionList[0].name}!", "error", "top-left", 2500);
                     return;
                 }
                 if (character.factionduty == false)
@@ -8490,7 +8490,7 @@ namespace NemesusWorld
                 if (!Account.IsPlayerLoggedIn(player)) return;
                 if (character.faction != 1)
                 {
-                    Helper.SendNotificationWithoutButton(player, $"Du bist kein Mitglied vom {Helper.factionList[character.faction - 1].name}!", "error", "top-left", 2500);
+                    Helper.SendNotificationWithoutButton(player, $"Du bist kein Mitglied vom {Helper.factionList[0].name}!", "error", "top-left", 2500);
                     return;
                 }
                 if (character.factionduty == false)

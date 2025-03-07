@@ -1499,10 +1499,11 @@ export default {
             // eslint-disable-next-line no-undef
             mp.trigger("Client:DeclineCall");
         },
-        getCall: function (number1, number2, hidden, json, emergency) {
+        getCall: function (number1, number2, hidden, json, emergency, soundurl) {
             if (this.inCall == 1 || this.smartphone.phonestatus == 0 || this.capacity <= 0) return;
             let tempdata = [];
             this.emergency = emergency;
+            this.soundurl = soundurl;
             tempdata = JSON.parse(json);
             if (tempdata.phonestatus == 1) {
                 let ringtone = "ringtone" + tempdata.ringtone + ".mp3";
@@ -1512,6 +1513,7 @@ export default {
                 }
             }
             if (number2 == this.smartphone.phonenumber) {
+                this.setting = 18;
                 this.calllogs.unshift({
                     "fromnumber": "" + number1,
                     "tonumber": "" + number2,
@@ -1527,13 +1529,12 @@ export default {
                 this.getcallnumber2 = number2;
                 let self = this;
                 if (this.calltimer != null) {
-                    clearInterval(this.calltimer);
-                    this.calltimer = null;
+                    clearInterval(self.calltimer);
+                    self.calltimer = null;
                 }
                 this.calltimer = setInterval(function () {
                     self.calltime = self.calltime + 1;
                 }, 1001);
-                this.setting = 18;
             } else {
                 this.inCallTemp = 1;
             }
@@ -1720,28 +1721,24 @@ export default {
                 this.startSound2.currentTime = 0;
                 this.startSound2 = null;
             }
-            let soundata = {
-                soundurl: this.soundurl + name
-            }
-            this.startSound2 = new Audio(soundata.soundurl);
+            this.startSound2 = new Audio(this.soundurl + name);
             this.startSound2.volume = 0.50;
             this.startSound2.loop = false;
             this.startSound2.play();
         },
-        playRingtone: function (url, check) {
+        playRingtone: function (name, check) {
             if (this.startSound != null) {
                 this.stopSound();
                 this.stopSound.currentTime = 0;
                 this.startstopSoundSound2 = null;
                 if (check == 1 && this.playringtone == name) return;
             }
-            let soundata = {
-                soundurl: this.soundurl + url
+            if(this.soundurl) {
+                this.startSound = new Audio(this.soundurl + name);
+                this.startSound.volume = 0.55;
+                this.startSound.loop = true;
+                this.startSound.play();
             }
-            this.startSound = new Audio(soundata.soundurl);
-            this.startSound.volume = 0.55;
-            this.startSound.loop = true;
-            this.startSound.play();
         },
         stopSound: function () {
             this.startSound.pause();

@@ -742,7 +742,7 @@ namespace NemesusWorld.Controllers
                             }
                             else if (number == 6)
                             {
-                                Commands.cmd_createpoliceprop(player, "prop_barrier_work06a");
+                                Commands.cmd_createpoliceprop(player, "prop_barrier_work04a");
                             }
                             else if (number == 7)
                             {

@@ -628,7 +628,6 @@ let policeBlip = null;
 let lastclick = (Date.now() / 1000);
 let afk = false;
 let ping = false;
-let level = 1;
 let showgangzone = false;
 let showcrafting = false;
 let hack = false;
@@ -1174,7 +1173,7 @@ mp.events.add("unhandledRejection", (promise, error) => {
 });
 
 //Prices
-mp.events.add("Client:SyncThings", (pricesCsv, animationhotkeys, chair, gprices, level, name = 'n/A', vrp, nametag, soundurl) => {
+mp.events.add("Client:SyncThings", (pricesCsv, animationhotkeys, chair, gprices, name, vrp, nametag) => {
     prices = pricesCsv.split(',');
     crosshair = chair;
     groupprices = gprices;
@@ -1185,10 +1184,8 @@ mp.events.add("Client:SyncThings", (pricesCsv, animationhotkeys, chair, gprices,
             animations = animationhotkeys;
         }
     }
-    level = level;
     voicerp = vrp;
     nametagSystem = nametag;
-    soundUrl = soundurl
     hudWindow.execute(`gui.menu.setvoicerp('${voicerp}');`);
     hudWindow.execute(`gui.hud.setvoicerp('${voicerp}');`);
     hudWindow.execute(`gui.speedometer.setvoicerp('${voicerp}');`);
@@ -1812,13 +1809,12 @@ mp.events.addDataHandler("Player:Adminsettings", (entity, value) => {
 });
 
 //Smartphone
-mp.events.add("Client:ShowSmartphone", (json, json2, json3, json4, capacity, hide, prepaid, premium, soundurl) => {
+mp.events.add("Client:ShowSmartphone", (json, json2, json3, json4, capacity, hide, premium, prepaid, faction, soundurl) => {
     if (hudWindow != null) {
         if (hide == 0) {
             mp.events.call('Client:UpdateHud3');
             showHandy = !showHandy;
         }
-        let faction = localPlayer.getVariable('Player:Faction');
         hudWindow.execute(`gui.smartphone.showSmartphone('${json}','${json2}','${json3}','${json4}','${capacity}','${hide}','${premium}','${prepaid}','${faction}','${soundurl}');`)
         if (showHandy == true) {
             if (hide == 0) {
@@ -2052,9 +2048,9 @@ mp.events.add("Client:CreateTwitter", (from, msg, timestamp) => {
     }
 })
 
-mp.events.add("Client:SmartphoneGetCall", (number1, number2, hidden, json, emergency) => {
+mp.events.add("Client:SmartphoneGetCall", (number1, number2, hidden, json, emergency, soundurl) => {
     if (hudWindow != null) {
-        hudWindow.execute(`gui.smartphone.getCall('${number1}','${number2}','${hidden}','${json}','${emergency});`)
+        hudWindow.execute(`gui.smartphone.getCall('${number1}', '${number2}', '${hidden}', '${json}', '${emergency}', '${soundurl}');`);
     }
 })
 
@@ -9510,6 +9506,8 @@ function showHideChat(setChat) {
         chat.execute(`chatAPI.highlight();`);
         if (fontSize) {
             chat.execute(`chatAPI.fontsize(${fontSize});`);
+        }
+        if (timeStamp) {
             chat.execute(`chatAPI.timestamp(${timeStamp});`);
         }
     }

@@ -5999,7 +5999,7 @@ namespace NemesusWorld
                     return;
                 }
                 Player ntarget = Helper.GetPlayerByAccountName(target);
-                if (ntarget == null)
+                if (ntarget == null || player == ntarget)
                 {
                     Helper.SendNotificationWithoutButton(player, "Ungültiger Spieler!", "error");
                     return;

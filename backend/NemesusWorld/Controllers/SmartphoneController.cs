@@ -92,15 +92,15 @@ namespace NemesusWorld.Controllers
                             {
                                 phoneCallList.Add(phoneCalls);
                             }
-                            if(smartphone.phonenumber != player.GetData<string>("Player:LastNumber"))
+                            if (smartphone.phonenumber != player.GetData<string>("Player:LastNumber"))
                             {
                                 tempData.speaker = false;
+                                player.TriggerEvent("Client:ShowSmartphone", smartphone.phoneprops, smartphone.contacts, NAPI.Util.ToJson(messageList), NAPI.Util.ToJson(phoneCallList), smartphone.akku, hide, account.premium, smartphone.prepaid, character.faction, Settings._Settings.SoundUrl);
                             }
-                            player.TriggerEvent("Client:ShowSmartphone", smartphone.phoneprops, smartphone.contacts, NAPI.Util.ToJson(messageList), NAPI.Util.ToJson(phoneCallList), smartphone.akku, hide, smartphone.prepaid, account.premium, Settings._Settings.SoundUrl);
-                        }
-                        else
-                        {
-                            Helper.SendNotificationWithoutButton(player, "Während dem Telefonprozess, kannst du kein anderes Handy benutzen!", "error", "top-left", 3500);
+                            else
+                            {
+                                Helper.SendNotificationWithoutButton(player, "Während dem Telefonprozess, kannst du kein anderes Handy benutzen!", "error", "top-left", 3500);
+                            }
                         }
                     }
                 }
@@ -778,8 +778,8 @@ namespace NemesusWorld.Controllers
                         }
                         NAPI.Task.Run(() =>
                         {
-                            player.TriggerEvent("Client:SmartphoneGetCall", number1, number2, hidden, phoneprops, emergency);
-                        }, delayTime: 550);
+                            player.TriggerEvent("Client:SmartphoneGetCall", number1, number2, hidden, phoneprops, emergency, Settings._Settings.SoundUrl);
+                        }, delayTime: 350);
                     }
                 }
             }

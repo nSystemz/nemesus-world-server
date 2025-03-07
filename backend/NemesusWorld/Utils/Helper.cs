@@ -18576,7 +18576,7 @@ namespace NemesusWorld.Utils
                 if (sprunk != null && character != null && account != null)
                 {
                     string prices = $"{Convert.ToInt32(30 * sprunk.multiplier)},";
-                    player.TriggerEvent("Client:SyncThings", prices, character.animations, account.crosshair, adminSettings.groupsettings, account.level, character.name, Helper.adminSettings.voicerp, Helper.adminSettings.nametag, Settings._Settings.SoundUrl);
+                    player.TriggerEvent("Client:SyncThings", prices, character.animations, account.crosshair, adminSettings.groupsettings, character.name, Helper.adminSettings.voicerp, Helper.adminSettings.nametag);
                 }
             }
             catch (Exception e)

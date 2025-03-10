@@ -603,6 +603,7 @@ let showCrosshair = false;
 let oldCrosshair = 0;
 let prices = [];
 let voicerp = 2;
+let level = 1;
 let groupprices = [];
 let oldCheck = 0;
 let maxWeapons = 0;
@@ -723,7 +724,7 @@ mp.game.streaming.requestNamedPtfxAsset("core");
 mp.players.local.setConfigFlag(429, true);
 mp.game.vehicle.defaultEngineBehaviour = false;
 //Flee
-mp.game.player.setAllRandomPedsFlee(true);
+mp.game.player.setAllRandomPedsFlee(true);1
 //Console clear
 mp.console.clear();
 mp.console.logInfo('Willkommen auf dem Nemesus World Roleplay Server - https://nemesus-world.de!', true, true);
@@ -1173,7 +1174,7 @@ mp.events.add("unhandledRejection", (promise, error) => {
 });
 
 //Prices
-mp.events.add("Client:SyncThings", (pricesCsv, animationhotkeys, chair, gprices, name, vrp, nametag) => {
+mp.events.add("Client:SyncThings", (pricesCsv, animationhotkeys, chair, gprices, name, vrp, nametag, lvl) => {
     prices = pricesCsv.split(',');
     crosshair = chair;
     groupprices = gprices;
@@ -1184,6 +1185,7 @@ mp.events.add("Client:SyncThings", (pricesCsv, animationhotkeys, chair, gprices,
             animations = animationhotkeys;
         }
     }
+    level = lvl;
     voicerp = vrp;
     nametagSystem = nametag;
     hudWindow.execute(`gui.menu.setvoicerp('${voicerp}');`);

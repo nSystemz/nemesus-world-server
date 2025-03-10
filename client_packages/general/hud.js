@@ -724,7 +724,7 @@ mp.game.streaming.requestNamedPtfxAsset("core");
 mp.players.local.setConfigFlag(429, true);
 mp.game.vehicle.defaultEngineBehaviour = false;
 //Flee
-mp.game.player.setAllRandomPedsFlee(true);1
+mp.game.player.setAllRandomPedsFlee(true);
 //Console clear
 mp.console.clear();
 mp.console.logInfo('Willkommen auf dem Nemesus World Roleplay Server - https://nemesus-world.de!', true, true);

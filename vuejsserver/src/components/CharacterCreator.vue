@@ -87,12 +87,15 @@
                             <p>Taste [K] = Kameraeinstellung</p>
                         </span>
                     </div>
-                    <hr/>
+                    <hr />
                     <div style="bottom: 0" class="mt-2">
                         <div style="display: flex; justify-content: center; align-items: center;"></div>
                         <span class="text-center">
                             <p>Gamemode mit ❤️ erstellt von Nemesus.de!</p>
                         </span>
+                        <div style="display: flex; justify-content: center; align-items: center;">
+                            <a href="https://ko-fi.com/nemesustv"><img src="https://nemesus.de/wp-content/uploads/2022/11/kofi_s_tag_dark-300x113.webp" style="width: 5.5vw"></a>
+                        </div>
                     </div>
                 </nav>
                 <nav v-if="naviSwitch == 'Genetik'">
@@ -146,23 +149,23 @@
                     <ul class="list-unstyled components mb-2">
                         <li class="active mt-2">
                             <span class="contenttext">{{clothings[0]}} [{{character.clothing[0]}}]</span>
-                            <vue-range-slider ref="slider" tooltip="false" dotSize="12" height="12" :min="0" :max="clothingMax[0]" :step="1" v-model="character.clothing[0]" v-oninput="characterCustomize('clothing', 0, character.clothing[0])" />
+                            <vue-range-slider ref="slider" tooltip="false" dotSize="12" height="12" :min="0" :max="clothingMax[0]" :step="1" v-model="character.clothing[0]" @input="clothingSlider(character.clothing[0], 0)" />
                         </li>
                         <li class="active mt-2">
                             <span class="contenttext">{{clothings[4]}} [{{character.clothing[4]}}]</span>
-                            <vue-range-slider ref="slider" tooltip="false" dotSize="12" height="12" :min="0" :max="clothingMax[4]" :step="1" v-model="character.clothing[4]" v-oninput="characterCustomize('clothing', 4, character.clothing[4])" />
+                            <vue-range-slider ref="slider" tooltip="false" dotSize="12" height="12" :min="0" :max="clothingMax[4]" :step="1" v-model="character.clothing[4]" @input="clothingSlider(character.clothing[4], 4)" />
                         </li>
                         <li class="active mt-2">
                             <span class="contenttext">{{clothings[1]}} [{{character.clothing[1]}}]</span>
-                            <vue-range-slider ref="slider" tooltip="false" dotSize="12" height="12" :min="0" :max="clothingMax[1]" :step="1" v-model="character.clothing[1]" v-oninput="characterCustomize('clothing', 1, character.clothing[1])" />
+                            <vue-range-slider ref="slider" tooltip="false" dotSize="12" height="12" :min="0" :max="clothingMax[1]" :step="1" v-model="character.clothing[1]" @input="clothingSlider(character.clothing[1], 1)" />
                         </li>
                         <li class="active mt-2">
                             <span class="contenttext">{{clothings[2]}} [{{character.clothing[2]}}]</span>
-                            <vue-range-slider ref="slider" tooltip="false" dotSize="12" height="12" :min="0" :max="clothingMax[2]" :step="1" v-model="character.clothing[2]" v-oninput="characterCustomize('clothing', 2, character.clothing[2])" />
+                            <vue-range-slider ref="slider" tooltip="false" dotSize="12" height="12" :min="0" :max="clothingMax[2]" :step="1" v-model="character.clothing[2]" @input="clothingSlider(character.clothing[2], 2)" />
                         </li>
                         <li class="active mt-2">
                             <span class="contenttext">{{clothings[3]}} [{{character.clothing[3]}}]</span>
-                            <vue-range-slider ref="slider" tooltip="false" dotSize="12" height="12" :min="0" :max="clothingMax[3]" :step="1" v-model="character.clothing[3]" v-oninput="characterCustomize('clothing', 3, character.clothing[3])" />
+                            <vue-range-slider ref="slider" tooltip="false" dotSize="12" height="12" :min="0" :max="clothingMax[3]" :step="1" v-model="character.clothing[3]" @input="clothingSlider(character.clothing[3], 3)" />
                         </li>
                     </ul>
                     <div style="display: flex; justify-content: center; align-items: center;">
@@ -262,6 +265,7 @@ export default {
     data: function () {
         return {
             charactercreatorshow: false,
+            inputTimeout: null,
             firstname: '',
             lastname: '',
             legal: 1,
@@ -322,6 +326,12 @@ export default {
         VueRangeSlider
     },
     methods: {
+        getValidId(invalidList, selected) {
+            while (invalidList.includes(selected)) {
+                selected++;
+            }
+            return selected;
+        },
         reRender: function () {
             this.$forceUpdate();
         },
@@ -332,6 +342,28 @@ export default {
         showCharacterCreator: function () {
             this.charactercreatorshow = !this.charactercreatorshow;
             return;
+        },
+        clothingSlider(value, index) {
+            let nVal;
+            let invalidList;
+
+            if (index === 0) invalidList = this.character.gender ? invalidMenTop : invalidWomanTop;
+            else if (index === 1) invalidList = this.character.gender ? invalidMenTorso : invalidWomanTorso;
+            else if (index === 2) invalidList = this.character.gender ? invalidMenLeg : invalidWomanLeg;
+            else if (index === 3) invalidList = this.character.gender ? invalidMenShoe : invalidWomanShoe;
+            else invalidList = this.character.gender ? invalidMenTShirt : invalidWomanTShirt;
+
+            nVal = this.getValidId(invalidList, value);
+            this.character.clothing[index] = nVal;
+            this.character['clothing'][index] = nVal;
+
+            clearTimeout(this.inputTimeout);
+
+            let self = this;
+            this.inputTimeout = setTimeout(() => {
+                // eslint-disable-next-line no-undef
+                mp.trigger('Client:CharacterPreview', 'clothing', JSON.stringify(self.character['clothing']));
+            }, 25);
         },
         characterCustomize: function (x, id, val) {
             if (x == "beard") {

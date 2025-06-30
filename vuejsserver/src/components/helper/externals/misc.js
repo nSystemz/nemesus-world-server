@@ -27,7 +27,7 @@ export const maxArmringWoman = 21;
 export const maxAccessoiresMen = 177;
 export const maxAccessoiresWoman = 147;
 
-//ToDo: Invalide Kleidungs erweitern (Jenachdem welche Kleidungs Ihr nichtmehr wollt!)
+//ToDo: Invalide Kleidungs erweitern (Jenachdem welche Kleidungsstücke Ihr nichtmehr wollt!)
 //Invalid Clothing
 export const invalidHairMen = 23;
 export const invalidHairWoman = 24;

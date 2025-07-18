@@ -4915,11 +4915,25 @@ mp.keys.bind(71, false, () => {
     }
 });
 
+//Player ready
+mp.events.add('playerReady', () => {
+    setInterval(() => {
+        if(hudWindow && mp.players.local)
+        {
+            const pos = mp.players.local.position;
+            const heading = mp.players.local.getHeading();
+
+            hudWindow.execute(`gui.hud.updateCompass(${heading}, ${pos.x}, ${pos.y}, ${pos.z});`);
+        }
+    }, 500);
+});
+
 //ESC Taste
 mp.keys.bind(0x1B, true, function () {
     mp.events.call("Client:PressedEscape");
     pressedESC = (Date.now() / 1000) + (1);
 });
+
 
 mp.events.add("Client:PressedEscape", () => {
     if (pressedESC == 0 || (Date.now() / 1000) > pressedESC) {

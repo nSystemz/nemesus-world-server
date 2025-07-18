@@ -7,6 +7,10 @@
     </div>
     <div>
         <div class="info server" v-if="showhud">
+            <div id="compass">
+                <div id="direction">N</div>
+                <div id="coords">X: 0.0, Y: 0.0, Z: 0.0</div>
+            </div>
             <div class="info player">
                 <div class="money float-right mr-2" style="color:#4477ad">
                     <span>{{("00000000" + money).slice(-8)}}$</span>
@@ -1844,6 +1848,14 @@ export default {
         },
     },
     methods: {
+        updateCompass(heading, x, y, z) {
+            const direction = document.getElementById("direction");
+            const coords = document.getElementById("coords");
+            const directions = ["N", "NO", "O", "SO", "S", "SW", "W", "NW"];
+            const index = Math.round(heading / 45) % 8;
+            direction.innerText = directions[index];
+            coords.innerText =  `X: ${x.toFixed(1)}, Y: ${y.toFixed(1)}, Z: ${z.toFixed(1)}`;
+        },
         getValidId(invalidList, selected, direction = 1) {
             let step = direction == 1 ? 1 : -1;
             while (invalidList.includes(selected)) {
@@ -4600,5 +4612,27 @@ template,
     position: absolute;
     bottom: 8px;
     right: 16px;
+}
+
+#compass {
+    position: absolute;
+    top: 3.25vh;
+    left: 50%;
+    transform: translateX(-50%);
+    text-shadow: 0 0 2px #000;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 12px;
+    font-size: 18px;
+    letter-spacing: 2px;
+    text-align: center;
+    min-width: 215px;
+}
+
+#coords {
+    font-size: 12px;
+    margin-top: 4px;
+    opacity: 0.6;
 }
 </style>

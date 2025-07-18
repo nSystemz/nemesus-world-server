@@ -1,6 +1,6 @@
 is_global = true
 build_property.RootNamespace = NemesusWorld
-build_property.ProjectDir = j:\Tutorials\nemesus-world-server\backend\NemesusWorld\
+build_property.ProjectDir = J:\Tutorials\nemesus-world-server\backend\NemesusWorld\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.CsWinRTUseWindowsUIXamlProjections = false

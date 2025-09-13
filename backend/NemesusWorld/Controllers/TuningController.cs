@@ -127,10 +127,14 @@ namespace NemesusWorld.Controllers
                         Helper.SendNotificationWithoutButton(player, "Es sind nicht genügend Tuningteile auf Lager!", "error", "top-left", 3500);
                         return;
                     }
-
                     house.stock -= stock;
                     player.Vehicle.SetSharedData("Vehicle:Tuning", sync);
                     player.TriggerEvent("Client:ShowTuningMenu", 0);
+                    string[] tuningMods = sync.Split(',');
+                    if (tuningMods.Length > 15 && int.TryParse(tuningMods[15], out int suspensionMod) && suspensionMod >= 0)
+                    {
+                        NAPI.Vehicle.SetVehicleMod(player.Vehicle, 15, suspensionMod);
+                    }
                     Helper.SendNotificationWithoutButton(player, "Das Tuning wurde erfolgreich angebracht!", "success", "top-left", 3500);
                     if (character.faction == 3 && character.factionduty == true)
                     {

@@ -1839,7 +1839,7 @@ export default {
             self.updateBar(1, this.health);
             self.updateBar(2, this.shield);
             self.updateBar(3, this.hunger);
-            self.updateBar(4, this.rhist);
+            self.updateBar(4, this.thirst);
         }, 150);
     },
     computed: {

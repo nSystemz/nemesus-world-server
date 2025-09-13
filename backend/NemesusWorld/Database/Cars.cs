@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Numerics;
 using System.Text;
 using GTANetworkAPI;
 using GTANetworkMethods;
@@ -221,6 +222,10 @@ namespace NemesusWorld.Database
                                 TuningController.OnTuningPreview(null, 67, Convert.ToInt32(vehicleTuning[67]), false, car.vehicleHandle);
                                 TuningController.OnTuningPreview(null, 68, Convert.ToInt32(vehicleTuning[68]), false, car.vehicleHandle);
                                 TuningController.OnTuningPreview(null, 69, Convert.ToInt32(vehicleTuning[69]), false, car.vehicleHandle);
+                                if (int.TryParse(vehicleTuning[15], out int suspensionMod) && suspensionMod >= 0)
+                                {
+                                    NAPI.Vehicle.SetVehicleMod(car.vehicleHandle, 15, suspensionMod);
+                                }
                             }
                             else
                             {

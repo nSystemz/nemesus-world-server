@@ -27,7 +27,7 @@ namespace NemesusWorld.Database
             vehicleData = null;
         }
 
-        public static Vehicle createNewCar(string vehname, Vector3 position, float heading, int color1, int color2, string numberplate, string owner, bool locked = true, bool engine = false, bool addlist = true, uint dimension = 0, VehicleData vehicleData = null, bool insert = false, bool insert2 = true, int garage = -1)
+        public static Vehicle createNewCar(string vehname, GTANetworkAPI.Vector3 position, float heading, int color1, int color2, string numberplate, string owner, bool locked = true, bool engine = false, bool addlist = true, uint dimension = 0, VehicleData vehicleData = null, bool insert = false, bool insert2 = true, int garage = -1)
         {
             try
             {
@@ -63,7 +63,7 @@ namespace NemesusWorld.Database
                     }
                     car.vehicleHandle.SetData<int>("Vehicle:Products", 0);
                     car.vehicleHandle.SetSharedData("Vehicle:Tuev", Helper.UnixTimestamp() + (93 * 86400));
-                    car.vehicleHandle.SetData<Vector3>("Vehicle:Position", position);
+                    car.vehicleHandle.SetData<GTANetworkAPI.Vector3>("Vehicle:Position", position);
                     car.vehicleHandle.SetData<float>("Vehicle:Rotation", heading);
                     car.vehicleHandle.SetSharedData("Vehicle:Speedlimit", 0);
                     car.vehicleHandle.SetData<int>("Vehicle:VLock", 2);
@@ -133,7 +133,7 @@ namespace NemesusWorld.Database
                         vehiclePosition = vehicleData.position.Split("|");
                         string[] vehicleColor = new string[4];
                         vehicleColor = vehicleData.color.Split(",");
-                        Vector3 postionsVector = new Vector3(float.Parse(vehiclePosition[0], new CultureInfo("en-US")), float.Parse(vehiclePosition[1], new CultureInfo("en-US")), float.Parse(vehiclePosition[2], new CultureInfo("en-US")) + 0.25);
+                        GTANetworkAPI.Vector3 postionsVector = new GTANetworkAPI.Vector3(float.Parse(vehiclePosition[0], new CultureInfo("en-US")), float.Parse(vehiclePosition[1], new CultureInfo("en-US")), float.Parse(vehiclePosition[2], new CultureInfo("en-US")) + 0.25);
                         car.vehicleHandle = NAPI.Vehicle.CreateVehicle(vehash, postionsVector, float.Parse(vehiclePosition[3], new CultureInfo("en-US")), Convert.ToInt32(vehicleColor[0]), Convert.ToInt32(vehicleColor[1]));
                         string[] vehicleHealth = new string[3];
                         if (!vehicleData.health.Contains("|"))
@@ -180,7 +180,7 @@ namespace NemesusWorld.Database
                             }
                             car.vehicleHandle.SetData<int>("Vehicle:Products", vehicleData.products);
                             car.vehicleHandle.SetSharedData("Vehicle:Tuev", vehicleData.tuev);
-                            car.vehicleHandle.SetData<Vector3>("Vehicle:Position", postionsVector);
+                            car.vehicleHandle.SetData<GTANetworkAPI.Vector3>("Vehicle:Position", postionsVector);
                             car.vehicleHandle.SetData<float>("Vehicle:Rotation", float.Parse(vehiclePosition[3], System.Globalization.CultureInfo.InvariantCulture));
                             car.vehicleHandle.SetSharedData("Vehicle:Speedlimit", 0);
                             car.vehicleHandle.SetData<int>("Vehicle:VLock", vehicleData.vlock);

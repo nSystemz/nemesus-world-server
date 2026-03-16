@@ -1738,7 +1738,7 @@ export default {
                 if (online) {
                     this.startSound = new Audio(this.soundurl + name);
                 } else {
-                    this.startSound = new Audio(`sounds/${name}`);
+                    this.startSound = new Audio(`./sounds/${name}`);
                 }
             }
             this.startSound.volume = 0.55;

@@ -91,4 +91,4 @@ Beachtet bitte die ToDos im Code und die Installationsanleitung auf Youtube:
 - https://youtu.be/vZP-QDRra64 (Text-RP)
 - https://youtu.be/R4jcu1xuCVo (ForumConnect/PostChangelog System)
 
-Weitere Infos gibt es auf https://nemesus.de
+Weitere Infos gibt es auf https://nemesus.de 

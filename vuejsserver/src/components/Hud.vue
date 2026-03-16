@@ -4125,7 +4125,7 @@ export default {
             if (this.startSound != null) {
                 this.stopSound();
             }
-            this.startSound = new Audio(`/sounds/${fileName}`)
+            this.startSound = new Audio(`sounds/${fileName}`)
             if (lower == 1) {
                 this.startSound.volume = 0.025;
             } else {

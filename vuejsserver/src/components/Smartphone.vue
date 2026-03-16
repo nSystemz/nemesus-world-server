@@ -1726,19 +1726,24 @@ export default {
             this.startSound2.loop = false;
             this.startSound2.play();
         },
-        playRingtone: function (name, check) {
+        //Online auf = false setzen wenn Sounds direkt ohne Webspace abgespielt werden sollen
+        playRingtone: function (name, check, online = true) {
             if (this.startSound != null) {
                 this.stopSound();
                 this.stopSound.currentTime = 0;
                 this.startstopSoundSound2 = null;
                 if (check == 1 && this.playringtone == name) return;
             }
-            if(this.soundurl) {
-                this.startSound = new Audio(this.soundurl + name);
-                this.startSound.volume = 0.55;
-                this.startSound.loop = true;
-                this.startSound.play();
+            if (this.soundurl) {
+                if (online) {
+                    this.startSound = new Audio(this.soundurl + name);
+                } else {
+                    this.startSound = new Audio(`sounds/${name}`);
+                }
             }
+            this.startSound.volume = 0.55;
+            this.startSound.loop = true;
+            this.startSound.play();
         },
         stopSound: function () {
             this.startSound.pause();

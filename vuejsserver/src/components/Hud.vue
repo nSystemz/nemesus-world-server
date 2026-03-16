@@ -4120,7 +4120,20 @@ export default {
                 timer: timer
             })
         },
-        playSound: function (url, lower) {
+        playSoundOffline(fileName, lower)
+        {
+            if (this.startSound != null) {
+                this.stopSound();
+            }
+            this.startSound = new Audio(`/sounds/${fileName}`)
+            if (lower == 1) {
+                this.startSound.volume = 0.025;
+            } else {
+                this.startSound.volume = 0.085;
+            }
+            this.startSound.play();
+        },
+        playSoundOnline: function (url, lower) {
             if (this.startSound != null) {
                 this.stopSound();
             }

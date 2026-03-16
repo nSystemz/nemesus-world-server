@@ -1664,9 +1664,16 @@ mp.events.add("Client:FinishProgress", (action) => {
 })
 
 //Play sounds
-mp.events.add("Client:PlaySound", (name, lower) => {
+mp.events.add("Client:PlaySound", (name, lower, online = true) => {
     if (hudWindow != null) {
-        hudWindow.execute(`gui.hud.playSound('${name}','${lower}');`)
+        if(online)
+        {
+            hudWindow.execute(`gui.hud.playSoundOnline('${name}','${lower}');`)
+        }
+        else
+        {
+            hudWindow.execute(`gui.hud.playSoundOffline('${name}','${lower}');`)
+        }
     }
 })
 
@@ -6519,6 +6526,11 @@ mp.events.add('playerWeaponShot', (targetPosition, targetEntity) => {
 mp.events.add('entityStreamIn', (entity) => {
     try {
         if (mp.vehicles.exists(entity) && 0 !== entity.handle && entity.type == 'vehicle') {
+            //Lights
+            if(entity.hasVariable('Vehicle:Lights'))
+            {
+                entity.setLights(entity.getVariable('Vehicle:Lights') ? 2 : 0);
+            }
             //Overlaymodus
             overlayList.push(entity);
             //Health
@@ -7348,6 +7360,12 @@ mp.events.addDataHandler("Player:Voice", (entity, value, oldValue) => {
             mp.events.call("Client:EnableSaltyError");
         }
     }
+});
+
+//Vehicle Lights
+mp.events.addDataHandler("Vehicle:Lights", (entity, value, oldValue) => {
+    if (!value) return;
+    entity.setLights(value ? 2 : 0);
 });
 
 //Vehicle Doors

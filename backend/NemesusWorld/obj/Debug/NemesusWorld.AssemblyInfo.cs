@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyDescriptionAttribute("RageMP Roleplay Gamemode, erstellt von Nemesus.de")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+758bbc5a21faf2d2fa1c54bba4b85bd960e4edef")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c210e85ffaf51d3aaf5ef54234ffbc0f8f0067e0")]
 [assembly: System.Reflection.AssemblyProductAttribute("NemesusWorld")]
 [assembly: System.Reflection.AssemblyTitleAttribute("NemesusWorld")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

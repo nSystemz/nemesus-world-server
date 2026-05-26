@@ -1,5 +1,9 @@
 🎮 Nemesus World Roleplay Gamemode für RageMP (GTA 5) 🎮
 
+Info: Dieser Repo ist EOL, das RageMP Projekt wurde beendet!
+
+---
+
 Nemesus World Gamemode v1.0 (Erstellt durch https://nemesus.de!)
 
 Weitere Credits gehen an Hrred für die Erstellung von vielen Maps und sonstigen Aktivitäten sowie an YunaLable.
